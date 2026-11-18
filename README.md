@@ -30,6 +30,8 @@ A cancellation carries its own event ID. A failed event rolls back the entire do
 
 The PostgreSQL webhook accepts the same order document at `POST /orders`. A sender can repeat a request after losing its receipt. Reusing the supplier and event ID applies each booking once. Start the service with `--workers 4 --queue 8` to run up to four handlers and hold eight further requests. When all slots are occupied, the webhook responds with HTTP 503 and a retry delay. [Webhook setup and retry tests](experimente/81_order_webhook/report.md) · [Load and cancellation measurements](experimente/82_webhook_load/report.md)
 
+The order webhook exposes `GET /ready` to check whether PostgreSQL can see its two booking tables. The operator guide covers inspecting a stored failure, rolling back an interrupted deployment and replaying a delivery after a database restart. [Order webhook runbook](experimente/86_webhook_operations/runbook.md)
+
 ## Other applications
 
 The [JSON Measurement Report](apps/report_packages/json_report.tide) imports measurement values with optional notes and a dictionary for sensor-dependent thresholds. The importer runs with `tide run` and as a standalone AOT program.

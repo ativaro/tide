@@ -18,7 +18,14 @@ deliver pg:p body:y > {HookReply}
 let result book_document pg (jsoninput.decode body)
 reply (if (> (get applied result) 0) 201 200) (json_encode result)
 
+readiness pg:p > {HookReply}
+catch E_IO (catch E_DATA
+  (let rows pg_query {ExistsRow} pg "SELECT to_regclass('order_webhook.events') IS NOT NULL AND to_regclass('order_webhook.positions') IS NOT NULL AS found" (list ?t 0)
+   if (get found (need (at rows 0) "readiness" 0)) (reply 200 (utf8_bytes "{\"ready\":true}")) (problem 503 "schema_unavailable" (nil i)))
+  err (problem 503 "database_failure" (nil i))) err (problem 503 "database_unavailable" (nil i))
+
 main method:t path:t headers:%t body:y pg:p > {HookReply}
+if (and (text_eq method "GET") (text_eq path "/ready")) (readiness pg)
 if (not (text_eq path "/orders")) (problem 404 "not_found" (nil i))
 if (not (text_eq method "POST"))
   (let response problem 405 "method_not_allowed" (nil i)

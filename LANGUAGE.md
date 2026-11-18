@@ -198,6 +198,8 @@ File contents enter the program via `tide run FILE --read parameter=pfad`. The h
 
 Clients should keep the connection open for the response. After upload, a peer closing its TCP write side signals cancellation. A waiting request releases its queue slot. Active guest computations, HTTPS transfers and running PostgreSQL queries check for cancellation. SIGTERM and SIGINT also cancel active and queued work. On orderly shutdown the service logs the highest active and queued counts, overload rejections and cancellations. A transaction that has already committed retains its effect. [Order webhook and retry contract](experimente/81_order_webhook/report.md)
 
+If the service cannot open a granted database connection because of an I/O failure, it returns HTTP 503, `{"error":"dependency_unavailable"}` and `Retry-After: 1`. This happens before the application handler starts. The sender can repeat an idempotent request after recovery. [Operations and recovery](experimente/86_webhook_operations/runbook.md)
+
 ### SQLite
 
 A parameter `db:d` receives a connection for reading and writing with `--db db=messungen.db`. SQLite can create the file and use journal files alongside it. `--db db=:memory:` opens a fresh database for a run. An executable TIDE example binds `"db":":memory:"` in its inputs. Each example starts with its own empty database.

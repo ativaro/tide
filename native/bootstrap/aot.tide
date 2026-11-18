@@ -502,5 +502,6 @@ let grants fold kinds (list t 0) acc row typ if (> row 4) (append acc typ) acc
 let params fold grants "" out row typ cat3 out ",bound[" (concat (decimal (- row 1)) "]")
 let head cat3 "Text compiled_entry(const Seq<Text>& args){auto opts=f_service_options(args);R_Signature fn{};fn.v_file=" (aot_text (get file fn)) ";"
 let setup cat3 "fn.v_params=" (aot_texts keylist) (cat3 ";fn.v_types=" (aot_texts grants) (cat3 ";fn.v_loc=" (aot_site (get loc fn)) ";"))
-let handler "auto base=f_run_arguments(U\"{}\",fn,opts.v_grants,fn.v_file);return tide_serve(opts,[&](const Text& method,const Text& path,const Text& raw,const Text& body){auto headers=f_http_headers(raw);if(!headers)throw Failure{\"Header limit\",0};auto gas=f_aot_start();auto bound=f_sql_connect(base,fn);return f_service_reply("
+let grant_binding "decltype(base) bound;try{bound=f_sql_connect(base,fn);}catch(const Failure& e){if(!f_aot_caught(e.reason,U\"E_IO\"))throw;return ServiceOutput{503,{{U\"Content-Type: application/json\",U\"Retry-After: 1\"},U\"{\\\"error\\\":\\\"dependency_unavailable\\\"}\"}};}"
+let handler cat3 "auto base=f_run_arguments(U\"{}\",fn,opts.v_grants,fn.v_file);return tide_serve(opts,[&](const Text& method,const Text& path,const Text& raw,const Text& body){auto headers=f_http_headers(raw);if(!headers)throw Failure{\"Header limit\",0};auto gas=f_aot_start();" grant_binding "return f_service_reply("
 cat3 service_abi head (concat setup (cat3 handler (aot_symbol index) (cat3 "(gas,method,path,*headers,f_text_value(body)" params "));});}\n")))

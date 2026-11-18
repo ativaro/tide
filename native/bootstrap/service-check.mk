@@ -56,6 +56,11 @@ check-postgres: checker catalog aot-runtime
 	export TIDE_HTTPS_CA_FILE="$$tmp/cert"; params="{\"id\":\"tide\",\"sample\":$$sample}"; origin="api=https://127.0.0.1:$$port"; \
 	test "$$(./tide run "$$app" --call publish --https "$$origin" --inputs "$$params")" = 201; \
 	test "$$("$$tmp/publish" --https "$$origin" --inputs "$$params")" = 200; \
+	pg_ctl -D "$$tmp/db" -m fast -w stop >/dev/null; pg=; \
+	test "$$(curl -sS --noproxy '*' --max-time 5 -D "$$tmp/offline.headers" -o "$$tmp/offline.json" -w '%{http_code}' "$$url")" = 503; \
+	grep -Eiq '^Retry-After: 1[[:space:]]*$$' "$$tmp/offline.headers"; \
+	test "$$(cat "$$tmp/offline.json")" = '{"error":"dependency_unavailable"}'; \
+	pg_ctl -D "$$tmp/db" -l "$$tmp/pg.log" -o "-k $$tmp -c listen_addresses=''" -w start >/dev/null; pg=yes; \
 	test "$$(curl -fsS --noproxy '*' --max-time 5 "$$url" | awk -F '"temperature":21.75' '{print NF-1}')" = 9; \
 	mkfifo "$$tmp/gate"; exec 7<>"$$tmp/gate"; psql "$$dsn" -XqAt -v ON_ERROR_STOP=1 < "$$tmp/gate" > "$$tmp/locked" & locker=$$!; \
 	printf 'BEGIN;\nLOCK measurements IN ACCESS EXCLUSIVE MODE;\n\\echo LOCKED\n' >&7; \
