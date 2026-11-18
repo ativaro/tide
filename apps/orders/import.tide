@@ -1,6 +1,6 @@
 use store
 
-use jsoninput@1.0.0[Document]
+use jsoninput@2.0.0[Document]
 
 import_document db:d doc:{Document} > {Receipt}
 if (not (identifier (get supplier doc))) (fail_at "invalid_identifier" (nil i) "/supplier")
@@ -15,4 +15,4 @@ let count fold events 0 applied pos item
 make Receipt applied count duplicates (- (length events) count)
 
 main db:d input:r > {Receipt}
-import_document db (jsoninput.load input (some 4194304))
+import_document db (jsoninput.load input (make jsoninput.ReadBudget max_bytes 4194304))

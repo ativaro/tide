@@ -1,0 +1,19 @@
+use jsoninput@2.0.0[Entry]
+
+record Entry
+label:t
+
+example exact_utf8_budget jsoninput.load
+{"inputs":{"input":"{\"label\":\"é\"}","budget":{"max_bytes":14}},"expect":{"label":"é"}}
+
+example one_byte_short jsoninput.load
+{"inputs":{"input":"{\"label\":\"é\"}","budget":{"max_bytes":13}},"expect_error":{"code":"E_LIMIT"}}
+
+example negative_budget jsoninput.load
+{"inputs":{"input":"","budget":{"max_bytes":-1}},"expect_error":{"code":"E_LIMIT"}}
+
+example snapshot jsoninput.snapshot
+{"inputs":{"input":"{\"label\":\"é\"}"},"expect":{"label":"é"}}
+
+example field_path jsoninput.snapshot
+{"inputs":{"input":"{\"label\":false}"},"expect_error":{"code":"E_DATA","path":"/label"}}

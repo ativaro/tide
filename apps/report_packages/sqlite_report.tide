@@ -11,7 +11,7 @@ let saved fold (get readings doc) 0 saved index reading
 summary db
 
 main db:d input:r limit:i > {Summary}
-import_document db (jsoninput.load input (nil i)) limit
+import_document db (jsoninput.snapshot input) limit
 
 rollback_probe db:d input:r > *{Reading}
 let seeded import_document db (notes "{\"readings\":[{\"sensor\":\"A\",\"value\":7}],\"limits\":{}}") 80

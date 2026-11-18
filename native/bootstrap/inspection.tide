@@ -43,6 +43,20 @@ fold (get trees program) reached found row tree
   let name need (at (get names program) (- row 1)) "caller_name" 0
   if calls (append found name) found
 
+inspect_call_sites program:{CheckedFunctions} index:i > t
+let name need (at (get names program) index) "callee_name" 0
+let sites fold (get trees program) "" prior row tree
+  if (and (not (eq (- row 1) index)) (case (entry_at (get calls tree) name) true hit false)) prior
+  let fn need (at (get signatures program) (- row 1)) "caller_signature" 0
+  let nodes get nodes tree
+  fold (append (get pages nodes) (get tail nodes)) prior acc page_index page
+    fold page acc found pos node
+      if (not (eq (get target node) index)) found
+      let site get site node
+      let caller cat3 "{\"caller\":" (json_string (get name fn)) (concat ",\"file\":" (json_string (get file fn)))
+      json_item found (cat3 caller (concat ",\"line\":" (decimal (get line site))) (cat3 ",\"column\":" (decimal (get column site)) "}"))
+cat3 "\"definition\":" (json_string name) (cat3 ",\"call_sites\":[" sites "]")
+
 inspect_impact compiled:{CompiledProject} name:t file:t summary:b selected:?t > t
 let program get program compiled
 let target list t 1 name
@@ -77,6 +91,7 @@ if (and (or compact (text_eq name "")) (or candidates (or (and compact (text_eq 
 let program get program compiled
 let names get names program
 let index need (entry_at names name) (root_diagnostic file "E_NAME" (concat "Unknown definition: " name)) 0
+if (text_eq option "call-sites") (cat3 (inspect_call_sites program index) "\n" (project_snapshot project))
 let fn need (at (get signatures program) index) "definition" 0
 let tree need (at (get trees program) index) "function_tree" 0
 let nodes get nodes tree

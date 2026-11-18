@@ -7,4 +7,4 @@ count_events doc:{OtherDocument} > i
 length (get events doc)
 
 wrong_call input:r > i
-count_events (jsoninput.load input (some 4194304))
+count_events (jsoninput.load input (make jsoninput.ReadBudget max_bytes 4194304))

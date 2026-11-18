@@ -189,7 +189,7 @@ case ${1-} in
             action=$1
             shift
             file= options=yes explain=no diff= call=main inputs='{}' step= field_option= have_example=no have_function=no node_option= example_index=no selected_example= have_selected=no
-            base= have_base=no edit_mode= candidate= write=no change_examples=no
+            base= have_base=no edit_mode= candidate= write=no change_examples=no call_sites=no
             grants=0 have_probes=no probes= pairs=no have_probe_range=no probe_range=
             while [ "$#" -gt "$grants" ]; do
                 arg=$1
@@ -240,6 +240,9 @@ case ${1-} in
                                 edit_mode=$key; candidate=$value
                             fi
                             continue ;;
+                        --call-sites)
+                            [ "$action" = context ] || exit 2
+                            call_sites=yes; continue ;;
                         --example-index)
                             [ "$action" = context ] || exit 2
                             example_index=yes; continue ;;
@@ -324,6 +327,9 @@ case ${1-} in
                     if [ "$action" = hole ]; then
                         [ -n "$node_option" ] || exit 2
                         node_option="!${node_option#+}"
+                    elif [ "$call_sites" = yes ]; then
+                        [ -z "$node_option" ] && [ "$have_selected" = no ] && [ "$example_index" = no ] || exit 2
+                        node_option=call-sites
                     elif [ "$have_selected" = yes ]; then
                         [ "$example_index" = no ] || exit 2
                         # A node ID is a module/line/column location and cannot contain a pipe.

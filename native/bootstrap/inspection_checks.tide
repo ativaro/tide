@@ -1,6 +1,7 @@
 use inspection
 
 inspection_checks > b
+if (not package_call_site_checks) fail "qualified_call_sites"
 if (not result_difference_checks) fail "typed_result_difference"
 if (not nested_contract_check) fail "nested_array_contract"
 if (not variant_context_checks) fail "variant_context"
@@ -42,6 +43,20 @@ let checks list t 4 "\"direct_callers\":[\"sum_entries\"]" "\"affected_callers\"
 if (not (fold checks true ok row text and ok (case (text_find imported text 0) false pos true))) fail "imported_context"
 and (text_eq (sha256_utf8 "") "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
   (text_eq (sha256_utf8 "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq") "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1")
+
+package_call_site_checks > b
+let source "use alpha@1.0.0\n\nuse beta@1.0.0\n\nchoose x:i > i\n+ (alpha.parse x) (alpha.parse (beta.parse x))\n\nmain x:i > i\nchoose x"
+let body "\n\nexport parse\n\nparse x:i > i\nx"
+let root project_begin source "" (text_len source) "entry.tide" ":entry.tide"
+let alpha concat "package alpha 1.0.0" body
+let beta concat "package beta 1.0.0" body
+let graph project_supply (project_supply root alpha "" (text_len alpha)) beta "" (text_len beta)
+let prefix "{\"caller\":\"choose\",\"file\":\"entry.tide\",\"line\":6,\"column\":"
+let targets list &tt 3 (pair "alpha.parse" (cat3 prefix "4}," (concat prefix "20}"))) (pair "beta.parse" (concat prefix "33}")) (pair "main" "")
+fold targets true ok pos item
+  let output project_finish graph ":entry.tide" (first item) "call-sites"
+  let expected cat3 "\"definition\":" (json_string (first item)) (cat3 ",\"call_sites\":[" (second item) "]")
+  and ok (text_eq expected (text_slice output 0 (need (text_find output "\n" 0) "call_site_snapshot" 0)))
 
 block_hash_checks > b
 let boundary fold (indices 3275) "" acc pos unused concat acc "🐈a"

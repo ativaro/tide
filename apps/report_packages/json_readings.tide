@@ -1,4 +1,4 @@
-use jsoninput@1.0.0[Document]
+use jsoninput@2.0.0[Document]
 
 record Reading
 sensor:t value:i note:?t

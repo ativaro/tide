@@ -69,8 +69,8 @@ help.play
 help.play	options:
 help.play	  -h, --help       show this help message and exit
 help.play	  --document PATH  open one UTF-8 document for interactive editing
-help.context	usage: tide context [-h] [--json] --function FUNCTION [--node NODE]
-help.context	                    [--example-index | --example NAME] file
+help.context	usage: tide context [-h] [--json] --function FUNCTION file
+help.context	                    [--call-sites | [--node NODE] [--example-index | --example NAME]]
 help.context	
 help.context	positional arguments:
 help.context	  file
@@ -79,6 +79,7 @@ help.context	options:
 help.context	  -h, --help           show this help message and exit
 help.context	  --json               JSON output (default)
 help.context	  --function FUNCTION
+help.context	  --call-sites         list each resolved call with caller, file, line and column
 help.context	  --node NODE          revision-local line:column
 help.context	  --example-index      list affected example names, targets and fingerprints
 help.context	  --example NAME       include one affected example in full

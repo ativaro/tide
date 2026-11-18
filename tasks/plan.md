@@ -70,6 +70,8 @@ Stage 5 reproduced the eight-event native speedup on the original workstation. A
 
 Stage 6 uses one pinned JSON input package for the order importer and measurement report. Each consumer binds its own document schema. The checker identifies a mismatched result at the caller's operand in all four CLI paths. [Shared package and acceptance results](../experimente/75_shared_types/report.md)
 
+Stage 7 migrated three application call sites to `jsoninput@2.0.0`. Its bounded read takes an explicit byte budget, and its snapshot read has a separate export. The old applications build with the original pin alongside the new package. [Caller locations, diagnostics and acceptance](../experimente/76_package_migration/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

@@ -2,9 +2,13 @@
 check-package-types: checker catalog aot-runtime
 	@set -eu; tmp=$$(mktemp -d "$(BUILD)/package-types.XXXXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
 	fixtures=native/bootstrap/fixtures/package_types; \
-	pkg=vendor/jsoninput/1.0.0/package.tide; cmp "apps/orders/$$pkg" "apps/report_packages/$$pkg"; \
+	for pin in 1.0.0 2.0.0; do pkg=vendor/jsoninput/$$pin/package.tide; cmp "apps/orders/$$pkg" "apps/report_packages/$$pkg"; done; \
 	cp -R "$$fixtures/." "$$tmp"; cp -R apps/orders/. "$$tmp"; \
 	test "$$(./tide test "$$tmp/binding.tide")" = '{"passed":3}'; \
+	test "$$(./tide test "$$tmp/v2_reader.tide")" = '{"passed":5}'; \
+	sed 's/^use jsoninput@1\.0\.0/use jsoninput@2.0.0/' "$$tmp/binding.tide" > "$$tmp/mixed.tide"; \
+	if ./tide check "$$tmp/mixed.tide" > "$$tmp/out" 2> "$$tmp/err"; then exit 1; fi; \
+	grep -Fq '"code":"E_PACKAGE","message":"Conflicting versions of jsoninput: 1.0.0 and 2.0.0"' "$$tmp/err"; \
 	for mode in check run test aot; do \
 	    set -- ./tide "$$mode" "$$tmp/wrong_order.tide"; \
 	    if [ "$$mode" = aot ]; then set -- ./tide build --aot "$$tmp/wrong_order.tide" "$$tmp/rejected"; fi; \

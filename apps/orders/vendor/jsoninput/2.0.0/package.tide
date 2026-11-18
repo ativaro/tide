@@ -1,0 +1,15 @@
+package jsoninput 2.0.0 Payload
+
+export ReadBudget decode load snapshot
+
+record ReadBudget
+max_bytes:i
+
+decode bytes:y > {Payload}
+json_decode {Payload} bytes
+
+load input:r budget:{ReadBudget} > {Payload}
+decode (read_batch input (get max_bytes budget))
+
+snapshot input:r > {Payload}
+decode (read_bytes input)

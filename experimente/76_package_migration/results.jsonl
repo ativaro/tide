@@ -1,0 +1,28 @@
+{"project":"apps/orders/checks.tide","old_revision":"cee0932a77e1237cb39e4d602ca7d178bc66791a2252deda7eaa8e5a6a0ffdce","call_sites":[{"caller":"main","file":"import.tide","line":18,"column":21}],"affected_callers":["after_rejection","main"],"affected_examples":["empty","partial_and_full","price_collision","position_collision","missing_position","over_cancel","bad_qty","long_id","exact_id","bad_supplier","rollback"]}
+{"project":"apps/orders/checks.tide","pin_only_error":{"file":"import.tide","code":"E_TYPE","message":"Unexpected operand type","line":18,"column":43,"operation":"jsoninput.load","argument":2,"expected":"{jsoninput.ReadBudget}","actual":"?i"}}
+{"pin":"1.0.0","suite":"apps/orders/checks.tide","passed":13}
+{"pin":"1.0.0","entry":"apps/orders/import.tide","example":"partial_and_full","aot_result":{"applied":3,"duplicates":2}}
+{"pin":"1.0.0","entry":"apps/orders/import.tide","example":"bad_qty","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/events/0/qty"}}
+{"pin":"2.0.0","suite":"apps/orders/checks.tide","passed":13}
+{"pin":"2.0.0","entry":"apps/orders/import.tide","example":"partial_and_full","aot_result":{"applied":3,"duplicates":2}}
+{"pin":"2.0.0","entry":"apps/orders/import.tide","example":"bad_qty","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/events/0/qty"}}
+{"project":"apps/report_packages/json_report.tide","old_revision":"92b4cd9469dd8d9791670b035203ecf49a108848d366ef0f5b4a4c189f0cdeed","call_sites":[{"caller":"main","file":"apps/report_packages/json_report.tide","line":4,"column":14}],"affected_callers":["main"],"affected_examples":["thresholds","empty","missing","wrong_optional","escaped_key","invalid_unknown"]}
+{"project":"apps/report_packages/json_report.tide","pin_only_error":{"file":"apps/report_packages/json_report.tide","code":"E_TYPE","message":"Unexpected operand type","line":4,"column":36,"operation":"jsoninput.load","argument":2,"expected":"{jsoninput.ReadBudget}","actual":"?i"}}
+{"pin":"1.0.0","suite":"apps/report_packages/json_report.tide","passed":9}
+{"pin":"1.0.0","entry":"apps/report_packages/json_report.tide","example":"thresholds","aot_result":{"above":2,"peak":{"some":98}}}
+{"pin":"1.0.0","entry":"apps/report_packages/json_report.tide","example":"wrong_optional","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/1/note"}}
+{"pin":"2.0.0","suite":"apps/report_packages/json_report.tide","passed":9}
+{"pin":"2.0.0","entry":"apps/report_packages/json_report.tide","example":"thresholds","aot_result":{"above":2,"peak":{"some":98}}}
+{"pin":"2.0.0","entry":"apps/report_packages/json_report.tide","example":"wrong_optional","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/1/note"}}
+{"project":"apps/report_packages/sqlite_report.tide","old_revision":"7e2b7289fe5f43bdc87916dc1c57d1d0233ce42bed025fa466372676be69156e","call_sites":[{"caller":"main","file":"apps/report_packages/sqlite_report.tide","line":14,"column":21}],"affected_callers":["main","rollback_probe"],"affected_examples":["persisted_values","rollback_after_insert","rejected_import","json_failure"]}
+{"project":"apps/report_packages/sqlite_report.tide","pin_only_error":{"file":"apps/report_packages/sqlite_report.tide","code":"E_TYPE","message":"Unexpected operand type","line":14,"column":43,"operation":"jsoninput.load","argument":2,"expected":"{jsoninput.ReadBudget}","actual":"?i"}}
+{"pin":"1.0.0","suite":"apps/report_packages/sqlite_report.tide","passed":4}
+{"pin":"1.0.0","entry":"apps/report_packages/sqlite_report.tide","example":"persisted_values","aot_result":{"above":2,"peak":{"some":98}}}
+{"pin":"1.0.0","entry":"apps/report_packages/sqlite_report.tide","example":"json_failure","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/0/value"}}
+{"pin":"2.0.0","suite":"apps/report_packages/sqlite_report.tide","passed":4}
+{"pin":"2.0.0","entry":"apps/report_packages/sqlite_report.tide","example":"persisted_values","aot_result":{"above":2,"peak":{"some":98}}}
+{"pin":"2.0.0","entry":"apps/report_packages/sqlite_report.tide","example":"json_failure","aot_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/0/value"}}
+{"project":"apps/report_packages/api_report.tide","old_revision":"a35318405306485eefb43b23eb6e03f798f5bce3d5d109417becc54c6e681765","call_sites":[],"affected_callers":[],"affected_examples":[]}
+{"project":"apps/report_packages/api_report.tide","pin_only_tests":4}
+{"pin":"1.0.0","suite":"apps/report_packages/api_report.tide","passed":4}
+{"pin":"2.0.0","suite":"apps/report_packages/api_report.tide","passed":4}
