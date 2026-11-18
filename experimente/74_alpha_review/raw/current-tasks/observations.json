@@ -1,0 +1,2962 @@
+{
+  "environment": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": "24",
+    "network": [
+      "lo"
+    ],
+    "kernel": "7.3.4-1-cachyos",
+    "node": "v24.18.0",
+    "tide": "TIDE 0.6.6",
+    "python": "Python 3.14.10",
+    "inspector_sha256": "810116b79c3746030b85ed74ef239ca75fdc356a17ae21be4d77f8e3ca4d47b5"
+  },
+  "model_runs": 0,
+  "model_tokens": 0,
+  "audit": {
+    "W01": {
+      "tide": 7,
+      "python": 7
+    },
+    "W02": {
+      "tide": 7,
+      "python": 7
+    },
+    "W03": {
+      "tide": 7,
+      "python": 7
+    },
+    "W04": {
+      "tide": 7,
+      "python": 7
+    },
+    "W05": {
+      "tide": 7,
+      "python": 7
+    },
+    "E01": {
+      "tide": 7,
+      "python": 7
+    },
+    "E02": {
+      "tide": 7,
+      "python": 7
+    },
+    "E03": {
+      "tide": 7,
+      "python": 7
+    },
+    "E04": {
+      "tide": 7,
+      "python": 7
+    },
+    "E05": {
+      "tide": 7,
+      "python": 7
+    },
+    "R01": {
+      "tide": 7,
+      "python": 7
+    },
+    "R02": {
+      "tide": 7,
+      "python": 7
+    },
+    "R03": {
+      "tide": 7,
+      "python": 7
+    },
+    "R04": {
+      "tide": 7,
+      "python": 7
+    },
+    "R05": {
+      "tide": 7,
+      "python": 7
+    }
+  },
+  "runs": [
+    {
+      "id": "W01",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10568
+      }
+    },
+    {
+      "id": "W02",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 10,
+        "rss_kib": 10596
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W03",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "W04",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W05",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      },
+      "python": {
+        "ms": 14,
+        "rss_kib": 12964
+      }
+    },
+    {
+      "id": "E01",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10608
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E02",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10840
+      }
+    },
+    {
+      "id": "E03",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E04",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E05",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10812
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R01",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10568
+      }
+    },
+    {
+      "id": "R02",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 11112
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R03",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10564
+      }
+    },
+    {
+      "id": "R04",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4248
+      }
+    },
+    {
+      "id": "R05",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10604
+      }
+    },
+    {
+      "id": "W02",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10556
+      }
+    },
+    {
+      "id": "W03",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10812
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W04",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W05",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 14,
+        "rss_kib": 12924
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      }
+    },
+    {
+      "id": "E01",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "E02",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E03",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E04",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E05",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10592
+      }
+    },
+    {
+      "id": "R01",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10564
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R02",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 11112
+      }
+    },
+    {
+      "id": "R03",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4292
+      }
+    },
+    {
+      "id": "R04",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10548
+      }
+    },
+    {
+      "id": "R05",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 10,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W01",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W03",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "W04",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 10,
+        "rss_kib": 10588
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W05",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      },
+      "python": {
+        "ms": 13,
+        "rss_kib": 13000
+      }
+    },
+    {
+      "id": "E01",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E02",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10804
+      }
+    },
+    {
+      "id": "E03",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E04",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10572
+      }
+    },
+    {
+      "id": "E05",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10824
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R01",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10576
+      }
+    },
+    {
+      "id": "R02",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 11112
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R03",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R04",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R05",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W01",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10556
+      }
+    },
+    {
+      "id": "W02",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10548
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4288
+      }
+    },
+    {
+      "id": "W04",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W05",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 13,
+        "rss_kib": 13000
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      }
+    },
+    {
+      "id": "E01",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10608
+      }
+    },
+    {
+      "id": "E02",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10828
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E03",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E04",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10596
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E05",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "R01",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4272
+      }
+    },
+    {
+      "id": "R02",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 11112
+      }
+    },
+    {
+      "id": "R03",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10588
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R04",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10604
+      }
+    },
+    {
+      "id": "R05",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10576
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W01",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10564
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4312
+      }
+    },
+    {
+      "id": "W02",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4280
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W03",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W05",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 5300
+      },
+      "python": {
+        "ms": 13,
+        "rss_kib": 13000
+      }
+    },
+    {
+      "id": "E01",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10592
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E02",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10852
+      }
+    },
+    {
+      "id": "E03",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E04",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10560
+      }
+    },
+    {
+      "id": "E05",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10840
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R01",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10560
+      }
+    },
+    {
+      "id": "R02",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 11112
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R03",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4340
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R04",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R05",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W01",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10572
+      }
+    },
+    {
+      "id": "W02",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W03",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4292
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "W04",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E01",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E02",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E03",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E04",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E05",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R01",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R02",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 11112
+      }
+    },
+    {
+      "id": "R03",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R04",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R05",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10576
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W01",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10584
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W02",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W03",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4304
+      }
+    },
+    {
+      "id": "W04",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W05",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 14,
+        "rss_kib": 13160
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 5300
+      }
+    },
+    {
+      "id": "E02",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "E03",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E04",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10608
+      }
+    },
+    {
+      "id": "E05",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R01",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4296
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10560
+      }
+    },
+    {
+      "id": "R02",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 11112
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "R03",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10860
+      }
+    },
+    {
+      "id": "R04",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R05",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10560
+      }
+    },
+    {
+      "id": "W01",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 12,
+        "rss_kib": 10568
+      }
+    },
+    {
+      "id": "W02",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W03",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      }
+    },
+    {
+      "id": "W04",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10596
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W05",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      },
+      "python": {
+        "ms": 13,
+        "rss_kib": 12968
+      }
+    },
+    {
+      "id": "E01",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10556
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E03",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "E04",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10592
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "E05",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R01",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R02",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 11112
+      }
+    },
+    {
+      "id": "R03",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "R04",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "R05",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      }
+    },
+    {
+      "id": "W01",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10568
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4224
+      }
+    },
+    {
+      "id": "W02",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4,
+        "rss_kib": 4224
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10596
+      }
+    },
+    {
+      "id": "W03",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4272
+      }
+    },
+    {
+      "id": "W04",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10600
+      }
+    },
+    {
+      "id": "W05",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 14,
+        "rss_kib": 12968
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 5300
+      }
+    },
+    {
+      "id": "E01",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5,
+        "rss_kib": 4480
+      },
+      "python": {
+        "ms": 11,
+        "rss_kib": 10560
+      }
+    },
+    {
+      "id": "E02",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12,
+        "rss_kib": 10856
+      },
+      "tide": {
+        "ms": 6,
+        "rss_kib": 4480
+      }
+    }
+  ],
+  "repairs": [
+    {
+      "id": "W01",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 10.579255000000103,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 103.95810199999983,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W02",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 112.14649099999997,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 10.79981900000007,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W03",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.06508800000006,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 59.79780699999992,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W04",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 44.27798800000005,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 4.805982999999969,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W05",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.013169999999945503,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 0.015421000000060303,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E01",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 31.57913099999996,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 14.601362999999992,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E02",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.96298999999999,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 33.06661000000008,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E03",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 20.93328500000007,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 8.637027999999873,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E04",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.954545000000053,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 20.531277000000046,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E05",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 22.18756899999994,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 19.68590099999983,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "R01",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.76855599999999,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 32.92489700000033,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R02",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 32.90281700000014,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 18.756382999999914,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R03",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.957820000000083,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 31.396188000000166,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R04",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 32.63461099999995,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 13.477541000000201,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R05",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6.183888999999908,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 21.10299900000018,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W02",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 11.171647000000121,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 112.94733599999972,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W03",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 55.784599999999955,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 5.52117700000008,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W04",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.62900000000036,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 48.77469400000018,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W05",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.013410000000021682,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 0.012361000000055355,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E01",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.573902999999973,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 32.19598300000007,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E02",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 31.06827199999998,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 14.249006000000008,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E03",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 7.5974670000000515,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 20.70312100000001,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E04",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 19.35439499999984,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 5.533276999999998,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E05",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 19.28187300000036,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 21.98885599999994,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "R01",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 32.653291999999965,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 13.056451999999808,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R02",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 20.015817999999854,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 32.00254900000027,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R03",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 31.014860000000226,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 12.935191000000032,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R04",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 12.228967000000011,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 31.48580899999979,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R05",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 19.59418000000005,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 5.29406199999994,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W01",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 104.77023800000006,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 8.823401000000104,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W03",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.378123999999843,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 55.50999499999989,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W04",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 43.57190300000002,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 4.522508000000016,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W05",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.014469999999619176,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 0.014319999999770516,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E01",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 34.19401199999993,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 13.773315999999795,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E02",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.799777000000176,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 32.933196999999836,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E03",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 20.98192599999993,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 7.7762800000000425,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E04",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 6.024666999999681,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 20.40462499999967,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E05",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 21.613029000000097,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 19.54473900000039,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "R01",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 12.93035000000009,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 31.74539399999958,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R02",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 34.38783599999988,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 19.707122000000254,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R03",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 12.873369000000366,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 31.81083600000011,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R04",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 32.18021299999964,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 12.579103000000032,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R05",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.339842999999746,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 19.617009999999937,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W01",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 9.160406999999395,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 102.2483400000001,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W02",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 120.68571599999996,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 10.833268999999746,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W04",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.799483000000691,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 45.49575100000038,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W05",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.014890000000377768,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 0.014610999999604246,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E01",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 13.80729700000029,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 33.56894000000011,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E02",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 34.23765300000014,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 14.203935000000456,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "E03",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 7.789701000000605,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 20.03802799999994,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E04",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 19.704571999999644,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 5.682060000000092,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "E05",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 20.198730999999498,
+        "status": "no_candidate"
+      },
+      "python": {
+        "ms": 21.57525800000076,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "R01",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 32.72340399999939,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 13.31464700000015,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R02",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 18.885036000000582,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 34.15990099999999,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R03",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 33.264664000000266,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 13.203926000000138,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R04",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 14.426658999999745,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 30.463039000000208,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "R05",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 19.243782000000465,
+        "status": "no_candidate"
+      },
+      "tide": {
+        "ms": 5.978305000000546,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "id": "W01",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 98.16063000000031,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 9.486323000000084,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W02",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 9.710188000000016,
+        "status": "accepted"
+      },
+      "python": {
+        "ms": 117.06869599999936,
+        "status": "accepted"
+      }
+    },
+    {
+      "id": "W03",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 55.54933600000004,
+        "status": "accepted"
+      },
+      "tide": {
+        "ms": 5.124769000000015,
+        "status": "accepted"
+      }
+    }
+  ]
+}

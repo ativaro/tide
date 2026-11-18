@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-18",
+  "decision": "hold_public_alpha",
+  "physical_workstations_used": 1,
+  "second_machine_replication": "outstanding",
+  "checkout": {
+    "method": "Local git clone --no-local --no-checkout, detached at the pinned revision; clean status and absent build directory checked before building.",
+    "orders": "33f0972a2e001f3158630446f2e579ab355e0da1",
+    "open_baseline": "96c0a936b215ca21d3a58222b42ac96872f4d8b8"
+  },
+  "orders": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "kernel": "7.3.4-1-cachyos",
+    "affinity": "24",
+    "python": "3.14.10 3.54.1",
+    "sqlite_cli": "3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1 (64-bit)",
+    "filesystem": "btrfs",
+    "binaries": {
+      "initial": "0da19ea59783e54018b6c9afbbdac3fb61946d8eaac567b53dbe69a7e5c214e4",
+      "final": "5652dba9f9ef123fc3f793bdb7927615c0b07df552dae7a0162d60776ddcc18b"
+    },
+    "reference": "8bc0ec1eb808279043514503d8b0b39896722caae2d4137301892ec499c0cab4",
+    "measured_processes": {
+      "profile": 36,
+      "isolate": 36,
+      "compiled": 192,
+      "source": 192
+    },
+    "source_checkers": {
+      "/opt/before": "748bc36b7a5e3848f855ab4b02770e897a144d146e7f184daa94617b12f87b8e",
+      "/opt/tide": "1b255b734a79e9dc6de0c400a57bf810ce7aa43e233cf97135124fcc94fee5e2"
+    },
+    "restart_steps_per_arm": 24,
+    "tide_examples": 13,
+    "make_test": "passed",
+    "component_only_binary": {
+      "original": "21a9fe2a767285cc35bcc09765b1b3c2c44a4c24ef198b6b6878c31ae9374db5",
+      "repeat": "003e881031ab4506b272cad20cee9070592bdfc92dc01e8c987a458e438d3b92",
+      "emitted_units_equal_after_diagnostic_path_substitution": true
+    }
+  },
+  "size_sweep": {
+    "measured_pairs": 84,
+    "measured_process_invocations": 168,
+    "driver_sha256": "cea87721c951cff0c41dffcda09c4ffc10b7d4fd2130dc3de0201afe3d2ddcb6",
+    "compiled_tide": "5652dba9f9ef123fc3f793bdb7927615c0b07df552dae7a0162d60776ddcc18b"
+  },
+  "open_tasks": {
+    "tasks": {
+      "revision": "96c0a936b215ca21d3a58222b42ac96872f4d8b8",
+      "environment": {
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+        "core": "24",
+        "network": [
+          "lo"
+        ],
+        "kernel": "7.3.4-1-cachyos",
+        "node": "v24.18.0",
+        "tide": "TIDE 0.6.5",
+        "python": "Python 3.14.10",
+        "inspector_sha256": "baa22207b4e2e294f6347e15a09dd1f5f95ff48ac9ca7b2ae20b439236f28d8e"
+      },
+      "reference_cases_per_task_per_language": 7,
+      "solved": {
+        "tide": 9,
+        "python": 9
+      },
+      "protocol_sha256": "80ccf8c2b0251c71e059339de7b0a279d59a31adea1658a3686c2f3b38363c72",
+      "vocabulary_sha256": "036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b",
+      "paired_reference_runs": 120,
+      "paired_search_runs": 60,
+      "paired_writing_controls": 40
+    },
+    "current-tasks": {
+      "revision": "33f0972a2e001f3158630446f2e579ab355e0da1",
+      "environment": {
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+        "core": "24",
+        "network": [
+          "lo"
+        ],
+        "kernel": "7.3.4-1-cachyos",
+        "node": "v24.18.0",
+        "tide": "TIDE 0.6.6",
+        "python": "Python 3.14.10",
+        "inspector_sha256": "810116b79c3746030b85ed74ef239ca75fdc356a17ae21be4d77f8e3ca4d47b5"
+      },
+      "reference_cases_per_task_per_language": 7,
+      "solved": {
+        "tide": 9,
+        "python": 9
+      },
+      "protocol_sha256": "80ccf8c2b0251c71e059339de7b0a279d59a31adea1658a3686c2f3b38363c72",
+      "vocabulary_sha256": "036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b",
+      "paired_reference_runs": 120,
+      "paired_search_runs": 60,
+      "paired_writing_controls": 40
+    }
+  },
+  "matching_protocol_artifact": "../72_bestellimport_basis/protokolle.json",
+  "public_holdout_commitments_sha256": "61c543d1629638618c6bd0b9ed22f6385fefc3831f331c7bf74aff6ac584d9fd",
+  "sealed_tasks_opened": 0,
+  "model_calls": 0,
+  "scripts": {
+    "original_import_driver_sha256": "cfd7bfbabce38215bff51300ea134f5294403f67fa679317b0685080cf596ee8",
+    "repeat_script_sha256": "c74fa6be9d063893fa831afb59522e409a07f00138951bf9af81acfac0d47d9e",
+    "sweep_patch_sha256": "4982274b0ef919e2914e21b581ed953cd89db628cb1d0897d30f29fd80b6e0ae"
+  },
+  "toolchain": {
+    "compiler": "c++ (GCC) 16.2.1 20260810",
+    "node": "v24.18.0"
+  }
+}

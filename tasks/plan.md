@@ -66,6 +66,8 @@ Nano and the terminal game remain demonstrators for editor logic and game state.
 
 Stage 4 now covers the complete import, a restart after an order-only release, redelivery, cancellations and rollback. The local comparison measures the source CLI and ahead-of-time executables separately. [Order-import report](../experimente/73_bestellimport/report.md)
 
+Stage 5 reproduced the eight-event native speedup on the original workstation. Across the additional batch sizes, the median winner switched between 256 and 384 events. The public alpha awaits a repeat on independent hardware. [Replication and release decision](../experimente/74_alpha_review/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

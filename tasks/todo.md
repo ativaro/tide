@@ -8,7 +8,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 2. Freeze the comparison tasks and the held-out evaluation. [15 open tasks](../experimente/72_bestellimport_basis/public-tasks.md) · [Proof of 15 sealed tasks](../experimente/72_bestellimport_basis/versiegelung.json)
 - [x] 3. Conduct a fair baseline measurement. [TIDE and CPython on the open tasks](../experimente/72_bestellimport_basis/report.md)
 - [x] 4. Build the order importer, extend it with cancellations, and measure the largest bottleneck. [Acceptance and paired runtime results](../experimente/73_bestellimport/report.md)
-- [ ] 5. Repeat the study independently and decide on Alpha
+- [ ] 5. Repeat the study independently and decide on a public alpha. The local clean-checkout replication and size sweep are complete. The public alpha is on hold pending the second-machine run. [Stage 5 decision](../experimente/74_alpha_review/report.md)
 - [ ] 6. Reuse the library over domain-specific types
 - [ ] 7. Migrate the public package interface
 - [ ] 8. Consistently adopt multi-file changes

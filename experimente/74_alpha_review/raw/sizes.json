@@ -1,0 +1,1103 @@
+{
+  "info": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "kernel": "7.3.4-1-cachyos",
+    "affinity": "24",
+    "python": "3.14.10 3.54.1",
+    "sqlite_cli": "3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1 (64-bit)",
+    "filesystem": "btrfs",
+    "binaries": {
+      "final": "5652dba9f9ef123fc3f793bdb7927615c0b07df552dae7a0162d60776ddcc18b"
+    },
+    "reference": "8bc0ec1eb808279043514503d8b0b39896722caae2d4137301892ec499c0cab4"
+  },
+  "summary": {
+    "mixed8": {
+      "bytes": 754,
+      "sha256": "bc59c48d004963d2a5ead705577004728dbbc4a51152cd15d8767b7c7c9ed25f",
+      "median_ms": {
+        "final": 6.5625865,
+        "python_after": 19.310819000000002
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 2.863184569592766
+      }
+    },
+    "mixed32": {
+      "bytes": 2926,
+      "sha256": "d5c045206d7a725cf538c4c2bca14258679f918c34b2dfaad7f4b2c41da29583",
+      "median_ms": {
+        "final": 6.935848999999999,
+        "python_after": 19.729257
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 2.885762015739908
+      }
+    },
+    "mixed128": {
+      "bytes": 11614,
+      "sha256": "043b62db82515a56ec7d3a17158821d08b82f317082721bf27372485eff002fb",
+      "median_ms": {
+        "final": 11.61976,
+        "python_after": 20.853293999999998
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 1.7906135431159256
+      }
+    },
+    "mixed256": {
+      "bytes": 23198,
+      "sha256": "5b3b4414a6317ddeedad7d0e5dc300e8348d8bac2d5e660436d925317afe846a",
+      "median_ms": {
+        "final": 15.803776,
+        "python_after": 19.0290185
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 1.21868003713213
+      }
+    },
+    "mixed384": {
+      "bytes": 34782,
+      "sha256": "fd430cacb22d82ad6bd16b0efbdb80fdf48c00c863b5d961fc60b9b4a9213908",
+      "median_ms": {
+        "final": 21.364663,
+        "python_after": 20.556078499999998
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 0.9679228144027546
+      }
+    },
+    "mixed512": {
+      "bytes": 46366,
+      "sha256": "2ef1cf837022e6bd275dfa0ba2fde2c1f79b96985d2bd4d1d95514fc751c6d6b",
+      "median_ms": {
+        "final": 26.8164595,
+        "python_after": 21.579397999999998
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 0.7981650354869501
+      }
+    },
+    "mixed1000": {
+      "bytes": 90530,
+      "sha256": "38e318bee127a7440a61ef696623364726f85e4e50b9dd34e3bb376458dbd8df",
+      "median_ms": {
+        "final": 47.108642,
+        "python_after": 22.549072
+      },
+      "paired_ratio": {
+        "python_after_over_tide_after": 0.4847075415766573
+      }
+    }
+  },
+  "raw": [
+    {
+      "name": "mixed8",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 19.416096
+    },
+    {
+      "name": "mixed8",
+      "block": 0,
+      "arm": "final",
+      "ms": 6.576298
+    },
+    {
+      "name": "mixed8",
+      "block": 1,
+      "arm": "final",
+      "ms": 6.250031
+    },
+    {
+      "name": "mixed8",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 19.205542
+    },
+    {
+      "name": "mixed8",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 19.617829
+    },
+    {
+      "name": "mixed8",
+      "block": 2,
+      "arm": "final",
+      "ms": 7.737659
+    },
+    {
+      "name": "mixed8",
+      "block": 3,
+      "arm": "final",
+      "ms": 8.975024
+    },
+    {
+      "name": "mixed8",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 21.380174
+    },
+    {
+      "name": "mixed8",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 19.090499
+    },
+    {
+      "name": "mixed8",
+      "block": 4,
+      "arm": "final",
+      "ms": 10.803599
+    },
+    {
+      "name": "mixed8",
+      "block": 5,
+      "arm": "final",
+      "ms": 6.552417
+    },
+    {
+      "name": "mixed8",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 18.456177
+    },
+    {
+      "name": "mixed8",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 18.572529
+    },
+    {
+      "name": "mixed8",
+      "block": 6,
+      "arm": "final",
+      "ms": 5.68281
+    },
+    {
+      "name": "mixed8",
+      "block": 7,
+      "arm": "final",
+      "ms": 6.572167
+    },
+    {
+      "name": "mixed8",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 16.908007
+    },
+    {
+      "name": "mixed8",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 16.929228
+    },
+    {
+      "name": "mixed8",
+      "block": 8,
+      "arm": "final",
+      "ms": 6.553006
+    },
+    {
+      "name": "mixed8",
+      "block": 9,
+      "arm": "final",
+      "ms": 4.972876
+    },
+    {
+      "name": "mixed8",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 19.675071
+    },
+    {
+      "name": "mixed8",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 24.512384
+    },
+    {
+      "name": "mixed8",
+      "block": 10,
+      "arm": "final",
+      "ms": 6.085647
+    },
+    {
+      "name": "mixed8",
+      "block": 11,
+      "arm": "final",
+      "ms": 7.953244
+    },
+    {
+      "name": "mixed8",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 23.141328
+    },
+    {
+      "name": "mixed32",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 18.62227
+    },
+    {
+      "name": "mixed32",
+      "block": 0,
+      "arm": "final",
+      "ms": 7.371842
+    },
+    {
+      "name": "mixed32",
+      "block": 1,
+      "arm": "final",
+      "ms": 7.409133
+    },
+    {
+      "name": "mixed32",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 19.068269
+    },
+    {
+      "name": "mixed32",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 20.528058
+    },
+    {
+      "name": "mixed32",
+      "block": 2,
+      "arm": "final",
+      "ms": 6.873053
+    },
+    {
+      "name": "mixed32",
+      "block": 3,
+      "arm": "final",
+      "ms": 6.998645
+    },
+    {
+      "name": "mixed32",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 19.531858
+    },
+    {
+      "name": "mixed32",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 21.747381
+    },
+    {
+      "name": "mixed32",
+      "block": 4,
+      "arm": "final",
+      "ms": 6.372963
+    },
+    {
+      "name": "mixed32",
+      "block": 5,
+      "arm": "final",
+      "ms": 6.515636
+    },
+    {
+      "name": "mixed32",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 19.421276
+    },
+    {
+      "name": "mixed32",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 18.939526
+    },
+    {
+      "name": "mixed32",
+      "block": 6,
+      "arm": "final",
+      "ms": 6.811192
+    },
+    {
+      "name": "mixed32",
+      "block": 7,
+      "arm": "final",
+      "ms": 11.720467
+    },
+    {
+      "name": "mixed32",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 19.926656
+    },
+    {
+      "name": "mixed32",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 21.607478
+    },
+    {
+      "name": "mixed32",
+      "block": 8,
+      "arm": "final",
+      "ms": 6.572117
+    },
+    {
+      "name": "mixed32",
+      "block": 9,
+      "arm": "final",
+      "ms": 7.065026
+    },
+    {
+      "name": "mixed32",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 22.562027
+    },
+    {
+      "name": "mixed32",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 22.395233
+    },
+    {
+      "name": "mixed32",
+      "block": 10,
+      "arm": "final",
+      "ms": 6.799352
+    },
+    {
+      "name": "mixed32",
+      "block": 11,
+      "arm": "final",
+      "ms": 10.560704
+    },
+    {
+      "name": "mixed32",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 19.322234
+    },
+    {
+      "name": "mixed128",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 20.607019
+    },
+    {
+      "name": "mixed128",
+      "block": 0,
+      "arm": "final",
+      "ms": 11.608835
+    },
+    {
+      "name": "mixed128",
+      "block": 1,
+      "arm": "final",
+      "ms": 11.239257
+    },
+    {
+      "name": "mixed128",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 21.814702
+    },
+    {
+      "name": "mixed128",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 19.371075
+    },
+    {
+      "name": "mixed128",
+      "block": 2,
+      "arm": "final",
+      "ms": 14.374178
+    },
+    {
+      "name": "mixed128",
+      "block": 3,
+      "arm": "final",
+      "ms": 13.100354
+    },
+    {
+      "name": "mixed128",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 21.099569
+    },
+    {
+      "name": "mixed128",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 26.086255
+    },
+    {
+      "name": "mixed128",
+      "block": 4,
+      "arm": "final",
+      "ms": 12.156076
+    },
+    {
+      "name": "mixed128",
+      "block": 5,
+      "arm": "final",
+      "ms": 11.981702
+    },
+    {
+      "name": "mixed128",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 21.569087
+    },
+    {
+      "name": "mixed128",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 21.587608
+    },
+    {
+      "name": "mixed128",
+      "block": 6,
+      "arm": "final",
+      "ms": 10.3586
+    },
+    {
+      "name": "mixed128",
+      "block": 7,
+      "arm": "final",
+      "ms": 11.477282
+    },
+    {
+      "name": "mixed128",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 20.519787
+    },
+    {
+      "name": "mixed128",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 19.235172
+    },
+    {
+      "name": "mixed128",
+      "block": 8,
+      "arm": "final",
+      "ms": 17.267224
+    },
+    {
+      "name": "mixed128",
+      "block": 9,
+      "arm": "final",
+      "ms": 10.089805
+    },
+    {
+      "name": "mixed128",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 22.391734
+    },
+    {
+      "name": "mixed128",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 19.692291
+    },
+    {
+      "name": "mixed128",
+      "block": 10,
+      "arm": "final",
+      "ms": 10.980632
+    },
+    {
+      "name": "mixed128",
+      "block": 11,
+      "arm": "final",
+      "ms": 11.630685
+    },
+    {
+      "name": "mixed128",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 18.285724
+    },
+    {
+      "name": "mixed256",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 18.464757
+    },
+    {
+      "name": "mixed256",
+      "block": 0,
+      "arm": "final",
+      "ms": 16.071661
+    },
+    {
+      "name": "mixed256",
+      "block": 1,
+      "arm": "final",
+      "ms": 15.359418
+    },
+    {
+      "name": "mixed256",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 18.555229
+    },
+    {
+      "name": "mixed256",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 18.190583
+    },
+    {
+      "name": "mixed256",
+      "block": 2,
+      "arm": "final",
+      "ms": 16.926537
+    },
+    {
+      "name": "mixed256",
+      "block": 3,
+      "arm": "final",
+      "ms": 19.591969
+    },
+    {
+      "name": "mixed256",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 18.379925
+    },
+    {
+      "name": "mixed256",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 23.492985
+    },
+    {
+      "name": "mixed256",
+      "block": 4,
+      "arm": "final",
+      "ms": 15.535891
+    },
+    {
+      "name": "mixed256",
+      "block": 5,
+      "arm": "final",
+      "ms": 16.302885
+    },
+    {
+      "name": "mixed256",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 20.6644
+    },
+    {
+      "name": "mixed256",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 26.058964
+    },
+    {
+      "name": "mixed256",
+      "block": 6,
+      "arm": "final",
+      "ms": 15.204304
+    },
+    {
+      "name": "mixed256",
+      "block": 7,
+      "arm": "final",
+      "ms": 16.787955
+    },
+    {
+      "name": "mixed256",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 17.781024
+    },
+    {
+      "name": "mixed256",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 19.1105
+    },
+    {
+      "name": "mixed256",
+      "block": 8,
+      "arm": "final",
+      "ms": 16.397557
+    },
+    {
+      "name": "mixed256",
+      "block": 9,
+      "arm": "final",
+      "ms": 15.419889
+    },
+    {
+      "name": "mixed256",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 19.446067
+    },
+    {
+      "name": "mixed256",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 19.175781
+    },
+    {
+      "name": "mixed256",
+      "block": 10,
+      "arm": "final",
+      "ms": 15.413298
+    },
+    {
+      "name": "mixed256",
+      "block": 11,
+      "arm": "final",
+      "ms": 15.413379
+    },
+    {
+      "name": "mixed256",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 18.947537
+    },
+    {
+      "name": "mixed384",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 22.800991
+    },
+    {
+      "name": "mixed384",
+      "block": 0,
+      "arm": "final",
+      "ms": 23.557815
+    },
+    {
+      "name": "mixed384",
+      "block": 1,
+      "arm": "final",
+      "ms": 22.030726
+    },
+    {
+      "name": "mixed384",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 21.325123
+    },
+    {
+      "name": "mixed384",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 20.867834
+    },
+    {
+      "name": "mixed384",
+      "block": 2,
+      "arm": "final",
+      "ms": 22.820502
+    },
+    {
+      "name": "mixed384",
+      "block": 3,
+      "arm": "final",
+      "ms": 20.409665
+    },
+    {
+      "name": "mixed384",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 20.260543
+    },
+    {
+      "name": "mixed384",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 19.923986
+    },
+    {
+      "name": "mixed384",
+      "block": 4,
+      "arm": "final",
+      "ms": 22.19978
+    },
+    {
+      "name": "mixed384",
+      "block": 5,
+      "arm": "final",
+      "ms": 21.146649
+    },
+    {
+      "name": "mixed384",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 28.134624
+    },
+    {
+      "name": "mixed384",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 20.259762
+    },
+    {
+      "name": "mixed384",
+      "block": 6,
+      "arm": "final",
+      "ms": 20.961266
+    },
+    {
+      "name": "mixed384",
+      "block": 7,
+      "arm": "final",
+      "ms": 21.582677
+    },
+    {
+      "name": "mixed384",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 21.395074
+    },
+    {
+      "name": "mixed384",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 18.768104
+    },
+    {
+      "name": "mixed384",
+      "block": 8,
+      "arm": "final",
+      "ms": 21.069988
+    },
+    {
+      "name": "mixed384",
+      "block": 9,
+      "arm": "final",
+      "ms": 20.532177
+    },
+    {
+      "name": "mixed384",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 20.851614
+    },
+    {
+      "name": "mixed384",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 18.771443
+    },
+    {
+      "name": "mixed384",
+      "block": 10,
+      "arm": "final",
+      "ms": 24.061985
+    },
+    {
+      "name": "mixed384",
+      "block": 11,
+      "arm": "final",
+      "ms": 20.302293
+    },
+    {
+      "name": "mixed384",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 19.700991
+    },
+    {
+      "name": "mixed512",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 21.284962
+    },
+    {
+      "name": "mixed512",
+      "block": 0,
+      "arm": "final",
+      "ms": 25.85349
+    },
+    {
+      "name": "mixed512",
+      "block": 1,
+      "arm": "final",
+      "ms": 27.40614
+    },
+    {
+      "name": "mixed512",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 21.873834
+    },
+    {
+      "name": "mixed512",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 23.161629
+    },
+    {
+      "name": "mixed512",
+      "block": 2,
+      "arm": "final",
+      "ms": 25.873991
+    },
+    {
+      "name": "mixed512",
+      "block": 3,
+      "arm": "final",
+      "ms": 26.749538
+    },
+    {
+      "name": "mixed512",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 25.151576
+    },
+    {
+      "name": "mixed512",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 25.533054
+    },
+    {
+      "name": "mixed512",
+      "block": 4,
+      "arm": "final",
+      "ms": 34.539129
+    },
+    {
+      "name": "mixed512",
+      "block": 5,
+      "arm": "final",
+      "ms": 30.846007
+    },
+    {
+      "name": "mixed512",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 20.620689
+    },
+    {
+      "name": "mixed512",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 26.746017
+    },
+    {
+      "name": "mixed512",
+      "block": 6,
+      "arm": "final",
+      "ms": 26.883381
+    },
+    {
+      "name": "mixed512",
+      "block": 7,
+      "arm": "final",
+      "ms": 29.422249
+    },
+    {
+      "name": "mixed512",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 22.365743
+    },
+    {
+      "name": "mixed512",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 19.516208
+    },
+    {
+      "name": "mixed512",
+      "block": 8,
+      "arm": "final",
+      "ms": 26.618275
+    },
+    {
+      "name": "mixed512",
+      "block": 9,
+      "arm": "final",
+      "ms": 25.166067
+    },
+    {
+      "name": "mixed512",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 20.087399
+    },
+    {
+      "name": "mixed512",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 21.074798
+    },
+    {
+      "name": "mixed512",
+      "block": 10,
+      "arm": "final",
+      "ms": 26.31806
+    },
+    {
+      "name": "mixed512",
+      "block": 11,
+      "arm": "final",
+      "ms": 28.726706
+    },
+    {
+      "name": "mixed512",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 20.694051
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "python_after",
+      "ms": 21.504556
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "final",
+      "ms": 45.539021
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "final",
+      "ms": 47.876816
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "python_after",
+      "ms": 22.348582
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "python_after",
+      "ms": 29.520701
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "final",
+      "ms": 45.783676
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "final",
+      "ms": 47.456789
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "python_after",
+      "ms": 22.825651
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "python_after",
+      "ms": 22.544987
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "final",
+      "ms": 45.212815
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "final",
+      "ms": 47.55825
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "python_after",
+      "ms": 21.679749
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "python_after",
+      "ms": 22.553157
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "final",
+      "ms": 48.923427
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "final",
+      "ms": 48.180893
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "python_after",
+      "ms": 25.212457
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "python_after",
+      "ms": 22.123258
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "final",
+      "ms": 45.293937
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "final",
+      "ms": 45.312087
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "python_after",
+      "ms": 24.168278
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "python_after",
+      "ms": 22.060257
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "final",
+      "ms": 52.17167
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "final",
+      "ms": 46.760495
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "python_after",
+      "ms": 24.663807
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+--- a/measure.mjs
++++ b/measure.mjs
+@@ -55,3 +55,3 @@
+-const arms = phase === 'profile' ? ['read_pre','count_pre','initial'] : phase === 'isolate' ? ['initial','db_only','final'] : ['initial','python_before','final','python_after'];
+-const settings = !['compare','source'].includes(phase) ? [['mixed1000',1000,false]] :
+-  [['mixed8',8,false],['mixed1000',1000,false],['replay1000',1000,false],['rollback1000',1000,true]];
++assert.equal(phase,'compare');
++const arms = ['final','python_after'];
++const settings = [8,32,128,256,384,512,1000].map(n=>['mixed'+n,n,false]);
+@@ -71,2 +71 @@
+-    // A balanced Latin square rotates start positions and reverses alternating cycles.
+-    const sequence = Math.floor((block+1)/arms.length)%2 ? [...arms].reverse() : [...arms];
++    // Rotate the first position every measured pair.
+@@ -74 +73 @@
+-      const arm = sequence[(j+block+1)%arms.length];
++      const arm = arms[(j+block+1)%arms.length];
+@@ -109 +108 @@
+-  else if (['compare','source'].includes(phase)) summary[name].paired_ratio = {tide_before_over_after:paired('initial','final',(a,b)=>a/b),python_after_over_tide_after:paired('python_after','final',(a,b)=>a/b)};
++  else if (['compare','source'].includes(phase)) summary[name].paired_ratio = {python_after_over_tide_after:paired('python_after','final',(a,b)=>a/b)};

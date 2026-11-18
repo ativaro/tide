@@ -1,0 +1,649 @@
+{
+  "blocks": [
+    {
+      "id": "W01",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 10.658996000000002,
+        "success": true
+      },
+      "python": {
+        "ms": 23.448124000000007,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 25.240837999999997,
+        "success": true
+      },
+      "tide": {
+        "ms": 11.681985999999995,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.694591000000003,
+        "success": true
+      },
+      "python": {
+        "ms": 24.013075000000015,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 0,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11.570704000000006,
+        "success": false
+      },
+      "tide": {
+        "ms": 4.756742000000003,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 0,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.008249999999975444,
+        "success": false
+      },
+      "python": {
+        "ms": 0.0010899999999764987,
+        "success": false
+      }
+    },
+    {
+      "id": "W02",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 10.32781,
+        "success": true
+      },
+      "python": {
+        "ms": 23.921733000000017,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 24.943232999999964,
+        "success": true
+      },
+      "tide": {
+        "ms": 5.648378999999977,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 1,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.067518000000007,
+        "success": false
+      },
+      "python": {
+        "ms": 12.407800000000009,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.009581000000025597,
+        "success": false
+      },
+      "tide": {
+        "ms": 0.001469999999983429,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 1,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 24.650487,
+        "success": true
+      },
+      "tide": {
+        "ms": 9.827670999999953,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.776612,
+        "success": true
+      },
+      "python": {
+        "ms": 24.530984000000046,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11.765017,
+        "success": false
+      },
+      "tide": {
+        "ms": 5.00259699999998,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.008110000000044693,
+        "success": false
+      },
+      "python": {
+        "ms": 0.0010500000000206455,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 2,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 8.646716999999967,
+        "success": true
+      },
+      "python": {
+        "ms": 24.398252000000014,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 2,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 22.717409000000032,
+        "success": true
+      },
+      "tide": {
+        "ms": 11.19627700000001,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 3.9224360000000047,
+        "success": false
+      },
+      "python": {
+        "ms": 11.348269000000016,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.009050000000002001,
+        "success": false
+      },
+      "tide": {
+        "ms": 0.0013099999999894862,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 22.526535999999965,
+        "success": true
+      },
+      "tide": {
+        "ms": 9.550274999999942,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 3,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 9.267820000000029,
+        "success": true
+      },
+      "python": {
+        "ms": 22.633207999999968,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 3,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 22.846892000000025,
+        "success": true
+      },
+      "tide": {
+        "ms": 5.622639000000049,
+        "success": true
+      }
+    },
+    {
+      "id": "W05",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.009250000000065484,
+        "success": false
+      },
+      "python": {
+        "ms": 0.0010300000000142973,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 8.261220000000094,
+        "success": true
+      },
+      "python": {
+        "ms": 22.611237999999958,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 23.150198000000046,
+        "success": true
+      },
+      "tide": {
+        "ms": 11.814907999999946,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 4,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 5.016737000000035,
+        "success": true
+      },
+      "python": {
+        "ms": 25.917452000000026,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 4,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 12.199165999999991,
+        "success": false
+      },
+      "tide": {
+        "ms": 5.333313999999973,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 23.590285999999992,
+        "success": true
+      },
+      "tide": {
+        "ms": 9.532505000000015,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 9.982992999999965,
+        "success": true
+      },
+      "python": {
+        "ms": 22.817560999999955,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 23.162589000000025,
+        "success": true
+      },
+      "tide": {
+        "ms": 5.654220000000009,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 5,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 3.9328859999999395,
+        "success": false
+      },
+      "python": {
+        "ms": 11.534402999999998,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 5,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.009770000000003165,
+        "success": false
+      },
+      "tide": {
+        "ms": 0.0012900000000399814,
+        "success": false
+      }
+    },
+    {
+      "id": "W02",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 23.394162999999935,
+        "success": true
+      },
+      "tide": {
+        "ms": 10.250539000000003,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.716181000000006,
+        "success": true
+      },
+      "python": {
+        "ms": 23.659637999999973,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 6,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 11.371099999999956,
+        "success": false
+      },
+      "tide": {
+        "ms": 5.32998299999997,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 0.008301000000074055,
+        "success": false
+      },
+      "python": {
+        "ms": 0.0009800000000268483,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 6,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 8.654837999999927,
+        "success": true
+      },
+      "python": {
+        "ms": 23.598657000000003,
+        "success": true
+      }
+    },
+    {
+      "id": "W03",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 22.958853999999974,
+        "success": true
+      },
+      "tide": {
+        "ms": 5.609878999999978,
+        "success": true
+      }
+    },
+    {
+      "id": "W04",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 4.784233000000086,
+        "success": false
+      },
+      "python": {
+        "ms": 11.857318999999961,
+        "success": false
+      }
+    },
+    {
+      "id": "W05",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 0.010221000000001368,
+        "success": false
+      },
+      "tide": {
+        "ms": 0.0015700000000151704,
+        "success": false
+      }
+    },
+    {
+      "id": "W01",
+      "round": 7,
+      "order": [
+        "python",
+        "tide"
+      ],
+      "python": {
+        "ms": 23.977604999999926,
+        "success": true
+      },
+      "tide": {
+        "ms": 10.070794999999976,
+        "success": true
+      }
+    },
+    {
+      "id": "W02",
+      "round": 7,
+      "order": [
+        "tide",
+        "python"
+      ],
+      "tide": {
+        "ms": 9.891160999999897,
+        "success": true
+      },
+      "python": {
+        "ms": 23.39296300000001,
+        "success": true
+      }
+    }
+  ],
+  "success_medians_ms": {
+    "tide": 9.400162500000022,
+    "python": 23.519205,
+    "paired_ratio": 2.4914970375662326
+  }
+}
