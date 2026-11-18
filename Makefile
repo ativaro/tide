@@ -1,4 +1,5 @@
 BUILD ?= build/native
+HOST_ARCH := $(shell uname -m)
 .DEFAULT_GOAL := native
 PREFIX ?= /usr/local
 pkgdir = $(DESTDIR)$(PREFIX)/lib/tide
@@ -40,7 +41,7 @@ native: $(BUILD)/tidec
 $(BUILD):
 	mkdir -p "$@"
 
-$(BUILD)/seed0: native/bootstrap/seed-linux-x86_64.xz native/bootstrap/seed.sha256 | $(BUILD)
+$(BUILD)/seed0: native/bootstrap/seed-linux-$(HOST_ARCH).xz native/bootstrap/seed.sha256 | $(BUILD)
 	@set -eu; sha256sum --status -c native/bootstrap/seed.sha256; tmp=$$(mktemp "$@.XXXXXXXX"); trap 'rm -f "$$tmp"' EXIT; \
 	xz -dc "$<" > "$$tmp"; chmod 755 "$$tmp"; mv -f "$$tmp" "$@"
 
@@ -80,7 +81,11 @@ bootstrap-check: $(BUILD)/seed
 	$(CXX) $(BOOTFLAGS) -static "$$tmp/three.cpp" -o "$$tmp/three"; cmp "$$tmp/two" "$$tmp/three"
 
 program: $(BUILD)/tidec
+ifeq ($(HOST_ARCH),aarch64)
+	@./tide build --aot "$$SOURCE" "$$OUT" "$$ENTRY"
+else
 	@sh native/write-image "$(BUILD)/tidec" "$$SOURCE" "$$OUT" "$$ENTRY"
+endif
 
 .PHONY: install install-native
 install: install-native

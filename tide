@@ -163,17 +163,20 @@ build_aot() (
     project_command "$backend" "$file" "$entry" "$blocked" >> "$work" || exit 1
     binary=$(mktemp -- "$output.XXXXXXXX")
     if [ "$backend" = service ]; then set -- -DTIDE_SERVICE -lmicrohttpd; else set -- -static; fi
-    "${CXX:-c++}" -x c++ -std=c++20 -O2 -fno-ident -ffunction-sections -fdata-sections -Wl,--gc-sections,--build-id=none -s -I"${runtime%/*}" "$work" -x none "${runtime%/*}/sqlite3.o" "$@" -lm -pthread -o "$binary"
+    "${CXX:-c++}" -x c++ -std=c++20 -O2 -fno-ident -ffunction-sections -fdata-sections -Wl,--gc-sections,--build-id=none -s -I"${runtime%/*}" "$work" -x none "${runtime%/*}/sqlite3.o" "$@" -lm -pthread -o "$binary" >&2
     chmod 755 "$binary"
     mv -fT -- "$binary" "$output"
 )
-if [ "$(uname -sm)" != "Linux x86_64" ]; then
-    if [ "${1-}" = build ]; then
-        echo 'The native bootstrap requires Linux x86-64.' >&2
-        exit 1
-    fi
-    unavailable
-fi
+platform=$(uname -sm)
+case $platform in
+    'Linux x86_64'|'Linux aarch64') ;;
+    *)
+        if [ "${1-}" = build ]; then
+            echo 'The native bootstrap requires Linux x86-64 or Linux ARM64.' >&2
+            exit 1
+        fi
+        unavailable ;;
+esac
 if [ "$#" = 2 ]; then
     case $2 in
         --help|-h)
@@ -419,6 +422,9 @@ case ${1-} in
         case $2 in /*) SOURCE=$2 ;; *) SOURCE=$PWD/$2 ;; esac
         case $3 in /*) OUT=$3 ;; *) OUT=$PWD/$3 ;; esac
         ENTRY=${4:-main}
+        if [ "$platform" = 'Linux aarch64' ]; then
+            build_aot "$SOURCE" "$OUT" "$ENTRY"; exit "$?"
+        fi
         if [ "$tool_dir" = "$root/bin" ]; then
             exec sh "$root/native/write-image" "$tool_dir/tidec" "$SOURCE" "$OUT" "$ENTRY"
         fi

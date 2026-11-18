@@ -20,6 +20,9 @@ RUN --network=none set -eu; \
     if grep -Eq 'INTERP|\(NEEDED\)' /tmp/linkage; then cat /tmp/linkage >&2; exit 1; fi; \
     test "$(./tide test apps/balance.tide)" = '{"passed":3}'; \
     ./tide build apps/balance.tide /tmp/checkout-saldo; test "$(/tmp/checkout-saldo)" = 97; \
+    for pair in bounded:fold simulate:scan; do \
+        /stage/usr/local/bin/tide build native/bootstrap/fixtures/functions/inclusive.tide "/tmp/built-${pair#*:}" "${pair%:*}"; \
+    done; \
     /stage/usr/local/bin/tide build --aot /src/apps/report.tide /tmp/report-aot; \
     /stage/usr/local/bin/tide build --aot /src/apps/report_packages/json_report.tide /tmp/json-report-aot; \
     /stage/usr/local/bin/tide build --aot /src/apps/report_packages/stream_report.tide /tmp/stream-report-aot; \
@@ -39,6 +42,7 @@ RUN --network=none set -eu; \
 FROM runtime AS installed
 COPY --from=build /stage/usr/local /usr/local
 COPY --from=build /tmp/json-report-aot /tmp/report-aot /tmp/package-report-aot /tmp/stream-report-aot /tmp/memory-aot /tmp/inclusive-aot /tmp/
+COPY --from=build /tmp/built-fold /tmp/built-scan /tmp/checkout-saldo /tmp/
 RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     --mount=from=build,source=/src/native/bootstrap/fixtures/functions,target=/fixtures,ro \
     --mount=from=build,source=/src/tide.lock,target=/tide.lock,ro \
@@ -55,10 +59,15 @@ RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     test "$(wc -l < /tmp/session)" = 3; grep -Fqx '{"passed":8,"checked_functions":0,"executed_examples":0}' /tmp/session; \
     test "$(/tmp/inclusive-aot --inputs '{"a":-9223372036854775808,"b":9223372036854775807}')" = -1; \
     test "$(/tmp/inclusive-aot --inputs '{"a":9223372036854775807,"b":9223372036854775807}')" = 0; \
-    tide build /fixtures/inclusive.tide /tmp/inclusive-fold bounded; \
-    test "$(/tmp/inclusive-fold 7 -3 -2 -1 2 2 3)" = 8; \
-    tide build /fixtures/inclusive.tide /tmp/inclusive-scan simulate; \
-    test "$(/tmp/inclusive-scan -3 -2 -1 2 3)" = '[false,true,true,true,false]'; \
+    if [ "$(uname -m)" = aarch64 ]; then \
+        test "$(/tmp/built-fold --inputs '{"seed":7,"values":[-3,-2,-1,2,2,3]}')" = 8; \
+        test "$(/tmp/built-scan --inputs '{"events":[-3,-2,-1,2,3]}')" = '[false,true,true,true,false]'; \
+    else \
+        tide build /fixtures/inclusive.tide /tmp/inclusive-fold bounded; \
+        test "$(/tmp/inclusive-fold 7 -3 -2 -1 2 2 3)" = 8; \
+        tide build /fixtures/inclusive.tide /tmp/inclusive-scan simulate; \
+        test "$(/tmp/inclusive-scan -3 -2 -1 2 3)" = '[false,true,true,true,false]'; \
+    fi; \
     tide describe fold --project /apps/balance.tide > /tmp/fold; grep -Fq '"operation":"fold"' /tmp/fold; \
     tide check /apps/balance.tide > /tmp/check; grep -Fq '"examples":3' /tmp/check; \
     tide fmt /apps/balance.tide > /tmp/fmt; cmp /apps/balance.tide /tmp/fmt; \
@@ -90,7 +99,8 @@ RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     test "$(tide run /apps/balance.tide)" = 97; \
     if tide run /apps/balance.tide >/dev/full 2>/tmp/error; then exit 1; else test "$?" = 1; fi; \
     grep -Fxq 'Could not write TIDE output.' /tmp/error; \
-    tide build /apps/balance.tide /tmp/saldo; test "$(/tmp/saldo)" = 97; \
+    if [ "$(uname -m)" = aarch64 ]; then test "$(/tmp/checkout-saldo)" = 97; \
+    else tide build /apps/balance.tide /tmp/saldo; test "$(/tmp/saldo)" = 97; fi; \
     tide forms < /apps/balance.tide > /tmp/forms; grep -Fq '(+ total entry)' /tmp/forms; \
     tide context /apps/balance.tide --function balance > /tmp/context; grep -Fq '"definition":"balance"' /tmp/context; \
     tide hole /apps/balance.tide --function balance --node 2:1 > /tmp/hole; grep -Fq '"expected_type":"i"' /tmp/hole; \

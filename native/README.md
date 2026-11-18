@@ -1,5 +1,7 @@
 # Native TIDE compiler
 
+On Linux x86-64, plain `tide build` uses the compact ELF emitter described below. On Linux ARM64, plain `tide build` uses the checked AOT compiler and accepts named JSON inputs at runtime. Use `tide build --aot` for the same build and command-line interface on both architectures. The target architecture's C++20 compiler and static libraries are required at AOT build time. [Two-platform qualification](../experimente/85_linux_arm64/report.md)
+
 The compiler reads TIDE source code and generates an executable ELF file for Linux on x86-64. The balance program outputs `97`. The heating degree hour program compares each temperature with 18, adds the difference for colder hours, and outputs `39`. [Balance](../apps/balance.tide) · [Heating degree days](../apps/heating.tide)
 
 ## Building without Python
@@ -35,7 +37,7 @@ For the supported projects, `context` and `hole` also provide callers, example c
 
 ## Translate a program
 
-`tide build --aot SOURCE OUTPUT [ENTRY]` translates the checked measurement report along with calls across module boundaries. The Linux-x86-64 build requires a C++20 compiler with static system libraries. The output file is statically linked and reads neither project sources nor tool files at startup. It uses `--read NAME=PATH` and `--inputs JSON`. A new source state is adopted via a new build.
+`tide build --aot SOURCE OUTPUT [ENTRY]` translates the checked measurement report along with calls across module boundaries. The Linux AOT build requires a C++20 compiler with static system libraries. The output file is statically linked and reads neither project sources nor tool files at startup. It uses `--read NAME=PATH` and `--inputs JSON`. A new source state is adopted via a new build.
 
 The [execution parity study](../experimente/79_execution_parity/report.md) checks all 75 catalog operations through the evaluator, named examples and AOT programs. The AOT path covers the types and operations of the measurement report, including text folds, integer operations, optional integers, records with base fields, and named read permissions. AOT also translates SQLite cursors, write permissions, HTTPS calls, PostgreSQL queries, conditional loops, `map`, limited self-recursion, and state rules called via `scan`. `build --service` generates a HTTP listener for a typed handler. For language constructs outside the AOT coverage, the compiler reports `E_BACKEND`. The JSON importer compiles the target type and field accesses at build time. `run`, `test`, and the generated program use the same TIDE implementation for decoding, byte sequences, and dictionaries. [JSON-Measurement Report](../apps/report_packages/json_report.tide)
 

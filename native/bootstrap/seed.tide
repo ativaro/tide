@@ -852,7 +852,7 @@ let rows list t 85
   "}"
   "bool plain_cli_test(int argc,char** argv){"
   "    if(argc!=3 || std::string_view(argv[1])!=\"test\" || !argv[2][0] || argv[2][0]=='-')return false;"
-  "    struct utsname os;return uname(&os)==0 && std::string_view(os.sysname)==\"Linux\" && std::string_view(os.machine)==\"x86_64\";"
+  "    struct utsname os;return uname(&os)==0 && std::string_view(os.sysname)==\"Linux\" && (std::string_view(os.machine)==\"x86_64\" || std::string_view(os.machine)==\"aarch64\");"
   "}"
 fold rows "" code row line concat code (concat line "\n")
 

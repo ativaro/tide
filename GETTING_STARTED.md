@@ -1,6 +1,6 @@
 # Your first TIDE change
 
-Start in the root of a TIDE checkout on Linux x86-64. The build uses GNU Make, a C compiler, a C++20 compiler with static runtime libraries, XZ, and GNU coreutils. The sources and bootstrap seed are in the checkout. Use the same shell for the following commands.
+Start in the root of a TIDE checkout on Linux x86-64 or Linux ARM64. The build uses GNU Make, a C compiler, a C++20 compiler with static runtime libraries, XZ, and GNU coreutils. The sources and bootstrap seed are in the checkout. Use the same shell for the following commands.
 
 ## Install and run one example
 

@@ -6,11 +6,11 @@ New to TIDE? Install it, run your first example, and follow a call across files.
 
 The order-import study compares TIDE and CPython on 15 open programming tasks. Its first full application processes supplier orders, cancellations and redeliveries in SQLite. The importer and the measurement report share a typed JSON input package. Another 15 tasks are sealed for the final evaluation. [Stage 11 import performance](experimente/80_import_performance/report.md) · [Stage 10 execution parity](experimente/79_execution_parity/report.md) · [Stage 9 incremental feedback](experimente/78_incremental_feedback/report.md) · [Stage 8 atomic project edits](experimente/77_atomic_edits/report.md) · [Stage 7 package migration](experimente/76_package_migration/report.md) · [Stage 6 library and tests](experimente/75_shared_types/report.md) · [Stage 5 alpha decision](experimente/74_alpha_review/report.md) · [Stage 4 results](experimente/73_bestellimport/report.md) · [20-stage roadmap](tasks/plan.md#20-stages-from-feasibility-study-to-leading-language) · [Open tasks](experimente/72_bestellimport_basis/public-tasks.md) · [Baseline results](experimente/72_bestellimport_basis/report.md)
 
-The checkout launcher and installed Linux x86-64 package use the same native tools to build, test, install and run TIDE without Python. The TIDE compiler emits standalone ELF programs for examples such as heating degree hours and pump control. The native checker handles modules, records, variants, pairs, lists and options and runs their examples. The CLI also serves help and catalog queries, checks lockfiles, and inspects parenthesized function bodies in batches. [Native compiler and supported features](native/README.md)
+The checkout launcher and installed packages for Linux x86-64 and ARM64 use the same native tools to build, test, install and run TIDE without Python. The TIDE compiler emits standalone ELF programs for examples such as heating degree hours and pump control. The native checker handles modules, records, variants, pairs, lists and options and runs their examples. The CLI also serves help and catalog queries, checks lockfiles, and inspects parenthesized function bodies in batches. [Native compiler and supported features](native/README.md)
 
 ```sh
-./tide build apps/light.tide /tmp/tide-light simulate
-/tmp/tide-light true false false
+./tide build --aot apps/light.tide /tmp/tide-light simulate
+/tmp/tide-light --inputs '{"events":[true,false,false]}'
 # [true,true,false]
 ```
 
@@ -261,9 +261,9 @@ An outdated revision yields `E_REVISION`. Changes or deletions of existing examp
 
 ## Installation and verification
 
-`make native` builds the native compiler. `make test` (also `make check-native`) checks the self-build and runs TIDE-tests for the compiler, the editor logic, and the game. The public starter can be installed under Linux x86-64 with Make.
+`make native` builds the native compiler. `make test` (also `make check-native`) checks the self-build and runs TIDE-tests for the compiler, the editor logic, and the game. Install the public CLI on Linux x86-64 or ARM64 with Make.
 
-With `make check-no-python` you can check independence on Linux x86-64 with Docker and BuildKit. The run builds TIDE in Debian without Python from sources, runs the native test suite, and compares an updated old installation with a new installation. It checks the static binding of all six tools and runs the balance program via the checkout and the installed package. The separate runtime image also checks version binding, catalog, modules, formatting, execution, and state trace. An intentionally incorrect minus in the balance program triggers an error finding. After repair by the native editor, the source file must again match the original and all three examples must pass. Build, tests, and execution run after acquiring system packages without network access. [Build recipe](native/bootstrap/no-python.Dockerfile)
+With `make check-no-python` you can check independence on the target Linux architecture with Docker and BuildKit. The run builds TIDE in Debian without Python from sources, runs the native test suite, and compares an updated old installation with a new installation. It checks the static binding of all six tools and runs the balance program via the checkout and the installed package. The separate runtime image also checks version binding, catalog, modules, formatting, execution, and state trace. An intentionally incorrect minus in the balance program triggers an error finding. After repair by the native editor, the source file must again match the original and all three examples must pass. Build, tests, and execution run after acquiring system packages without network access. [Build recipe](native/bootstrap/no-python.Dockerfile)
 
 ```sh
 make install PREFIX="$HOME/.local"
