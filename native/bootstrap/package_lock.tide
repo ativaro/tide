@@ -1,0 +1,46 @@
+use packages
+
+use sha256
+
+record PackageLock
+paths:*t hashes:*t
+
+package_file_path path:t > b
+if (or (< (text_len path) 21) (> (text_len path) 224)) false
+if (not (text_eq (text_slice path 0 7) "vendor/")) false
+case (text_find path "/" 7) false first_cut
+case (text_find path "/" (+ first_cut 1)) false last_cut
+let name text_slice path 7 first_cut
+let version text_slice path (+ first_cut 1) last_cut
+let end text_len path
+if (or (not (package_name_valid name)) (not (exact_version version))) false
+if (not (text_eq (text_slice path (- end 5) end) ".tide")) false
+package_name_valid (text_slice path (+ last_cut 1) (- end 5))
+
+package_lock_error path:t message:t > t
+root_diagnostic path "E_PACKAGE_LOCK" message
+
+parse_package_lock contents:t file:t > {PackageLock}
+let rows lines contents
+if (> (length rows) 256) fail (package_lock_error file "Package lock exceeds 256 source files")
+fold rows (make PackageLock paths (list t 0) hashes (list t 0)) lock row item
+  let loc make Site word "" line row column 1
+  let invalid diagnosis file loc "E_PACKAGE_LOCK" "Expected SHA256 and a vendor package source path"
+  let size text_len item
+  if (or (< size 67) (> size 290)) fail invalid
+  let hash text_slice item 0 64
+  let path text_slice item 66 size
+  if (not (and (text_eq (text_slice item 64 66) "  ") (and (sha_digest_valid hash) (package_file_path path)))) fail invalid
+  if (case (entry_at (get paths lock) path) false idx true) fail (diagnosis file loc "E_PACKAGE_LOCK" (concat "Duplicate package source: " path))
+  make PackageLock paths (append (get paths lock) path) hashes (append (get hashes lock) hash)
+
+package_release_pin manifest:t file:t release:t > t
+let checked parse_package_lock manifest file
+cat3 (text_slice release 0 (- (text_len release) 1)) ",\"packages_sha256\":" (concat (json_string (sha256_utf8 manifest)) "}")
+
+verify_package_source lock:{PackageLock} path:t source:t > b
+let index need (entry_at (get paths lock) path) (package_lock_error path "Package source has no trusted digest") 0
+let expected need (at (get hashes lock) index) "missing_package_digest" 0
+let actual sha256_utf8 source
+if (text_eq expected actual) true
+fail (package_lock_error path (cat3 "SHA-256 mismatch. Expected " expected (concat ", got " actual)))

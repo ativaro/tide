@@ -26,6 +26,21 @@ twice 7
 
 Packages and their exact versions appear in `tide modules --json`. `tide check`, `run`, `test`, and `build --aot` use the same package resolution. Inspection and edit preview also work on package sources. A mixed node edit can update the package and its callers together. For an edit confined to a single vendored file, open the package as the project.
 
+### Installing packages offline
+
+`tide pkg install PROJECT_DIRECTORY STORE_DIRECTORY` installs from a local release directory. For a file pinned as `vendor/jsoninput/2.0.0/package.tide`, the installer reads `jsoninput/2.0.0/package.tide` under the store. Each consumer carries its own `tide.packages`. Each line contains a lowercase SHA-256 digest, two ASCII spaces and a relative path of the form `vendor/NAME/MAJOR.MINOR.PATCH/MODULE.tide`. List the package entry and each sibling source the consumer may import. A project may list several releases for installation. Its source imports still select exact versions.
+
+`tide lock --packages FILE` emits the normal tool and catalog pin with an additional `packages_sha256` field covering the complete manifest bytes. Keep this `tide.lock` with the trusted application source. Changing an approved release requires reviewing the expected file digests and generating a new lock. An earlier tool version rejects these projects at its version check. Projects with a conventional tool lock and no package manifest retain the existing local package resolution.
+
+```sh
+./tide pkg install apps/orders packages
+./tide pkg install apps/report_packages packages
+```
+
+Installation verifies the distribution files and any existing destination files before publishing missing sources. A repeat installation reports zero files installed. A conflicting local file raises `E_PACKAGE_LOCK` and keeps its contents. Project readers and installers share the project lock. Each new file is published whole. After an interrupted installation, rerunning the same command can complete the remaining files. The installer retains previous versions for rollback.
+
+On each project load, the tool checks the manifest against the nearest tool lock if it has a manifest digest. It checks every consumed vendored source against the manifest, using the same bytes for verification and compilation. This includes transitive imports and sibling modules. A missing mandatory manifest, a missing digest or a digest mismatch prevents execution and AOT publication. The trust anchor is the application revision containing the lock. [Reproducing both applications and rolling back an upgrade](experimente/83_offline_packages/report.md)
+
 ### A package with a type parameter
 
 A package can declare one named type parameter in its header. Its functions and record fields can refer to that parameter in type positions.

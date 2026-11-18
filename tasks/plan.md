@@ -84,6 +84,8 @@ Stage 12 verified one committed PostgreSQL order line after eight concurrent del
 
 Stage 13 served 12 parallel clients at 2,222 committed bookings/s with P95 of 6.33 ms. Across 32,768 attempts on both versions, the Stage 13 queue peaked at eight and all its overload rejections matched the database records. The blocked PostgreSQL connection disappeared 43 ms after a client abort, compared with 4,996 ms in Stage 12. [Load, rejection and cancellation results](../experimente/82_webhook_load/report.md)
 
+Stage 14 built the order importer and measurement report twice from the same SHA-256-pinned `jsoninput@2.0.0` release in separate offline roots. Both ELF comparisons matched byte for byte. Each application rejected a changed package and reproduced its original 1.0.0 executable after rollback with the distribution unmounted. [Package installation, hashes and rollback receipts](../experimente/83_offline_packages/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

@@ -1,0 +1,9 @@
+package rowtext 2.0.0
+
+export parse
+
+parse text:t > *t
+lines text
+
+example mixed_breaks parse
+{"inputs":{"text":"a\r\n\nb\r"},"expect":["a","","b\r"]}

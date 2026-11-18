@@ -178,12 +178,21 @@ if [ "$#" = 2 ]; then
     case $2 in
         --help|-h)
             case $1 in
-                build|forms|check|test|run|play|context|hole|trace|edit|fmt|describe|lock|modules)
+                build|forms|check|test|run|play|context|hole|trace|edit|fmt|describe|lock|modules|pkg)
                     catalog "help.$1" help.tsv ;;
             esac ;;
     esac
 fi
 case ${1-} in
+    pkg)
+        if [ "$#" != 4 ] || [ "$2" != install ]; then usage pkg; fi
+        project=$(resolved_path "$3")
+        prepare checker
+        prepare catalog
+        identity=$("$tool_dir/catalog" release.lock < "$root/native/catalog/release.tsv")
+        verify_pin "${project%??}/tide.packages" ''
+        exec "$tool_dir/checker" --install-packages "$3" "$4"
+        ;;
     check|fmt|test|modules|run|trace|context|hole|edit)
         if (
             action=$1
@@ -373,6 +382,12 @@ case ${1-} in
         if [ "$#" = 1 ]; then catalog release.version; fi
         ;;
     lock)
+        if [ "$#" = 3 ] && [ "$2" = --packages ]; then
+            prepare checker
+            prepare catalog
+            identity=$("$tool_dir/catalog" release.lock < "$root/native/catalog/release.tsv")
+            exec "$tool_dir/checker" --package-pin "$3" "$identity"
+        fi
         if [ "$#" = 1 ] || { [ "$#" = 2 ] && [ "$2" = --json ]; }; then catalog release.lock; fi
         ;;
     describe)

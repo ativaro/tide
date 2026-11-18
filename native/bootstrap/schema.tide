@@ -455,14 +455,23 @@ fold (indices (div n 4)) empty acc row unused
   if (case (entry_at (get keys acc) key) false idx true) (fail "defer_check")
   make Pins keys (append (get keys acc) key) values (append (get values acc) val)
 
+package_digest pins:{Pins} > ?t
+case (entry_at (get keys pins) "spackages_sha256") (nil t) idx
+let token need (at (get values pins) idx) "pin_key" 0
+some (text_slice token 1 (text_len token))
+
+sha_digest_valid value:t > b
+and (eq (text_len value) 64) (only_chars value 0 "0123456789abcdef")
+
 pin_status text:t release:t > t
 if (or (text_eq text release) (text_eq text (concat release "\n"))) "ok"
 let actual pin_object release
 let found pin_object text
-let same and (eq (length (get keys found)) (length (get keys actual)))
-  (fold (get keys found) true equal pos key
-   and equal (case (entry_at (get keys actual) key) false idx
-     (text_eq (need (at (get values actual) idx) "release_key" pos) (need (at (get values found) (- pos 1)) "pin_key" pos))))
+let extra case (package_digest found) 0 digest (if (sha_digest_valid digest) 1 -1)
+let same and (eq (length (get keys found)) (+ (length (get keys actual)) extra))
+  (fold (get keys actual) true equal pos key
+   and equal (case (entry_at (get keys found) key) false idx
+     (text_eq (need (at (get values found) idx) "pin_key" pos) (need (at (get values actual) (- pos 1)) "release_key" pos))))
 if same "ok" (concat "!" text)
 
 

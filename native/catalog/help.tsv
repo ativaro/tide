@@ -3,6 +3,7 @@ help.tide
 help.tide	Typed Instructions, Deterministic Execution
 help.tide	
 help.tide	  build    build a native Linux x86-64 program
+help.tide	  pkg      install verified packages from a local store
 help.tide	  forms    read checked sources on stdin and group all function bodies
 help.tide	  modules  resolve source imports and print their positions and project revision
 help.tide	  run      run a function
@@ -140,11 +141,13 @@ help.describe	options:
 help.describe	  -h, --help         show this help message and exit
 help.describe	  --json             JSON output (default)
 help.describe	  --project PROJECT  verify the lock next to this source file
-help.lock	usage: tide lock [-h] [--json]
+help.lock	usage: tide lock [--json | --packages FILE]
 help.lock	
 help.lock	options:
 help.lock	  -h, --help  show this help message and exit
 help.lock	  --json      JSON output (default)
+help.lock	  --packages FILE  also pin the digest of the project package manifest
 help.build	usage: tide build [--aot|--service] SOURCE OUTPUT [ENTRY]
 help.forms	usage: tide forms < checked-sources.tide
 help.modules	usage: tide modules FILE [--json]
+help.pkg	usage: tide pkg install PROJECT_DIRECTORY STORE_DIRECTORY

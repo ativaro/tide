@@ -17,7 +17,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 11. Profile the order importer and reduce typed JSON decoding time on large batches. [Timings, memory and error checks](../experimente/80_import_performance/report.md)
 - [x] 12. Verify one PostgreSQL booking after concurrent delivery, timeout and restart. [Order webhook results](../experimente/81_order_webhook/report.md)
 - [x] 13. Bound the webhook queue, verify database release on cancellation and measure throughput and P95 under load. [Load and cancellation results](../experimente/82_webhook_load/report.md)
-- [ ] 14. Distribute packages independently and reproducibly
+- [x] 14. Install verified packages offline, reproduce both application binaries and roll back the library upgrade. [Offline package results](../experimente/83_offline_packages/report.md)
 - [ ] 15. Test entry and editor with new users
 - [ ] 16. Accept the second platform
 - [ ] 17. Test operations, upgrades, and recovery

@@ -1,0 +1,9 @@
+package jsoninput 1.0.0 Payload
+
+export decode load
+
+decode bytes:y > {Payload}
+json_decode {Payload} bytes
+
+load input:r limit:?i > {Payload}
+decode (case limit (read_bytes input) n (read_batch input n))

@@ -581,7 +581,7 @@ let rows list t 8
 fold rows "" code row line concat code (concat line "\n")
 
 sibling_io_code > t
-let rows list t 77
+let rows list t 103
   "#include <cstring>"
   "struct InputFD {"
   "    int fd;"
@@ -630,8 +630,32 @@ let rows list t 77
   "        start=cut+1;"
   "    }"
   "}"
+  "Failure package_io_error(const std::string& path,int code){"
+  "    return {f_package_lock_error(decode(path),decode(strerror(code))),0};"
+  "}"
+  "Opt<R_PackageLock> read_package_lock(const project_io::ProjectDirectory& project,bool required){"
+  "    constexpr const char* name=\"tide.packages\";Opt<Text> expected;"
+  "    for(auto dir=project.root;;dir=dir.parent_path()){"
+  "        auto pin=(dir/\"tide.lock\").string();"
+  "        if(project_io::exists(AT_FDCWD,pin)){"
+  "            auto source=read_unit_at(AT_FDCWD,pin,false,[&](int code){return package_io_error(pin,code);});"
+  "            expected=f_package_digest(f_pin_object(source.first));break;"
+  "        }"
+  "        if(dir==dir.root_path())break;"
+  "    }"
+  "    if(!project_io::exists(project.fd.fd,name)){"
+  "        if(required||expected)throw package_io_error(name,ENOENT);"
+  "        return {};"
+  "    }"
+  "    auto data=read_unit_at(project.fd.fd,name,true,[&](int code){return package_io_error(name,code);});"
+  "    if(expected && *expected!=f_sha256_utf8(data.first))throw Failure{f_package_lock_error(U\"tide.packages\",U\"Manifest SHA-256 differs from tide.lock\"),0};"
+  "    return f_parse_package_lock(data.first,U\"tide.packages\");"
+  "}"
   "template<class Begin,class Supply,class Escape,class Report>"
-  "auto load_project(int dir,const SourcePath& path,const Text& entry,const std::pair<Text,I>* overlay,const Text& unit,Begin begin,Supply supply,Escape escape,Report report){"
+  "auto load_project(const project_io::ProjectDirectory& project,int dir,const SourcePath& path,const Text& entry,const std::pair<Text,I>* overlay,const Text& unit,Begin begin,Supply supply,Escape escape,Report report){"
+  "    auto pins=read_package_lock(project,false);"
+  "    auto verify=[&](const std::string& name,const Text& source){auto key=project.prefix+name;"
+  "        if(pins&&key.starts_with(\"vendor/\"))f_verify_package_source(*pins,decode(key),source);};"
   "    auto load=[&](const std::string& name,bool sibling){"
   "        auto error=[&](int code){return Failure{report(entry,decode(path.sibling(name)),code,decode(strerror(code))),0};};return sibling?read_import_at(dir,name,error):read_unit_at(dir,name,false,error);"
   "    };"
@@ -640,11 +664,13 @@ let rows list t 77
   "        for(char32_t c:s){if(c>=32&&c<127&&c!='\"'&&c!=92)out+=c;else out+=escape(I(c));}"
   "        out+=U'\"';return out;};"
   "    auto root=(overlay&&unit==decode(path.name))?*overlay:load(path.name.empty()?\".\":path.name,false);"
+  "    verify(path.name,root.first);"
   "    auto state=begin(root.first,wire(root.first),root.second,decode(path.name),entry);"
   "    for(unsigned i=0;!state.v_next_name.empty();++i){"
   "        const auto& key=state.v_next_name;"
   "        if(i>=64||key.find(char32_t(0))!=Text::npos)throw Failure{\"invalid_sibling_request\",0};"
   "        auto data=overlay&&key==unit?*overlay:load(encode(key),true);"
+  "        verify(encode(key),data.first);"
   "        state=supply(state,data.first,wire(data.first),data.second);"
   "    }"
   "    return state;"
@@ -655,7 +681,7 @@ let rows list t 77
   "    if(dir.fd<0){int code=errno;throw Failure{report(entry,decode(path),code,decode(strerror(code))),0};}"
   "    auto snapshot=[&](){try{"
   "        project_io::ProjectDirectory project(location.folder);project_io::acquire(project,false);"
-  "        return load_project(dir.fd,location,entry,nullptr,Text{},begin,supply,escape,report);"
+  "        return load_project(project,dir.fd,location,entry,nullptr,Text{},begin,supply,escape,report);"
   "    }catch(const std::system_error& e){throw Failure{report(entry,decode(location.folder),e.code().value(),decode(strerror(e.code().value()))),0};}}();"
   "    return finish(snapshot,entry,call,inputs);"
   "}"
@@ -687,7 +713,7 @@ let rows list t 70
   "        auto size=encode(root->second).size();if(size>131072)throw Failure{\"input_limit\",0};"
   "        overlay.emplace(root->second,I(size));"
   "    }"
-  "    return load_project(io.dir.fd,io.target,io.entry,overlay?&*overlay:nullptr,root?root->first:Text{},f_project_begin,f_project_supply,f_project_escape,f_project_error);"
+  "    return load_project(io.project,io.dir.fd,io.target,io.entry,overlay?&*overlay:nullptr,root?root->first:Text{},f_project_begin,f_project_supply,f_project_escape,f_project_error);"
   "}"
   "Text t_bootstrap_candidate(const R_ProjectGrant& io){"
   "    return read_unit_at(AT_FDCWD,io.candidate,false,[&](int code){return io.error(io.candidate,code);}).first;"
@@ -742,7 +768,8 @@ let args fold (list t 5 "_begin" "_supply" "_finish" "_escape" "_error") "" call
 cat3 "if((argc==4||argc==6)&&std::string_view(argv[1])==\"--read-project\"){auto output=read_siblings(argv[2],decode(argv[3]),decode(argc==6?argv[4]:\"\"),decode(argc==6?argv[5]:\"{}\")" args ");std::cout<<output<<std::flush;return std::cout?0:74;}"
 
 test_entry_code > t
-let rows list t 84
+let rows list t 85
+  package_install_abi
   "#include <sys/auxv.h>"
   "#include <sys/utsname.h>"
   "int test_suite(const char* filename,const std::string& catalog,Opt<R_SuiteState>* session=nullptr,bool full=false){"
@@ -830,7 +857,12 @@ let rows list t 84
 fold rows "" code row line concat code (concat line "\n")
 
 test_dispatch > t
-let rows list t 8
+let rows list t 13
+  "if(argc==4&&std::string_view(argv[1])==\"--package-pin\"){"
+  "    auto data=read_unit_at(AT_FDCWD,argv[2],true,[&](int code){return package_io_error(argv[2],code);});"
+  "    std::cout<<f_package_release_pin(data.first,decode(argv[2]),decode(argv[3]))<<'\\n';return std::cout?0:74;"
+  "}"
+  "if(argc==4&&std::string_view(argv[1])==\"--install-packages\"){install_packages(argv[2],argv[3]);return std::cout?0:74;}"
   "if(!cli.empty()){"
   "    int result=test_suite(argv[2],cli+\"/native/catalog/release.tsv\");"
   "    if(result==75)return cli_fallback(cli,argv);"

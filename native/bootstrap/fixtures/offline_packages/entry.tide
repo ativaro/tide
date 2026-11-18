@@ -1,0 +1,7 @@
+use offset@1.0.0
+
+main value:i > i
+offset.apply value
+
+example installed_sibling main
+{"inputs":{"value":40},"expect":42}

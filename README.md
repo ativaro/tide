@@ -1,4 +1,4 @@
-# TIDE 0.6.11
+# TIDE 0.6.12
 
 **TIDE (Typed Instructions, Deterministic Execution)** is a standalone, statically typed programming language. A coding agent can query the operation catalog, inspect callers, replace a subexpression and run examples against the [language specification](LANGUAGE.md).
 
@@ -13,6 +13,8 @@ The checkout launcher and installed Linux x86-64 package use the same native too
 ```
 
 ## Import an order
+
+The order importer and JSON measurement report both pin `jsoninput@2.0.0` by version and SHA-256. Use `./tide pkg install apps/orders packages` or `./tide pkg install apps/report_packages packages` to restore missing dependencies from the local release directory. [Offline builds, package verification and rollback](experimente/83_offline_packages/report.md)
 
 The importer grants access to one JSON file and one SQLite database. Repeating the first command that runs TIDE reports one duplicate and leaves the outstanding value at 375 cents.
 
