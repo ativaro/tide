@@ -5,7 +5,7 @@ pkgdir = $(DESTDIR)$(PREFIX)/lib/tide
 CXX ?= c++
 BOOTFLAGS := -std=c++20 -O1 -fno-ident -Wl,--build-id=none -s
 MODULES := $(addprefix native/,elf64.tide source.tide scalar.tide argv_i64.tide scan_image.tide rule_scan.tide fold_i64.tide)
-SEED_MODULES := native/bootstrap/syntax.tide native/bootstrap/seed.tide native/bootstrap/sqlite_abi.tide native/bootstrap/https_abi.tide native/bootstrap/write_abi.tide native/bootstrap/pg_abi.tide
+SEED_MODULES := native/bootstrap/syntax.tide native/bootstrap/seed.tide native/bootstrap/sqlite_abi.tide native/bootstrap/https_abi.tide native/bootstrap/write_abi.tide native/bootstrap/pg_abi.tide native/bootstrap/project_io_abi.tide
 PROJECT_MODULES := $(addprefix native/bootstrap/,syntax.tide schema.tide json_text.tide json_stream.tide scalar_json.tide measurement_types.tide functions.tide rules.tide value_tree.tide compound_json.tide input_issue.tide samples.tide packages.tide project_model.tide)
 EVAL_MODULES := $(addprefix native/bootstrap/,eval_values.tide public_data.tide sqlite.tide https.tide postgres.tide value_diff.tide run_inputs.tide function_run.tide)
 CHECKER_MODULES := $(PROJECT_MODULES) $(EVAL_MODULES) native/catalog/lookup.tide native/bootstrap/service_abi.tide native/bootstrap/aot.tide native/bootstrap/project.tide
@@ -110,11 +110,12 @@ install-native: native catalog forms checker inspector editor aot-runtime
 	fi
 
 .PHONY: test check-native check-sqlite
-test: check-native check-sqlite check-https check-language-io check-package-types
+test: check-native check-sqlite check-https check-language-io check-package-types check-atomic-edit
 
 include native/bootstrap/https-check.mk
 include native/bootstrap/service-check.mk
 include native/bootstrap/package-types-check.mk
+include native/bootstrap/atomic-edit-check.mk
 
 check-sqlite: checker catalog aot-runtime
 	@./tide test apps/orders/checks.tide

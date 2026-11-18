@@ -11,7 +11,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [ ] 5. Repeat the study independently and decide on a public alpha. The local clean-checkout replication and size sweep are complete. The public alpha is on hold pending the second-machine run. [Stage 5 decision](../experimente/74_alpha_review/report.md)
 - [x] 6. Reuse the same typed JSON input package for order and measurement documents. [Application checks and call-site diagnostic](../experimente/75_shared_types/report.md)
 - [x] 7. Migrate the public `jsoninput` interface, locate affected callers and verify both pins. [Migration and acceptance](../experimente/76_package_migration/report.md)
-- [ ] 8. Consistently adopt multi-file changes
+- [x] 8. Commit revision-bound edits across multiple files and recover after process death. [Fault tests and results](../experimente/77_atomic_edits/report.md)
 - [ ] 9. Measure incremental feedback against full validation
 - [ ] 10. Align the semantics of development, tests, and AOT
 - [ ] 11. Improve the largest runtime bottleneck of the applications

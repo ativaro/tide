@@ -55,7 +55,7 @@ patch=$(jq -ec '.repair | select(.pair_checks.truncated == false and (.pair_cand
 ./tide edit "$project" --base "$revision" --edits "$patch"
 ```
 
-The editor checks the edits jointly against the same project revision and all examples. The preview provides the checked texts as `files` with each `file` and `source`. Take over all output files into the same working copy and perform the acceptance test there. `--write` supports the atomic swap of a single file. [Measurement at the double counter](../experimente/61_dateiuebergreifende_paare/report.md)
+The editor checks the edits jointly against the same project revision and all examples. The preview provides the checked texts as `files` with each `file` and `source`. Repeat the command with the same base and `--write` to commit the checked files together. If the base is stale, obtain a fresh revision and inspect its node locations before retrying. [Measurement at the double counter](../experimente/61_dateiuebergreifende_paare/report.md)
 
 ### Generate inputs for green pairs
 

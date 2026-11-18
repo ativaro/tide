@@ -1,0 +1,7 @@
+use orders
+
+verify units:i > i
++ (amount units) 1
+
+example balanced verify
+{"inputs":{"units":10},"expect":17}

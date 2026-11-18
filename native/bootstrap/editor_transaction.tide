@@ -2,17 +2,30 @@ use editor
 
 use node_edits
 
+write_edit_set grant:{ProjectGrant} original:{ProjectFiles} candidate:{ProjectFiles} file:t > b
+let changed fold (get units candidate) (list {SourceUnit} 0) files pos unit
+  let before need (at (get units original) (- pos 1)) "original_unit" 0
+  if (text_eq (get source before) (get source unit)) files (append files unit)
+if (eq (length changed) 0) true
+let staged bootstrap_stage_set grant changed
+if (not (text_eq (project_snapshot original) (project_snapshot (bootstrap_project grant (nil &tt)))))
+  fail (root_diagnostic file "E_REVISION" "Source changed during edit")
+let installed fold changed (bootstrap_arm staged) ok pos unit
+  and ok (bootstrap_install staged (- pos 1))
+and installed (bootstrap_commit staged)
+
 apply_edit grant:{ProjectGrant} entry:t raw:?t base:t allow:b write:b > t
 let file text_slice entry 1 (text_len entry)
 let edits case raw (nil {EditPayload}) text (some (read_edit_json (if (text_eq text "") "null" text) file))
 let original bootstrap_project grant (nil &tt)
 let before edit_base original base
 if (case edits false payload (get mixed payload))
-  (if write fail (root_diagnostic file "E_EDIT" "Preview multi-file edits and apply the checked files in a project copy")
-   let payload need edits "missing_edit_payload" 0
+  (let payload need edits "missing_edit_payload" 0
    let preview multi_edit_preview original before payload file
-   let checked checked_edit_fields (get declarations before) (get project preview) base allow ""
-   cat3 checked ",\"written\":false,\"files\":[" (concat (get files preview) "]}\n"))
+   let candidate get project preview
+   let checked checked_edit_fields (get declarations before) candidate base allow ""
+   let written and write (write_edit_set grant original candidate file)
+   cat3 checked (if written ",\"written\":true,\"files\":[" ",\"written\":false,\"files\":[") (concat (get files preview) "]}\n"))
 let unit case edits (need (at (get units original) 0) "missing_root" 0) payload (edit_target original payload file)
 if (and write (case (text_find (get name unit) "/" 0) false found true))
   fail (root_diagnostic file "E_EDIT" "Write the package in its own checkout or preview the edit")

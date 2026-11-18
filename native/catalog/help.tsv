@@ -117,9 +117,9 @@ help.edit	options:
 help.edit	  -h, --help         show this help message and exit
 help.edit	  --json             JSON output (default)
 help.edit	  --base BASE
-help.edit	  --edits EDITS      JSON array of node/op or node/replace edits (multi-file preview)
+help.edit	  --edits EDITS      JSON array of node/op or node/replace edits across project files
 help.edit	  --source SOURCE    complete candidate file for coordinated changes
-help.edit	  --write
+help.edit	  --write            commit the checked changes as one project transaction
 help.edit	  --change-examples
 help.fmt	usage: tide fmt [-h] file
 help.fmt	

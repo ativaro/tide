@@ -117,8 +117,11 @@ RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     grep -Fq '"examples":{"passed":3},"contract_changes":[],"written":false,"files":[' /tmp/edit; \
     grep -Fq '"file":"route.tide","source":"use rulebook\n\nroute a:i b:i > i\n+ (compute a b) (- b 1)\n"' /tmp/edit; \
     grep -Fq '"file":"rulebook.tide","source":"compute a:i b:i > i\n* (- a 1) 10\n"' /tmp/edit; \
+    tide edit /tmp/counters/panel.tide --base "$base" --edits "$edits" --write > /tmp/saved; \
+    sed 's/"written":false/"written":true/' /tmp/edit | cmp - /tmp/saved; \
+    test "$(tide test /tmp/counters/panel.tide)" = '{"passed":3}'; \
     if tide edit /tmp/counters/panel.tide --base "$base" --edits "$edits" --write > /tmp/out 2>/tmp/error; then exit 1; else test "$?" = 1; fi; \
-    grep -Fq '"code":"E_EDIT"' /tmp/error; test "$(tide check /tmp/counters/panel.tide | sed -n 's/.*"revision":"\([0-9a-f]\{64\}\)".*/\1/p')" = "$base"; \
+    test ! -s /tmp/out; grep -Fq '"code":"E_REVISION"' /tmp/error; \
     mkdir /tmp/autoprobe; \
     printf 'use calc\n\nmain a:i b:i > i\n- (material a b) b\n\nexample square main\n{"inputs":{"a":2,"b":2},"expect":8}\n' > /tmp/autoprobe/panel.tide; \
     printf 'material a:i b:i > i\n- a b\n' > /tmp/autoprobe/calc.tide; \

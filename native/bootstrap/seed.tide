@@ -104,7 +104,7 @@ if (text_eq op ">=") (cat3 "(!less_i(" args "))")
 if (text_eq op "pair") (call_cpp "std::make_pair" args)
 if (and (or (text_eq op "first") (text_eq op "second")) (get stable (need (at parts 1) "bootstrap_pair" 0)))
   (cat3 "(" (expr_at parts 1) (concat ")." op))
-let native list t 26 "bootstrap_octets_utf8" "bootstrap_character" "bootstrap_project" "bootstrap_candidate" "bootstrap_stage" "bootstrap_commit" "bootstrap_utf8_octets" "bootstrap_code_at" "text_eq" "text_len" "text_slice" "text_find" "text_rfind" "concat" "length" "append" "at" "lines" "int" "some" "read" "first" "second" "bootstrap_open_read" "bootstrap_read_bytes" "bootstrap_line"
+let native list t 29 "bootstrap_octets_utf8" "bootstrap_character" "bootstrap_project" "bootstrap_candidate" "bootstrap_stage" "bootstrap_stage_set" "bootstrap_install" "bootstrap_arm" "bootstrap_commit" "bootstrap_utf8_octets" "bootstrap_code_at" "text_eq" "text_len" "text_slice" "text_find" "text_rfind" "concat" "length" "append" "at" "lines" "int" "some" "read" "first" "second" "bootstrap_open_read" "bootstrap_read_bytes" "bootstrap_line"
 if (fold native false hit row key or hit (text_eq key op)) (call_cpp (concat "t_" op) args)
 call_cpp (concat "f_" (identifier op)) args
 
@@ -291,10 +291,10 @@ if (text_eq token "bootstrap_replace") (some 2)
 if (text_eq token "bootstrap_https") (some 5)
 if (text_eq (text_slice token 0 14) "bootstrap_sql_") (sqlite_abi_arity (text_slice token 14 (text_len token)))
 if (not (text_eq (text_slice token 0 10) "bootstrap_")) (nil i)
-if (white (cat3 "|" token "|") "|bootstrap_candidate|bootstrap_commit|bootstrap_octets_utf8|bootstrap_utf8_octets|bootstrap_character|bootstrap_open_read|") (some 1)
+if (white (cat3 "|" token "|") "|bootstrap_candidate|bootstrap_arm|bootstrap_commit|bootstrap_octets_utf8|bootstrap_utf8_octets|bootstrap_character|bootstrap_open_read|") (some 1)
 if (or (text_eq token "bootstrap_line") (text_eq token "bootstrap_while")) (some 4)
 if (text_eq token "bootstrap_stage") (some 3)
-if (white (cat3 "|" token "|") "|bootstrap_recover|bootstrap_project|bootstrap_code_at|bootstrap_bit_and|bootstrap_bit_xor|bootstrap_rotr32|bootstrap_read_bytes|") (some 2) (nil i)
+if (white (cat3 "|" token "|") "|bootstrap_install|bootstrap_stage_set|bootstrap_recover|bootstrap_project|bootstrap_code_at|bootstrap_bit_and|bootstrap_bit_xor|bootstrap_rotr32|bootstrap_read_bytes|") (some 2) (nil i)
 
 add_token reading:{Reader} token:t env:{Vocabulary} > {Reader}
 let frame get current reading
@@ -581,7 +581,7 @@ let rows list t 8
 fold rows "" code row line concat code (concat line "\n")
 
 sibling_io_code > t
-let rows list t 72
+let rows list t 77
   "#include <cstring>"
   "struct InputFD {"
   "    int fd;"
@@ -589,6 +589,7 @@ let rows list t 72
   "    ~InputFD(){if(fd>=0)close(fd);}"
   "    InputFD(const InputFD&)=delete;"
   "};"
+  project_io_abi
   "struct SourcePath {"
   "    std::string folder,name;"
   "    explicit SourcePath(const std::string& path){"
@@ -652,16 +653,21 @@ let rows list t 72
   "Text read_siblings(const std::string& path,const Text& entry,const Text& call,const Text& inputs,Begin begin,Supply supply,Finish finish,Escape escape,Report report){"
   "    SourcePath location(path);InputFD dir(open(location.folder.c_str(),O_PATH|O_DIRECTORY|O_CLOEXEC));"
   "    if(dir.fd<0){int code=errno;throw Failure{report(entry,decode(path),code,decode(strerror(code))),0};}"
-  "    return finish(load_project(dir.fd,location,entry,nullptr,Text{},begin,supply,escape,report),entry,call,inputs);"
+  "    auto snapshot=[&](){try{"
+  "        project_io::ProjectDirectory project(location.folder);project_io::acquire(project,false);"
+  "        return load_project(dir.fd,location,entry,nullptr,Text{},begin,supply,escape,report);"
+  "    }catch(const std::system_error& e){throw Failure{report(entry,decode(location.folder),e.code().value(),decode(strerror(e.code().value()))),0};}}();"
+  "    return finish(snapshot,entry,call,inputs);"
   "}"
 fold rows "" code row line concat code (concat line "\n")
 
 transaction_grant_code > t
-let rows list t 68
+let rows list t 70
   "#include <sys/file.h>"
   "#include <sys/random.h>"
   "struct R_ProjectGrant {"
   "    SourcePath target;"
+  "    project_io::ProjectDirectory project;"
   "    Text entry;"
   "    std::string candidate;"
   "    InputFD dir;"
@@ -669,11 +675,11 @@ let rows list t 68
   "    Failure error(const std::string& where,int code) const{"
   "        return {f_project_error(entry,decode(where),code,decode(strerror(code))),0};"
   "    }"
-  "    R_ProjectGrant(const std::string& path,const Text& file,const std::string& input,bool write)"
-  "        :target(path),entry(file),candidate(input),dir(open(target.folder.c_str(),O_RDONLY|O_DIRECTORY|O_CLOEXEC)),writable(write){"
+  "    R_ProjectGrant(const std::string& path,const Text& file,const std::string& input,bool write) try"
+  "        :target(path),project(target.folder),entry(file),candidate(input),dir(open(target.folder.c_str(),O_RDONLY|O_DIRECTORY|O_CLOEXEC)),writable(write){"
   "        if(dir.fd<0)throw error(path,errno);"
-  "        while(flock(dir.fd,LOCK_EX)<0){if(errno!=EINTR)throw error(target.folder,errno);}"
-  "    }"
+  "        project_io::acquire(project,write);"
+  "    }catch(const std::system_error& e){throw Failure{f_project_error(file,decode(path),e.code().value(),decode(strerror(e.code().value()))),0};}"
   "};"
   "R_ProjectFiles t_bootstrap_project(const R_ProjectGrant& io,const Opt<std::pair<Text,Text>>& root){"
   "    std::optional<std::pair<Text,I>> overlay;"
@@ -726,6 +732,7 @@ let rows list t 68
   "    if(fsync(dir)<0)throw io.error(io.target.folder,errno);"
   "    return true;"
   "}"
+  project_stage_abi
 fold rows "" code row line concat code (concat line "\n")
 
 sibling_branch prefix:t > t

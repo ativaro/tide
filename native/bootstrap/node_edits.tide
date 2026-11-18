@@ -14,7 +14,7 @@ case unit 0 name
 
 edit_target project:{ProjectFiles} payload:{EditPayload} file:t > {SourceUnit}
 if (not (validate_edit_payload payload file)) fail "edit_payload"
-if (get mixed payload) fail (root_diagnostic file "E_EDIT" "One source file per atomic edit")
+if (get mixed payload) fail (root_diagnostic file "E_EDIT" "Expected one edit target")
 need (at (get units project) (edit_unit_index project (get unit payload) file)) "edit_unit" 0
 
 record NodeLocation

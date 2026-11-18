@@ -1,0 +1,19 @@
+{"case":"preview","result":"old"}
+{"case":"commit","result":"new"}
+{"case":"stale_base","result":"E_REVISION"}
+{"case":"failing_example","result":"E_EXAMPLE"}
+{"case":"six_partial_revisions","result":"all failed the example"}
+{"case":"journal_creation_denied","result":"old"}
+{"case":"staged_write_EFBIG","result":"old"}
+{"case":"third_exchange_denied","result":"old; retry committed"}
+{"case":"stale_during_staging","result":"E_REVISION"}
+{"case":"staging","signal":"SIGKILL","raw_new_files":0,"recovered":"old","retry":"verified"}
+{"case":"before_first_exchange","signal":"SIGKILL","raw_new_files":0,"recovered":"old","retry":"verified"}
+{"case":"after_first_exchange","signal":"SIGKILL","raw_new_files":1,"recovered":"old","retry":"verified"}
+{"case":"after_second_exchange","signal":"SIGKILL","raw_new_files":2,"recovered":"old","retry":"verified"}
+{"case":"all_exchanged_before_commit","signal":"SIGKILL","raw_new_files":3,"recovered":"old","retry":"verified"}
+{"case":"after_commit","signal":"SIGKILL","raw_new_files":3,"recovered":"new","retry":"verified"}
+{"case":"during_cleanup","signal":"SIGKILL","raw_new_files":3,"recovered":"new","retry":"verified"}
+{"case":"interrupted_recovery","result":"old after second SIGKILL"}
+{"case":"concurrent_reader","result":"blocked until complete new revision"}
+{"case":"concurrent_writers","result":"one commit, one E_REVISION"}
