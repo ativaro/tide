@@ -13,7 +13,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 7. Migrate the public `jsoninput` interface, locate affected callers and verify both pins. [Migration and acceptance](../experimente/76_package_migration/report.md)
 - [x] 8. Commit revision-bound edits across multiple files and recover after process death. [Fault tests and results](../experimente/77_atomic_edits/report.md)
 - [x] 9. Check affected bodies and examples and measure time to green against a clean full check. [Stage 9 results](../experimente/78_incremental_feedback/report.md)
-- [ ] 10. Align the semantics of development, tests, and AOT
+- [x] 10. Align the semantics of development, tests, and AOT. [Coverage matrix and results](../experimente/79_execution_parity/report.md)
 - [ ] 11. Improve the largest runtime bottleneck of the applications
 - [ ] 12. API-service acceptance for duplicate delivery and restart
 - [ ] 13. Prove load limiting and termination
@@ -71,7 +71,7 @@ In the streaming measurement report, the time from stored parser correction to s
 
 The [Measurement Report](../apps/summary.tide) processes measurement lines and returns its Record natively. Space Invaders runs with all six phases over `run` and `test`, including nested records, lists, and options for the game world. Nano's public entry supports the buffer and the requested action as a pair. Interactive terminal connection and access to documents are open. [Nano verification](../experimente/49_zusammengesetzte_paare/report.md) [Measurement Report](../experimente/43_native_records/report.md) · [Variant verification](../experimente/44_native_varianten/report.md) · [Verification at the complete game](../experimente/45_native_sammlungen/report.md)
 
-The [first occurrence](../apps/peak_lines.tide) is natively executable for passed measurement lines via `tide run`. It uses an optional pair of maximum value and line number. The [file entry](../apps/first_peak.tide) calls the same compute core. The public CLI binds read permission with `--read input=PFAD`. [Verification of pairs and folds](../experimente/39_native_paare/report.md)
+The [first occurrence](../apps/peak_lines.tide) is natively executable for passed measurement lines via `tide run`. It uses an optional pair of maximum value and line number. The [file entry](../apps/first_peak.tide) calls the same compute core. The public CLI binds read permission with `--read input=PATH`. [Verification of pairs and folds](../experimente/39_native_paare/report.md)
 
 The order follows later stages in the [Research Plan](plan.md).
 

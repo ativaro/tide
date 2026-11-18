@@ -183,3 +183,19 @@ fold (label_order keys) (number_value 16) acc row slot
   let key need (at keys slot) "dictionary_key" 0
   let value need (at values slot) "dictionary_value" 0
   add_member acc key typ value (+ (+ 16 (* 4 (text_len key))) (field_bytes value typ))
+
+record_update_cost previous:{EvalValue} idx:i fresh:{EvalValue} > i
+let old member_cell previous idx
++ (- (get num previous) (get bytes old)) (field_bytes fresh (get kind old))
+
+updated_record previous:{EvalValue} idx:i fresh:{EvalValue} cost:i > {EvalValue}
+let old member_cell previous idx
+let bytes field_bytes fresh (get kind old)
+if (and (eq (get span old) 0) (eq (get span fresh) 0))
+  (let index + (get offset previous) (need (at (get members previous) idx) "member_slot" 0)
+   with tape (with num previous cost) (replace_cell (get tape previous) index (packed_member (get name old) (get kind old) fresh bytes)))
+  (fold (get members previous) (number_value 16) acc row unused
+   let slot - row 1
+   let cell member_cell previous slot
+   let changed eq slot idx
+   add_member acc (get name cell) (get kind cell) (if changed fresh (member_value previous slot)) (if changed bytes (get bytes cell)))

@@ -1,0 +1,22 @@
+values	integer_path	* + < <= > >= and div if mod not or text_eq
+values	range_error	fail
+values	unicode	concat length let lines need text_find text_len text_rfind text_slice
+values	lists	append at case first fold list map pair second
+values	variant_value	get make match tag with
+values	octets	byte_at byte_len dict dict_get dict_put utf8_bytes utf8_text
+values	document	json_decode json_encode q_from_units q_units unix_seconds
+values	rethrow	catch fail_at has_reason input_line raise some
+values	parsed_int	int
+values	missing	nil
+values	scan_events	scan
+values	loop_steps	while
+depth	depth_last	- eq recur
+io	line_exact	fold_lines
+io	batch_exact	read_batch
+io	shared_snapshot	read read_bytes
+io	write_file	write_bytes
+io	cursor_rows	fold_rows
+io	transaction_rollback	sql_exec sql_query transaction
+net	get_at_limit	https_get
+net	post_at_limit	https_post
+pg	bound_parameters	pg_exec pg_query

@@ -1,0 +1,17 @@
+record Reply
+status:i headers:%t body:y
+
+main api:n method:t cap:i > i
+let response if (text_eq method "GET")
+  (https_get {Reply} api "/missing" (dict t) 2000 cap)
+  (https_post {Reply} api "/measurements" (dict_put (dict t) "Content-Type" "application/json") 2000 cap (utf8_bytes "{}"))
++ (get status response) (byte_len (get body response))
+
+example get_at_limit main
+{"inputs":{"api":{"/missing":[404,"{}"]},"method":"GET","cap":2},"expect":406}
+
+example get_over_limit main
+{"inputs":{"api":{"/missing":[404,"{}"]},"method":"GET","cap":1},"expect_error":{"code":"E_LIMIT"}}
+
+example post_at_limit main
+{"inputs":{"api":{"/measurements":[422,"{}"]},"method":"POST","cap":2},"expect":424}

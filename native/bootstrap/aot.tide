@@ -88,6 +88,11 @@ if (or (text_eq op "read") (text_eq op "read_bytes"))
 if (text_eq op "read_batch")
   (cat3 "auto result=f_batch_data(f_number_value(value_0),value_1,gas.v_stream_left," location
     (cat3 ");if(!result.v_code.empty())throw Failure{result.v_detail,0};I n=result.v_value.v_text.size();gas.v_stream_left-=n;gas.v_memory=f_batch_memory(gas.v_memory,n);gas.v_work=f_batch_work(gas.v_work,n);if(gas.v_memory<0||gas.v_work<0)throw Failure{f_diagnosis(" location ",U\"E_LIMIT\",U\"Batch resources exhausted\"),0};return result.v_value;"))
+if (or (text_eq op "text_find") (text_eq op "text_rfind"))
+  (cat3 (aot_work_code "1+I(value_0.size()+value_1.size())/32" location) (concat "return t_" op) "(value_0,value_1,value_2);")
+if (text_eq op "text_slice")
+  (let bound "auto lo=std::clamp<I>(value_1,0,value_0.size()),hi=std::clamp<I>(value_2,lo,value_0.size());"
+   cat3 bound (aot_budget "8+4*(hi-lo)" location) "return t_text_slice(value_0,lo,hi);")
 if (text_eq op "text_len") "return t_text_len(value_0);"
 if (text_eq op "concat")
   (let guard cat3 "const I bytes=4*I(value_0.size()+value_1.size());if(bytes>gas.v_memory)throw Failure{f_diagnosis(" location ",U\"E_LIMIT\",U\"Text budget exhausted\"),0};\n"
@@ -297,7 +302,7 @@ let index project_entry_index compiled call file
 if (rule_signature (need (at fns index) "aot_entry" 0)) fail (root_diagnostic file "E_ENTRY" (concat "Expected function: " call))
 let reachable aot_reachable program index
 let data_fields fold (get entries (get types book)) false active row decl
-  fold (get types decl) active used slot typ or used (extended_data_type typ)
+  fold (get types decl) (or active (get tagged decl)) used slot typ or used (extended_data_type typ)
 let boxed fold reachable data_fields found row id
   if found true
   let fn need (at fns id) "aot_signature" 0
@@ -306,7 +311,7 @@ let boxed fold reachable data_fields found row id
   fold (append (get pages (get nodes tree)) (get tail (get nodes tree))) false seen page batch
     fold batch seen active slot node
       let op get word (get site node)
-      or active (or (or (text_eq op "map") (text_eq op "list")) (or (database_op op) (or (public_data_op op) (extended_data_type (get typ node)))))
+      or active (or (or (text_eq op "with") (or (text_eq op "map") (text_eq op "list"))) (or (database_op op) (or (public_data_op op) (extended_data_type (get typ node)))))
 let records if boxed (aot_declarations (get types book)) (fold (get entries (get types book)) "" code row decl concat code (aot_schema decl))
 let forwards fold reachable "" code row id
   let fn need (at fns id) "aot_function" 0
@@ -320,6 +325,8 @@ cat3 (concat records forwards) defs (if service (aot_service entry index) (aot_e
 
 extended_data_type typ:t > b
 if (or (text_eq (text_slice typ 0 2) "**") (or (text_eq (text_slice typ 0 2) "?*") (text_eq (text_slice typ 0 2) "*?"))) true
+if (white (text_slice typ 0 1) "&#!") true
+if (and (white (text_slice typ 0 1) "*?") (not (or (text_eq typ "*t") (text_eq typ "?i")))) true
 if (grant_kind typ) (not (text_eq typ "r"))
 let chars fold (indices (text_len typ)) (pair false false) state row unused
   let ch text_slice typ (- row 1) row
@@ -365,6 +372,25 @@ aot_data_body node:{FunctionNode} parts:*t fn:{Signature} location:t issue:t nod
 let op get word (get site node)
 let kind get typ node
 let pre aot_operands parts
+if (text_eq op "pair")
+  (let left aot_pack (aot_child_type node nodes 0) "value_0"
+   let right aot_pack (aot_child_type node nodes 1) "value_1"
+   let values cat3 "a,b," (aot_text kind) ")"
+   some (cat3 pre (cat3 "auto a=" left (cat3 ";auto b=" right ";")) (concat (aot_budget (concat "f_pair_cost(" values) location) (cat3 "return f_pair_value(" values ";"))))
+if (or (text_eq op "first") (text_eq op "second"))
+  (let member cat3 "f_pair_member(value_0," (if (text_eq op "first") "true" "false") (cat3 "," (aot_text kind) ")")
+   some (cat3 pre "return " (concat (aot_unpack kind member issue) ";")))
+if (text_eq op "tag")
+  (some (cat3 "auto tag=f_number_value(" (signed_text (get value node)) (cat3 ");tag.v_text=" (aot_text (get literal node)) ";return tag;")))
+if (text_eq op "match")
+  (let arms fold (get dispatch node) "" code row branch
+     cat3 code (concat "case " (decimal (- row 1))) (cat3 ":return " (aot_child parts (+ 1 branch)) ";")
+   some (cat3 "switch((" (aot_child parts 0) (cat3 ").v_num){" arms "}throw Failure{\"match_arm\",0};")))
+if (text_eq op "with")
+  (let idx decimal (get value node)
+   let start cat3 pre "auto fresh=" (concat (aot_pack (aot_child_type node nodes 1) "value_1") ";")
+   let cost cat3 "I cost=f_record_update_cost(value_0," idx ",fresh);"
+   some (cat3 start cost (concat (aot_budget "cost" location) (cat3 "return f_updated_record(value_0," idx ",fresh,cost);"))))
 if (text_eq op "transaction")
   (let enter cat3 "auto db=*(" (aot_child parts 0) (cat3 ").v_handle;f_aot_data_result(f_sql_begin(db," location "));try{auto result=")
    let finish cat3 ";f_aot_data_result(f_sql_commit(db," location "));return result;}catch(...){if(f_sql_rollback(db)!=0)throw Failure{"

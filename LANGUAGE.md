@@ -16,7 +16,7 @@ twice 7
 
 `use readings` loads the regular file `readings.tide` from the same directory. Neighbor files share the namespace of their project or package. Names from transitive neighbor imports are available there. Duplicate import paths load the same module once; cyclic imports fail. Modules are resolved during checking. The revision includes the source code of the entry program as well as paths and contents of all imported modules and packages.
 
-`tide modules DATEI [--json]` provides the module graph as a JSON. `modules` lists the files in the order of the first visit during depth-first search. `imports` specifies for each import location the source file, the target, and the one-based line and column of `use`. Repeated imports have distinct locations. The hash processes modules sorted by filename and matches the revision of `tide check` for a valid project. The command resolves imports before type checking and is thus also usable with an incomplete body.
+`tide modules FILE [--json]` provides the module graph as a JSON. `modules` lists the files in the order of the first visit during depth-first search. `imports` specifies for each import location the source file, the target, and the one-based line and column of `use`. Repeated imports have distinct locations. The hash processes modules sorted by filename and matches the revision of `tide check` for a valid project. The command resolves imports before type checking and is thus also usable with an incomplete body.
 
 ### Versioned Packages
 
@@ -143,13 +143,13 @@ Expressions are evaluated from left to right. `if`, `and`, `or`, `case`, `match`
 
 `text_len` counts Unicode code points. `text_slice text start stop` yields the section from `start` inclusive to `stop` exclusive. `text_find text muster start` searches forward from `start`. `text_rfind text muster stop` searches for the last match that lies completely before the boundary `stop`. Both return the absolute start of the match as `?i`. All indices start at zero. The operations limit indices to the range from zero to the text length.
 
-The executable reference for all **73 operations** is retrievable via `tide describe`. Each catalog entry has a signature and an example expression.
+The executable reference for all **75 operations** is retrievable via `tide describe`. Each catalog entry has a signature and an example expression.
 
 ## Errors, Rights, and Budgets
 
 `catch CODE ausdruck name ersatz` handles exactly one catchable error. In the replacement, `name` binds the original diagnosis. `_` discards it. `input_line name`, `has_reason name text`, and `raise name` read or propagate this diagnosis. Catchable are `E_DATA`, `E_OVERFLOW`, `E_UTF8`, and `E_IO` during execution. Errors when binding inputs as well as `E_CAPABILITY`, `E_TRANSACTION`, and `E_LIMIT` abort the run.
 
-File contents enter the program via `tide run DATEI --read parameter=pfad`. The host checks the entire project and the input signature before opening the specified data files. `read` creates a limited snapshot on the first call. Further `read` calls with the same grant use this snapshot. Examples bind UTF-8 contents in memory. A path in `--inputs` cannot generate read rights. To write, the caller binds their own file or database right.
+File contents enter the program via `tide run FILE --read parameter=pfad`. The host checks the entire project and the input signature before opening the specified data files. `read` creates a limited snapshot on the first call. Further `read` calls with the same grant use this snapshot. Examples bind UTF-8 contents in memory. A path in `--inputs` cannot generate read rights. To write, the caller binds their own file or database right.
 
 `fail_at reason index path` raises `E_DATA` with a text reason, a JSON Pointer in `issue.path`, and an optional integer index. For example, `fail_at "invalid_quantity" (some 2) "/events/2/qty"` reports `input_line: 2`. Use `(nil i)` for a document-wide failure. A handler can inspect the original reason with `has_reason`.
 
@@ -163,7 +163,7 @@ File contents enter the program via `tide run DATEI --read parameter=pfad`. The 
 
 `pg_exec pg sql parameter` and `pg_query {Zeile} pg sql parameter` receive connection details via `--pg pg=DSN`. PostgreSQL binds placeholders `$1`, `$2` from a list `*?t` as text or SQL-NULL. The query maps columns by their names. Supported include among others `numeric` for `q` and `timestamptz` for `z`. The latter are read in UTC. The runtime sets five seconds for connection establishment and statement execution and a limit of 4,096 result rows per query. For a remote database, the caller can set the TLS check with `sslmode=verify-full` in DSN. [Executable PostgreSQL example](native/bootstrap/fixtures/functions/postgres_report.tide)
 
-`tide build --service DATEI AUSGABE HANDLER` translates a HTTP service. Its handler accepts `method:t path:t headers:%t body:y` and then the declared rights. The response has the fields `status:i headers:%t body:y`. Startup requires `--listen IPv4:Port`. Port 0 lets the operating system choose a free port. `--workers` limits parallelism to 1 to 32, the default is 4. SIGTERM and SIGINT terminate the service. Active guest computations, HTTPS transfers, and running PostgreSQL queries check the termination signal. The listener speaks HTTP. For HTTPS before a service, a TLS endpoint can be prepended. [Measurement service and associated HTTPS client](apps/report_packages/measurement_service.tide)
+`tide build --service FILE OUTPUT HANDLER` translates a HTTP service. Its handler accepts `method:t path:t headers:%t body:y` and then the declared rights. The response has the fields `status:i headers:%t body:y`. Startup requires `--listen IPv4:Port`. Port 0 lets the operating system choose a free port. `--workers` limits parallelism to 1 to 32, the default is 4. SIGTERM and SIGINT terminate the service. Active guest computations, HTTPS transfers, and running PostgreSQL queries check the termination signal. The listener speaks HTTP. For HTTPS before a service, a TLS endpoint can be prepended. [Measurement service and associated HTTPS client](apps/report_packages/measurement_service.tide)
 
 ### SQLite
 
@@ -225,11 +225,11 @@ If a selected definition uses a record, `repair.records` lists its field names a
 
 `test --explain=executed` re-executes the first deviating example for observation. With the same result or identical error diagnosis, `repair.execution.complete` reports the value `true`. Then, under `definitions`, the actually traversed definitions appear in the order of their first entry. `execution.branches` assigns observed decisions from `if`, `case`, `match`, `and`, `or`, `need`, or `catch` to a node identifier. For rules, the chosen branch number starting from one appears under the rule name. Each decision appears once per position. If more than 64 different combinations of position and decision exist, `branches_truncated: true` reports the truncation of the branch list. Traversal of reached definitions continues.
 
-If the observation run reaches its step limit or deviates in result, TIDE provides the statically reachable definitions and `complete: false` with `reason` equal to `step_limit` or `replay_mismatch`. In the second case, TIDE also discards the observed branches. If the serialized input field including field names exceeds 1,024 Unicode code points, the finding under `input_example` names the example. `tide context DATEI --function ZIEL --example NAME` provides the input. The revision of both answers must match.
+If the observation run reaches its step limit or deviates in result, TIDE provides the statically reachable definitions and `complete: false` with `reason` equal to `step_limit` or `replay_mismatch`. In the second case, TIDE also discards the observed branches. If the serialized input field including field names exceeds 1,024 Unicode code points, the finding under `input_example` names the example. `tide context FILE --function TARGET --example NAME` provides the input. The revision of both answers must match.
 
 All CLI results except interactive terminal view, formatted source code, help, and version display are output as JSON. On a program error, stdout remains empty. The diagnosis on stderr contains a stable code and, for a source finding, the position from 1. `may_fail` is a conservative set of catchable errors; the analysis considers handlers and transitively called functions.
 
-`tide lock` outputs the language version, tool version, and SHA-256 of the operation catalog. With `tide lock > tide.lock`, pin them in the project. The next lock file in the directory of the entry file or an ancestor applies to the call. `describe --project DATEI` uses the same binding.
+`tide lock` outputs the language version, tool version, and SHA-256 of the operation catalog. With `tide lock > tide.lock`, pin them in the project. The next lock file in the directory of the entry file or an ancestor applies to the call. `describe --project FILE` uses the same binding.
 
 Since 0.6, `map` is reserved. For migrating from 0.5, first rename your own definitions or bindings of this name. A project with the old pin receives `E_VERSION`. You can first test the new pin and project examples in a copy. With `tide lock --json > tide.lock.new && mv -- tide.lock.new tide.lock`, you adopt it in the desired project.
 
@@ -241,7 +241,7 @@ Normally, `context` contains all examples whose target directly or indirectly us
 
 An example contract can use `requires` to define the input range of its target for repair search. Allowed are one to eight integer parameters, and per parameter, an object with conditions `gt`, `ge`, `lt`, `le`, or `eq`. On the right stands an i64 constant or the name of an integer parameter as a JSON string. Thus, `"a":{"le":"b"}` expresses the condition `a <= b`. All conditions apply simultaneously. Missing boundaries correspond to the respective i64 limit. Per target, there is at most one such declaration. Unknown parameters and contradictory conditions yield `E_INPUT`. The function call and execution of existing examples retain their input rules. `--pairs` uses the declared range in counterexample search. [Call and Example](workbench/README.md#generate-inputs-for-green-pairs)
 
-The editor checks changes against one project revision. For natively supported projects, `--source PFAD` checks a complete new version of the entry file. Its imports are resolved alongside the original entry file. Changed and deleted example contracts require `--change-examples`. Upon passing the check, the preview provides base and candidate revision, target, number of passed examples, contract changes, and candidate text. `--write` takes over the checked bytes and yields `written: true`.
+The editor checks changes against one project revision. For natively supported projects, `--source PATH` checks a complete new version of the entry file. Its imports are resolved alongside the original entry file. Changed and deleted example contracts require `--change-examples`. Upon passing the check, the preview provides base and candidate revision, target, number of passed examples, contract changes, and candidate text. `--write` takes over the checked bytes and yields `written: true`.
 
 `--edits` accepts a JSON array of 1 to 256 changes based on the same revision. Each entry has a `node` and either `op` or `replace`. The former replaces the operation, the latter the entire expression with a one-line expression in the same scope. Node locations refer to the original source. Overlapping changes within a file yield `E_EDIT`. Cross-file node edits must preserve imports. TIDE checks the combined project and its examples.
 
@@ -250,6 +250,12 @@ For multiple targets the preview returns a `files` array with each relative file
 Multi-file writes use a private recovery journal in `.tide-edit-transaction-v1`. A process exit before the commit marker is removed leaves the old revision recoverable. After that point the new revision is recoverable. The next TIDE project command completes recovery before reading sources. Run `tide check FILE` to identify the current revision after an interrupted command or a final synchronization error. The writer and recovery need directory write access on a Linux filesystem supporting directory locks, hard links, directory sync and `RENAME_EXCHANGE` across all targets. Recovery uses the journal owner’s account. External programs opening individual paths without the lock can observe intermediate contents or interfere with a transaction.
 
 `fmt` writes a checked, normalized version of the entry file to stdout.
+
+### Run a single example
+
+`tide test FILE --example NAME` checks the project and runs the named example against its declared expectation. A passing value produces `{"passed":1,"actual":VALUE}`. An expected error produces `{"passed":1,"error":DIAGNOSTIC}` with the original source location and structured details. An unknown name or a failed expectation produces an `E_EXAMPLE` diagnostic on stderr and exit status 1.
+
+For a PostgreSQL parameter, use the literal `":host:"` in the example and supply the connection explicitly with `--pg NAME=DSN`. Every declared PostgreSQL parameter needs its own binding. Other grants use the ordinary example fixtures. For example, a read grant contains the input text and an HTTPS grant maps paths to response pairs.
 
 ### Incremental test sessions
 
@@ -261,13 +267,13 @@ The session reads the current tool pin and the reachable source files on each re
 
 ## Interactive Terminal Programs
 
-`tide play DATEI` connects a TIDE program with an interactive POSIX terminal. The host starts with `main > T`; `size > &ii` provides width and height in character cells. With a suitable window size, it calls `tick world:T keys:{Keys} > T` twelve times per second and then `draw world:T > *{Glyph}`. Each call receives a fresh work budget. The four functions and their calls must be free of side effects.
+`tide play FILE` connects a TIDE program with an interactive POSIX terminal. The host starts with `main > T`; `size > &ii` provides width and height in character cells. With a suitable window size, it calls `tick world:T keys:{Keys} > T` twelve times per second and then `draw world:T > *{Glyph}`. Each call receives a fresh work budget. The four functions and their calls must be free of side effects.
 
 `Keys` contains the five boolean fields `left`, `right`, `fire`, `start`, and `pause`. They indicate key presses since the last tick. `Glyph` has the fields `x:i y:i text:t ink:t`. The host records printable ASCII in list order starting from the top-left corner (0.0). Color names are `dim`, `cyan`, `green`, `pink`, `gold`, and `white`. Display, game rules, and state transitions can be read in the [playable example](apps/space_invaders.tide).
 
 ### Events and an open file
 
-`tide play PROGRAMM --document PFAD` opens an interactive text document. The host reads UTF-8 from the named regular file or starts with a new path and empty text. The upper limit is 128 KiB. The filename for display is the last path component.
+`tide play PROGRAM --document PATH` opens an interactive text document. The host reads UTF-8 from the named regular file or starts with a new path and empty text. The upper limit is 128 KiB. The filename for display is the last path component.
 
 | Pure TIDE function | Call by the host |
 |---|---|

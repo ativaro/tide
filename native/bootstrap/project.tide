@@ -114,3 +114,29 @@ let fields get fields plan
 let chosen if (eq cut n) fields (selected_fields (text_slice options (+ cut 1) n) fields file)
 let result evaluate_call program target args (some (make TraceRequest step step fields chosen))
 if (text_eq (get code result) "") (concat (extra_fields (get trace result) (concat "\"example\":" (json_string name))) "\n") (fail (get detail result))
+
+project_example project:{ProjectFiles} name:t grants:*t > t
+let unit need (at (get units project) 0) "example_root" 0
+let file get file unit
+let compiled compile_project project (schema_blocks (get source unit) true)
+let table get declarations compiled
+let idx need (entry_at (get sample_names table) name) (root_diagnostic file "E_EXAMPLE" (concat "Unknown example: " name)) 0
+let ex need (at (get examples table) idx) "example_index" 0
+let sample need (at (get samples compiled) idx) "sample_index" 0
+let program get program compiled
+let fn need (at (get signatures program) (get target sample)) "example_function" 0
+let loc get loc ex
+let bindings grant_bindings grants file loc
+let required typed_grants fn "p"
+let supplied get names bindings
+let valid and (eq (length required) (length supplied)) (fold required true ok row key and ok (case (entry_at supplied (concat "~" key)) false found true))
+if (not valid) fail (diagnosis file loc "E_CAPABILITY" "Supply the declared PostgreSQL example grants with --pg")
+let args fold (get args sample) (list {EvalValue} 0) acc row arg
+  let key need (at (get params fn) (- row 1)) "example_parameter" 0
+  case (entry_at supplied (concat "~" key)) (append acc arg) pos (append acc (text_value (need (at (get paths bindings) pos) "example_grant" 0)))
+let result scalar_eval program (get target sample) args
+let mismatch sample_mismatch ex sample program file result false
+if (not (text_eq mismatch "")) fail mismatch
+if (not (text_eq (get code result) "")) (cat3 "{\"passed\":1,\"error\":" (get detail result) "}\n")
+let kind if (rule_signature fn) (concat "*" (get result fn)) (get result fn)
+cat3 "{\"passed\":1,\"actual\":" (scalar_wire (get value result) kind) "}\n"

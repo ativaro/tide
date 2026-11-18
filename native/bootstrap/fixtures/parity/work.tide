@@ -1,0 +1,53 @@
+main extra:b > i
+if extra (+ f14 + f13 + f8 + f7 + f5 + f3 + f0 f0) (+ f14 + f13 + f8 + f7 + f5 + f3 + f0 0)
+
+f0 > i
+0
+
+f1 > i
++ f0 f0
+
+f2 > i
++ f1 f1
+
+f3 > i
++ f2 f2
+
+f4 > i
++ f3 f3
+
+f5 > i
++ f4 f4
+
+f6 > i
++ f5 f5
+
+f7 > i
++ f6 f6
+
+f8 > i
++ f7 f7
+
+f9 > i
++ f8 f8
+
+f10 > i
++ f9 f9
+
+f11 > i
++ f10 f10
+
+f12 > i
++ f11 f11
+
+f13 > i
++ f12 f12
+
+f14 > i
++ f13 f13
+
+example exact_work main
+{"inputs":{"extra":false},"expect":0}
+
+example one_more_step main
+{"inputs":{"extra":true},"expect_error":{"code":"E_LIMIT"}}

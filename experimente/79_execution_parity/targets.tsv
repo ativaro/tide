@@ -1,0 +1,20 @@
+values	native/bootstrap/fixtures/parity/values.tide	main
+io	native/bootstrap/fixtures/parity/io.tide	main	r:input d:db w:output
+net	native/bootstrap/fixtures/parity/net.tide	main	n:api
+limits	native/bootstrap/fixtures/parity/limits.tide	main
+depth	native/bootstrap/fixtures/parity/limits.tide	descend
+work	native/bootstrap/fixtures/parity/work.tide	main
+pg	native/bootstrap/fixtures/functions/postgres_report.tide	main	p:pg
+order	apps/orders/checks.tide	main	r:input d:db
+rollback	apps/orders/checks.tide	after_rejection	r:input r:next d:db
+batch	apps/orders/checks.tide	batch_size	r:input
+handler	apps/report_packages/measurement_service.tide	main
+allocation	native/bootstrap/fixtures/parity/allocation.tide	main
+tag	native/bootstrap/fixtures/functions/variants.tide	selected
+record	native/bootstrap/fixtures/functions/variants.tide	flip
+pair	native/bootstrap/fixtures/functions/composite_pairs.tide	reverse_nested
+report	apps/report_packages/report.tide	main	r:input
+json_report	apps/report_packages/json_report.tide	main	r:input
+json_fields	apps/report_packages/json_report.tide	notes
+json_bytes	apps/report_packages/json_report.tide	parse
+stream	apps/report_packages/stream_report.tide	main	r:input

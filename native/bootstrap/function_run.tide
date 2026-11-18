@@ -343,19 +343,9 @@ if (text_eq op "make")
 let previous need (at values 0) "record_operand" 0
 let fresh need (at values 1) "field_value" 0
 let idx get value node
-let old member_cell previous idx
-let bytes field_bytes fresh (get kind old)
-let cost + (- (get num previous) (get bytes old)) bytes
+let cost record_update_cost previous idx fresh
 if (> cost budget) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
-let updated if (and (eq (get span old) 0) (eq (get span fresh) 0))
-  (let index + (get offset previous) (need (at (get members previous) idx) "member_slot" 0)
-   with tape (with num previous cost) (replace_cell (get tape previous) index (packed_member (get name old) (get kind old) fresh bytes)))
-  (fold (get members previous) (number_value 16) acc row unused
-   let slot - row 1
-   let cell member_cell previous slot
-   let changed eq slot idx
-   add_member acc (get name cell) (get kind cell) (if changed fresh (member_value previous slot)) (if changed bytes (get bytes cell)))
-eval_return parents remaining (value_ok updated) (with memory machine (- budget cost))
+eval_return parents remaining (value_ok (updated_record previous idx fresh cost)) (with memory machine (- budget cost))
 
 eval_list machine:{EvalMachine} parents:*{EvalFrame} remaining:i node:{FunctionNode} file:t values:*{EvalValue} > {EvalMachine}
 let site get site node

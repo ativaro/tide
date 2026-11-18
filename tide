@@ -92,7 +92,7 @@ project_command() (
     action=$1 file=$2
     shift 2
     backend=checker
-    case $action in edit) mode=:; backend=editor ;; context|hole) mode=:; backend=inspector ;; check) mode=: ;; fmt) mode='~' ;; test) mode='?' ;; modules) mode='#' ;; run) mode='!' ;; trace) mode='^' ;; aot) mode=A ;; service) mode=S ;; esac
+    case $action in example) mode=X ;; edit) mode=:; backend=editor ;; context|hole) mode=:; backend=inspector ;; check) mode=: ;; fmt) mode='~' ;; test) mode='?' ;; modules) mode='#' ;; run) mode='!' ;; trace) mode='^' ;; aot) mode=A ;; service) mode=S ;; esac
     if [ "$action" = test ] && { [ "$explain" != no ] || [ -n "$diff" ]; }; then
         backend=inspector; mode=:; set -- "$diff" "$explain"
     fi
@@ -107,7 +107,7 @@ project_command() (
     protocol=--read-project
     if [ "$action" = edit ]; then protocol=$1; shift; fi
     case $action in
-        edit|fmt|test|run|trace|aot|service) exec 3>&1 ;;
+        example|edit|fmt|test|run|trace|aot|service) exec 3>&1 ;;
         *) tmp=$(mktemp -d) || exit 1
            trap 'rm -rf -- "$tmp"' EXIT
            exec 3>"$tmp/unit" ;;
@@ -130,7 +130,7 @@ project_command() (
         esac
         exit 1
     fi
-    case $action in edit|fmt|test|run|trace|aot|service) exit 0 ;; esac
+    case $action in example|edit|fmt|test|run|trace|aot|service) exit 0 ;; esac
     {
         IFS= read -r fields || exit 1
         digest=$(sha256sum) || exit 1
@@ -261,16 +261,16 @@ case ${1-} in
                             esac
                             continue ;;
                         --step|--fields|--example|--step=*|--fields=*|--example=*)
-                            case $action:${arg%%=*} in trace:*|context:--example) ;; *) exit 2 ;; esac
+                            case $action:${arg%%=*} in trace:*|context:--example|test:--example) ;; *) exit 2 ;; esac
                             case $arg in
                                 *=*) value=${arg#*=} ;;
-                                *) [ "$#" -gt 0 ] || exit 2
+                                *) [ "$#" -gt "$grants" ] || exit 2
                                    case $1 in --*) exit 2 ;; esac
                                    value=$1; shift ;;
                             esac
                             case ${arg%%=*} in
                                 --example)
-                                    if [ "$action" = context ]; then selected_example=$value; have_selected=yes
+                                    if [ "$action" = context ] || [ "$action" = test ]; then [ "$have_selected" = no ] || exit 2; selected_example=$value; have_selected=yes
                                     else call=$value; have_example=yes; fi ;;
                                 --step) step=$value ;;
                                 --fields) field_option="|$value" ;;
@@ -284,7 +284,7 @@ case ${1-} in
                         --call=*) [ "$action" = run ] || exit 2; call=${arg#*=}; continue ;;
                         --inputs=*) [ "$action" = run ] || exit 2; inputs=${arg#*=}; continue ;;
                         --read|--read=*|--db|--db=*|--https|--https=*|--write|--write=*|--pg|--pg=*)
-                            [ "$action" = run ] || exit 2
+                            case $action:$arg in run:*|test:--pg|test:--pg=*) ;; *) exit 2 ;; esac
                             case $arg in
                                 *=*) grant=${arg#*=} ;;
                                 *) [ "$#" -gt "$grants" ] || exit 2
@@ -347,6 +347,12 @@ case ${1-} in
                 case $step in *'|'*) exit 2 ;; esac
                 set -- "$call" "$step$field_option"
             fi
+            if [ "$action" = test ] && [ "$have_selected" = yes ]; then
+                [ -n "$selected_example" ] && [ "$explain" = no ] && [ -z "$diff" ] && [ "$incremental" = no ] || exit 2
+                project_command example "$file" "$selected_example" "{}" "$@"
+                exit "$?"
+            fi
+            if [ "$action" = test ] && [ "$grants" != 0 ]; then exit 2; fi
             if [ "$incremental" = yes ]; then
                 [ "$explain" = no ] && [ -z "$diff" ] || exit 2
                 prepare checker || exit 1

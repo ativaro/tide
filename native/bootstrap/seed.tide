@@ -842,8 +842,8 @@ let rows list t 8
 fold rows "" code row line concat code (concat line "\n")
 
 run_branch > t
-concat "if(argc>=6&&std::string_view(argv[1])==\"--read-project\"&&argv[3][0]=='!'){"
- "Seq<Text> grants;for(int i=6;i<argc;++i)grants=t_append(std::move(grants),decode(argv[i]));auto finish=[&](const auto& s,const Text& e,const Text& c,const Text& in){return f_project_run(s,e,c,in,grants);};auto output=read_siblings(argv[2],decode(argv[3]),decode(argv[4]),decode(argv[5]),f_project_begin,f_project_supply,finish,f_project_escape,f_project_error);std::cout<<output<<std::flush;return std::cout?0:74;}"
+concat "if(argc>=6&&std::string_view(argv[1])==\"--read-project\"&&(argv[3][0]=='!'||argv[3][0]=='X')){"
+ "Seq<Text> grants;for(int i=6;i<argc;++i)grants=t_append(std::move(grants),decode(argv[i]));auto finish=[&](const auto& s,const Text& e,const Text& c,const Text& in){return e[0]=='X'?f_project_example(s,c,grants):f_project_run(s,e,c,in,grants);};auto output=read_siblings(argv[2],decode(argv[3]),decode(argv[4]),decode(argv[5]),f_project_begin,f_project_supply,finish,f_project_escape,f_project_error);std::cout<<output<<std::flush;return std::cout?0:74;}"
 
 start_code entry:t siblings:t > t
 let reads case (text_find entry "input" 0) false found true

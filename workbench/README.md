@@ -6,7 +6,7 @@ The following recipes also document the earlier total scope of the toolbench. Fo
 
 ## Repair a node
 
-`./tide test DATEI --diff --explain=nodes` reports the deviation and the executed path on the first failed example. `repair.nodes` contains up to 32 operator locations and replaceable expressions in the entered functions. Each entry lists node ID, expression, type, and operator alternatives. The optional field `replacements` contains single-line expression replacements. For incomplete execution traces, TIDE uses statically reachable definitions. The finding marks this case in `repair.execution`.
+`./tide test FILE --diff --explain=nodes` reports the deviation and the executed path on the first failed example. `repair.nodes` contains up to 32 operator locations and replaceable expressions in the entered functions. Each entry lists node ID, expression, type, and operator alternatives. The optional field `replacements` contains single-line expression replacements. For incomplete execution traces, TIDE uses statically reachable definitions. The finding marks this case in `repair.execution`.
 
 Take the revision from `repair.revision` and the node ID from the finding. A switch has the form `[{"node":"hilfsmodul.tide:2:1","op":"<"}]`. For a whole expression at the same node, use `replace` with a single-line TIDE expression.
 
@@ -16,7 +16,7 @@ Take the revision from `repair.revision` and the node ID from the finding. A swi
 
 TIDE checks revision, source file, types, and examples. Add `--write` to accept a successful change. On failure, the source remains unchanged. The diagnosis can serve as feedback for the next proposal. [Local comparison](../experimente/55_knotenreparatur/report.md)
 
-`./tide test DATEI --diff --explain=candidates` tries up to 32 changes in memory. First, it checks form-compatible operator switches. Then, it tries expression replacements `a*(b+c)` and `(a+c)*b` at `a*b+c` or `c+a*b`. All three operands must be simple integer literals or bindings. The replacement is fully type-checked.
+`./tide test FILE --diff --explain=candidates` tries up to 32 changes in memory. First, it checks form-compatible operator switches. Then, it tries expression replacements `a*(b+c)` and `(a+c)*b` at `a*b+c` or `c+a*b`. All three operands must be simple integer literals or bindings. The replacement is fully type-checked.
 
 If no single change remains, TIDE uses the remaining budget for three further corrections. In calls to custom functions, it can swap two arguments of the same type, even across an intermediate argument. From `text_len s`, `byte_len (utf8_bytes s)` can become. From `text_find s trenner 0`, a search with `text_rfind` to the end of the text can become. For computed text, the replacement evaluates the expression only once. With `--pairs`, these corrections can also belong to cross-file pairs. An argument swap in the caller can compensate for the error in the called function. An example of a direct call to this function distinguishes both repair locations. [Measurement with direct module check](../experimente/70_strukturelle_reparatur/report.md)
 
@@ -113,7 +113,7 @@ printf '%s\n' 'fold entries opening total row entry + total entry' > "$work/antw
 
 ## Find errors across multiple files
 
-The native package provides `tide test DATEI --explain` with the repair context for the first failed example. The field `repair` contains entry file, revision, target, input, and reachable definitions. A node identifier like `adjustment.tide:2:1` can be used for `edit --edits` in the next call. For a rule, the original declaration text, the file, and the first line number are available. [Measurement on faulty import](../experimente/38_fehlerkontext/report.md)
+The native package provides `tide test FILE --explain` with the repair context for the first failed example. The field `repair` contains entry file, revision, target, input, and reachable definitions. A node identifier like `adjustment.tide:2:1` can be used for `edit --edits` in the next call. For a rule, the original declaration text, the file, and the first line number are available. [Measurement on faulty import](../experimente/38_fehlerkontext/report.md)
 
 `project_context.tide` accepts the call relationships from `tide check`, the source files of the same project copy, the public entry point, and an observed deviation. From this entry point, it follows all direct and indirect calls, including rules in `scan`. It delivers every reachable function body once with its original filename. Records and variants remain visible. Examples and unreachable function bodies are omitted. The selection is static and also considers branches that the individual error case does not traverse.
 

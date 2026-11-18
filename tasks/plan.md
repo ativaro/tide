@@ -76,6 +76,8 @@ Stage 8 committed a library, its caller and the test helper as one project revis
 
 Stage 9 matched the full checker on leaf, interface and package edits in a 33-example project. Compared with a full check in the same running process, median time to green improved by 5.51×, 1.43× and 5.57× respectively. [Median, P95 and diagnostic parity](../experimente/78_incremental_feedback/report.md)
 
+Stage 10 checked all 75 catalog operations across development execution, named examples and AOT on Linux x86-64. All 78 cases agreed, including the first rejected work unit and allocation byte. [Coverage matrix and observations](../experimente/79_execution_parity/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

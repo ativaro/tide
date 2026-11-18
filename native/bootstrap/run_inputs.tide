@@ -3,6 +3,15 @@ use samples
 record ReadBindings
 names:*t paths:*t
 
+grant_bindings grants:*t file:t loc:{Site} > {ReadBindings}
+fold grants (make ReadBindings names (list t 0) paths (list t 0)) bound row grant
+  let invalid diagnosis file loc "E_CAPABILITY" "Invalid or duplicate grant binding"
+  let cut need (text_find grant "=" 0) invalid 0
+  let name text_slice grant 0 cut
+  let path text_slice grant (+ 1 cut) (text_len grant)
+  if (or (text_eq path "") (case (entry_at (get names bound) name) false idx true)) fail invalid
+  make ReadBindings names (append (get names bound) name) paths (append (get paths bound) path)
+
 run_arguments input:t fn:{Signature} grants:*t file:t > *{EvalValue}
 let loc get loc fn
 let data read_scalar_json input (json_origin file) false
@@ -10,13 +19,7 @@ let databases typed_grants fn "d"
 let required fold (get types fn) (list t 0) names row typ
   if (grant_kind typ) (append names (concat (grant_marker typ) (need (at (get params fn) (- row 1)) "grant_name" 0))) names
 if (and (eq (length required) 0) (eq (length grants) 0)) (scalar_inputs data "" fn file loc)
-let bindings fold grants (make ReadBindings names (list t 0) paths (list t 0)) bound row grant
-  let invalid diagnosis file loc "E_CAPABILITY" "Invalid or duplicate grant binding"
-  let cut need (text_find grant "=" 0) invalid 0
-  let name text_slice grant 0 cut
-  let path text_slice grant (+ 1 cut) (text_len grant)
-  if (or (text_eq path "") (case (entry_at (get names bound) name) false idx true)) fail invalid
-  make ReadBindings names (append (get names bound) name) paths (append (get paths bound) path)
+let bindings grant_bindings grants file loc
 let supplied get names bindings
 let valid and (eq (length required) (length supplied))
   (fold required true ok row name

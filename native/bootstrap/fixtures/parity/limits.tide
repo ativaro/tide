@@ -1,0 +1,35 @@
+main part:t n:i > i
+if (text_eq part "depth") (descend n)
+if (text_eq part "allocation")
+  (let xs map i (pieces n) item 0
+   fold xs 0 total row item (length (append xs 1)))
+if (text_eq part "list") (length (pieces n))
+fail "unknown"
+
+pieces n:i > *t
+let powers list i 13 4096 2048 1024 512 256 128 64 32 16 8 4 2 1
+let text fold powers "" body index bit
+  let twice concat body body
+  if (eq (mod (div n bit) 2) 1) (concat twice "\n") twice
+lines text
+
+descend n:i > i
+if (eq n 0) 0 (+ 1 (recur (- n 1)))
+
+example depth_last descend
+{"inputs":{"n":48},"expect":48}
+
+example depth_over descend
+{"inputs":{"n":49},"expect_error":{"code":"E_LIMIT"}}
+
+example allocation_last main
+{"inputs":{"part":"allocation","n":509},"expect":510}
+
+example allocation_over main
+{"inputs":{"part":"allocation","n":510},"expect_error":{"code":"E_LIMIT"}}
+
+example list_last main
+{"inputs":{"part":"list","n":4096},"expect":4096}
+
+example list_over main
+{"inputs":{"part":"list","n":4097},"expect_error":{"code":"E_LIMIT"}}

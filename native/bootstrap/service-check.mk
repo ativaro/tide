@@ -37,6 +37,10 @@ check-postgres: checker catalog aot-runtime
 	params='{"sensor":"O’Neil"}'; ./tide build --aot "$$pgapp" "$$tmp/pgapp"; \
 	./tide run "$$pgapp" --pg pg="$$dsn" --inputs "$$params" > "$$tmp/run.json"; "$$tmp/pgapp" --pg pg="$$dsn" --inputs "$$params" > "$$tmp/aot.json"; \
 	cmp "$$tmp/run.json" "$$tmp/aot.json"; grep -Fq '"temperature":21.75,"observed":"2024-02-29T00:00:00Z","note":{"none":true}' "$$tmp/run.json"; \
+	./tide test "$$pgapp" --example bound_parameters --pg pg="$$dsn" > "$$tmp/selected"; \
+	test "$$(cat "$$tmp/selected")" = "{\"passed\":1,\"actual\":$$(cat "$$tmp/run.json")}"; \
+	if ./tide test "$$pgapp" --example bound_parameters > "$$tmp/out" 2> "$$tmp/err"; then exit 1; fi; \
+	test ! -s "$$tmp/out"; grep -Fq '"code":"E_CAPABILITY"' "$$tmp/err"; \
 	app=apps/report_packages/measurement_service.tide; ./tide run "$$app" --call prepare --pg pg="$$dsn" > /dev/null; \
 	./tide build --service "$$app" "$$tmp/service" persist; ./tide build --aot "$$app" "$$tmp/publish" publish; \
 	"$$tmp/service" --listen 127.0.0.1:0 --workers 4 --pg pg="$$dsn" > /dev/null 2>"$$tmp/listen" & server=$$!; \

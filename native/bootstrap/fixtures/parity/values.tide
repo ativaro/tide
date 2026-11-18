@@ -1,0 +1,112 @@
+variant Mode
+cold hot
+
+record Item
+mode:{Mode} count:i
+
+record Reading
+price:q time:z note:?t
+
+rule pulse event:b > i
+state count:i=0
+when event -> count=set (+ count 1)
+else -> count=keep
+out count
+
+descend n:i > i
+if (eq n 0) 0 (+ 1 (recur (- n 1)))
+
+main op:t n:i > i
+if (text_eq op "arithmetic")
+  (if (and (or (< n 6) (eq n 10)) (and (>= n 5) (and (<= n 8) (not (> n 6)))))
+    (+ (* (div 17 n) 4) (mod 17 n)) (fail "range"))
+if (text_eq op "text")
+  (let body concat "Aé" "猫\n"
+   let head text_slice body 1 3
+   let left need (text_find head "é" 0) "left" 1
+   let right need (text_rfind head "猫" 2) "right" 1
+   + (length (lines body)) (+ (text_len head) (+ left right)))
+if (text_eq op "list")
+  (let xs append (list i 2 2 3) 4
+   let ys map i xs x (* x 2)
+   let sum fold ys 0 total row item (+ total item)
+   let ends pair (need (at ys 0) "first" 1) (case (at ys 2) 0 last last)
+   + sum (+ (first ends) (second ends)))
+if (text_eq op "record")
+  (let item with mode (make Item mode (tag Mode cold) count n) (tag Mode hot)
+   match (get mode item) cold 0 hot (get count item) end)
+if (text_eq op "bytes")
+  (let data utf8_bytes (utf8_text (utf8_bytes "é"))
+   let table dict_put (dict y) "value" data
+   let value need (dict_get table "value") "lookup" 1
+   + (byte_len value) (need (byte_at value 1) "byte" 1))
+if (text_eq op "json")
+  (let item json_decode {Reading} (utf8_bytes "{\"price\":2.25,\"time\":\"1970-01-01T01:00:01+01:00\",\"extra\":true}")
+   let copy json_decode {Reading} (json_encode item)
+   + (q_units (q_from_units (q_units (get price copy)))) (unix_seconds (get time copy)))
+if (text_eq op "recover")
+  (catch E_DATA (catch E_DATA (fail_at "row" (some n) "/items/0") inner (raise inner)) err
+    (if (has_reason err "row") (need (input_line err) "line" 1) 0))
+if (text_eq op "parse") (case (int "17") 0 value value)
+if (text_eq op "nil") (case (nil i) n value value)
+if (text_eq op "scan") (need (at (scan pulse (list b 3 true false true)) 2) "scan" 1)
+if (text_eq op "loop") (while 0 x (< x n) (+ x 1))
+if (text_eq op "depth") (descend n)
+if (text_eq op "overflow") (+ 9223372036854775807 n)
+if (text_eq op "division") (map_error n)
+if (text_eq op "bounds")
+  (let text text_slice "é猫é" -5 99
+   let position need (text_rfind text "é" n) "absent" 1
+   + position (text_len (text_slice text 2 0)))
+fail "unknown"
+
+map_error n:i > i
+length (map i (list i 2 2 n) value (div 12 value))
+
+example integer_path main
+{"inputs":{"op":"arithmetic","n":5},"expect":14}
+
+example range_error main
+{"inputs":{"op":"arithmetic","n":9},"expect_error":{"code":"E_DATA"}}
+
+example unicode main
+{"inputs":{"op":"text","n":0},"expect":4}
+
+example lists main
+{"inputs":{"op":"list","n":0},"expect":30}
+
+example variant_value main
+{"inputs":{"op":"record","n":7},"expect":7}
+
+example octets main
+{"inputs":{"op":"bytes","n":0},"expect":171}
+
+example document main
+{"inputs":{"op":"json","n":0},"expect":2250001}
+
+example rethrow main
+{"inputs":{"op":"recover","n":3},"expect":3}
+
+example parsed_int main
+{"inputs":{"op":"parse","n":0},"expect":17}
+
+example missing main
+{"inputs":{"op":"nil","n":9},"expect":9}
+
+example scan_events main
+{"inputs":{"op":"scan","n":0},"expect":2}
+
+example loop_steps main
+{"inputs":{"op":"loop","n":4},"expect":4}
+
+example signed_overflow main
+{"inputs":{"op":"overflow","n":1},"expect_error":{"code":"E_OVERFLOW"}}
+
+example bad_map_element main
+{"inputs":{"op":"division","n":0},"expect_error":{"code":"E_DATA"}}
+
+example last_separator main
+{"inputs":{"op":"bounds","n":99},"expect":2}
+
+example empty_search_range main
+{"inputs":{"op":"bounds","n":-1},"expect_error":{"code":"E_DATA","reason":"absent","input_line":1}}

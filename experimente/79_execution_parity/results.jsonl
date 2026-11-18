@@ -1,0 +1,78 @@
+{"target":"values","example":"integer_path","observed":{"actual":14}}
+{"target":"values","example":"range_error","observed":{"error":{"file":"native/bootstrap/fixtures/parity/values.tide","code":"E_DATA","message":"Data rejected","line":22,"column":38,"reason":"range"}}}
+{"target":"values","example":"unicode","observed":{"actual":4}}
+{"target":"values","example":"lists","observed":{"actual":30}}
+{"target":"values","example":"variant_value","observed":{"actual":7}}
+{"target":"values","example":"octets","observed":{"actual":171}}
+{"target":"values","example":"document","observed":{"actual":2250001}}
+{"target":"values","example":"rethrow","observed":{"actual":3}}
+{"target":"values","example":"parsed_int","observed":{"actual":17}}
+{"target":"values","example":"missing","observed":{"actual":9}}
+{"target":"values","example":"scan_events","observed":{"actual":2}}
+{"target":"values","example":"loop_steps","observed":{"actual":4}}
+{"target":"values","example":"signed_overflow","observed":{"error":{"file":"native/bootstrap/fixtures/parity/values.tide","code":"E_OVERFLOW","message":"i64 overflow","line":55,"column":29}}}
+{"target":"values","example":"bad_map_element","observed":{"error":{"file":"native/bootstrap/fixtures/parity/values.tide","code":"E_DATA","message":"Division by zero","line":64,"column":37,"reason":"division_by_zero","map_index":1}}}
+{"target":"values","example":"last_separator","observed":{"actual":2}}
+{"target":"values","example":"empty_search_range","observed":{"error":{"file":"native/bootstrap/fixtures/parity/values.tide","code":"E_DATA","message":"A value is required","line":59,"column":17,"reason":"absent","input_line":1}}}
+{"target":"io","example":"line_exact","observed":{"actual":7}}
+{"target":"io","example":"line_short","observed":{"error":{"file":"native/bootstrap/fixtures/parity/io.tide","code":"E_LIMIT","message":"Stream byte budget exhausted","line":6,"column":4,"input_line":2}}}
+{"target":"io","example":"bad_last_line","observed":{"error":{"file":"native/bootstrap/fixtures/parity/io.tide","code":"E_DATA","message":"A value is required","line":6,"column":52,"reason":"invalid_integer","input_line":2}}}
+{"target":"io","example":"batch_exact","observed":{"actual":2}}
+{"target":"io","example":"batch_short","observed":{"error":{"file":"native/bootstrap/fixtures/parity/io.tide","code":"E_LIMIT","message":"Batch byte budget exhausted","line":7,"column":36}}}
+{"target":"io","example":"shared_snapshot","observed":{"actual":3}}
+{"target":"io","example":"write_file","observed":{"actual":5}}
+{"target":"io","example":"cursor_rows","observed":{"actual":7}}
+{"target":"io","example":"transaction_rollback","observed":{"actual":1}}
+{"target":"net","example":"get_at_limit","observed":{"actual":406}}
+{"target":"net","example":"get_over_limit","observed":{"error":{"file":"native/bootstrap/fixtures/parity/net.tide","code":"E_LIMIT","message":"HTTPS request failed","line":6,"column":4,"reason":"https_response_limit"}}}
+{"target":"net","example":"post_at_limit","observed":{"actual":424}}
+{"target":"limits","example":"allocation_last","observed":{"actual":510}}
+{"target":"limits","example":"allocation_over","observed":{"error":{"file":"native/bootstrap/fixtures/parity/limits.tide","code":"E_LIMIT","message":"Guest allocation budget exhausted","line":5,"column":38}}}
+{"target":"limits","example":"list_last","observed":{"actual":4096}}
+{"target":"limits","example":"list_over","observed":{"error":{"file":"native/bootstrap/fixtures/parity/limits.tide","code":"E_LIMIT","message":"Line count limit","line":14,"column":1}}}
+{"target":"depth","example":"depth_last","observed":{"actual":48}}
+{"target":"depth","example":"depth_over","observed":{"error":{"file":"native/bootstrap/fixtures/parity/limits.tide","code":"E_LIMIT","message":"Recursion depth limit","line":17,"column":21}}}
+{"target":"work","example":"exact_work","observed":{"actual":0}}
+{"target":"work","example":"one_more_step","observed":{"error":{"file":"native/bootstrap/fixtures/parity/work.tide","code":"E_LIMIT","message":"Work budget exhausted","line":5,"column":1}}}
+{"target":"pg","example":"bound_parameters","observed":{"actual":[{"sensor":"O’Neil","temperature":21.75,"observed":"2024-02-29T00:00:00Z","note":{"none":true}}]}}
+{"target":"order","example":"empty","observed":{"actual":{"applied":0,"duplicates":0}}}
+{"target":"order","example":"partial_and_full","observed":{"actual":{"applied":3,"duplicates":2}}}
+{"target":"order","example":"price_collision","observed":{"error":{"file":"model.tide","code":"E_DATA","message":"A value is required","line":24,"column":1,"reason":"event_conflict","input_line":1,"issue":{"path":"/events/1/id"}}}}
+{"target":"order","example":"position_collision","observed":{"error":{"file":"model.tide","code":"E_DATA","message":"A value is required","line":24,"column":1,"reason":"position_conflict","input_line":1,"issue":{"path":"/events/1/line"}}}}
+{"target":"order","example":"missing_position","observed":{"error":{"file":"model.tide","code":"E_DATA","message":"A value is required","line":24,"column":1,"reason":"unknown_position","input_line":0,"issue":{"path":"/events/0/line"}}}}
+{"target":"order","example":"over_cancel","observed":{"error":{"file":"model.tide","code":"E_DATA","message":"A value is required","line":24,"column":1,"reason":"over_cancel","input_line":1,"issue":{"path":"/events/1/qty"}}}}
+{"target":"order","example":"bad_qty","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/events/0/qty","expected":"i","actual":"string"}}}}
+{"target":"order","example":"long_id","observed":{"error":{"file":"model.tide","code":"E_DATA","message":"A value is required","line":24,"column":1,"reason":"invalid_identifier","input_line":0,"issue":{"path":"/events/0/id"}}}}
+{"target":"order","example":"exact_id","observed":{"actual":{"applied":1,"duplicates":0}}}
+{"target":"order","example":"bad_supplier","observed":{"error":{"file":"import.tide","code":"E_DATA","message":"Data rejected","line":6,"column":43,"reason":"invalid_identifier","issue":{"path":"/supplier"}}}}
+{"target":"rollback","example":"rollback","observed":{"actual":{"some":{"original":3,"outstanding":1,"value_cents":125}}}}
+{"target":"batch","example":"batch_at_limit","observed":{"actual":2}}
+{"target":"batch","example":"batch_over_limit","observed":{"error":{"file":"apps/orders/checks.tide","code":"E_LIMIT","message":"Batch byte budget exhausted","line":9,"column":11}}}
+{"target":"handler","example":"unknown","observed":{"actual":{"status":404,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}}
+{"target":"handler","example":"invalid","observed":{"actual":{"status":422,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}}
+{"target":"handler","example":"invalid_utf8","observed":{"actual":{"status":422,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}}
+{"target":"allocation","example":"allocation_exact","observed":{"actual":5110}}
+{"target":"allocation","example":"allocation_one_more_byte","observed":{"error":{"file":"native/bootstrap/fixtures/parity/allocation.tide","code":"E_LIMIT","message":"Guest allocation budget exhausted","line":6,"column":31}}}
+{"target":"tag","example":"lazy_tag","observed":{"actual":"oldest"}}
+{"target":"tag","example":"rejected_tag","observed":{"error":{"file":"native/bootstrap/fixtures/functions/variants.tide","code":"E_DATA","message":"Data rejected","line":19,"column":20,"reason":"unavailable"}}}
+{"target":"record","example":"switched","observed":{"actual":{"mode":"newest","first_id":19,"next_id":7}}}
+{"target":"pair","example":"nested","observed":{"actual":[[{"label":"🦊","pos":2},"waiting"],["a",3]]}}
+{"target":"report","example":"threshold","observed":{"actual":{"above":2,"peak":{"some":98}}}}
+{"target":"report","example":"empty","observed":{"actual":{"above":0,"peak":{"none":true}}}}
+{"target":"report","example":"invalid","observed":{"error":{"file":"vendor/measurements/1.3.0/package.tide","code":"E_DATA","message":"A value is required","line":9,"column":1,"reason":"invalid_integer","input_line":2}}}
+{"target":"report","example":"signed_limits","observed":{"actual":{"above":1,"peak":{"some":9223372036854775807}}}}
+{"target":"json_report","example":"thresholds","observed":{"actual":{"above":2,"peak":{"some":98}}}}
+{"target":"json_report","example":"empty","observed":{"actual":{"above":0,"peak":{"none":true}}}}
+{"target":"json_report","example":"missing","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/readings/0/sensor","expected":"t","actual":"missing"}}}}
+{"target":"json_report","example":"wrong_optional","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/readings/1/note","expected":"?t","actual":"boolean"}}}}
+{"target":"json_report","example":"escaped_key","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/limits/A~0~1B","expected":"i","actual":"null"}}}}
+{"target":"json_report","example":"invalid_unknown","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/future/bad/1","expected":"JSON","actual":"invalid JSON"}}}}
+{"target":"json_fields","example":"optional_and_unknown","observed":{"actual":{"readings":[{"sensor":"A","value":80,"note":{"none":true}},{"sensor":"B","value":90,"note":{"none":true}},{"sensor":"C","value":82,"note":{"some":"kühl"}}],"limits":{}}}}
+{"target":"json_fields","example":"duplicate","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_DATA","message":"Cannot decode JSON value","line":9,"column":1,"reason":"invalid_json","issue":{"path":"/limits","expected":"JSON","actual":"invalid JSON"}}}}
+{"target":"json_bytes","example":"invalid_utf8","observed":{"error":{"file":"vendor/jsoninput/2.0.0/package.tide","code":"E_UTF8","message":"Invalid UTF-8 in JSON document","line":9,"column":1,"issue":{"path":"","expected":"UTF-8","actual":"invalid bytes"}}}}
+{"target":"stream","example":"exact","observed":{"actual":{"above":2,"peak":{"some":98}}}}
+{"target":"stream","example":"empty","observed":{"actual":{"above":0,"peak":{"none":true}}}}
+{"target":"stream","example":"one_short","observed":{"error":{"file":"apps/report_packages/stream_report.tide","code":"E_LIMIT","message":"Stream byte budget exhausted","line":7,"column":1,"input_line":3}}}
+{"target":"stream","example":"invalid","observed":{"error":{"file":"vendor/measurements/1.3.0/package.tide","code":"E_DATA","message":"A value is required","line":9,"column":1,"reason":"invalid_integer","input_line":2}}}
+{"target":"stream","example":"trailing_cr","observed":{"error":{"file":"vendor/measurements/1.3.0/package.tide","code":"E_DATA","message":"A value is required","line":9,"column":1,"reason":"invalid_integer","input_line":1}}}
+{"target":"stream","example":"negative_budget","observed":{"error":{"file":"apps/report_packages/stream_report.tide","code":"E_LIMIT","message":"Invalid stream byte budget","line":7,"column":1,"input_line":1}}}

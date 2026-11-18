@@ -19,23 +19,25 @@ help.tide	  lock     print the release identity
 help.tide	
 help.tide	Options: -h, --help, --version
 help.tide	Use tide COMMAND --help for the arguments.
-help.check	usage: tide check [-h] [--json] file
+help.check	usage: tide check [-h] [--json] FILE
 help.check	
 help.check	positional arguments:
-help.check	  file
+help.check	  FILE
 help.check	
 help.check	options:
 help.check	  -h, --help  show this help message and exit
 help.check	  --json      JSON output (default)
-help.test	usage: tide test [-h] [--json] [--incremental | --diff] [--explain[=executed|nodes|candidates]] [--probes JSONL] [--pairs] [--probe-range JSON] file
+help.test	usage: tide test FILE [-h] [--json] [--example NAME [--pg NAME=DSN] | --incremental | --diff] [--explain[=executed|nodes|candidates]] [--probes JSONL] [--pairs] [--probe-range JSON]
 help.test	
 help.test	positional arguments:
-help.test	  file
+help.test	  FILE
 help.test	
 help.test	options:
 help.test	  -h, --help  show this help message and exit
 help.test	  --json      JSON output (default)
 help.test	  --incremental         read test or full requests from stdin, one JSON reply per line
+help.test	  --example NAME         check one example and return its value or expected diagnostic
+help.test	  --pg NAME=DSN          bind a PostgreSQL grant for a selected example
 help.test	  --diff      show the first differing result field, index, length, tag or long-text codepoint
 help.test	  --explain   include the input and reachable definitions for the first failed example
 help.test	  --explain=executed   show observed branches and definitions entered for that input
@@ -47,10 +49,10 @@ help.test	                         generate probes from the target's requires co
 help.test	  --probe-range JSON     generate probes for green pairs using inclusive [min,max] per integer parameter
 help.run	usage: tide run [-h] [--json] [--call FUNCTION] [--inputs JSON]
 help.run	                [--read NAME=PATH] [--db NAME=PATH] [--https NAME=ORIGIN] [--write NAME=PATH] [--pg NAME=DSN]
-help.run	                file
+help.run	                FILE
 help.run	
 help.run	positional arguments:
-help.run	  file
+help.run	  FILE
 help.run	
 help.run	options:
 help.run	  -h, --help        show this help message and exit
@@ -62,19 +64,19 @@ help.run	  --pg NAME=DSN        grant a PostgreSQL connection
 help.run	  --https NAME=ORIGIN  grant HTTPS access to one origin
 help.run	  --db NAME=PATH      grant read/write access to one SQLite database
 help.run	  --read NAME=PATH    grant read access to a regular UTF-8 file
-help.play	usage: tide play [-h] [--document PATH] file
+help.play	usage: tide play [-h] [--document PATH] FILE
 help.play	
 help.play	positional arguments:
-help.play	  file
+help.play	  FILE
 help.play	
 help.play	options:
 help.play	  -h, --help       show this help message and exit
 help.play	  --document PATH  open one UTF-8 document for interactive editing
-help.context	usage: tide context [-h] [--json] --function FUNCTION file
+help.context	usage: tide context [-h] [--json] --function FUNCTION FILE
 help.context	                    [--call-sites | [--node NODE] [--example-index | --example NAME]]
 help.context	
 help.context	positional arguments:
-help.context	  file
+help.context	  FILE
 help.context	
 help.context	options:
 help.context	  -h, --help           show this help message and exit
@@ -84,10 +86,10 @@ help.context	  --call-sites         list each resolved call with caller, file, l
 help.context	  --node NODE          revision-local line:column
 help.context	  --example-index      list affected example names, targets and fingerprints
 help.context	  --example NAME       include one affected example in full
-help.hole	usage: tide hole [-h] [--json] --function FUNCTION --node NODE file
+help.hole	usage: tide hole [-h] [--json] --function FUNCTION --node NODE FILE
 help.hole	
 help.hole	positional arguments:
-help.hole	  file
+help.hole	  FILE
 help.hole	
 help.hole	options:
 help.hole	  -h, --help           show this help message and exit
@@ -96,10 +98,10 @@ help.hole	  --function FUNCTION
 help.hole	  --node NODE          revision-local line:column
 help.trace	usage: tide trace [-h] [--json] --example EXAMPLE --step STEP
 help.trace	                  [--fields FIELDS]
-help.trace	                  file
+help.trace	                  FILE
 help.trace	
 help.trace	positional arguments:
-help.trace	  file
+help.trace	  FILE
 help.trace	
 help.trace	options:
 help.trace	  -h, --help         show this help message and exit
@@ -109,10 +111,10 @@ help.trace	  --step STEP
 help.trace	  --fields FIELDS    comma-separated state fields
 help.edit	usage: tide edit [-h] [--json] --base BASE (--edits EDITS | --source SOURCE)
 help.edit	                 [--write] [--change-examples]
-help.edit	                 file
+help.edit	                 FILE
 help.edit	
 help.edit	positional arguments:
-help.edit	  file
+help.edit	  FILE
 help.edit	
 help.edit	options:
 help.edit	  -h, --help         show this help message and exit
@@ -122,10 +124,10 @@ help.edit	  --edits EDITS      JSON array of node/op or node/replace edits acros
 help.edit	  --source SOURCE    complete candidate file for coordinated changes
 help.edit	  --write            commit the checked changes as one project transaction
 help.edit	  --change-examples
-help.fmt	usage: tide fmt [-h] file
+help.fmt	usage: tide fmt [-h] FILE
 help.fmt	
 help.fmt	positional arguments:
-help.fmt	  file
+help.fmt	  FILE
 help.fmt	
 help.fmt	options:
 help.fmt	  -h, --help  show this help message and exit

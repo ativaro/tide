@@ -231,7 +231,7 @@ fold params (list {EvalValue} 0) acc row key
   if (text_eq typ "n")
     (let mock read_argument data param_path token "%&it" (get schemas fn)
      append acc (need (get value mock) (diagnosis file loc "E_INPUT" "HTTPS examples require a path map of [status,body] pairs") 0))
-  if (text_eq typ "p") fail (diagnosis file loc "E_CAPABILITY" "Use a host PostgreSQL grant for database integration tests")
+  if (text_eq typ "p") (if (text_eq token "\":host:\"") (append acc (number_value 0)) (fail (diagnosis file loc "E_CAPABILITY" "PostgreSQL examples require :host: and a separate --pg grant")))
   if (text_eq typ "w") (if (text_eq token "\":memory:\"") (append acc (with present (number_value 0) true)) (fail (diagnosis file loc "E_CAPABILITY" "Write examples require :memory:")))
   if (text_eq typ "d")
     (if (text_eq token "\":memory:\"") (append acc (text_value ":memory:")) (fail (diagnosis file loc "E_CAPABILITY" "Database examples require :memory:")))

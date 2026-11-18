@@ -1,6 +1,6 @@
 # Checked operator changes · TIDE and Python-AST
 
-TIDE checks operator changes now locally against all existing examples. `tide test DATEI --diff --explain=candidates` provides the finding and the passed candidates. The search works with one change of the checked tree in memory per step. A later `edit --edits` checks the actual source change once more against the same revision. [Workbench](../../workbench/README.md#repair-a-node)
+TIDE checks operator changes now locally against all existing examples. `tide test FILE --diff --explain=candidates` provides the finding and the passed candidates. The search works with one change of the checked tree in memory per step. A later `edit --edits` checks the actual source change once more against the same revision. [Workbench](../../workbench/README.md#repair-a-node)
 
 | Interface | Successes / Runs | Success Rate | Model Requests | Total Tokens | Tokens per Success |
 |---|---:|---:|---:|---:|---:|

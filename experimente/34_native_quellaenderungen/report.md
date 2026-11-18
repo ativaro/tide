@@ -1,6 +1,6 @@
 # Fully check and write native source changes
 
-`tide edit DATEI --base REV --source KANDIDAT` checks a new entry file in the original project. An agent can prepare the candidate in a different directory, import additional modules, and test the entire change before writing. `--write` takes over the checked text. The previous native starter reported `E_BACKEND` for both calls. [Executable balance example](../../README.md#check-and-accept-a-change)
+`tide edit FILE --base REV --source CANDIDATE` checks a new entry file in the original project. An agent can prepare the candidate in a different directory, import additional modules, and test the entire change before writing. `--write` takes over the checked text. The previous native starter reported `E_BACKEND` for both calls. [Executable balance example](../../README.md#check-and-accept-a-change)
 
 ## What an adoption requires
 

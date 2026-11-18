@@ -1,0 +1,48 @@
+record Row
+n:i
+
+main op:t input:r db:d output:w cap:i > i
+if (text_eq op "lines")
+  (fold_lines input cap 0 total row line (+ total (need (int line) "invalid_integer" row)))
+if (text_eq op "batch") (byte_len (read_batch input cap))
+if (text_eq op "snapshot") (+ (text_len (read input)) (byte_len (read_bytes input)))
+if (text_eq op "export") (write_bytes output (utf8_bytes "é猫"))
+if (text_eq op "cursor")
+  (fold_rows {Row} db "SELECT 2 AS n UNION ALL SELECT 5" (dict i) 0 total row item (+ total (get n item)))
+if (text_eq op "rollback")
+  (let schema sql_exec db "CREATE TABLE items(n INTEGER NOT NULL UNIQUE)" (dict i)
+   let saved sql_exec db "INSERT INTO items VALUES(1)" (dict i)
+   let caught catch E_DATA (transaction db (duplicates db)) err (if (has_reason err "sqlite_constraint") 0 (raise err))
+   fold (sql_query {Row} db "SELECT n FROM items ORDER BY n" (dict i)) 0 total row item (+ total (get n item)))
+fail "unknown"
+
+duplicates db:d > i
+let one sql_exec db "INSERT INTO items VALUES(:n)" (dict_put (dict i) "n" 5)
+sql_exec db "INSERT INTO items VALUES(:n)" (dict_put (dict i) "n" 5)
+
+example line_exact main
+{"inputs":{"op":"lines","input":"2\r\n5","db":":memory:","output":":memory:","cap":4},"expect":7}
+
+example line_short main
+{"inputs":{"op":"lines","input":"2\r\n5","db":":memory:","output":":memory:","cap":3},"expect_error":{"code":"E_LIMIT","input_line":2}}
+
+example bad_last_line main
+{"inputs":{"op":"lines","input":"2\nx","db":":memory:","output":":memory:","cap":3},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}
+
+example batch_exact main
+{"inputs":{"op":"batch","input":"é","db":":memory:","output":":memory:","cap":2},"expect":2}
+
+example batch_short main
+{"inputs":{"op":"batch","input":"é","db":":memory:","output":":memory:","cap":1},"expect_error":{"code":"E_LIMIT"}}
+
+example shared_snapshot main
+{"inputs":{"op":"snapshot","input":"é","db":":memory:","output":":memory:","cap":2},"expect":3}
+
+example write_file main
+{"inputs":{"op":"export","input":"","db":":memory:","output":":memory:","cap":0},"expect":5}
+
+example cursor_rows main
+{"inputs":{"op":"cursor","input":"","db":":memory:","output":":memory:","cap":0},"expect":7}
+
+example transaction_rollback main
+{"inputs":{"op":"rollback","input":"","db":":memory:","output":":memory:","cap":0},"expect":1}

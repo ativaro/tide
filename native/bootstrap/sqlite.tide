@@ -8,7 +8,8 @@ if (eq (+ (length (typed_grants fn "d")) (length (typed_grants fn "p"))) 0) args
 fold args (list {EvalValue} 0) bound row arg
   let typ need (at (get types fn) (- row 1)) "sql_argument" 0
   if (text_eq typ "p")
-    (let db need (bootstrap_pg_open (get text arg)) (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot open granted PostgreSQL database") 0
+    (if (text_eq (get text arg) "") fail (diagnosis (get file fn) (get loc fn) "E_CAPABILITY" "Supply --pg for this PostgreSQL example")
+     let db need (bootstrap_pg_open (get text arg)) (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot open granted PostgreSQL database") 0
      append bound (with handle (number_value 0) (some db)))
   if (not (text_eq typ "d")) (append bound arg)
   let db need (bootstrap_sql_open (get text arg)) (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot open granted SQLite database") 0

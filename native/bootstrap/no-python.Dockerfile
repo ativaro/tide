@@ -45,6 +45,8 @@ RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     set -eu; test -z "$(command -v c++)"; test -z "$(command -v make)"; test -z "$(command -v python3)"; \
     tide --version > /tmp/version; grep -Eq '^TIDE [0-9]' /tmp/version; \
     tide test --help > /tmp/help; grep -Fq -- '--explain=executed' /tmp/help; \
+    grep -Fq "usage: tide test FILE" /tmp/help; \
+    test "$(tide test /fixtures/inclusive.tide --example descending)" = '{"passed":1,"actual":1}'; \
     tide lock --json > /tmp/installed.lock; cmp /tide.lock /tmp/installed.lock; \
     tide describe '<=' --project /fixtures/inclusive.tide | grep -Fq '"operation":"<="'; \
     tide describe '>=' --project /fixtures/inclusive.tide | grep -Fq '"operation":">="'; \
