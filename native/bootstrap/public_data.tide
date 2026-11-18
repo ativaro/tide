@@ -68,7 +68,48 @@ pointer_child prefix (get key frame)
 record PublicCursor
 syntax:{JsonStream} projection:{Projection} done:b
 
+record ScalarFields
+syntax:{JsonStream} frame:{ValueFrame} closed:b
+
+scalar_field_step prior:{ScalarFields} source:t decl:{SchemaType} > {ScalarFields}
+let next stream_step (get syntax prior) source (text_len source) internal_json true
+let event get event next
+let frame get frame prior
+if (text_eq event "close") (make ScalarFields syntax next frame frame closed true)
+if (text_eq event "") (with syntax prior next)
+let token get token next
+let op get kind token
+if (not (or (text_eq op "string") (text_eq op "scalar"))) fail "general_json_value"
+let key get field next
+case (entry_at (get fields decl) key) (with syntax prior next) index
+if (or (> (text_len key) 4096) (eq (length (get values frame)) 4096)) fail "general_json_limit"
+let expected need (at (get types decl) index) "json_field_type" 0
+let optional text_eq (text_slice expected 0 1) "?"
+let typ if optional (text_slice expected 1 (text_len expected)) expected
+let value if (and optional (and (text_eq op "scalar") (text_eq (get value token) "null"))) (number_value 0)
+  (let item need (decoded_atom (make JsonValueToken op op key key value (get value token)) typ) "general_json_atom" 0
+   if optional (with present item true) item)
+let filled with names (with values frame (append (get values frame) value)) (append (get names frame) key)
+make ScalarFields syntax next frame filled closed false
+
+scalar_record prior:{PublicCursor} source:t decl:{SchemaType} > {PublicCursor}
+let state get projection prior
+let reader get reader state
+let start make ScalarFields syntax (get syntax prior) frame (get frame reader) closed false
+let fields bootstrap_while start item (not (get closed item)) (scalar_field_step item source decl)
+let result project_close (with reader state (with frame reader (get frame fields)))
+make PublicCursor syntax (get syntax fields) projection result done (not (text_eq (get issue result) ""))
+
 public_step prior:{PublicCursor} source:t kind:t schemas:{Declarations} > {PublicCursor}
+let syntax get syntax prior
+let state get projection prior
+let frame get frame syntax
+if (and (eq (get skipped state) 0) (and (text_eq (get kind frame) "object") (text_eq (get phase frame) "first")))
+  (case (get decl (get frame (get reader state))) (public_token prior source kind schemas) decl
+   bootstrap_recover (scalar_record prior source decl) (public_token prior source kind schemas))
+public_token prior source kind schemas
+
+public_token prior:{PublicCursor} source:t kind:t schemas:{Declarations} > {PublicCursor}
 let syntax get syntax prior
 let state get projection prior
 let origin with fixed internal_json "public_json"

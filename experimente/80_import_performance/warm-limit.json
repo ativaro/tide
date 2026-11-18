@@ -1,0 +1,29 @@
+{
+  "case": "mixed1000",
+  "input_sha256": "38e318bee127a7440a61ef696623364726f85e4e50b9dd34e3bb376458dbd8df",
+  "observation": "Linux x86-64, GDB at C++ exception dispatch in the compiled TIDE service, UTF-32 Failure.reason",
+  "arms": {
+    "pre": {
+      "binary_sha256": "0a2cbe2ffb0fb9a1eb4b54833ec56c281990e43bf8793c9efe187e83ffe4dfd6",
+      "response_body": "Request failed",
+      "diagnostic": {
+        "file": "model.tide",
+        "code": "E_LIMIT",
+        "message": "Work budget exhausted",
+        "line": 20,
+        "column": 38
+      }
+    },
+    "post": {
+      "binary_sha256": "837bcd84fb79bdde5ab9bbee2332bea67c45d12504ba5306cef15b650846bac2",
+      "response_body": "Request failed",
+      "diagnostic": {
+        "file": "model.tide",
+        "code": "E_LIMIT",
+        "message": "Work budget exhausted",
+        "line": 20,
+        "column": 38
+      }
+    }
+  }
+}

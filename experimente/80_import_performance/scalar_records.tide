@@ -1,0 +1,38 @@
+record Row
+id:i note:?t
+
+main payload:t > *{Row}
+json_decode *{Row} (utf8_bytes payload)
+
+example fields main
+{"inputs":{"payload":"[ { \"note\" : null, \"extra\": false, \"id\": 1 },{\"id\":2}, {\"id\":3,\"note\":\"猫\"} ]"},"expect":[{"id":1,"note":{"none":true}},{"id":2,"note":{"none":true}},{"id":3,"note":{"some":"猫"}}]}
+
+example nested_unknown main
+{"inputs":{"payload":"[{\"id\":1,\"n\":[{},4],\"note\":\"ok\"}]"},"expect":[{"id":1,"note":{"some":"ok"}}]}
+
+example duplicate_unknown main
+{"inputs":{"payload":"[{\"id\":1,\"x\":2,\"\\u0078\":3}]"},"expect_error":{"code":"E_DATA","path":"/0/x"}}
+
+example late_type main
+{"inputs":{"payload":"[{\"id\":1},{\"note\":false,\"id\":2}]"},"expect_error":{"code":"E_DATA","path":"/1/note"}}
+
+example malformed_scalar main
+{"inputs":{"payload":"[{\"id\":1,\"note\":truX}]"},"expect_error":{"code":"E_DATA","path":"/0/note"}}
+
+example missing_required main
+{"inputs":{"payload":"[{\"note\":\"ok\"}]"},"expect_error":{"code":"E_DATA","path":"/0/id"}}
+
+example trailing_comma main
+{"inputs":{"payload":"[{\"id\":1,}]"},"expect_error":{"code":"E_DATA","path":"/0"}}
+
+example numeric_unknown main
+{"inputs":{"payload":"[ {\n\t\"unused\" : -12.345e+09 , \"id\":7 } ]"},"expect":[{"id":7,"note":{"none":true}}]}
+
+example invalid_exponent main
+{"inputs":{"payload":"[{\"id\":1,\"unused\":14e+}]"},"expect_error":{"code":"E_DATA"}}
+
+example escaped_control main
+{"inputs":{"payload":"[{\"id\":1,\"note\":\"a\\nb\"}]"},"expect":[{"id":1,"note":{"some":"a\nb"}}]}
+
+example unescaped_control main
+{"inputs":{"payload":"[{\"id\":1,\"note\":\"a\tb\"}]"},"expect_error":{"code":"E_DATA","path":"/0/note"}}

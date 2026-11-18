@@ -1,41 +1,30 @@
 use json_text
 
-json_digits source:t pos:i chars:t > i
-let n - (text_len source) pos
-if (or (eq n 0) (not (white (text_slice source pos (+ pos 1)) chars))) pos
-if (or (eq n 1) (not (white (text_slice source (+ pos 1) (+ pos 2)) chars))) (+ pos 1)
-let start + pos 2
-let short fold (indices (if (> n 18) 16 (- n 2))) start stop row unused
-  let i + start (- row 1)
-  if (and (eq stop i) (white (text_slice source i (+ i 1)) chars)) (+ i 1) stop
-if (or (< short (+ pos 18)) (eq short (text_len source))) short
-fold (indices (chunk_count (- (text_len source) short))) short prev page unused
-  let base + short (* (- page 1) 2048)
-  if (< prev base) prev
-  let left - (text_len source) base
-  fold (indices (if (> left 2048) 2048 left)) prev acc row skip
-    let i + base (- row 1)
-    if (and (eq acc i) (white (text_slice source i (+ i 1)) chars)) (+ i 1) acc
+ascii_digit code:i > b
+and (>= code 48) (<= code 57)
+
+json_digits source:t pos:i > i
+bootstrap_while pos idx (and (< idx (text_len source)) (ascii_digit (bootstrap_code_at source idx))) (+ idx 1)
 
 json_number_end source:t pos:i > i
 let start if (text_eq (text_slice source pos (+ pos 1)) "-") (+ pos 1) pos
 let digits "0123456789"
 let first_digit text_slice source start (+ start 1)
 if (or (text_eq first_digit "") (not (white first_digit digits))) pos
-let whole if (text_eq first_digit "0") (+ start 1) (json_digits source start digits)
+let whole if (text_eq first_digit "0") (+ start 1) (json_digits source start)
 let fraction if (text_eq (text_slice source whole (+ whole 1)) ".")
-  (let stop json_digits source (+ whole 1) digits
+  (let stop json_digits source (+ whole 1)
    if (> stop (+ whole 1)) stop whole) whole
 let exponent text_slice source fraction (+ fraction 1)
 if (not (or (text_eq exponent "e") (text_eq exponent "E"))) fraction
 let sign text_slice source (+ fraction 1) (+ fraction 2)
 let from + fraction (if (or (text_eq sign "+") (text_eq sign "-")) 2 1)
-let end json_digits source from digits
+let end json_digits source from
 if (> end from) end fraction
 
 skip_json_space source:t pos:i > i
 if (or (not (< pos (text_len source))) (> (bootstrap_code_at source pos) 32)) pos
-json_digits source pos " \t\n\r"
+bootstrap_while pos idx (and (< idx (text_len source)) (white (text_slice source idx (+ idx 1)) " \t\n\r")) (+ idx 1)
 
 stream_token source:t pos:i origin:{JsonOrigin} > {JsonToken}
 let ch text_slice source pos (+ pos 1)

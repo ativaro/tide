@@ -1,0 +1,11 @@
+{"example":"fields","result":{"actual":[{"id":1,"note":{"none":true}},{"id":2,"note":{"none":true}},{"id":3,"note":{"some":"猫"}}]}}
+{"example":"nested_unknown","result":{"actual":[{"id":1,"note":{"some":"ok"}}]}}
+{"example":"duplicate_unknown","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0/x","expected":"JSON","actual":"invalid JSON"}}}}
+{"example":"late_type","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/1/note","expected":"?t","actual":"boolean"}}}}
+{"example":"malformed_scalar","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0/note","expected":"JSON","actual":"invalid JSON"}}}}
+{"example":"missing_required","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0/id","expected":"i","actual":"missing"}}}}
+{"example":"trailing_comma","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0","expected":"JSON","actual":"invalid JSON"}}}}
+{"example":"numeric_unknown","result":{"actual":[{"id":7,"note":{"none":true}}]}}
+{"example":"invalid_exponent","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0","expected":"JSON","actual":"invalid JSON"}}}}
+{"example":"escaped_control","result":{"actual":[{"id":1,"note":{"some":"a\nb"}}]}}
+{"example":"unescaped_control","result":{"error":{"file":"experimente/80_import_performance/scalar_records.tide","code":"E_DATA","message":"Cannot decode JSON value","line":5,"column":1,"reason":"invalid_json","issue":{"path":"/0/note","expected":"JSON","actual":"invalid JSON"}}}}

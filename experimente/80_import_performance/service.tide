@@ -1,0 +1,9 @@
+use import
+
+record ImportReply
+status:i headers:%t body:y
+
+serve method:t path:t headers:%t body:y db:d > {ImportReply}
+let doc jsoninput.decode body
+let receipt import_document db doc
+make ImportReply status 200 headers (dict t) body (json_encode receipt)

@@ -78,6 +78,8 @@ Stage 9 matched the full checker on leaf, interface and package edits in a 33-ex
 
 Stage 10 checked all 75 catalog operations across development execution, named examples and AOT on Linux x86-64. All 78 cases agreed, including the first rejected work unit and allocation byte. [Coverage matrix and observations](../experimente/79_execution_parity/report.md)
 
+Stage 11 reduced the typed JSON phase of a 1,000-event import from 20.52 to 16.82 ms. The complete native import took 39.09 ms against CPython at 19.93 ms. At eight events the native TIDE process took 5.19 ms against 16.79 ms. [Profile, peak memory and execution modes](../experimente/80_import_performance/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

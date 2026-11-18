@@ -83,7 +83,7 @@ let raw text_slice source (+ pos 1) end
 let plain case (text_find raw "\\" 0) true found false
 if (and plain (< end (text_len source)))
   (let control if (< (text_len raw) 32)
-      (fold (indices (text_len raw)) false found row unused or found (< (bootstrap_code_at raw (- row 1)) 32))
+      (< (bootstrap_while 0 idx (and (< idx (text_len raw)) (>= (bootstrap_code_at raw idx) 32)) (+ idx 1)) (text_len raw))
       (includes_break raw control_chars)
    if (not control) (make JsonToken kind "string" value raw end (+ end 1))
    let invalid json_string_page source pos origin (+ pos 1)

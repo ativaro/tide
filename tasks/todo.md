@@ -14,7 +14,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 8. Commit revision-bound edits across multiple files and recover after process death. [Fault tests and results](../experimente/77_atomic_edits/report.md)
 - [x] 9. Check affected bodies and examples and measure time to green against a clean full check. [Stage 9 results](../experimente/78_incremental_feedback/report.md)
 - [x] 10. Align the semantics of development, tests, and AOT. [Coverage matrix and results](../experimente/79_execution_parity/report.md)
-- [ ] 11. Improve the largest runtime bottleneck of the applications
+- [x] 11. Profile the order importer and reduce typed JSON decoding time on large batches. [Timings, memory and error checks](../experimente/80_import_performance/report.md)
 - [ ] 12. API-service acceptance for duplicate delivery and restart
 - [ ] 13. Prove load limiting and termination
 - [ ] 14. Distribute packages independently and reproducibly

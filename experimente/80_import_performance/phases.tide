@@ -1,0 +1,25 @@
+use import
+
+startup > i
+0
+
+read_size input:r > i
+byte_len (read_batch input 4194304)
+
+utf8_size input:r > i
+text_len (utf8_text (read_batch input 4194304))
+
+decode_size input:r > i
+let doc jsoninput.load input (make jsoninput.ReadBudget max_bytes 4194304)
+length (get events doc)
+
+checked_quantity input:r > i
+let doc jsoninput.load input (make jsoninput.ReadBudget max_bytes 4194304)
+let supplier get supplier doc
+if (not (identifier supplier)) (fail_at "invalid_identifier" (nil i) "/supplier")
+let events get events doc
+if (> (length events) 1000) (fail_at "too_many_events" (nil i) "/events")
+fold events 0 total pos item
+  let valid validate item (- pos 1)
+  let entry entry_for supplier item
+  + total (get qty entry)
