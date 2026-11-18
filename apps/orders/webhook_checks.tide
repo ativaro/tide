@@ -1,0 +1,58 @@
+use webhook
+
+record Deliveries
+order:t conflict:t cancel:t rejected:t
+
+wire supplier:t events:*{Event} > t
+utf8_text (json_encode (make Document supplier supplier events events))
+
+requests supplier:t > {Deliveries}
+let sale make Event id "E'1 Ω" kind "order" order "PO7" line "1" qty 3 sku (some "Pièce猫") unit_cents (some 125)
+let cancel make Event id "C1" kind "cancel" order "PO7" line "1" qty 2 sku (nil t) unit_cents (nil i)
+let another with line (with id sale "E2") "2"
+let too_many with qty (with id cancel "C2") 4
+make Deliveries order (wire supplier (list {Event} 1 sale)) conflict (wire supplier (list {Event} 1 (with unit_cents sale (some 126))))
+  cancel (wire supplier (list {Event} 1 cancel)) rejected (wire supplier (list {Event} 2 another too_many))
+
+record StoredLine
+supplier:t ord:t line:t sku:t original:i outstanding:i cents:i value_cents:i
+
+record DbState
+events:*{Entry} positions:*{StoredLine}
+
+expected supplier:t phase:t > {DbState}
+if (text_eq phase "empty") (make DbState events (list {Entry} 0) positions (list {StoredLine} 0))
+let sale make Entry supplier supplier id "E'1 Ω" kind "order" ord "PO7" line "1" qty 3 sku "Pièce猫" cents 125
+let line make StoredLine supplier supplier ord "PO7" line "1" sku "Pièce猫" original 3 outstanding 3 cents 125 value_cents 375
+if (text_eq phase "booked") (make DbState events (list {Entry} 1 sale) positions (list {StoredLine} 1 line))
+if (not (text_eq phase "cancelled")) (fail "unknown_state")
+let cancel make Entry supplier supplier id "C1" kind "cancel" ord "PO7" line "1" qty 2 sku "" cents 0
+make DbState events (list {Entry} 2 cancel sale) positions (list {StoredLine} 1 (with value_cents (with outstanding line 1) 125))
+
+example empty_state expected
+{"inputs":{"supplier":"test","phase":"empty"},"expect":{"events":[],"positions":[]}}
+
+check_database supplier:t phase:t observed:{DbState} > b
+text_eq (utf8_text (json_encode observed)) (utf8_text (json_encode (expected supplier phase)))
+
+check_response outcome:t status:i body:t > b
+if (or (text_eq outcome "created") (text_eq outcome "duplicate"))
+  (let applied text_eq outcome "created"
+   let receipt json_decode {Receipt} (utf8_bytes body)
+   and (eq status (if applied 201 200))
+     (and (eq (get applied receipt) (if applied 1 0)) (eq (get duplicates receipt) (if applied 0 1))))
+let problem_value json_decode {HookError} (utf8_bytes body)
+let index case (get event problem_value) -1 pos pos
+if (text_eq outcome "database_failure") (and (eq status 503) (and (text_eq (get error problem_value) outcome) (eq index -1)))
+if (text_eq outcome "invalid_json") (and (eq status 422) (and (text_eq (get error problem_value) outcome) (eq index -1)))
+let wanted if (text_eq outcome "over_cancel") 1 (if (text_eq outcome "event_conflict") 0 (fail "unknown_outcome"))
+and (eq status 409) (and (text_eq (get error problem_value) outcome) (eq index wanted))
+
+check_race created:i duplicates:i > b
+and (eq created 1) (eq duplicates 7)
+
+example duplicate_has_no_second_effect check_response
+{"inputs":{"outcome":"duplicate","status":200,"body":"{\"applied\":1,\"duplicates\":0}"},"expect":false}
+
+example conflicting_price check_response
+{"inputs":{"outcome":"event_conflict","status":409,"body":"{\"error\":\"event_conflict\",\"event\":0}"},"expect":true}

@@ -24,6 +24,8 @@ printf '%s\n' '{"supplier":"ACME","events":[{"id":"E1","kind":"order","order":"O
 
 A cancellation carries its own event ID. A failed event rolls back the entire document, including earlier successful events. [Order-import contract](experimente/72_bestellimport_basis/order-import.md) · [Restart and rollback cases](experimente/73_bestellimport/restart_cases.tide)
 
+The PostgreSQL webhook accepts the same order document at `POST /orders`. A sender can repeat a request after losing its receipt. Reusing the supplier and event ID applies each booking once. [Run the webhook and reproduce the Stage 12 fault tests](experimente/81_order_webhook/report.md)
+
 ## Other applications
 
 The [JSON Measurement Report](apps/report_packages/json_report.tide) imports measurement values with optional notes and a dictionary for sensor-dependent thresholds. The importer runs with `tide run` and as a standalone AOT program.

@@ -5,6 +5,7 @@ check-language-io: checker catalog aot-runtime
 	f=native/bootstrap/fixtures/functions; \
 	for pair in api_values:9 exports:3 iteration:7; do test "$$(./tide test "$$f/$${pair%:*}.tide")" = "{\"passed\":$${pair#*:}}"; done; \
 	test "$$(./tide test apps/report_packages/measurement_service.tide)" = '{"passed":3}'; \
+	test "$$(./tide test apps/orders/webhook_checks.tide)" = '{"passed":3}'; \
 	./tide build --aot "$$f/exports.tide" "$$tmp/export"; \
 	for mode in run aot; do \
 	    if [ "$$mode" = run ]; then set -- ./tide run "$$f/exports.tide"; else set -- "$$tmp/export"; fi; \

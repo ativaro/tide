@@ -1,0 +1,54 @@
+use model
+
+prepare pg:p > i
+let begun pg_exec pg "BEGIN" (list ?t 0)
+let namespace pg_exec pg "CREATE SCHEMA IF NOT EXISTS order_webhook" (list ?t 0)
+let ledger pg_exec pg "CREATE TABLE IF NOT EXISTS order_webhook.events(supplier text COLLATE \"C\" NOT NULL,id text COLLATE \"C\" NOT NULL,kind text NOT NULL,ord text COLLATE \"C\" NOT NULL,line text COLLATE \"C\" NOT NULL,qty bigint NOT NULL,sku text COLLATE \"C\" NOT NULL,cents bigint NOT NULL,PRIMARY KEY(supplier,id))" (list ?t 0)
+let positions pg_exec pg "CREATE TABLE IF NOT EXISTS order_webhook.positions(supplier text COLLATE \"C\" NOT NULL,ord text COLLATE \"C\" NOT NULL,line text COLLATE \"C\" NOT NULL,sku text COLLATE \"C\" NOT NULL,original bigint NOT NULL,outstanding bigint NOT NULL CHECK(outstanding BETWEEN 0 AND original),cents bigint NOT NULL,PRIMARY KEY(supplier,ord,line))" (list ?t 0)
+pg_exec pg "COMMIT" (list ?t 0)
+
+record ExistsRow
+found:b
+
+pg_integer n:i > ?t
+some (utf8_text (json_encode n))
+
+book pg:p item:{Entry} index:i > i
+let supplier some (get supplier item)
+let ord some (get ord item)
+let line some (get line item)
+let qty pg_integer (get qty item)
+let sku some (get sku item)
+let cents pg_integer (get cents item)
+let event list ?t 8 supplier (some (get id item)) (some (get kind item)) ord line qty sku cents
+let inserted pg_exec pg "INSERT INTO order_webhook.events(supplier,id,kind,ord,line,qty,sku,cents) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(supplier,id) DO NOTHING" event
+if (eq inserted 0)
+  (let rows pg_query {ExistsRow} pg "SELECT EXISTS(SELECT 1 FROM order_webhook.events WHERE supplier=$1 AND id=$2 AND kind=$3 AND ord=$4 AND line=$5 AND qty=$6 AND sku=$7 AND cents=$8) AS found" event
+   if (get found (need (at rows 0) "lookup" 0)) 0 (reject index "/id" "event_conflict"))
+if (text_eq (get kind item) "order")
+  (let saved pg_exec pg "INSERT INTO order_webhook.positions(supplier,ord,line,sku,original,outstanding,cents) VALUES($1,$2,$3,$4,$5,$5,$6) ON CONFLICT(supplier,ord,line) DO NOTHING" (list ?t 6 supplier ord line sku qty cents)
+   if (eq saved 1) 1 (reject index "/line" "position_conflict"))
+let changed pg_exec pg "UPDATE order_webhook.positions SET outstanding=outstanding-$4 WHERE supplier=$1 AND ord=$2 AND line=$3 AND outstanding>=$4" (list ?t 4 supplier ord line qty)
+if (eq changed 1) 1
+let rows pg_query {ExistsRow} pg "SELECT EXISTS(SELECT 1 FROM order_webhook.positions WHERE supplier=$1 AND ord=$2 AND line=$3) AS found" (list ?t 3 supplier ord line)
+if (get found (need (at rows 0) "lookup" 0)) (reject index "/qty" "over_cancel") (reject index "/line" "unknown_position")
+
+book_events pg:p doc:{Document} > {Receipt}
+let events get events doc
+let applied fold events 0 count pos ev
+  let index - pos 1
+  let valid validate ev index
+  + count (book pg (entry_for (get supplier doc) ev) index)
+make Receipt applied applied duplicates (- (length events) applied)
+
+book_document pg:p doc:{Document} > {Receipt}
+if (not (identifier (get supplier doc))) (fail_at "invalid_identifier" (nil i) "/supplier")
+if (> (length (get events doc)) 1000) (fail_at "too_many_events" (nil i) "/events")
+let begun pg_exec pg "BEGIN ISOLATION LEVEL READ COMMITTED" (list ?t 0)
+let receipt catch E_IO (catch E_DATA (book_events pg doc) err
+  (let undone pg_exec pg "ROLLBACK" (list ?t 0)
+   raise err)) err
+  (let undone pg_exec pg "ROLLBACK" (list ?t 0)
+   raise err)
+let committed pg_exec pg "COMMIT" (list ?t 0)
+receipt

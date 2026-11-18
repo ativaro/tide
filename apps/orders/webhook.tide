@@ -1,0 +1,40 @@
+use pg_store
+
+use jsoninput@2.0.0[Document]
+
+record HookReply
+status:i headers:%t body:y
+
+record HookError
+error:t event:?i
+
+reply status:i body:y > {HookReply}
+make HookReply status status headers (dict_put (dict t) "Content-Type" "application/json") body body
+
+problem status:i reason:t index:?i > {HookReply}
+reply status (json_encode (make HookError error reason event index))
+
+deliver pg:p body:y > {HookReply}
+let result book_document pg (jsoninput.decode body)
+reply (if (> (get applied result) 0) 201 200) (json_encode result)
+
+main method:t path:t headers:%t body:y pg:p > {HookReply}
+if (not (text_eq path "/orders")) (problem 404 "not_found" (nil i))
+if (not (text_eq method "POST"))
+  (let response problem 405 "method_not_allowed" (nil i)
+   with headers response (dict_put (get headers response) "Allow" "POST"))
+catch E_IO (catch E_UTF8 (catch E_DATA (deliver pg body) err
+  (let index input_line err
+   if (has_reason err "pg_statement") (problem 503 "database_failure" (nil i))
+   if (has_reason err "event_conflict") (problem 409 "event_conflict" index)
+   if (has_reason err "position_conflict") (problem 409 "position_conflict" index)
+   if (has_reason err "unknown_position") (problem 409 "unknown_position" index)
+   if (has_reason err "over_cancel") (problem 409 "over_cancel" index)
+   if (has_reason err "invalid_identifier") (problem 422 "invalid_identifier" index)
+   if (has_reason err "invalid_kind") (problem 422 "invalid_kind" index)
+   if (has_reason err "invalid_quantity") (problem 422 "invalid_quantity" index)
+   if (has_reason err "invalid_price") (problem 422 "invalid_price" index)
+   if (has_reason err "too_many_events") (problem 422 "too_many_events" (nil i))
+   if (has_reason err "pg_nul") (problem 422 "invalid_text" index)
+   if (has_reason err "invalid_json") (problem 422 "invalid_json" (nil i))
+   raise err)) _ (problem 422 "invalid_utf8" (nil i))) _ (problem 503 "database_unavailable" (nil i))
