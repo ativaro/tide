@@ -1,0 +1,7 @@
+use import
+
+orders_only db:d input:r > {Receipt}
+let doc json_decode {Document} (read_batch input 4194304)
+let checked fold (get events doc) 0 previous row item
+  if (text_eq (get kind item) "order") 0 (reject (- row 1) "/kind" "invalid_kind")
+import_document db doc

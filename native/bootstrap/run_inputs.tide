@@ -65,6 +65,20 @@ snapshot_data snapshot:{ReadSnapshot} binary:b > ?t
 if binary (some (get octets snapshot))
 case (get contents snapshot) (bootstrap_octets_utf8 (get octets snapshot)) prior (some prior)
 
+batch_data grant:{EvalValue} limit:i available:i file:t site:{Site} > {ScalarResult}
+if (or (< limit 0) (> limit 4194304)) (scalar_failure file site "E_LIMIT" "Batch byte budget outside 0..4194304" "")
+let snapshot take_snapshot grant (if (< available limit) available limit) true
+let bytes get bytes snapshot
+if (eq bytes -1) (scalar_failure file site "E_IO" "Granted read failed" "")
+if (< bytes 0) (scalar_failure file site "E_LIMIT" "Batch byte budget exhausted" "")
+value_ok (text_value (get octets snapshot))
+
+batch_work previous:i bytes:i > i
+- (stream_credit previous bytes 8 2000000) (+ 1 (div bytes 32))
+
+batch_memory previous:i bytes:i > i
+- (stream_credit previous bytes 64 33554432) (+ bytes 8)
+
 find_snapshot snapshots:*{ReadSnapshot} handle:i > ?{ReadSnapshot}
 fold snapshots (nil {ReadSnapshot}) found row snapshot
 if (eq (get handle snapshot) handle) (some snapshot) found

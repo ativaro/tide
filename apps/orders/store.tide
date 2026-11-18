@@ -1,0 +1,35 @@
+use model
+
+schema db:d > i
+let a sql_exec db "CREATE TABLE IF NOT EXISTS positions(supplier TEXT NOT NULL,ord TEXT NOT NULL,line TEXT NOT NULL,sku TEXT NOT NULL,original INTEGER NOT NULL,outstanding INTEGER NOT NULL,cents INTEGER NOT NULL,PRIMARY KEY(supplier,ord,line)) WITHOUT ROWID" (dict i)
+sql_exec db "CREATE TABLE IF NOT EXISTS events(supplier TEXT NOT NULL,id TEXT NOT NULL,kind TEXT NOT NULL,ord TEXT NOT NULL,line TEXT NOT NULL,qty INTEGER NOT NULL,sku TEXT NOT NULL,cents INTEGER NOT NULL,PRIMARY KEY(supplier,id)) WITHOUT ROWID" (dict i)
+
+position db:d supplier:t order:t line:t > ?{Position}
+let ready schema db
+let key make LineKey supplier supplier ord order line line
+at (sql_query {Position} db "SELECT original,outstanding,outstanding*cents AS value_cents FROM positions WHERE supplier=:supplier AND ord=:ord AND line=:line" key) 0
+
+record NewLine
+supplier:t ord:t line:t qty:i sku:t cents:i
+
+record CancelLine
+supplier:t ord:t line:t qty:i
+
+record Matched
+matched:i
+
+apply_event db:d item:{Entry} index:i > i
+let inserted sql_exec db "INSERT INTO events VALUES(:supplier,:id,:kind,:ord,:line,:qty,:sku,:cents) ON CONFLICT(supplier,id) DO NOTHING" item
+if (eq inserted 0)
+  (let matches sql_query {Matched} db "SELECT 1 AS matched FROM events WHERE supplier=:supplier AND id=:id AND kind=:kind AND ord=:ord AND line=:line AND qty=:qty AND sku=:sku AND cents=:cents" item
+   if (eq (length matches) 1) 0 (reject index "/id" "event_conflict"))
+if (text_eq (get kind item) "order")
+  (let fields make NewLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item) sku (get sku item) cents (get cents item)
+   let changed sql_exec db "INSERT INTO positions VALUES(:supplier,:ord,:line,:sku,:qty,:qty,:cents) ON CONFLICT(supplier,ord,line) DO NOTHING" fields
+   if (eq changed 1) 1 (reject index "/line" "position_conflict"))
+let fields make CancelLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item)
+let changed sql_exec db "UPDATE positions SET outstanding=outstanding-:qty WHERE supplier=:supplier AND ord=:ord AND line=:line AND outstanding>=:qty" fields
+if (eq changed 1) 1
+let key make LineKey supplier (get supplier item) ord (get ord item) line (get line item)
+let matches sql_query {Matched} db "SELECT 1 AS matched FROM positions WHERE supplier=:supplier AND ord=:ord AND line=:line" key
+if (eq (length matches) 0) (reject index "/line" "unknown_position") (reject index "/qty" "over_cancel")

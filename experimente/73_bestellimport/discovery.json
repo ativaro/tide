@@ -1,0 +1,250 @@
+{
+  "info": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "kernel": "7.3.4-1-cachyos",
+    "affinity": "24",
+    "python": "3.14.10 3.54.1",
+    "sqlite_cli": "3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1 (64-bit)",
+    "filesystem": "btrfs",
+    "binaries": {
+      "read_pre": "b330ffe88cd261eeeaca02ed9e02a1d2f8367a0a89d055bd874c222dd1faad1d",
+      "count_pre": "84a7cce489e80b21af0887c81eef913bf8d14bca91fc0ae77d087fcbf1dbcbda",
+      "initial": "cdad4e85af7e17b95ec09bc5eda2709bc700cfabfa6c0944ac907482799c08b1"
+    },
+    "reference": "40af90a4793e5a63800669d45bc27610963bed05840572d12f6da7e312e7870b"
+  },
+  "summary": {
+    "mixed1000": {
+      "bytes": 90530,
+      "sha256": "38e318bee127a7440a61ef696623364726f85e4e50b9dd34e3bb376458dbd8df",
+      "median_ms": {
+        "read_pre": 1.191038,
+        "count_pre": 28.144191,
+        "initial": 56.185505000000006
+      },
+      "phase_ms": {
+        "read_and_start": 1.191038,
+        "decode": 26.78184,
+        "apply_and_commit": 28.338249000000005
+      }
+    }
+  },
+  "raw": [
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "count_pre",
+      "ms": 28.449047
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "initial",
+      "ms": 55.766672
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "read_pre",
+      "ms": 1.107962
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "initial",
+      "ms": 56.70357
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "read_pre",
+      "ms": 1.050931
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "count_pre",
+      "ms": 27.679292
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "initial",
+      "ms": 55.691259
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "count_pre",
+      "ms": 27.669062
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "read_pre",
+      "ms": 1.177893
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "count_pre",
+      "ms": 27.174522
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "read_pre",
+      "ms": 1.198053
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "initial",
+      "ms": 60.247649
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "read_pre",
+      "ms": 1.384277
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "initial",
+      "ms": 55.106369
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "count_pre",
+      "ms": 28.314184
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "read_pre",
+      "ms": 1.647652
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "count_pre",
+      "ms": 27.581599
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "initial",
+      "ms": 60.646817
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "count_pre",
+      "ms": 28.965296
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "initial",
+      "ms": 54.744481
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "read_pre",
+      "ms": 3.264004
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "initial",
+      "ms": 55.69608
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "read_pre",
+      "ms": 1.044741
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "count_pre",
+      "ms": 30.524067
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "initial",
+      "ms": 56.578498
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "count_pre",
+      "ms": 27.924197
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "read_pre",
+      "ms": 1.207733
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "count_pre",
+      "ms": 28.192762
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "read_pre",
+      "ms": 1.184023
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "initial",
+      "ms": 59.514105
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "read_pre",
+      "ms": 1.03348
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "initial",
+      "ms": 55.792512
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "count_pre",
+      "ms": 28.62263
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "read_pre",
+      "ms": 1.248404
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "count_pre",
+      "ms": 28.09562
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "initial",
+      "ms": 59.098697
+    }
+  ]
+}

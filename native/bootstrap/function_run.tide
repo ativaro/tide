@@ -227,6 +227,14 @@ if (public_data_op op)
    eval_return parents work (get result action) (with memory machine memory))
 if (text_eq op "fold_rows") (eval_stream_rows machine parents frame node fn values remaining)
 if (text_eq op "fold_lines") (eval_stream_lines machine parents frame node file values remaining)
+if (text_eq op "read_batch")
+  (let result batch_data (need (at values 0) "grant" 0) (get num (need (at values 1) "budget" 0)) (get stream_left machine) file site
+   if (not (text_eq (get code result) "")) (eval_return parents remaining result machine)
+   let n text_len (get text (get value result))
+   let memory batch_memory (get memory machine) n
+   let work batch_work remaining n
+   if (or (< memory 0) (< work 0)) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Batch resources exhausted" "") machine)
+   eval_return parents work result (with memory (with stream_left machine (- (get stream_left machine) n)) memory))
 if (or (text_eq op "read") (text_eq op "read_bytes")) (eval_read (need (at values 0) "read_grant" 0) machine parents remaining file site)
 if (text_eq op "get")
   (let record_value need (at values 0) "record_operand" 0
@@ -453,6 +461,10 @@ with remaining (with stack machine (append parents alt)) left
 
 eval_diagnostic op:t site:{Site} file:t values:*{EvalValue} > {ScalarResult}
 let first_arg need (at values 0) "fault_operand" 0
+if (text_eq op "fail_at")
+  (let index need (at values 1) "diagnostic_index" 0
+   let path get text (need (at values 2) "diagnostic_path" 0)
+   located_failure file site (get text first_arg) (if (get present index) (some (get num index)) (nil i)) path)
 if (text_eq op "fail") (data_rejected file site (get text first_arg))
 if (text_eq op "input_line") (value_ok (with present (number_value (get num first_arg)) (get present first_arg)))
 if (text_eq op "raise") (diagnostic_result first_arg)

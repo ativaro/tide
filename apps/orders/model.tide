@@ -1,0 +1,40 @@
+record Event
+id:t kind:t order:t line:t qty:i sku:?t unit_cents:?i
+
+record Document
+supplier:t events:*{Event}
+
+record Receipt
+applied:i duplicates:i
+
+record Position
+original:i outstanding:i value_cents:i
+
+record LineKey
+supplier:t ord:t line:t
+
+record Entry
+supplier:t id:t kind:t ord:t line:t qty:i sku:t cents:i
+
+identifier value:t > b
+and (> (text_len value) 0) (and (<= (text_len value) 64) (<= (byte_len (utf8_bytes value)) 64))
+
+reject index:i field:t reason:t > i
+let pos utf8_text (json_encode index)
+fail_at reason (some index) (concat "/events/" (concat pos field))
+
+validate ev:{Event} index:i > i
+if (not (identifier (get id ev))) (reject index "/id" "invalid_identifier")
+if (not (or (text_eq (get kind ev) "order") (text_eq (get kind ev) "cancel"))) (reject index "/kind" "invalid_kind")
+if (not (identifier (get order ev))) (reject index "/order" "invalid_identifier")
+if (not (identifier (get line ev))) (reject index "/line" "invalid_identifier")
+if (or (< (get qty ev) 1) (> (get qty ev) 1000000)) (reject index "/qty" "invalid_quantity")
+if (text_eq (get kind ev) "cancel") 0
+if (not (case (get sku ev) false item (identifier item))) (reject index "/sku" "invalid_identifier")
+if (not (case (get unit_cents ev) false n (and (>= n 0) (<= n 100000000)))) (reject index "/unit_cents" "invalid_price")
+0
+
+entry_for supplier:t ev:{Event} > {Entry}
+let sale text_eq (get kind ev) "order"
+make Entry supplier supplier id (get id ev) kind (get kind ev) ord (get order ev) line (get line ev) qty (get qty ev)
+sku (if sale (need (get sku ev) "sku" 0) "") cents (if sale (need (get unit_cents ev) "price" 0) 0)

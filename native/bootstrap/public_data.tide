@@ -34,9 +34,8 @@ let frame get frame reader
 let key get key token
 let expected input_child frame key kind
 if (and (text_eq expected "") (named_kind (get kind frame))) (with skipped state (if opens 1 0))
-let path input_segment (input_frame_path reader "") frame key
 if (or (> (text_len key) 4096) (eq (length (get values frame)) 4096))
-  (with issue state (input_issue path "within collection limits" "limit exceeded"))
+  (with issue state (input_issue (input_segment (input_frame_path reader "") frame key) "within collection limits" "limit exceeded"))
 let optional text_eq (text_slice expected 0 1) "?"
 let typ if optional (text_slice expected 1 (text_len expected)) expected
 if (and optional (and (text_eq op "scalar") (text_eq (get value token) "null"))) (project_accept state reader key (number_value 0))
@@ -46,7 +45,7 @@ if (and opens (input_container op typ decl))
    with reader state (with frame (with parents reader (append (get parents reader) frame)) child))
 let value if (and (variant_kind schemas typ) (text_eq op "string"))
   (tagged_value (need decl "json_variant" 0) (get value token)) (decoded_atom token typ)
-case value (with issue state (input_issue path expected (input_wire_type token))) item
+case value (with issue state (input_issue (input_segment (input_frame_path reader "") frame key) expected (input_wire_type token))) item
 project_accept state reader key (if optional (with present item true) item)
 
 json_syntax_path parser:{JsonStream} source:t > t

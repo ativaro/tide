@@ -85,7 +85,13 @@ if (eq n 0)
    cat3 "return " value ";")
 if (or (text_eq op "read") (text_eq op "read_bytes"))
   (cat3 "auto snapshot=f_aot_read(gas,value_0," location (concat ");\ngas=std::move(snapshot.first);return " (if (text_eq op "read") "std::move(snapshot.second);" "f_text_value(snapshot.second);")))
+if (text_eq op "read_batch")
+  (cat3 "auto result=f_batch_data(f_number_value(value_0),value_1,gas.v_stream_left," location
+    (cat3 ");if(!result.v_code.empty())throw Failure{result.v_detail,0};I n=result.v_value.v_text.size();gas.v_stream_left-=n;gas.v_memory=f_batch_memory(gas.v_memory,n);gas.v_work=f_batch_work(gas.v_work,n);if(gas.v_memory<0||gas.v_work<0)throw Failure{f_diagnosis(" location ",U\"E_LIMIT\",U\"Batch resources exhausted\"),0};return result.v_value;"))
 if (text_eq op "text_len") "return t_text_len(value_0);"
+if (text_eq op "concat")
+  (let guard cat3 "const I bytes=4*I(value_0.size()+value_1.size());if(bytes>gas.v_memory)throw Failure{f_diagnosis(" location ",U\"E_LIMIT\",U\"Text budget exhausted\"),0};\n"
+   concat guard (concat (aot_budget "8+bytes" location) "return t_concat(value_0,value_1);"))
 if (text_eq op "text_eq") (concat (aot_work_code "1+I(std::min(value_0.size(),value_1.size())/32)" location) "return t_text_eq(value_0,value_1);")
 if (or (text_eq op "int") (text_eq op "lines"))
   (let work aot_work_code "1+I(value_0.size())/32" location
@@ -365,6 +371,7 @@ if (text_eq op "transaction")
    some (cat3 enter (aot_child parts 1) (cat3 finish (aot_text (diagnosis (get file fn) (get site node) "E_TRANSACTION" "SQLite rollback failed")) ",0};throw;}")))
 if (text_eq op "has_reason") (some (concat pre "return f_diagnostic_has_reason(value_0,value_1);"))
 if (text_eq op "input_line") (some (concat pre "return value_0.v_present?Opt<I>{value_0.v_num}:Opt<I>{};"))
+if (text_eq op "fail_at") (some (cat3 pre "throw Failure{f_located_failure(" (concat location ",value_0,value_1,value_2).v_detail,0};")))
 if (text_eq op "fail") (some (cat3 pre "throw Failure{f_data_rejected(" (concat location ",value_0).v_detail,0};")))
 if (text_eq op "raise") (some (concat pre "throw Failure{value_0.v_text,0};"))
 if (text_eq op "catch")

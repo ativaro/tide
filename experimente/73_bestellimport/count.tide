@@ -1,0 +1,5 @@
+use model
+
+main input:r > i
+let doc json_decode {Document} (read_batch input 4194304)
+length (get events doc)

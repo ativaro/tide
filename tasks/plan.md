@@ -64,6 +64,8 @@ Nano and the terminal game remain demonstrators for editor logic and game state.
 
 **First work block completed.** The order for the order import includes precise cancellation, repetition, and rollback of order lines. Of 30 tasks, five per family remain open and five are locally sealed. On the 15 open tasks, the tools solved 9/15 respectively; all reference programs passed acceptance. The logs included 3,187 tokens for TIDE and 3,583 for CPython. The complete import up to the first technical change is the next work block. [Specification](../experimente/72_bestellimport_basis/order-import.md) · [Local baseline measurement](../experimente/72_bestellimport_basis/report.md) · [Task status](todo.md#roadmap-in-20-stages)
 
+Stage 4 now covers the complete import, a restart after an order-only release, redelivery, cancellations and rollback. The local comparison measures the source CLI and ahead-of-time executables separately. [Order-import report](../experimente/73_bestellimport/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

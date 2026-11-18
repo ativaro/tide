@@ -1,0 +1,48 @@
+use import
+
+after_rejection db:d input:r next:r > ?{Position}
+let before main db input
+let caught catch E_DATA (get applied (main db next)) err (if (has_reason err "over_cancel") 0 (raise err))
+position db "ACME" "O7" "1"
+
+batch_size input:r limit:i > i
+byte_len (read_batch input limit)
+
+example batch_at_limit batch_size
+{"inputs":{"input":"é","limit":2},"expect":2}
+
+example batch_over_limit batch_size
+{"inputs":{"input":"é","limit":1},"expect_error":{"code":"E_LIMIT"}}
+
+example empty main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[]}","db":":memory:"},"expect":{"applied":0,"duplicates":0}}
+
+example partial_and_full main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2},{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2,\"ignored\":{\"nested\":[true]}},{\"id\":\"E3\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":1}]}","db":":memory:"},"expect":{"applied":3,"duplicates":2}}
+
+example price_collision main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":126}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"event_conflict","path":"/events/1/id","input_line":1}}
+
+example position_collision main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E3\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"position_conflict","path":"/events/1/line","input_line":1}}
+
+example missing_position main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"unknown_position","path":"/events/0/line","input_line":0}}
+
+example over_cancel main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":4}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"over_cancel","path":"/events/1/qty","input_line":1}}
+
+example bad_qty main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":\"3\",\"unit_cents\":125}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"invalid_json","path":"/events/0/qty"}}
+
+example long_id main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"ééééééééééééééééééééééééééééééééé\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125}]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"invalid_identifier","path":"/events/0/id","input_line":0}}
+
+example exact_id main
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"éééééééééééééééééééééééééééééééé\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125}]}","db":":memory:"},"expect":{"applied":1,"duplicates":0}}
+
+example bad_supplier main
+{"inputs":{"input":"{\"supplier\":\"\",\"events\":[]}","db":":memory:"},"expect_error":{"code":"E_DATA","reason":"invalid_identifier","path":"/supplier"}}
+
+example rollback after_rejection
+{"inputs":{"input":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}","db":":memory:","next":"{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E3\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"2\",\"sku\":\"A'Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"E4\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}"},"expect":{"some":{"original":3,"outstanding":1,"value_cents":125}}}

@@ -1,0 +1,245 @@
+{
+  "info": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "kernel": "7.3.4-1-cachyos",
+    "affinity": "24",
+    "python": "3.14.10 3.54.1",
+    "sqlite_cli": "3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1 (64-bit)",
+    "filesystem": "btrfs",
+    "binaries": {
+      "initial": "0da19ea59783e54018b6c9afbbdac3fb61946d8eaac567b53dbe69a7e5c214e4",
+      "db_only": "21a9fe2a767285cc35bcc09765b1b3c2c44a4c24ef198b6b6878c31ae9374db5",
+      "final": "5652dba9f9ef123fc3f793bdb7927615c0b07df552dae7a0162d60776ddcc18b"
+    },
+    "reference": "8bc0ec1eb808279043514503d8b0b39896722caae2d4137301892ec499c0cab4"
+  },
+  "summary": {
+    "mixed1000": {
+      "bytes": 90530,
+      "sha256": "38e318bee127a7440a61ef696623364726f85e4e50b9dd34e3bb376458dbd8df",
+      "median_ms": {
+        "initial": 53.825158,
+        "db_only": 48.7658805,
+        "final": 45.243183
+      }
+    }
+  },
+  "raw": [
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "db_only",
+      "ms": 49.249135
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "final",
+      "ms": 49.953259
+    },
+    {
+      "name": "mixed1000",
+      "block": 0,
+      "arm": "initial",
+      "ms": 56.052895
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "final",
+      "ms": 47.869699
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "initial",
+      "ms": 53.69566
+    },
+    {
+      "name": "mixed1000",
+      "block": 1,
+      "arm": "db_only",
+      "ms": 48.142834
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "final",
+      "ms": 44.325461
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "db_only",
+      "ms": 48.393468
+    },
+    {
+      "name": "mixed1000",
+      "block": 2,
+      "arm": "initial",
+      "ms": 53.435516
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "db_only",
+      "ms": 48.055992
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "initial",
+      "ms": 54.349553
+    },
+    {
+      "name": "mixed1000",
+      "block": 3,
+      "arm": "final",
+      "ms": 45.3734
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "initial",
+      "ms": 58.757528
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "final",
+      "ms": 44.885162
+    },
+    {
+      "name": "mixed1000",
+      "block": 4,
+      "arm": "db_only",
+      "ms": 48.384218
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "initial",
+      "ms": 53.954656
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "db_only",
+      "ms": 48.652943
+    },
+    {
+      "name": "mixed1000",
+      "block": 5,
+      "arm": "final",
+      "ms": 45.173297
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "db_only",
+      "ms": 48.934419
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "final",
+      "ms": 45.313069
+    },
+    {
+      "name": "mixed1000",
+      "block": 6,
+      "arm": "initial",
+      "ms": 53.002537
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "final",
+      "ms": 46.853559
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "initial",
+      "ms": 55.484725
+    },
+    {
+      "name": "mixed1000",
+      "block": 7,
+      "arm": "db_only",
+      "ms": 48.878818
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "final",
+      "ms": 46.312059
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "db_only",
+      "ms": 51.279604
+    },
+    {
+      "name": "mixed1000",
+      "block": 8,
+      "arm": "initial",
+      "ms": 54.778441
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "db_only",
+      "ms": 53.718821
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "initial",
+      "ms": 53.037627
+    },
+    {
+      "name": "mixed1000",
+      "block": 9,
+      "arm": "final",
+      "ms": 44.493764
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "initial",
+      "ms": 52.867315
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "final",
+      "ms": 44.508414
+    },
+    {
+      "name": "mixed1000",
+      "block": 10,
+      "arm": "db_only",
+      "ms": 48.083473
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "initial",
+      "ms": 53.361665
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "db_only",
+      "ms": 49.391118
+    },
+    {
+      "name": "mixed1000",
+      "block": 11,
+      "arm": "final",
+      "ms": 45.012104
+    }
+  ]
+}

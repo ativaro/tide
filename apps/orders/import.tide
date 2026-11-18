@@ -1,0 +1,16 @@
+use store
+
+import_document db:d doc:{Document} > {Receipt}
+if (not (identifier (get supplier doc))) (fail_at "invalid_identifier" (nil i) "/supplier")
+let events get events doc
+if (> (length events) 1000) (fail_at "too_many_events" (nil i) "/events")
+transaction db
+let ready schema db
+let count fold events 0 applied pos item
+  let index - pos 1
+  let valid validate item index
+  + applied (apply_event db (entry_for (get supplier doc) item) index)
+make Receipt applied count duplicates (- (length events) count)
+
+main db:d input:r > {Receipt}
+import_document db (json_decode {Document} (read_batch input 4194304))

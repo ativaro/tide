@@ -1,0 +1,53 @@
+--- a/apps/orders/store.tide
++++ b/apps/orders/store.tide
+@@ -18,2 +18,5 @@
+-record Matched
+-matched:i
++record EventKey
++supplier:t id:t
++
++record Remaining
++outstanding:i
+@@ -22,11 +25,7 @@
+-let inserted sql_exec db "INSERT INTO events VALUES(:supplier,:id,:kind,:ord,:line,:qty,:sku,:cents) ON CONFLICT(supplier,id) DO NOTHING" item
+-if (eq inserted 0)
+-  (let matches sql_query {Matched} db "SELECT 1 AS matched FROM events WHERE supplier=:supplier AND id=:id AND kind=:kind AND ord=:ord AND line=:line AND qty=:qty AND sku=:sku AND cents=:cents" item
+-   if (eq (length matches) 1) 0 (reject index "/id" "event_conflict"))
+-if (text_eq (get kind item) "order")
+-  (let fields make NewLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item) sku (get sku item) cents (get cents item)
+-   let changed sql_exec db "INSERT INTO positions VALUES(:supplier,:ord,:line,:sku,:qty,:qty,:cents) ON CONFLICT(supplier,ord,line) DO NOTHING" fields
+-   if (eq changed 1) 1 (reject index "/line" "position_conflict"))
+-let fields make CancelLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item)
+-let changed sql_exec db "UPDATE positions SET outstanding=outstanding-:qty WHERE supplier=:supplier AND ord=:ord AND line=:line AND outstanding>=:qty" fields
+-if (eq changed 1) 1
++let key make EventKey supplier (get supplier item) id (get id item)
++let previous at (sql_query {Entry} db "SELECT supplier,id,kind,ord,line,qty,sku,cents FROM events WHERE supplier=:supplier AND id=:id" key) 0
++case previous (apply_new db item index) prior
++if (and (text_eq (get kind item) (get kind prior)) (and (text_eq (get ord item) (get ord prior)) (and (text_eq (get line item) (get line prior)) (and (eq (get qty item) (get qty prior)) (and (text_eq (get sku item) (get sku prior)) (eq (get cents item) (get cents prior))))))) 0
++reject index "/id" "event_conflict"
++
++apply_new db:d item:{Entry} index:i > i
+@@ -34,2 +33,11 @@
+-let matches sql_query {Matched} db "SELECT 1 AS matched FROM positions WHERE supplier=:supplier AND ord=:ord AND line=:line" key
+-if (eq (length matches) 0) (reject index "/line" "unknown_position") (reject index "/qty" "over_cancel")
++let prior at (sql_query {Remaining} db "SELECT outstanding FROM positions WHERE supplier=:supplier AND ord=:ord AND line=:line" key) 0
++let changed if (text_eq (get kind item) "order")
++  (case prior
++    (let fields make NewLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item) sku (get sku item) cents (get cents item)
++     sql_exec db "INSERT INTO positions VALUES(:supplier,:ord,:line,:sku,:qty,:qty,:cents)" fields)
++    found (reject index "/line" "position_conflict"))
++  (case prior (reject index "/line" "unknown_position") found
++    if (> (get qty item) (get outstanding found)) (reject index "/qty" "over_cancel")
++    let fields make CancelLine supplier (get supplier item) ord (get ord item) line (get line item) qty (get qty item)
++    sql_exec db "UPDATE positions SET outstanding=outstanding-:qty WHERE supplier=:supplier AND ord=:ord AND line=:line" fields)
++sql_exec db "INSERT INTO events VALUES(:supplier,:id,:kind,:ord,:line,:qty,:sku,:cents)" item
+--- a/native/bootstrap/public_data.tide
++++ b/native/bootstrap/public_data.tide
+@@ -36,0 +37 @@
++let path input_segment (input_frame_path reader "") frame key
+@@ -38 +39 @@
+-  (with issue state (input_issue (input_segment (input_frame_path reader "") frame key) "within collection limits" "limit exceeded"))
++  (with issue state (input_issue path "within collection limits" "limit exceeded"))
+@@ -48 +49 @@
+-case value (with issue state (input_issue (input_segment (input_frame_path reader "") frame key) expected (input_wire_type token))) item
++case value (with issue state (input_issue path expected (input_wire_type token))) item

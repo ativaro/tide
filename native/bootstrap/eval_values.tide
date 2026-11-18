@@ -22,6 +22,10 @@ let result scalar_failure file site "E_DATA" "A value is required" ""
 let detail extra_fields (get detail result) (cat3 "\"reason\":" (json_string reason) (concat ",\"input_line\":" (signed_text line)))
 with line (with reason (with detail result detail) reason) (some line)
 
+located_failure file:t site:{Site} reason:t index:?i path:t > {ScalarResult}
+let error case index (data_rejected file site reason) line (need_failure file site reason line)
+with detail error (extra_fields (get detail error) (cat3 "\"issue\":{\"path\":" (json_string path) "}"))
+
 caught_value error:{ScalarResult} > {EvalValue}
 let line get line error
 with present (with text (with texts (number_value (case line 0 n n)) (list t 2 (get code error) (get reason error))) (get detail error)) (case line false n true)

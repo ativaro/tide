@@ -95,8 +95,8 @@ case (entry_at names name) (nil i) index (at sizes index)
 
 intrinsic name:t > ?i
 let groups list t 9
-  "|recur|utf8_text|q_units|q_from_units|unix_seconds|json_encode|read_bytes|utf8_bytes|byte_len|dict|not|nil|some|lines|int|length|text_len|first|second|read|fail|" "|write_bytes|transaction|json_decode|byte_at|dict_get|+|-|*|div|mod|eq|<|>|<=|>=|and|or|at|concat|text_eq|append|pair|get|tag|match|"
-  "|pg_exec|sql_exec|dict_put|if|let|need|with|text_slice|text_find|text_rfind|" "|pg_query|while|sql_query|case|map|" "" "|https_get|fold|" "|https_post|fold_lines|" "" "|fold_rows|"
+  "|recur|utf8_text|q_units|q_from_units|unix_seconds|json_encode|read_bytes|utf8_bytes|byte_len|dict|not|nil|some|lines|int|length|text_len|first|second|read|fail|" "|read_batch|write_bytes|transaction|json_decode|byte_at|dict_get|+|-|*|div|mod|eq|<|>|<=|>=|and|or|at|concat|text_eq|append|pair|get|tag|match|"
+  "|fail_at|pg_exec|sql_exec|dict_put|if|let|need|with|text_slice|text_find|text_rfind|" "|pg_query|while|sql_query|case|map|" "" "|https_get|fold|" "|https_post|fold_lines|" "" "|fold_rows|"
 fold groups (nil i) found row group
   if (case (text_find group (cat3 "|" name "|") 0) false index true) (some row) found
 

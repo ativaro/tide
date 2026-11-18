@@ -1,0 +1,2 @@
+main input:r > i
+byte_len (read_batch input 4194304)

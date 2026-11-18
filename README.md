@@ -1,8 +1,8 @@
-# TIDE 0.6.5
+# TIDE 0.6.6
 
 **TIDE (Typed Instructions, Deterministic Execution)** is a standalone, statically typed programming language. A coding agent can query the operation catalog, inspect callers, replace a subexpression and run examples against the [language specification](LANGUAGE.md).
 
-The order-import study compares TIDE and CPython on 15 open tasks covering writing, extending and repairing programs. Another 15 tasks are sealed for the final evaluation. [20-stage roadmap](tasks/plan.md#20-stages-from-feasibility-study-to-leading-language) · [Open tasks](experimente/72_bestellimport_basis/public-tasks.md) · [Baseline results](experimente/72_bestellimport_basis/report.md)
+The order-import study compares TIDE and CPython on 15 open programming tasks. Its first full application processes supplier orders, cancellations and redeliveries in SQLite. Another 15 tasks are sealed for the final evaluation. [Stage 4 results](experimente/73_bestellimport/report.md) [20-stage roadmap](tasks/plan.md#20-stages-from-feasibility-study-to-leading-language) · [Open tasks](experimente/72_bestellimport_basis/public-tasks.md) · [Baseline results](experimente/72_bestellimport_basis/report.md)
 
 The checkout launcher and installed Linux x86-64 package use the same native tools to build, test, install and run TIDE without Python. The TIDE compiler emits standalone ELF programs for examples such as heating degree hours and pump control. The native checker handles modules, records, variants, pairs, lists and options and runs their examples. The CLI also serves help and catalog queries, checks lockfiles, and inspects parenthesized function bodies in batches. [Native compiler and supported features](native/README.md)
 
@@ -11,6 +11,20 @@ The checkout launcher and installed Linux x86-64 package use the same native too
 /tmp/tide-light true false false
 # [true,true,false]
 ```
+
+## Import an order
+
+The importer grants access to one JSON file and one SQLite database. Repeating the first command that runs TIDE reports one duplicate and leaves the outstanding value at 375 cents.
+
+```sh
+printf '%s\n' '{"supplier":"ACME","events":[{"id":"E1","kind":"order","order":"O7","line":"1","sku":"A","qty":3,"unit_cents":125}]}' > order.json
+./tide run apps/orders/import.tide --read input=order.json --db db=orders.db
+./tide run apps/orders/import.tide --call position --db db=orders.db --inputs '{"supplier":"ACME","order":"O7","line":"1"}'
+```
+
+A cancellation carries its own event ID. A failed event rolls back the entire document, including earlier successful events. [Order-import contract](experimente/72_bestellimport_basis/order-import.md) · [Restart and rollback cases](experimente/73_bestellimport/restart_cases.tide)
+
+## Other applications
 
 The [JSON Measurement Report](apps/report_packages/json_report.tide) imports measurement values with optional notes and a dictionary for sensor-dependent thresholds. The importer runs with `tide run` and as a standalone AOT program.
 

@@ -33,6 +33,8 @@ let typ get typ parent
 let target get target parent
 if (https_op op) (need (at (https_args op) pos) "https_operand" 0)
 if (text_eq op "json_decode") "y"
+if (text_eq op "fail_at") (if (eq pos 1) "?i" "t")
+if (text_eq op "read_batch") (if (eq pos 0) "r" "i")
 if (text_eq op "dict_get") (if (eq pos 1) "t" (concat "%" (text_slice typ 1 (text_len typ))))
 if (text_eq op "dict_put") (if (eq pos 0) typ (if (eq pos 1) "t" (text_slice typ 1 (text_len typ))))
 if (text_eq op "match") (if (eq pos 0) (get literal parent) typ)

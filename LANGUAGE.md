@@ -108,6 +108,8 @@ The native project evaluator processes variants as function arguments, results, 
 
 The diagnosis includes the source position of `json_decode` and the JSON pointer `issue.path`. The root has the path `""`, array indices start at zero. In keys, `~` is converted to `~0` and `/` to `~1`. An example with `"expect_error":{"code":"E_DATA","path":"/readings/1/note"}` checks the exact path. Function arguments and results continue to use `{"some":…}` or `{"none":true}` for options. [Measurement report as JSON-Importer](apps/report_packages/json_report.tide)
 
+`read_batch input limit` reads a granted regular file from offset zero into bytes. The limit is inclusive and ranges from 0 to 4,194,304 bytes. A larger file or invalid limit raises `E_LIMIT`. Each successful read charges its full size to the shared 128 MiB input quota. It credits eight evaluation steps and 64 memory-budget bytes per input byte, capped at two million steps and 32 MiB, then charges one step plus one per 32 bytes and eight memory-budget bytes plus the input size. A second call starts at offset zero and incurs its own charge.
+
 ## Evaluation
 
 Expressions are evaluated from left to right. `if`, `and`, `or`, `case`, `match`, `need`, and `catch` evaluate only the operands required. `let` binds a local value. `fold` binds the accumulator, the position starting at **1**, and the element per item. The list index at `at` starts at **0** and yields an empty option outside the list. Checked arithmetic returns `E_OVERFLOW` on overflow. `div` rounds toward zero. Division or remainder by zero raises `E_DATA` with reason `division_by_zero`.
@@ -131,6 +133,8 @@ The executable reference for all **73 operations** is retrievable via `tide desc
 `catch CODE ausdruck name ersatz` handles exactly one catchable error. In the replacement, `name` binds the original diagnosis. `_` discards it. `input_line name`, `has_reason name text`, and `raise name` read or propagate this diagnosis. Catchable are `E_DATA`, `E_OVERFLOW`, `E_UTF8`, and `E_IO` during execution. Errors when binding inputs as well as `E_CAPABILITY`, `E_TRANSACTION`, and `E_LIMIT` abort the run.
 
 File contents enter the program via `tide run DATEI --read parameter=pfad`. The host checks the entire project and the input signature before opening the specified data files. `read` creates a limited snapshot on the first call. Further `read` calls with the same grant use this snapshot. Examples bind UTF-8 contents in memory. A path in `--inputs` cannot generate read rights. To write, the caller binds their own file or database right.
+
+`fail_at reason index path` raises `E_DATA` with a text reason, a JSON Pointer in `issue.path`, and an optional integer index. For example, `fail_at "invalid_quantity" (some 2) "/events/2/qty"` reports `input_line: 2`. Use `(nil i)` for a document-wide failure. A handler can inspect the original reason with `has_reason`.
 
 ### External APIs and Services
 

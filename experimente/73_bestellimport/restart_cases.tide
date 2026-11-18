@@ -1,0 +1,32 @@
+record Step
+name:t operation:t input:t expected:t
+
+step name:t operation:t input:t expected:t > {Step}
+make Step name name operation operation input input expected expected
+
+main > *{Step}
+list {Step} 24
+  (step "empty document" "import" "{\"supplier\":\"ACME\",\"events\":[]}" "{\"applied\":0,\"duplicates\":0}")
+  (step "order-only release creates line" "v1" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":125}]}" "{\"applied\":1,\"duplicates\":0}")
+  (step "order-only release rejects cancellation" "v1" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"invalid_kind\",\"path\":\"/events/0/kind\",\"input_line\":0}}")
+  (step "original value" "position" "[\"ACME\",\"O7\",\"1\"]" "{\"some\":{\"original\":3,\"outstanding\":3,\"value_cents\":375}}")
+  (step "redelivery after upgrade and restart" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":125,\"annotation\":{\"unused\":[1,2]}}]}" "{\"applied\":0,\"duplicates\":1}")
+  (step "partial cancellation" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}" "{\"applied\":1,\"duplicates\":0}")
+  (step "value after cancellation" "position" "[\"ACME\",\"O7\",\"1\"]" "{\"some\":{\"original\":3,\"outstanding\":1,\"value_cents\":125}}")
+  (step "cancellation redelivery" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E2\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}" "{\"applied\":0,\"duplicates\":1}")
+  (step "late rollback" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"new\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"2\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":125},{\"id\":\"bad\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":2}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"over_cancel\",\"path\":\"/events/1/qty\",\"input_line\":1}}")
+  (step "rolled-back line absent" "position" "[\"ACME\",\"O7\",\"2\"]" "{\"none\":true}")
+  (step "previous line still valued" "position" "[\"ACME\",\"O7\",\"1\"]" "{\"some\":{\"original\":3,\"outstanding\":1,\"value_cents\":125}}")
+  (step "event price conflict" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":126}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"event_conflict\",\"path\":\"/events/0/id\",\"input_line\":0}}")
+  (step "new id for same line" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"new\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":125}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"position_conflict\",\"path\":\"/events/0/line\",\"input_line\":0}}")
+  (step "unknown order line" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"new\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"3\",\"qty\":2}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"unknown_position\",\"path\":\"/events/0/line\",\"input_line\":0}}")
+  (step "typed field" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":\"3\",\"unit_cents\":125}]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"invalid_json\",\"path\":\"/events/0/qty\"}}")
+  (step "overlong supplier" "import" "{\"supplier\":\"ééééééééééééééééééééééééééééééééé\",\"events\":[]}" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"invalid_identifier\",\"path\":\"/supplier\"}}")
+  (step "invalid UTF-8" "import" "fixture:invalid-utf8" "{\"error\":{\"code\":\"E_UTF8\"}}")
+  (step "same keys for another supplier" "import" "{\"supplier\":\"acme\",\"events\":[{\"id\":\"E1\",\"kind\":\"order\",\"order\":\"O7\",\"line\":\"1\",\"sku\":\"O'Brien Ω\",\"qty\":3,\"unit_cents\":125}]}" "{\"applied\":1,\"duplicates\":0}")
+  (step "full cancellation" "import" "{\"supplier\":\"ACME\",\"events\":[{\"id\":\"E3\",\"kind\":\"cancel\",\"order\":\"O7\",\"line\":\"1\",\"qty\":1}]}" "{\"applied\":1,\"duplicates\":0}")
+  (step "zero outstanding" "position" "[\"ACME\",\"O7\",\"1\"]" "{\"some\":{\"original\":3,\"outstanding\":0,\"value_cents\":0}}")
+  (step "independent supplier" "position" "[\"acme\",\"O7\",\"1\"]" "{\"some\":{\"original\":3,\"outstanding\":3,\"value_cents\":375}}")
+  (step "1000 events above 128 KiB" "import" "fixture:1000" "{\"applied\":1000,\"duplicates\":0}")
+  (step "1001 events" "import" "fixture:1001" "{\"error\":{\"code\":\"E_DATA\",\"reason\":\"too_many_events\",\"path\":\"/events\"}}")
+  (step "explicit four MiB limit" "import" "fixture:oversize" "{\"error\":{\"code\":\"E_LIMIT\"}}")

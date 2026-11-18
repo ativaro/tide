@@ -557,7 +557,7 @@ let rows list t 55
   "std::pair<I,Text> t_bootstrap_read_bytes(I fd,I limit){"
   "    char block[8192];std::string bytes;"
   "    for(;;){"
-  "        auto n=read(int(fd),block,std::min<I>(sizeof block,limit+1-I(bytes.size())));"
+  "        auto n=pread(int(fd),block,std::min<I>(sizeof block,limit+1-I(bytes.size())),off_t(bytes.size()));"
   "        if(n<0&&errno==EINTR)continue;"
   "        if(n<0)return {-1,{}};"
   "        if(!n)break;"

@@ -116,6 +116,7 @@ include native/bootstrap/https-check.mk
 include native/bootstrap/service-check.mk
 
 check-sqlite: checker catalog aot-runtime
+	@./tide test apps/orders/checks.tide
 	@set -eu; \
 	tmp=$$(mktemp -d "$(BUILD)/sqlite-check.XXXXXXXX"); \
 	trap 'rm -rf "$$tmp"' EXIT; \

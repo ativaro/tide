@@ -7,7 +7,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 1. Define the first use case and success metric. [Order import and acceptance](../experimente/72_bestellimport_basis/order-import.md)
 - [x] 2. Freeze the comparison tasks and the held-out evaluation. [15 open tasks](../experimente/72_bestellimport_basis/public-tasks.md) · [Proof of 15 sealed tasks](../experimente/72_bestellimport_basis/versiegelung.json)
 - [x] 3. Conduct a fair baseline measurement. [TIDE and CPython on the open tasks](../experimente/72_bestellimport_basis/report.md)
-- [ ] 4. Build, modify order import, and measure the largest bottleneck
+- [x] 4. Build the order importer, extend it with cancellations, and measure the largest bottleneck. [Acceptance and paired runtime results](../experimente/73_bestellimport/report.md)
 - [ ] 5. Repeat the study independently and decide on Alpha
 - [ ] 6. Reuse the library over domain-specific types
 - [ ] 7. Migrate the public package interface
