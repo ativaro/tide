@@ -2,6 +2,7 @@
   "date": "2026-11-18",
   "decision": "hold_public_alpha",
   "physical_workstations_used": 1,
+  "measurement_scope": "Original workstation only, as requested.",
   "second_machine_replication": "outstanding",
   "checkout": {
     "method": "Local git clone --no-local --no-checkout, detached at the pinned revision; clean status and absent build directory checked before building.",

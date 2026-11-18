@@ -1,6 +1,6 @@
 # Stage 5 — public alpha decision
 
-**Hold the public alpha.** A fresh installation reproduced the native order import's small-batch advantage. In the eight-event case TIDE beat CPython in all 12 pairs, with a median speedup of 3.13×. At 1,000 mixed events, CPython won all 12 pairs. Both implementations passed the same correctness checks. The roadmap accepts a verified advantage on a representative task and calls for an independent repeat on a second machine. This campaign used one physical workstation. The small-batch result supports a narrowly scoped performance claim. Public release awaits the independent hardware result. [Release criterion](../../tasks/plan.md) · [Replication protocol](protocol.md)
+**Hold the public alpha.** A fresh installation reproduced the native order import's small-batch advantage. In the eight-event case TIDE beat CPython in all 12 pairs, with a median speedup of 3.13×. At 1,000 mixed events, CPython won all 12 pairs. Both implementations passed the same correctness checks. The roadmap accepts a verified advantage on a representative task and calls for an independent repeat on a second machine. All measurements are complete within the requested scope of the original workstation. The second-machine criterion remains open. [Release criterion](../../tasks/plan.md) · [Replication protocol](protocol.md)
 
 ## Order import
 
