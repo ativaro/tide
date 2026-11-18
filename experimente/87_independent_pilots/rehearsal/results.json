@@ -1,0 +1,23 @@
+{
+  "scope": "Maintainer rehearsal on one Linux x86-64 workstation",
+  "old_tool": {
+    "revision": "c1bfb115ffb8259f04e121d53cb8c2c4c5110fdb",
+    "version": "0.6.11"
+  },
+  "new_tool": {
+    "revision": "096db5100b7e9cc1bff872124ca80f039a1e2790",
+    "version": "0.6.12"
+  },
+  "original_examples": 3,
+  "extended_examples_before_upgrade": 5,
+  "extended_examples_after_upgrade": 5,
+  "balance_before": 97,
+  "balance_after": 97,
+  "below_floor": true,
+  "at_floor": false,
+  "original_pin_diagnostic": "E_VERSION",
+  "restored_pin_examples": 5,
+  "patch_replayed_on_first_revision": true,
+  "network_routes": 0,
+  "model_calls": 0
+}
