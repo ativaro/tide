@@ -1,0 +1,1633 @@
+{
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "tier": "priority",
+  "order": [
+    "locator:T",
+    "locator:P",
+    "dial:P",
+    "dial:T",
+    "locator:P",
+    "locator:T",
+    "dial:T",
+    "dial:P",
+    "locator:T",
+    "locator:P",
+    "dial:P",
+    "dial:T"
+  ],
+  "max_attempts": 2,
+  "cases": {
+    "locator": {
+      "contract": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.",
+      "target": "locate",
+      "tide": {
+        "panel.tide": "use choice\n\nlocate origin:i marks:*i > i\ncase (at marks 0) origin initial (fold marks initial current row item (choose origin current item))\n",
+        "choice.tide": "use geometry\n\nchoose origin:i current:i item:i > i\nlet old distance origin current\nlet fresh distance origin item\nif (< fresh old) item (if (eq fresh old) (if (> item current) item current) current)\n",
+        "geometry.tide": "distance origin:i mark:i > i\nlet delta - mark origin\nif (< delta 0) (- 0 delta) delta\n\nseparation a:i b:i > b\n< a b\n"
+      },
+      "python": {
+        "panel.py": "from choice import choose\n\ndef locate(origin, marks):\n    if not marks:\n        return origin\n    current = marks[0]\n    for item in marks:\n        current = choose(origin, current, item)\n    return current\n",
+        "choice.py": "from geometry import distance\n\ndef choose(origin, current, item):\n    old = distance(origin, current)\n    fresh = distance(origin, item)\n    if fresh < old:\n        return item\n    if fresh == old:\n        return item if item > current else current\n    return current\n",
+        "geometry.py": "def distance(origin, mark):\n    delta = mark - origin\n    return -delta if delta < 0 else delta\n\ndef separation(a, b):\n    return a < b\n"
+      },
+      "pub": [
+        {
+          "name": "case_0",
+          "inputs": {
+            "origin": 10,
+            "marks": [
+              13,
+              7
+            ]
+          },
+          "expect": 7
+        },
+        {
+          "name": "case_1",
+          "inputs": {
+            "origin": 10,
+            "marks": []
+          },
+          "expect": 10
+        },
+        {
+          "name": "case_2",
+          "inputs": {
+            "origin": -4,
+            "marks": [
+              -7,
+              -4,
+              -1
+            ]
+          },
+          "expect": -4
+        },
+        {
+          "name": "case_3",
+          "inputs": {
+            "origin": 0,
+            "marks": [
+              0,
+              0
+            ]
+          },
+          "expect": 0
+        },
+        {
+          "name": "case_4",
+          "inputs": {
+            "origin": 4,
+            "marks": [
+              7,
+              8
+            ]
+          },
+          "expect": 7
+        },
+        {
+          "name": "case_5",
+          "inputs": {
+            "origin": 0,
+            "marks": [
+              -2,
+              2,
+              9
+            ]
+          },
+          "expect": -2
+        }
+      ],
+      "hidden": [
+        {
+          "name": "case_0",
+          "inputs": {
+            "origin": 78,
+            "marks": []
+          },
+          "expect": 78
+        },
+        {
+          "name": "case_1",
+          "inputs": {
+            "origin": 487,
+            "marks": [
+              389,
+              585
+            ]
+          },
+          "expect": 389
+        },
+        {
+          "name": "case_2",
+          "inputs": {
+            "origin": -311,
+            "marks": [
+              -202,
+              -420,
+              -202
+            ]
+          },
+          "expect": -420
+        },
+        {
+          "name": "case_3",
+          "inputs": {
+            "origin": 170,
+            "marks": [
+              7,
+              -39,
+              253
+            ]
+          },
+          "expect": 253
+        },
+        {
+          "name": "case_4",
+          "inputs": {
+            "origin": 131,
+            "marks": []
+          },
+          "expect": 131
+        },
+        {
+          "name": "case_5",
+          "inputs": {
+            "origin": -242,
+            "marks": [
+              -309,
+              -175
+            ]
+          },
+          "expect": -309
+        },
+        {
+          "name": "case_6",
+          "inputs": {
+            "origin": 176,
+            "marks": [
+              200,
+              152,
+              200
+            ]
+          },
+          "expect": 152
+        },
+        {
+          "name": "case_7",
+          "inputs": {
+            "origin": 79,
+            "marks": [
+              51,
+              20,
+              -6,
+              200,
+              222,
+              60
+            ]
+          },
+          "expect": 60
+        },
+        {
+          "name": "case_8",
+          "inputs": {
+            "origin": -381,
+            "marks": []
+          },
+          "expect": -381
+        },
+        {
+          "name": "case_9",
+          "inputs": {
+            "origin": -150,
+            "marks": [
+              -257,
+              -43
+            ]
+          },
+          "expect": -257
+        },
+        {
+          "name": "case_10",
+          "inputs": {
+            "origin": -188,
+            "marks": [
+              -181,
+              -195,
+              -181
+            ]
+          },
+          "expect": -195
+        },
+        {
+          "name": "case_11",
+          "inputs": {
+            "origin": 64,
+            "marks": [
+              -149
+            ]
+          },
+          "expect": -149
+        },
+        {
+          "name": "case_12",
+          "inputs": {
+            "origin": -252,
+            "marks": []
+          },
+          "expect": -252
+        },
+        {
+          "name": "case_13",
+          "inputs": {
+            "origin": -379,
+            "marks": [
+              -389,
+              -369
+            ]
+          },
+          "expect": -389
+        },
+        {
+          "name": "case_14",
+          "inputs": {
+            "origin": -412,
+            "marks": [
+              -318,
+              -506,
+              -318
+            ]
+          },
+          "expect": -506
+        },
+        {
+          "name": "case_15",
+          "inputs": {
+            "origin": -188,
+            "marks": [
+              -330,
+              -139
+            ]
+          },
+          "expect": -139
+        },
+        {
+          "name": "case_16",
+          "inputs": {
+            "origin": -432,
+            "marks": []
+          },
+          "expect": -432
+        },
+        {
+          "name": "case_17",
+          "inputs": {
+            "origin": -100,
+            "marks": [
+              -175,
+              -25
+            ]
+          },
+          "expect": -175
+        },
+        {
+          "name": "case_18",
+          "inputs": {
+            "origin": 353,
+            "marks": [
+              413,
+              293,
+              413
+            ]
+          },
+          "expect": 293
+        },
+        {
+          "name": "case_19",
+          "inputs": {
+            "origin": -61,
+            "marks": [
+              -31,
+              46,
+              -266,
+              23,
+              -258,
+              -204
+            ]
+          },
+          "expect": -31
+        },
+        {
+          "name": "case_20",
+          "inputs": {
+            "origin": -497,
+            "marks": []
+          },
+          "expect": -497
+        },
+        {
+          "name": "case_21",
+          "inputs": {
+            "origin": 196,
+            "marks": [
+              175,
+              217
+            ]
+          },
+          "expect": 175
+        },
+        {
+          "name": "case_22",
+          "inputs": {
+            "origin": -177,
+            "marks": [
+              -61,
+              -293,
+              -61
+            ]
+          },
+          "expect": -293
+        },
+        {
+          "name": "case_23",
+          "inputs": {
+            "origin": 426,
+            "marks": [
+              323,
+              292,
+              362,
+              357
+            ]
+          },
+          "expect": 362
+        },
+        {
+          "name": "case_24",
+          "inputs": {
+            "origin": 482,
+            "marks": []
+          },
+          "expect": 482
+        },
+        {
+          "name": "case_25",
+          "inputs": {
+            "origin": 468,
+            "marks": [
+              397,
+              539
+            ]
+          },
+          "expect": 397
+        },
+        {
+          "name": "case_26",
+          "inputs": {
+            "origin": -2,
+            "marks": [
+              12,
+              -16,
+              12
+            ]
+          },
+          "expect": -16
+        },
+        {
+          "name": "case_27",
+          "inputs": {
+            "origin": -462,
+            "marks": [
+              -539,
+              -266,
+              -497
+            ]
+          },
+          "expect": -497
+        },
+        {
+          "name": "case_28",
+          "inputs": {
+            "origin": 406,
+            "marks": []
+          },
+          "expect": 406
+        },
+        {
+          "name": "case_29",
+          "inputs": {
+            "origin": 203,
+            "marks": [
+              137,
+              269
+            ]
+          },
+          "expect": 137
+        },
+        {
+          "name": "case_30",
+          "inputs": {
+            "origin": 461,
+            "marks": [
+              481,
+              441,
+              481
+            ]
+          },
+          "expect": 441
+        },
+        {
+          "name": "case_31",
+          "inputs": {
+            "origin": -342,
+            "marks": [
+              -128,
+              -543,
+              -547,
+              -416,
+              -272,
+              -539
+            ]
+          },
+          "expect": -272
+        },
+        {
+          "name": "case_32",
+          "inputs": {
+            "origin": -68,
+            "marks": []
+          },
+          "expect": -68
+        },
+        {
+          "name": "case_33",
+          "inputs": {
+            "origin": -88,
+            "marks": [
+              -208,
+              32
+            ]
+          },
+          "expect": -208
+        },
+        {
+          "name": "case_34",
+          "inputs": {
+            "origin": -118,
+            "marks": [
+              -94,
+              -142,
+              -94
+            ]
+          },
+          "expect": -142
+        },
+        {
+          "name": "case_35",
+          "inputs": {
+            "origin": -403,
+            "marks": [
+              -592,
+              -627,
+              -570,
+              -586,
+              -628
+            ]
+          },
+          "expect": -570
+        },
+        {
+          "name": "case_36",
+          "inputs": {
+            "origin": -442,
+            "marks": []
+          },
+          "expect": -442
+        },
+        {
+          "name": "case_37",
+          "inputs": {
+            "origin": 402,
+            "marks": [
+              312,
+              492
+            ]
+          },
+          "expect": 312
+        },
+        {
+          "name": "case_38",
+          "inputs": {
+            "origin": 191,
+            "marks": [
+              262,
+              120,
+              262
+            ]
+          },
+          "expect": 120
+        },
+        {
+          "name": "case_39",
+          "inputs": {
+            "origin": -36,
+            "marks": [
+              34,
+              177,
+              -126,
+              -255,
+              -230,
+              19,
+              -219
+            ]
+          },
+          "expect": 19
+        },
+        {
+          "name": "case_40",
+          "inputs": {
+            "origin": -166,
+            "marks": []
+          },
+          "expect": -166
+        },
+        {
+          "name": "case_41",
+          "inputs": {
+            "origin": 435,
+            "marks": [
+              353,
+              517
+            ]
+          },
+          "expect": 353
+        },
+        {
+          "name": "case_42",
+          "inputs": {
+            "origin": 325,
+            "marks": [
+              394,
+              256,
+              394
+            ]
+          },
+          "expect": 256
+        },
+        {
+          "name": "case_43",
+          "inputs": {
+            "origin": -370,
+            "marks": [
+              -192,
+              -465,
+              -479,
+              -384,
+              -168,
+              -248,
+              -380
+            ]
+          },
+          "expect": -380
+        },
+        {
+          "name": "case_44",
+          "inputs": {
+            "origin": -449,
+            "marks": []
+          },
+          "expect": -449
+        },
+        {
+          "name": "case_45",
+          "inputs": {
+            "origin": 496,
+            "marks": [
+              385,
+              607
+            ]
+          },
+          "expect": 385
+        },
+        {
+          "name": "case_46",
+          "inputs": {
+            "origin": -416,
+            "marks": [
+              -346,
+              -486,
+              -346
+            ]
+          },
+          "expect": -486
+        },
+        {
+          "name": "case_47",
+          "inputs": {
+            "origin": -262,
+            "marks": [
+              -84
+            ]
+          },
+          "expect": -84
+        },
+        {
+          "name": "case_48",
+          "inputs": {
+            "origin": 3,
+            "marks": []
+          },
+          "expect": 3
+        },
+        {
+          "name": "case_49",
+          "inputs": {
+            "origin": 422,
+            "marks": [
+              307,
+              537
+            ]
+          },
+          "expect": 307
+        },
+        {
+          "name": "case_50",
+          "inputs": {
+            "origin": -349,
+            "marks": [
+              -329,
+              -369,
+              -329
+            ]
+          },
+          "expect": -369
+        },
+        {
+          "name": "case_51",
+          "inputs": {
+            "origin": 309,
+            "marks": [
+              102,
+              207,
+              520,
+              222,
+              469,
+              112
+            ]
+          },
+          "expect": 222
+        },
+        {
+          "name": "case_52",
+          "inputs": {
+            "origin": 84,
+            "marks": []
+          },
+          "expect": 84
+        },
+        {
+          "name": "case_53",
+          "inputs": {
+            "origin": 51,
+            "marks": [
+              -12,
+              114
+            ]
+          },
+          "expect": -12
+        },
+        {
+          "name": "case_54",
+          "inputs": {
+            "origin": 31,
+            "marks": [
+              133,
+              -71,
+              133
+            ]
+          },
+          "expect": -71
+        },
+        {
+          "name": "case_55",
+          "inputs": {
+            "origin": -188,
+            "marks": [
+              -414,
+              -259,
+              58,
+              -150,
+              -368,
+              -339
+            ]
+          },
+          "expect": -150
+        },
+        {
+          "name": "case_56",
+          "inputs": {
+            "origin": -483,
+            "marks": []
+          },
+          "expect": -483
+        },
+        {
+          "name": "case_57",
+          "inputs": {
+            "origin": 321,
+            "marks": [
+              220,
+              422
+            ]
+          },
+          "expect": 220
+        },
+        {
+          "name": "case_58",
+          "inputs": {
+            "origin": -250,
+            "marks": [
+              -173,
+              -327,
+              -173
+            ]
+          },
+          "expect": -327
+        },
+        {
+          "name": "case_59",
+          "inputs": {
+            "origin": 129,
+            "marks": [
+              233,
+              66,
+              73,
+              358,
+              151,
+              43,
+              319
+            ]
+          },
+          "expect": 151
+        },
+        {
+          "name": "case_60",
+          "inputs": {
+            "origin": 39,
+            "marks": []
+          },
+          "expect": 39
+        },
+        {
+          "name": "case_61",
+          "inputs": {
+            "origin": 100,
+            "marks": [
+              9,
+              191
+            ]
+          },
+          "expect": 9
+        },
+        {
+          "name": "case_62",
+          "inputs": {
+            "origin": 316,
+            "marks": [
+              349,
+              283,
+              349
+            ]
+          },
+          "expect": 283
+        },
+        {
+          "name": "case_63",
+          "inputs": {
+            "origin": 450,
+            "marks": [
+              534,
+              613,
+              385,
+              320,
+              665,
+              683,
+              506,
+              636
+            ]
+          },
+          "expect": 506
+        },
+        {
+          "name": "case_64",
+          "inputs": {
+            "origin": 74,
+            "marks": []
+          },
+          "expect": 74
+        },
+        {
+          "name": "case_65",
+          "inputs": {
+            "origin": 103,
+            "marks": [
+              26,
+              180
+            ]
+          },
+          "expect": 26
+        },
+        {
+          "name": "case_66",
+          "inputs": {
+            "origin": -82,
+            "marks": [
+              -38,
+              -126,
+              -38
+            ]
+          },
+          "expect": -126
+        },
+        {
+          "name": "case_67",
+          "inputs": {
+            "origin": 354,
+            "marks": [
+              257,
+              272,
+              520,
+              431,
+              580,
+              385,
+              436
+            ]
+          },
+          "expect": 385
+        },
+        {
+          "name": "case_68",
+          "inputs": {
+            "origin": -49,
+            "marks": []
+          },
+          "expect": -49
+        },
+        {
+          "name": "case_69",
+          "inputs": {
+            "origin": 17,
+            "marks": [
+              -100,
+              134
+            ]
+          },
+          "expect": -100
+        },
+        {
+          "name": "case_70",
+          "inputs": {
+            "origin": 255,
+            "marks": [
+              270,
+              240,
+              270
+            ]
+          },
+          "expect": 240
+        },
+        {
+          "name": "case_71",
+          "inputs": {
+            "origin": 243,
+            "marks": [
+              3,
+              329,
+              221
+            ]
+          },
+          "expect": 221
+        }
+      ]
+    },
+    "dial": {
+      "contract": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].",
+      "target": "display",
+      "tide": {
+        "panel.tide": "use scale\n\ndisplay reading:i reference:i spacing:i > i\n+ reference (scale (- reading reference) spacing)\n",
+        "scale.tide": "use units\n\nscale delta:i width:i > i\nlet magnitude if (< delta 0) (- 0 delta) delta\nlet rounded * width (units magnitude width)\nif (< delta 0) (- 0 rounded) rounded\n",
+        "units.tide": "units magnitude:i width:i > i\nlet whole div magnitude width\nlet rest mod magnitude width\nif (< rest (div width 2)) whole (+ whole 1)\n\nmultiple value:i width:i > b\neq (mod value width) 0\n"
+      },
+      "python": {
+        "panel.py": "from scale import scale\n\ndef display(reading, reference, spacing):\n    return reference + scale(reading - reference, spacing)\n",
+        "scale.py": "from units import units\n\ndef scale(delta, width):\n    magnitude = -delta if delta < 0 else delta\n    rounded = width * units(magnitude, width)\n    return -rounded if delta < 0 else rounded\n",
+        "units.py": "def units(magnitude, width):\n    whole = magnitude // width\n    rest = magnitude % width\n    return whole if rest < width // 2 else whole + 1\n\ndef multiple(value, width):\n    return value % width == 0\n"
+      },
+      "pub": [
+        {
+          "name": "case_0",
+          "inputs": {
+            "reading": 107,
+            "reference": 100,
+            "spacing": 5
+          },
+          "expect": 105
+        },
+        {
+          "name": "case_1",
+          "inputs": {
+            "reading": -4,
+            "reference": 0,
+            "spacing": 8
+          },
+          "expect": -8
+        },
+        {
+          "name": "case_2",
+          "inputs": {
+            "reading": 0,
+            "reference": 0,
+            "spacing": 6
+          },
+          "expect": 0
+        },
+        {
+          "name": "case_3",
+          "inputs": {
+            "reading": 95,
+            "reference": 100,
+            "spacing": 10
+          },
+          "expect": 90
+        },
+        {
+          "name": "case_4",
+          "inputs": {
+            "reading": 1,
+            "reference": 0,
+            "spacing": 3
+          },
+          "expect": 0
+        },
+        {
+          "name": "case_5",
+          "inputs": {
+            "reading": 9,
+            "reference": 8,
+            "spacing": 1
+          },
+          "expect": 9
+        }
+      ],
+      "hidden": [
+        {
+          "name": "case_0",
+          "inputs": {
+            "reading": 845,
+            "reference": 900,
+            "spacing": 22
+          },
+          "expect": 834
+        },
+        {
+          "name": "case_1",
+          "inputs": {
+            "reading": -132,
+            "reference": -479,
+            "spacing": 21
+          },
+          "expect": -122
+        },
+        {
+          "name": "case_2",
+          "inputs": {
+            "reading": 183,
+            "reference": 258,
+            "spacing": 15
+          },
+          "expect": 183
+        },
+        {
+          "name": "case_3",
+          "inputs": {
+            "reading": 92,
+            "reference": -424,
+            "spacing": 47
+          },
+          "expect": 93
+        },
+        {
+          "name": "case_4",
+          "inputs": {
+            "reading": -1614,
+            "reference": -386,
+            "spacing": 63
+          },
+          "expect": -1583
+        },
+        {
+          "name": "case_5",
+          "inputs": {
+            "reading": 917,
+            "reference": -624,
+            "spacing": 79
+          },
+          "expect": 956
+        },
+        {
+          "name": "case_6",
+          "inputs": {
+            "reading": -937,
+            "reference": -899,
+            "spacing": 19
+          },
+          "expect": -937
+        },
+        {
+          "name": "case_7",
+          "inputs": {
+            "reading": 818,
+            "reference": 518,
+            "spacing": 43
+          },
+          "expect": 819
+        },
+        {
+          "name": "case_8",
+          "inputs": {
+            "reading": 636,
+            "reference": 806,
+            "spacing": 20
+          },
+          "expect": 626
+        },
+        {
+          "name": "case_9",
+          "inputs": {
+            "reading": 166,
+            "reference": -874,
+            "spacing": 63
+          },
+          "expect": 197
+        },
+        {
+          "name": "case_10",
+          "inputs": {
+            "reading": -1143,
+            "reference": 197,
+            "spacing": 67
+          },
+          "expect": -1143
+        },
+        {
+          "name": "case_11",
+          "inputs": {
+            "reading": 886,
+            "reference": 77,
+            "spacing": 54
+          },
+          "expect": 887
+        },
+        {
+          "name": "case_12",
+          "inputs": {
+            "reading": -1392,
+            "reference": 175,
+            "spacing": 95
+          },
+          "expect": -1345
+        },
+        {
+          "name": "case_13",
+          "inputs": {
+            "reading": 583,
+            "reference": 413,
+            "spacing": 20
+          },
+          "expect": 593
+        },
+        {
+          "name": "case_14",
+          "inputs": {
+            "reading": -945,
+            "reference": -777,
+            "spacing": 28
+          },
+          "expect": -945
+        },
+        {
+          "name": "case_15",
+          "inputs": {
+            "reading": 616,
+            "reference": -437,
+            "spacing": 62
+          },
+          "expect": 617
+        },
+        {
+          "name": "case_16",
+          "inputs": {
+            "reading": -1504,
+            "reference": -118,
+            "spacing": 84
+          },
+          "expect": -1546
+        },
+        {
+          "name": "case_17",
+          "inputs": {
+            "reading": 393,
+            "reference": -377,
+            "spacing": 57
+          },
+          "expect": 421
+        },
+        {
+          "name": "case_18",
+          "inputs": {
+            "reading": -1557,
+            "reference": 171,
+            "spacing": 96
+          },
+          "expect": -1557
+        },
+        {
+          "name": "case_19",
+          "inputs": {
+            "reading": 218,
+            "reference": -205,
+            "spacing": 53
+          },
+          "expect": 219
+        },
+        {
+          "name": "case_20",
+          "inputs": {
+            "reading": 330,
+            "reference": 331,
+            "spacing": 2
+          },
+          "expect": 329
+        },
+        {
+          "name": "case_21",
+          "inputs": {
+            "reading": 1642,
+            "reference": 725,
+            "spacing": 47
+          },
+          "expect": 1665
+        },
+        {
+          "name": "case_22",
+          "inputs": {
+            "reading": -899,
+            "reference": -545,
+            "spacing": 59
+          },
+          "expect": -899
+        },
+        {
+          "name": "case_23",
+          "inputs": {
+            "reading": 697,
+            "reference": 543,
+            "spacing": 31
+          },
+          "expect": 698
+        },
+        {
+          "name": "case_24",
+          "inputs": {
+            "reading": -1956,
+            "reference": -869,
+            "spacing": 87
+          },
+          "expect": -1913
+        },
+        {
+          "name": "case_25",
+          "inputs": {
+            "reading": 383,
+            "reference": -991,
+            "spacing": 67
+          },
+          "expect": 416
+        },
+        {
+          "name": "case_26",
+          "inputs": {
+            "reading": -934,
+            "reference": -739,
+            "spacing": 65
+          },
+          "expect": -934
+        },
+        {
+          "name": "case_27",
+          "inputs": {
+            "reading": 735,
+            "reference": 156,
+            "spacing": 58
+          },
+          "expect": 736
+        },
+        {
+          "name": "case_28",
+          "inputs": {
+            "reading": -421,
+            "reference": 20,
+            "spacing": 42
+          },
+          "expect": -442
+        },
+        {
+          "name": "case_29",
+          "inputs": {
+            "reading": 1727,
+            "reference": 208,
+            "spacing": 98
+          },
+          "expect": 1776
+        },
+        {
+          "name": "case_30",
+          "inputs": {
+            "reading": -4,
+            "reference": 167,
+            "spacing": 57
+          },
+          "expect": -4
+        },
+        {
+          "name": "case_31",
+          "inputs": {
+            "reading": -403,
+            "reference": -762,
+            "spacing": 24
+          },
+          "expect": -402
+        },
+        {
+          "name": "case_32",
+          "inputs": {
+            "reading": -181,
+            "reference": 82,
+            "spacing": 31
+          },
+          "expect": -166
+        },
+        {
+          "name": "case_33",
+          "inputs": {
+            "reading": -187,
+            "reference": -579,
+            "spacing": 27
+          },
+          "expect": -174
+        },
+        {
+          "name": "case_34",
+          "inputs": {
+            "reading": -816,
+            "reference": -708,
+            "spacing": 12
+          },
+          "expect": -816
+        },
+        {
+          "name": "case_35",
+          "inputs": {
+            "reading": 987,
+            "reference": 824,
+            "spacing": 82
+          },
+          "expect": 988
+        },
+        {
+          "name": "case_36",
+          "inputs": {
+            "reading": -1267,
+            "reference": -832,
+            "spacing": 67
+          },
+          "expect": -1234
+        },
+        {
+          "name": "case_37",
+          "inputs": {
+            "reading": 454,
+            "reference": -626,
+            "spacing": 80
+          },
+          "expect": 494
+        },
+        {
+          "name": "case_38",
+          "inputs": {
+            "reading": 196,
+            "reference": 304,
+            "spacing": 54
+          },
+          "expect": 196
+        },
+        {
+          "name": "case_39",
+          "inputs": {
+            "reading": -791,
+            "reference": -945,
+            "spacing": 31
+          },
+          "expect": -790
+        },
+        {
+          "name": "case_40",
+          "inputs": {
+            "reading": -1900,
+            "reference": -914,
+            "spacing": 68
+          },
+          "expect": -1934
+        },
+        {
+          "name": "case_41",
+          "inputs": {
+            "reading": 239,
+            "reference": -256,
+            "spacing": 66
+          },
+          "expect": 272
+        },
+        {
+          "name": "case_42",
+          "inputs": {
+            "reading": -355,
+            "reference": -271,
+            "spacing": 84
+          },
+          "expect": -355
+        },
+        {
+          "name": "case_43",
+          "inputs": {
+            "reading": -273,
+            "reference": -392,
+            "spacing": 10
+          },
+          "expect": -272
+        },
+        {
+          "name": "case_44",
+          "inputs": {
+            "reading": -1191,
+            "reference": -868,
+            "spacing": 38
+          },
+          "expect": -1210
+        },
+        {
+          "name": "case_45",
+          "inputs": {
+            "reading": 65,
+            "reference": -130,
+            "spacing": 10
+          },
+          "expect": 70
+        },
+        {
+          "name": "case_46",
+          "inputs": {
+            "reading": -791,
+            "reference": 89,
+            "spacing": 44
+          },
+          "expect": -791
+        },
+        {
+          "name": "case_47",
+          "inputs": {
+            "reading": 551,
+            "reference": 197,
+            "spacing": 71
+          },
+          "expect": 552
+        },
+        {
+          "name": "case_48",
+          "inputs": {
+            "reading": -572,
+            "reference": 48,
+            "spacing": 73
+          },
+          "expect": -536
+        },
+        {
+          "name": "case_49",
+          "inputs": {
+            "reading": 776,
+            "reference": 253,
+            "spacing": 95
+          },
+          "expect": 823
+        },
+        {
+          "name": "case_50",
+          "inputs": {
+            "reading": 61,
+            "reference": 789,
+            "spacing": 52
+          },
+          "expect": 61
+        },
+        {
+          "name": "case_51",
+          "inputs": {
+            "reading": 1360,
+            "reference": -499,
+            "spacing": 93
+          },
+          "expect": 1361
+        },
+        {
+          "name": "case_52",
+          "inputs": {
+            "reading": -133,
+            "reference": 513,
+            "spacing": 68
+          },
+          "expect": -167
+        },
+        {
+          "name": "case_53",
+          "inputs": {
+            "reading": 234,
+            "reference": -791,
+            "spacing": 50
+          },
+          "expect": 259
+        },
+        {
+          "name": "case_54",
+          "inputs": {
+            "reading": 208,
+            "reference": 853,
+            "spacing": 43
+          },
+          "expect": 208
+        },
+        {
+          "name": "case_55",
+          "inputs": {
+            "reading": 1800,
+            "reference": 781,
+            "spacing": 68
+          },
+          "expect": 1801
+        },
+        {
+          "name": "case_56",
+          "inputs": {
+            "reading": 60,
+            "reference": 263,
+            "spacing": 11
+          },
+          "expect": 65
+        },
+        {
+          "name": "case_57",
+          "inputs": {
+            "reading": 2069,
+            "reference": 716,
+            "spacing": 82
+          },
+          "expect": 2110
+        },
+        {
+          "name": "case_58",
+          "inputs": {
+            "reading": -340,
+            "reference": 40,
+            "spacing": 38
+          },
+          "expect": -340
+        },
+        {
+          "name": "case_59",
+          "inputs": {
+            "reading": 866,
+            "reference": 597,
+            "spacing": 30
+          },
+          "expect": 867
+        },
+        {
+          "name": "case_60",
+          "inputs": {
+            "reading": -1356,
+            "reference": -719,
+            "spacing": 75
+          },
+          "expect": -1319
+        },
+        {
+          "name": "case_61",
+          "inputs": {
+            "reading": 1309,
+            "reference": 566,
+            "spacing": 99
+          },
+          "expect": 1358
+        },
+        {
+          "name": "case_62",
+          "inputs": {
+            "reading": -1758,
+            "reference": -925,
+            "spacing": 49
+          },
+          "expect": -1758
+        },
+        {
+          "name": "case_63",
+          "inputs": {
+            "reading": -135,
+            "reference": -666,
+            "spacing": 76
+          },
+          "expect": -134
+        },
+        {
+          "name": "case_64",
+          "inputs": {
+            "reading": -19,
+            "reference": 165,
+            "spacing": 16
+          },
+          "expect": -27
+        },
+        {
+          "name": "case_65",
+          "inputs": {
+            "reading": 1491,
+            "reference": 703,
+            "spacing": 63
+          },
+          "expect": 1522
+        },
+        {
+          "name": "case_66",
+          "inputs": {
+            "reading": -31,
+            "reference": 509,
+            "spacing": 60
+          },
+          "expect": -31
+        },
+        {
+          "name": "case_67",
+          "inputs": {
+            "reading": 657,
+            "reference": 544,
+            "spacing": 57
+          },
+          "expect": 658
+        },
+        {
+          "name": "case_68",
+          "inputs": {
+            "reading": -547,
+            "reference": -359,
+            "spacing": 29
+          },
+          "expect": -533
+        },
+        {
+          "name": "case_69",
+          "inputs": {
+            "reading": 469,
+            "reference": 416,
+            "spacing": 7
+          },
+          "expect": 472
+        },
+        {
+          "name": "case_70",
+          "inputs": {
+            "reading": -788,
+            "reference": -108,
+            "spacing": 68
+          },
+          "expect": -788
+        },
+        {
+          "name": "case_71",
+          "inputs": {
+            "reading": 416,
+            "reference": -799,
+            "spacing": 64
+          },
+          "expect": 417
+        }
+      ]
+    }
+  }
+}

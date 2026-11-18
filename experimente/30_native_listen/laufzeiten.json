@@ -1,0 +1,539 @@
+{
+  "method": "Linux x86-64, separate CLI processes, alternating order per pair, three warmups per executable and task, 20 measured pairs per task, identical files and inputs",
+  "pairs": [
+    {
+      "name": "saldo_0",
+      "median_ms": {
+        "nativ": 6.2145150000000005,
+        "referenz": 30.3782855
+      },
+      "raw_ms": [
+        {
+          "referenz": 31.519117,
+          "nativ": 7.177688
+        },
+        {
+          "nativ": 5.744821,
+          "referenz": 30.215432
+        },
+        {
+          "referenz": 29.377736,
+          "nativ": 6.829452
+        },
+        {
+          "nativ": 5.657929,
+          "referenz": 29.727163
+        },
+        {
+          "referenz": 29.667382,
+          "nativ": 6.506395
+        },
+        {
+          "nativ": 5.970335,
+          "referenz": 30.019668
+        },
+        {
+          "referenz": 29.61213,
+          "nativ": 6.236211
+        },
+        {
+          "nativ": 6.523956,
+          "referenz": 31.194601
+        },
+        {
+          "referenz": 29.797514,
+          "nativ": 7.030785
+        },
+        {
+          "nativ": 6.031776,
+          "referenz": 30.167191
+        },
+        {
+          "referenz": 30.541139,
+          "nativ": 7.630787
+        },
+        {
+          "nativ": 5.104449,
+          "referenz": 30.64162
+        },
+        {
+          "referenz": 29.661641,
+          "nativ": 6.539246
+        },
+        {
+          "nativ": 5.151999,
+          "referenz": 31.411785
+        },
+        {
+          "referenz": 30.797873,
+          "nativ": 6.854582
+        },
+        {
+          "nativ": 5.432995,
+          "referenz": 30.700492
+        },
+        {
+          "referenz": 30.846734,
+          "nativ": 5.998896
+        },
+        {
+          "nativ": 6.192819,
+          "referenz": 30.672302
+        },
+        {
+          "referenz": 29.406746,
+          "nativ": 6.810341
+        },
+        {
+          "nativ": 5.081198,
+          "referenz": 30.577659
+        }
+      ]
+    },
+    {
+      "name": "saldo_16",
+      "median_ms": {
+        "nativ": 6.083197500000001,
+        "referenz": 31.408995500000003
+      },
+      "raw_ms": [
+        {
+          "nativ": 4.909565,
+          "referenz": 31.379724
+        },
+        {
+          "referenz": 32.022647,
+          "nativ": 6.978995
+        },
+        {
+          "nativ": 5.092818,
+          "referenz": 31.933695
+        },
+        {
+          "referenz": 30.380226,
+          "nativ": 6.706869
+        },
+        {
+          "nativ": 6.154709,
+          "referenz": 30.674501
+        },
+        {
+          "referenz": 31.381575,
+          "nativ": 6.960214
+        },
+        {
+          "nativ": 5.053808,
+          "referenz": 31.908794
+        },
+        {
+          "referenz": 31.555538,
+          "nativ": 7.320821
+        },
+        {
+          "nativ": 4.989826,
+          "referenz": 32.16196
+        },
+        {
+          "referenz": 31.436416,
+          "nativ": 6.993025
+        },
+        {
+          "nativ": 5.044827,
+          "referenz": 30.269653
+        },
+        {
+          "referenz": 33.191049,
+          "nativ": 6.145869
+        },
+        {
+          "nativ": 5.007987,
+          "referenz": 28.954347
+        },
+        {
+          "referenz": 31.941675,
+          "nativ": 6.020526
+        },
+        {
+          "nativ": 4.963136,
+          "referenz": 31.13352
+        },
+        {
+          "referenz": 32.413054,
+          "nativ": 7.022606
+        },
+        {
+          "nativ": 5.061747,
+          "referenz": 31.264822
+        },
+        {
+          "referenz": 32.025307,
+          "nativ": 6.995765
+        },
+        {
+          "nativ": 5.19057,
+          "referenz": 29.876146
+        },
+        {
+          "referenz": 29.389637,
+          "nativ": 6.864592
+        }
+      ]
+    },
+    {
+      "name": "saldo_4096",
+      "median_ms": {
+        "nativ": 19.5518765,
+        "referenz": 35.196248
+      },
+      "raw_ms": [
+        {
+          "referenz": 36.528154,
+          "nativ": 21.014145
+        },
+        {
+          "nativ": 19.280242,
+          "referenz": 35.338831
+        },
+        {
+          "referenz": 34.891052,
+          "nativ": 20.74578
+        },
+        {
+          "nativ": 19.930514,
+          "referenz": 34.669268
+        },
+        {
+          "referenz": 33.845182,
+          "nativ": 21.262019
+        },
+        {
+          "nativ": 19.388384,
+          "referenz": 34.875702
+        },
+        {
+          "referenz": 34.365042,
+          "nativ": 19.625278
+        },
+        {
+          "nativ": 18.845883,
+          "referenz": 34.686569
+        },
+        {
+          "referenz": 35.125407,
+          "nativ": 19.349353
+        },
+        {
+          "nativ": 18.905875,
+          "referenz": 35.714788
+        },
+        {
+          "referenz": 35.26991,
+          "nativ": 21.173008
+        },
+        {
+          "nativ": 18.752471,
+          "referenz": 36.113266
+        },
+        {
+          "referenz": 34.573166,
+          "nativ": 20.565107
+        },
+        {
+          "nativ": 18.802862,
+          "referenz": 35.413583
+        },
+        {
+          "referenz": 35.267089,
+          "nativ": 20.336661
+        },
+        {
+          "nativ": 18.760562,
+          "referenz": 36.430232
+        },
+        {
+          "referenz": 34.310751,
+          "nativ": 20.454364
+        },
+        {
+          "nativ": 19.642619,
+          "referenz": 36.010314
+        },
+        {
+          "referenz": 33.446005,
+          "nativ": 19.478475
+        },
+        {
+          "nativ": 18.991436,
+          "referenz": 37.048624
+        }
+      ]
+    },
+    {
+      "name": "saldo_tests",
+      "median_ms": {
+        "nativ": 6.055486500000001,
+        "referenz": 30.978476999999998
+      },
+      "raw_ms": [
+        {
+          "nativ": 5.329402,
+          "referenz": 30.873905
+        },
+        {
+          "referenz": 32.359464,
+          "nativ": 7.000615
+        },
+        {
+          "nativ": 5.552297,
+          "referenz": 29.727073
+        },
+        {
+          "referenz": 32.642979,
+          "nativ": 6.664798
+        },
+        {
+          "nativ": 6.689279,
+          "referenz": 32.220921
+        },
+        {
+          "referenz": 30.571799,
+          "nativ": 7.407533
+        },
+        {
+          "nativ": 5.095198,
+          "referenz": 32.15366
+        },
+        {
+          "referenz": 30.485298,
+          "nativ": 6.610368
+        },
+        {
+          "nativ": 5.063937,
+          "referenz": 30.493277
+        },
+        {
+          "referenz": 31.123929,
+          "nativ": 5.927194
+        },
+        {
+          "nativ": 5.835313,
+          "referenz": 31.367444
+        },
+        {
+          "referenz": 30.679221,
+          "nativ": 6.599777
+        },
+        {
+          "nativ": 5.157129,
+          "referenz": 30.168221
+        },
+        {
+          "referenz": 31.267732,
+          "nativ": 6.183779
+        },
+        {
+          "nativ": 5.080538,
+          "referenz": 31.083049
+        },
+        {
+          "referenz": 30.334124,
+          "nativ": 7.305461
+        },
+        {
+          "nativ": 5.025236,
+          "referenz": 29.269784
+        },
+        {
+          "referenz": 33.137278,
+          "nativ": 6.534796
+        },
+        {
+          "nativ": 5.036517,
+          "referenz": 30.229103
+        },
+        {
+          "referenz": 31.603008,
+          "nativ": 7.174128
+        }
+      ]
+    },
+    {
+      "name": "listen_tests",
+      "median_ms": {
+        "nativ": 6.521531,
+        "referenz": 31.238717
+      },
+      "raw_ms": [
+        {
+          "referenz": 31.178631,
+          "nativ": 7.191419
+        },
+        {
+          "nativ": 5.70375,
+          "referenz": 31.533098
+        },
+        {
+          "referenz": 31.343474,
+          "nativ": 7.24843
+        },
+        {
+          "nativ": 5.593358,
+          "referenz": 30.267263
+        },
+        {
+          "referenz": 29.877705,
+          "nativ": 6.677689
+        },
+        {
+          "nativ": 5.407154,
+          "referenz": 31.381544
+        },
+        {
+          "referenz": 30.505357,
+          "nativ": 7.150258
+        },
+        {
+          "nativ": 6.575027,
+          "referenz": 30.146441
+        },
+        {
+          "referenz": 31.818773,
+          "nativ": 8.528665
+        },
+        {
+          "nativ": 6.162349,
+          "referenz": 31.072759
+        },
+        {
+          "referenz": 30.227063,
+          "nativ": 6.468035
+        },
+        {
+          "nativ": 6.182049,
+          "referenz": 31.931545
+        },
+        {
+          "referenz": 31.530377,
+          "nativ": 6.637658
+        },
+        {
+          "nativ": 5.876303,
+          "referenz": 30.346124
+        },
+        {
+          "referenz": 29.881495,
+          "nativ": 7.335991
+        },
+        {
+          "nativ": 6.328682,
+          "referenz": 32.529217
+        },
+        {
+          "referenz": 32.510896,
+          "nativ": 7.515425
+        },
+        {
+          "nativ": 5.494706,
+          "referenz": 30.865455
+        },
+        {
+          "referenz": 32.599058,
+          "nativ": 6.994705
+        },
+        {
+          "nativ": 5.517076,
+          "referenz": 31.298803
+        }
+      ]
+    },
+    {
+      "name": "ordering_tests",
+      "median_ms": {
+        "nativ": 6.4962605,
+        "referenz": 31.063629
+      },
+      "raw_ms": [
+        {
+          "nativ": 5.541246,
+          "referenz": 30.863944
+        },
+        {
+          "referenz": 32.298632,
+          "nativ": 6.586737
+        },
+        {
+          "nativ": 5.399384,
+          "referenz": 32.570347
+        },
+        {
+          "referenz": 34.489334,
+          "nativ": 7.108817
+        },
+        {
+          "nativ": 5.034367,
+          "referenz": 32.564767
+        },
+        {
+          "referenz": 31.734541,
+          "nativ": 6.419034
+        },
+        {
+          "nativ": 5.055897,
+          "referenz": 31.154071
+        },
+        {
+          "referenz": 29.56813,
+          "nativ": 7.820241
+        },
+        {
+          "nativ": 5.260871,
+          "referenz": 30.721341
+        },
+        {
+          "referenz": 30.973187,
+          "nativ": 7.157658
+        },
+        {
+          "nativ": 5.375123,
+          "referenz": 30.952477
+        },
+        {
+          "referenz": 31.333064,
+          "nativ": 6.107538
+        },
+        {
+          "nativ": 5.512636,
+          "referenz": 31.478356
+        },
+        {
+          "referenz": 31.613269,
+          "nativ": 6.675739
+        },
+        {
+          "nativ": 5.104978,
+          "referenz": 30.905375
+        },
+        {
+          "referenz": 30.678662,
+          "nativ": 6.912433
+        },
+        {
+          "nativ": 6.687509,
+          "referenz": 29.344985
+        },
+        {
+          "referenz": 29.825464,
+          "nativ": 6.72389
+        },
+        {
+          "nativ": 6.969064,
+          "referenz": 30.14045
+        },
+        {
+          "referenz": 31.294103,
+          "nativ": 6.573487
+        }
+      ]
+    }
+  ]
+}

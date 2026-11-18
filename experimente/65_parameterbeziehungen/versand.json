@@ -1,0 +1,6 @@
+{
+  "tide_entry": "use route\n\nmain a:i b:i c:i > i\nroute a b c\n",
+  "python_entry": "from route import route\n\ndef main(a: int, b: int, c: int) -> int:\n    return route(a, b, c)\n",
+  "tide_route": "use rulebook\n\nroute a:i b:i c:i > i\nlet labels compute c b\nif (< a b) labels -99\n",
+  "python_route": "from rulebook import compute\n\ndef route(a: int, b: int, c: int) -> int:\n    labels = compute(c, b)\n    return labels if a < b else -99\n"
+}

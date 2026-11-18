@@ -1,0 +1,198 @@
+use source_layout
+
+record Span
+header:i body:i stop:i
+
+record Scan
+offset:i at_header:b active:b span:{Span}
+
+valid_name name:t > b
+let letters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+let allowed concat letters "0123456789_"
+and (> text_len name 0) (fold (positions text_len name) true ok pos unused
+  and ok (case (text_find (if eq pos 1 letters allowed) (text_slice name (- pos 1) pos) 0) false idx true))
+
+scan_line source:t name:t cursor:{Scan} line:t > {Scan}
+if (case (text_find line "\r" 0) false idx true) fail "expected_lf_or_crlf"
+let offset get offset cursor
+let stop + offset text_len line
+let next if eq stop text_len source stop (+ stop (if text_eq (text_slice source stop (+ stop 2)) "\r\n" 2 1))
+let blank indent_only line
+let found and (get at_header cursor) (function_header line name)
+let span get span cursor
+if and found (not < get header span 0) fail "duplicate_function"
+let inside and (get active cursor) (not blank)
+let updated if found (make Span header offset body next stop next)
+            if inside (with stop span stop) span
+make Scan offset next at_header blank active (or found inside) span updated
+
+editable_name name:t > b
+and (valid_name name) (not (fold (list t 5 "rule" "record" "variant" "example" "use") false acc row kw or acc text_eq kw name))
+
+locate source:t name:t > {Span}
+if not (editable_name name) fail "expected_function_name"
+if other_line_ending source fail "expected_lf_or_crlf"
+let initial make Scan offset 0 at_header true active false span (make Span header -1 body -1 stop -1)
+let result get span (fold (lines source) initial cursor row line scan_line source name cursor line)
+if < get header result 0 fail "function_not_found"
+if not > get stop result get body result fail "missing_function_body"
+result
+
+packet source:t name:t task:t > t
+let span locate source name
+let definition text_slice source (get header span) (get stop span)
+concat task (concat "\n" (concat definition "\nReturn only the new TIDE body as one prefix expression on one line."))
+
+main source:r name:t task:t > t
+packet (read source) name task
+
+one_line answer:t > t
+let n text_len answer
+let cut if text_eq (text_slice answer (- n 2) n) "\r\n" (- n 2)
+        if text_eq (text_slice answer (- n 1) n) "\n" (- n 1) n
+let body text_slice answer 0 cut
+let multiline or (other_line_ending body) (or (case (text_find body "\n" 0) false idx true) (case (text_find body "\r" 0) false idx true))
+if or multiline (indent_only body) fail "expected_one_expression_line" body
+
+replace_body source:t name:t answer:t > t
+let span locate source name
+concat (text_slice source 0 (get body span))
+  (concat (one_line answer) (text_slice source (get stop span) (text_len source)))
+
+candidate source:r name:t answer:r > t
+replace_body (read source) name (read answer)
+
+record SourceFile
+file:t source:t
+
+record Form
+name:t file:t body:t
+
+record Change
+name:t body:t
+
+record RepairView
+instruction:t observation:t files:*{SourceFile}
+
+owner forms:*{Form} name:t > t
+let found fold forms (nil t) previous row form
+  if (text_eq name (get name form))
+    (case previous (some get file form) duplicate (fail "ambiguous_function")) previous
+need found "unknown_function" 0
+
+patched_file files:*{SourceFile} path:t name:t body:t > *{SourceFile}
+let count fold files 0 n row unit + n (if text_eq path (get file unit) 1 0)
+if not eq count 1 fail "expected_one_source_file"
+fold files (list {SourceFile} 0) updated row unit
+  append updated (if text_eq path (get file unit)
+    (with source unit (replace_body (get source unit) name body)) unit)
+
+candidate_files files:*{SourceFile} forms:*{Form} edits:*{Change} > *{SourceFile}
+if eq length edits 0 fail "expected_edits"
+fold edits files updated row edit
+  let name get name edit
+  let count fold edits 0 n index item + n (if text_eq (get name item) name 1 0)
+  if not eq count 1 fail "duplicate_edit"
+  patched_file updated (owner forms name) name (get body edit)
+
+grouped_result observation:t files:*{SourceFile} > {RepairView}
+make RepairView
+  instruction "The reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression."
+  observation observation files files
+
+repair_view observation:t files:*{SourceFile} forms:*{Form} > {RepairView}
+let expanded fold forms files updated row form
+  patched_file updated (get file form) (get name form) (get body form)
+grouped_result observation expanded
+
+record ParseIssue
+file:t code:t message:t line:i column:i
+
+closing_retry files:*{SourceFile} edits:*{Change} diagnostic:{ParseIssue} > ?*{Change}
+if not (and (text_eq (get code diagnostic) "E_SYNTAX") (text_eq (get message diagnostic) "Missing operand")) (nil *{Change})
+let line get line diagnostic
+let column get column diagnostic
+if or (< line 2) (< column 2) (nil *{Change})
+let file_text fold files (nil t) found row unit
+  if (text_eq (get file unit) (get file diagnostic))
+    (case found (some (get source unit)) duplicate (fail "duplicate_source_file")) found
+case file_text (nil *{Change}) source
+let rows lines source
+case (at rows (- line 1)) (nil *{Change}) body
+let header need (at rows (- line 2)) "missing_header" line
+if not (case (at rows (- line 3)) true prev (indent_only prev)) (nil *{Change})
+let offset - column 1
+let size text_len body
+if or (> offset size) (gap (text_slice body (- offset 1) offset)) (nil *{Change})
+let tail text_slice body offset size
+if not (indent_only tail) (nil *{Change})
+let target fold edits (nil t) found row edit
+  if (and (function_header header (get name edit)) (text_eq body (one_line (get body edit))))
+    (case found (some (get name edit)) duplicate (fail "duplicate_edit")) found
+case target (nil *{Change}) name
+let closed concat (text_slice body 0 offset) (concat ")" tail)
+some (fold edits (list {Change} 0) result row edit
+  append result (if (text_eq (get name edit) name) (with body edit closed) edit))
+
+example close_at_compiler_column closing_retry
+{"inputs":{"files":[{"file":"other.tide","source":"h > i\n1"},{"file":"lib.tide","source":"use a\r\n\r\nf > t\r\n(concat \"猫)\" \"(\\\"x\" \t\r\n\r\ng > i\r\n12"}],"edits":[{"name":"f","body":"(concat \"猫)\" \"(\\\"x\" \t\r\n"},{"name":"g","body":"12"}],"diagnostic":{"file":"lib.tide","code":"E_SYNTAX","message":"Missing operand","line":4,"column":20}},"expect":{"some":[{"name":"f","body":"(concat \"猫)\" \"(\\\"x\") \t"},{"name":"g","body":"12"}]}}
+
+example leave_other_diagnostic closing_retry
+{"inputs":{"files":[{"file":"other.tide","source":"h > i\n1"},{"file":"lib.tide","source":"use a\r\n\r\nf > t\r\n(concat \"猫)\" \"(\\\"x\" \t\r\n\r\ng > i\r\n12"}],"edits":[{"name":"f","body":"(concat \"猫)\" \"(\\\"x\" \t\r\n"},{"name":"g","body":"12"}],"diagnostic":{"file":"lib.tide","code":"E_TYPE","message":"Missing operand","line":4,"column":20}},"expect":{"none":true}}
+
+example require_corresponding_edit closing_retry
+{"inputs":{"files":[{"file":"other.tide","source":"h > i\n1"},{"file":"lib.tide","source":"use a\r\n\r\nf > t\r\n(concat \"猫)\" \"(\\\"x\" \t\r\n\r\ng > i\r\n12"}],"edits":[{"name":"f","body":"1"},{"name":"g","body":"12"}],"diagnostic":{"file":"lib.tide","code":"E_SYNTAX","message":"Missing operand","line":4,"column":20}},"expect":{"none":true}}
+
+example require_corresponding_file closing_retry
+{"inputs":{"files":[{"file":"other.tide","source":"h > i\n1"},{"file":"lib.tide","source":"use a\r\n\r\nf > t\r\n(concat \"猫)\" \"(\\\"x\" \t\r\n\r\ng > i\r\n12"}],"edits":[{"name":"f","body":"(concat \"猫)\" \"(\\\"x\" \t\r\n"},{"name":"g","body":"12"}],"diagnostic":{"file":"missing.tide","code":"E_SYNTAX","message":"Missing operand","line":4,"column":20}},"expect":{"none":true}}
+
+example require_end_position closing_retry
+{"inputs":{"files":[{"file":"other.tide","source":"h > i\n1"},{"file":"lib.tide","source":"use a\r\n\r\nf > t\r\n(concat \"猫)\" \"(\\\"x\" \t\r\n\r\ng > i\r\n12"}],"edits":[{"name":"f","body":"(concat \"猫)\" \"(\\\"x\" \t\r\n"},{"name":"g","body":"12"}],"diagnostic":{"file":"lib.tide","code":"E_SYNTAX","message":"Missing operand","line":4,"column":4}},"expect":{"none":true}}
+
+example skip_nonheader closing_retry
+{"inputs":{"files":[{"file":"lib.tide","source":"f > i\n+ 1\nf 1\n(+ 2 3"}],"edits":[{"name":"f","body":"(+ 2 3"}],"diagnostic":{"file":"lib.tide","code":"E_SYNTAX","message":"Missing operand","line":4,"column":7}},"expect":{"none":true}}
+
+example first_definition_retry closing_retry
+{"inputs":{"files":[{"file":"lib.tide","source":"f > i\n(+ 1 2"}],"edits":[{"name":"f","body":"(+ 1 2"}],"diagnostic":{"file":"lib.tide","code":"E_SYNTAX","message":"Missing operand","line":2,"column":7}},"expect":{"some":[{"name":"f","body":"(+ 1 2)"}]}}
+
+example two_modules candidate_files
+{"inputs":{"files":[{"file":"a.tide","source":"f > i\r\n1\r\n\r\nother > i\r\n4\r\n"},{"file":"b.tide","source":"g > i\n2"}],"forms":[{"name":"f","file":"a.tide","body":"1"},{"name":"g","file":"b.tide","body":"2"}],"edits":[{"name":"g","body":"8"},{"name":"f","body":"(+ 1 2)"}]},"expect":[{"file":"a.tide","source":"f > i\r\n(+ 1 2)\r\n\r\nother > i\r\n4\r\n"},{"file":"b.tide","source":"g > i\n8"}]}
+
+example repeated_target candidate_files
+{"inputs":{"files":[],"forms":[],"edits":[{"name":"f","body":"1"},{"name":"f","body":"2"}]},"expect_error":{"code":"E_DATA","reason":"duplicate_edit"}}
+
+example unknown_target candidate_files
+{"inputs":{"files":[],"forms":[],"edits":[{"name":"missing","body":"1"}]},"expect_error":{"code":"E_DATA","reason":"unknown_function"}}
+
+example ambiguous_owner candidate_files
+{"inputs":{"files":[],"forms":[{"name":"f","file":"a.tide","body":"1"},{"name":"f","file":"b.tide","body":"2"}],"edits":[{"name":"f","body":"3"}]},"expect_error":{"code":"E_DATA","reason":"ambiguous_function"}}
+
+example invalid_second_edit candidate_files
+{"inputs":{"files":[{"file":"lib.tide","source":"f > i\n0\n\ng > i\n0\n"}],"forms":[{"name":"f","file":"lib.tide","body":"0"},{"name":"g","file":"lib.tide","body":"0"}],"edits":[{"name":"f","body":"1"},{"name":"g","body":"2\n\nextra > i\n3"}]},"expect_error":{"code":"E_DATA","reason":"expected_one_expression_line"}}
+
+example local_context packet
+{"inputs":{"source":"longer x:i > i\nx\n\nlong x:i > i\n+ x 3\n\nmain > i\nlong 4\n","name":"long","task":"double the input"},"expect":"double the input\nlong x:i > i\n+ x 3\nReturn only the new TIDE body as one prefix expression on one line."}
+
+example preserve_layout replace_body
+{"inputs":{"source":"record Test\r\nvalue:i\r\n\t \r\n  f\tx:i > i\r\nlet y 3\r\n+ x y\r\n \t\r\nmain > i\r\nf 2","name":"f","answer":"* x 2\r\n"},"expect":"record Test\r\nvalue:i\r\n\t \r\n  f\tx:i > i\r\n* x 2\r\n \t\r\nmain > i\r\nf 2"}
+
+example last_body replace_body
+{"inputs":{"source":"f > i\n1","name":"f","answer":"2"},"expect":"f > i\n2"}
+
+example declaration_as_answer one_line
+{"inputs":{"answer":"3\n\nother > i\n4"},"expect_error":{"code":"E_DATA","reason":"expected_one_expression_line"}}
+
+example empty_answer one_line
+{"inputs":{"answer":" \t\n"},"expect_error":{"code":"E_DATA","reason":"expected_one_expression_line"}}
+
+example rule_is_not_function locate
+{"inputs":{"source":"rule f v:i > i\nstate n:i=0\nelse -> n=keep\nout n","name":"f"},"expect_error":{"code":"E_DATA","reason":"function_not_found"}}
+
+example unicode_blank replace_body
+{"inputs":{"source":"f > i\n1\n\u00a0\nmain > i\nf\n","name":"f","answer":"2"},"expect":"f > i\n2\n\u00a0\nmain > i\nf\n"}
+
+example bare_cr replace_body
+{"inputs":{"source":"f > i\n1\r\rmain > i\nf\n","name":"f","answer":"2"},"expect_error":{"code":"E_DATA","reason":"expected_lf_or_crlf"}}
+
+example invalid_target locate
+{"inputs":{"source":"record Point\nx:i\n\nmain > i\n1","name":"record Point"},"expect_error":{"code":"E_DATA","reason":"expected_function_name"}}

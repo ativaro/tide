@@ -1,0 +1,7 @@
+use ranking
+
+main left:{Ticket} right:{Ticket} > b
+prefer left right
+
+example same_priority main
+{"inputs":{"left":{"priority":2,"arrival":3},"right":{"priority":2,"arrival":9}},"expect":true}

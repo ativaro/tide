@@ -1,0 +1,173 @@
+use project_model
+
+node_key prefix:t node:{FunctionNode} > t
+let loc get site node
+cat3 prefix (decimal (get line loc)) (concat ":" (decimal (get column loc)))
+
+node_fields id:t node:{FunctionNode} > t
+let op get word (get site node)
+let field if (or (text_eq op "get") (text_eq op "with")) (concat ",\"field\":" (json_string (get literal node))) ""
+cat3 "\"node\":" (json_string id) (cat3 ",\"operation\":" (json_string op) (cat3 ",\"type\":" (json_string (get typ node)) field))
+
+node_head node:{FunctionNode} names:*t > t
+let op get word (get site node)
+if (text_eq op "tag") (cat3 "tag " (text_slice (get typ node) 1 (- (text_len (get typ node)) 1)) (concat " " (get literal node)))
+if (text_eq op "make") (concat "make " (text_slice (get typ node) 1 (- (text_len (get typ node)) 1)))
+if (or (text_eq op "get") (text_eq op "with")) (cat3 op " " (get literal node))
+if (text_eq op "catch") (concat "catch " (get literal node))
+if (text_eq op "scan") (concat "scan " (need (at names (get target node)) "scan_name" 0))
+if (text_eq op "dict") (concat "dict " (text_slice (get typ node) 1 (text_len (get typ node))))
+if (text_eq op "pg_query") (concat "pg_query " (get literal node))
+if (text_eq op "fold_rows") (concat "fold_rows " (get literal node))
+if (text_eq op "sql_query") (concat "sql_query " (text_slice (get typ node) 1 (text_len (get typ node))))
+if (or (https_op op) (text_eq op "json_decode")) (cat3 op " " (get typ node))
+if (text_eq op "nil") (concat "nil " (text_slice (get typ node) 1 (text_len (get typ node))))
+if (text_eq op "map") (concat "map " (text_slice (get typ node) 1 (text_len (get typ node))))
+if (text_eq op "list") (cat3 "list " (text_slice (get typ node) 1 (text_len (get typ node))) (concat " " (decimal (length (get children node)))))
+if (text_eq op "let") (concat "let " (need (at (get binders node) 0) "let_name" 0))
+op
+
+operand_expectation parent:{FunctionNode} pos:i program:{CheckedFunctions} schemas:{Declarations} > t
+let op get word (get site parent)
+let typ get typ parent
+let target get target parent
+if (https_op op) (need (at (https_args op) pos) "https_operand" 0)
+if (text_eq op "json_decode") "y"
+if (text_eq op "dict_get") (if (eq pos 1) "t" (concat "%" (text_slice typ 1 (text_len typ))))
+if (text_eq op "dict_put") (if (eq pos 0) typ (if (eq pos 1) "t" (text_slice typ 1 (text_len typ))))
+if (text_eq op "match") (if (eq pos 0) (get literal parent) typ)
+if (or (text_eq op "make") (text_eq op "with"))
+  (let name text_slice typ 1 (- (text_len typ) 1)
+   let decl need (at (get entries schemas) (need (entry_at (get names schemas) name) "record_name" 0)) "record_schema" 0
+   if (and (text_eq op "with") (eq pos 0)) typ
+   need (at (get types decl) (if (text_eq op "make") pos (get value parent))) "field_type" 0)
+if (not (< target 0))
+  (let types get types (need (at (get signatures program) target) "signature" 0)
+   let param need (at types pos) "parameter" 0
+   if (text_eq op "scan") (concat "*" param) param)
+if (or (text_eq op "catch") (or (and (text_eq op "if") (> pos 0)) (and (text_eq op "case") (> pos 0)))) typ
+if (text_eq op "while") (if (eq pos 1) "b" typ)
+if (text_eq op "fold_rows") (need (at (list t 5 "d" "t" "sql_params" typ typ) pos) "sql_pos" 0)
+if (and (text_eq op "fold_lines") (> pos 1)) typ
+if (and (text_eq op "fold") (eq pos 2)) typ
+if (and (text_eq op "map") (eq pos 1)) (text_slice typ 1 (text_len typ))
+if (or (text_eq op "list") (and (text_eq op "append") (eq pos 1))) (if (text_eq typ "!") "!" (text_slice typ 1 (text_len typ)))
+let frame need (builtin_frame op parent false) "parent_operator" 0
+let wanted need (at (get expects frame) pos) "operand_type" 0
+if (signature_kind wanted) wanted "!"
+
+node_expectation program:{CheckedFunctions} tree:{FunctionTree} fn:{Signature} idx:i > t
+let nodes get nodes tree
+let node node_at nodes idx
+if (not (text_eq (get typ node) "!")) (get typ node)
+if (get root node)
+  (let plan get plan tree
+   fold (get branches plan) (get result fn) typ row branch
+     if (eq (get guard branch) idx) "b"
+     fold (get actions branch) typ result pos action if (eq action idx) (need (at (get types plan) (- pos 1)) "field_type" 0) result)
+fold (append (get pages nodes) (get tail nodes)) "!" prior group page
+  fold page prior found row parent
+    let index + (* (- group 1) 256) (- row 1)
+    if (or (not (> index idx)) (> (get subtree_start parent) idx)) found
+    fold (get children parent) found wanted pos child if (eq child idx) (operand_expectation parent (- pos 1) program (get schemas fn)) wanted
+
+record InspectFrame
+index:i child:i
+
+record InspectWalk
+path:*{InspectFrame} output:t
+
+inspect_trim frames:*{InspectFrame} > *{InspectFrame}
+fold frames (list {InspectFrame} 0) acc pos item if (eq pos (length frames)) acc (append acc item)
+
+inspect_tick walk:{InspectWalk} nodes:{NodeBuffer} names:*t prefix:t view:t > {InspectWalk}
+let path get path walk
+let top at path (- (length path) 1)
+case top walk frame
+let idx get index frame
+let node node_at nodes idx
+let kids get children node
+let op get word (get site node)
+let wraps and (text_eq view "expanded") (or (> (length kids) 0) (or (or (text_eq op "nil") (text_eq op "list")) (or (text_eq op "tag") (not (< (get target node) 0)))))
+let child get child frame
+let output get output walk
+let parents inspect_trim path
+if (< child 0)
+  (let item if (text_eq view "nodes") (cat3 ",{" (node_fields (node_key prefix node) node) "}")
+    (cat3 " " (if wraps "(" "") (node_head node names))
+   with output (with path walk (append parents (with child frame 0))) (concat output item))
+case (at kids child)
+  (let ending if (and (text_eq op "match") (not (text_eq view "nodes"))) " end" ""
+   with output (with path walk parents) (cat3 output ending (if wraps ")" "")))
+  next
+let resumed append parents (with child frame (+ child 1))
+let before_body or (or (and (text_eq op "while") (eq child 1)) (or (and (text_eq op "fold_rows") (eq child 4)) (and (text_eq op "fold_lines") (eq child 3)))) (or (and (or (text_eq op "catch") (text_eq op "map")) (eq child 1)) (and (or (text_eq op "fold") (text_eq op "case")) (eq child 2)))
+let bindings if (text_eq view "nodes") ""
+  (if (text_eq op "make") (concat " " (need (at (get binders node) child) "field_name" 0))
+   if (and (text_eq op "match") (> child 0)) (concat " " (need (at (get binders node) (- child 1)) "arm_name" 0))
+   if before_body (fold (get binders node) "" acc row name cat3 acc " " name) "")
+with output (with path walk (append resumed (make InspectFrame index next child -1))) (concat output bindings)
+
+inspect_view nodes:{NodeBuffer} idx:i names:*t prefix:t view:t > t
+let ticks - (* 3 (+ 1 (- idx (get subtree_start (node_at nodes idx))))) 1
+let initial make InspectWalk path (list {InspectFrame} 1 (make InspectFrame index idx child -1)) output ""
+let result fold (indices (div (+ ticks 255) 256)) (pair "" initial) prior group unused
+  let left - ticks (* (- group 1) 256)
+  let chunk fold (indices (if (> left 256) 256 left)) (with output (second prior) "") walk row skip
+    inspect_tick walk nodes names prefix view
+  pair (concat (first prior) (get output chunk)) chunk
+let text first result
+text_slice text 1 (text_len text)
+
+node_scope tree:{FunctionTree} fn:{Signature} idx:i > {FunctionScope}
+let plan get plan tree
+let initial fold (get starts plan) false found pos start or found (eq start idx)
+if initial (make FunctionScope names (list t 0) types (list t 0))
+let base make FunctionScope names (fold (get fields plan) (get params fn) acc row key append acc key) types (fold (get types plan) (get types fn) acc row kind append acc kind)
+let nodes get nodes tree
+let pages append (get pages nodes) (get tail nodes)
+fold pages base before group ignored
+  let page need (at pages (- (length pages) group)) "node_page" 0
+  fold page before acc row unused
+    let node need (at page (- (length page) row)) "node_item" 0
+    let keys get binders node
+    let op get word (get site node)
+    if (or (eq (length keys) 0) (or (text_eq op "make") (text_eq op "match"))) acc
+    let kids get children node
+    let last need (at kids (- (length kids) 1)) "binder_body" 0
+    let first_bound if (text_eq op "while") (need (at kids 1) "while_test" 0) last
+    if (or (> idx last) (< idx (get subtree_start (node_at nodes first_bound)))) acc
+    if (text_eq (get word (get site node)) "catch")
+      (let key need (at keys 0) "handler_name" 0
+       if (text_eq key "_") acc (make FunctionScope names (append (get names acc) key) types (append (get types acc) (concat "#" (get literal node)))))
+    let first_child node_at nodes (need (at kids 0) "binder_value" 0)
+    let typ get typ first_child
+    let element if (text_eq typ "!") "!" (text_slice typ 1 (text_len typ))
+    let types if (text_eq op "fold_rows") (list t 3 (get typ node) "i" (get literal node))
+      if (text_eq op "fold_lines") (list t 3 (get typ node) "i" "t")
+      if (eq (length keys) 1) (list t 1 (if (or (text_eq op "case") (text_eq op "map")) element typ))
+      (list t 3 (get typ (node_at nodes (need (at kids 1) "fold_start" 0))) "i" element)
+    make FunctionScope names (fold keys (get names acc) ns pos key append ns key) types (fold types (get types acc) ts pos kind append ts kind)
+
+record LineOffsets
+pages:**i tail:*i
+
+line_offsets source:t > {LineOffsets}
+let breaks "\n\r\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029"
+let n text_len source
+fold (indices (chunk_count n)) (make LineOffsets pages (list *i 0) tail (list i 1 0)) prior chunk unused
+  let start * (- chunk 1) 2048
+  let stop if (< n (+ start 2048)) n (+ start 2048)
+  if (not (includes_break (text_slice source start stop) breaks)) prior
+  fold (indices (- stop start)) prior acc pos unused_pos
+    let next + start pos
+    let ch text_slice source (- next 1) next
+    if (or (not (white ch breaks)) (and (text_eq ch "\r") (text_eq (text_slice source next (+ next 1)) "\n"))) acc
+    let tail get tail acc
+    if (eq (length tail) 256) (make LineOffsets pages (append (get pages acc) tail) tail (list i 1 next))
+    with tail acc (append tail next)
+
+source_offset offsets:{LineOffsets} position:&ii > i
+let row - (first position) 1
+let page case (at (get pages offsets) (div row 256)) (get tail offsets) found found
++ (need (at page (mod row 256)) "source_row" 0) (- (second position) 1)

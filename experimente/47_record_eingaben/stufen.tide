@@ -1,0 +1,9 @@
+probe input:r stage:t > i
+let text read input
+if (text_eq stage "read") (text_len text)
+if (text_eq stage "spans") (length (json_words text))
+let events indexed_json text 0 (text_len text) internal_json
+if (text_eq stage "index") (+ (* 128 (length (get pages events))) (length (get tail events)))
+let schemas validated_schema (schema_blocks "record Entry\nsequence:i balance:i" false) "probe.tide"
+let values need (decode_events events "*{Entry}" schemas) "probe_input" 0
+length (get members values)

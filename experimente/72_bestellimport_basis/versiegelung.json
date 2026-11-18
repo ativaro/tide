@@ -1,0 +1,72 @@
+{
+  "format": "TIDE72G1: magic(8), IV(12), GCM tag(16), ciphertext; separate 32-byte key",
+  "sealed_utc": "2026-11-18T12:19:30.989Z",
+  "bundle_sha256": "fbd487870c15b37275b93ff6ba215fef1f0b404806636fefe0a44e12c7792ec7",
+  "counts": {
+    "W": 5,
+    "E": 5,
+    "R": 5
+  },
+  "tasks": [
+    {
+      "family": "W",
+      "commitment": "353fbf827af377c40e3f51452444186a5a52607c82854f802dbe4cb1e0e97101"
+    },
+    {
+      "family": "W",
+      "commitment": "ce52e509d6cfcf94f8c8638ebd66221eb81d0546d9cec46452b74f84be503dec"
+    },
+    {
+      "family": "W",
+      "commitment": "58cc59c6d8ab6918b169abb83edf621ef3c7b355118657909a3bde5cb899fb2a"
+    },
+    {
+      "family": "W",
+      "commitment": "84589fba7577daa7accb636d4686cff81ebca9b61a309648cd2e56bfbc1ef7ef"
+    },
+    {
+      "family": "W",
+      "commitment": "1d38169f070f1dbb51d17a2fdfae367d0bbbdac8ca9dcff2ee265c892be2ae07"
+    },
+    {
+      "family": "E",
+      "commitment": "56d8adc54d5a1208d04897892f8c2c5a4469bd8d9eac3e7135be5a26d398723c"
+    },
+    {
+      "family": "E",
+      "commitment": "ce3f70a39c2e79032e7d8a998955703c1fcf165d849b7059c935db15e4bce389"
+    },
+    {
+      "family": "E",
+      "commitment": "7136ac47a2cdbd6040931128139d90aa588ef390c6af6dea4689aca3631ea8d2"
+    },
+    {
+      "family": "E",
+      "commitment": "56a9755a80e192b510baeea8824e1e1cd9dc26755e90be036b97e5d165f72fa8"
+    },
+    {
+      "family": "E",
+      "commitment": "b31a34d77270da9925cc4407c60a26f5ae4e82cc33e537dbdf055341a7b9fd61"
+    },
+    {
+      "family": "R",
+      "commitment": "21a37a06cfe0bfc3747c1796ed2bbcf64d7812f02becaf07fe362f5d81627d62"
+    },
+    {
+      "family": "R",
+      "commitment": "5e3b326f3e326ccb473bdefa9e296773a337b63b2acee76c26cd09088cb808db"
+    },
+    {
+      "family": "R",
+      "commitment": "e674da335dc183f6c382bfb1b7342504c4cbc5b306628c6340c6a197ce1b7ed4"
+    },
+    {
+      "family": "R",
+      "commitment": "c51a14971de1895113b91c48c3424b5c9e7df4bace4b87f96f1489eee38cb7ab"
+    },
+    {
+      "family": "R",
+      "commitment": "3359235fed11d93354c4853421f7dbc520760e5561d5de3b0f65b7c115d15d6e"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+use route
+
+main status:t > i
+relay status

@@ -1,0 +1,2 @@
+policy ordered:i delivered:i > i
+- ordered delivered

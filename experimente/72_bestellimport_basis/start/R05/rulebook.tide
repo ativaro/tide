@@ -1,0 +1,2 @@
+policy status:t > i
+if (text_eq status "OK") 1 0

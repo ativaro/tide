@@ -1,0 +1,248 @@
+{
+  "local_date": "2026-11-16",
+  "timezone": "Europe/Zurich",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "requested_service_tier": "priority",
+  "cli": "0.157.1",
+  "tide": "0.5.0",
+  "python": "3.14.10",
+  "order": [
+    "python-self",
+    "tide-packet",
+    "python-packet",
+    "tide-self"
+  ],
+  "measured_tool_sha256": {
+    "project_context.tide": "f1aabbf9c36998d9d7f8db829f050c206803fb3884e719f2d0e7396eff27fa19",
+    "source_layout.tide": "0af0d45c0557250b6ddb75c953c20f53038c8a457263d0d138aa75da78c9a7d0"
+  },
+  "unix_ns_order": [
+    "start_before_preparation",
+    "ready_before_codex",
+    "response_received",
+    "first_full_green"
+  ],
+  "self": "Self-directed exploration in an isolated four-file workspace; ./verify available.",
+  "packet": "Observable failure and source context supplied before first model response; same tools available. TIDE uses checked static transitive call closure from main, Python all four sources.",
+  "totals": "input_tokens + output_tokens for the entire CLI turn. cached_input_tokens and reasoning_output_tokens are subsets.",
+  "replay": "All four exact replacements reapplied to fresh copies. Each passed all 25 cases.",
+  "tide_source_bytes": {
+    "all": 1966,
+    "in_packet": 1556
+  },
+  "trials": [
+    {
+      "id": "python-self",
+      "prompt": "A parcel intake summary is wrong. Given (ticket, units) notices (41,4), (52,7), (41,99), it reports 3 runs, 3 orders, 110 units. The customer expects 3 runs, 2 orders, 11 units. The first appearance of a ticket books its order and quantity. Later copies cannot change the booking. A run is a maximal group of consecutive notices for the same ticket. Each batch is independent. Ticket IDs and quantities are nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify.\n",
+      "unix_ns": [
+        "1794863532384995144",
+        "1794863532385868152",
+        "1794863561086244834",
+        "1794863561128861574"
+      ],
+      "usage": {
+        "input_tokens": 80268,
+        "cached_input_tokens": 59520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1432,
+        "reasoning_output_tokens": 516
+      },
+      "actions": [
+        {
+          "command": "/usr/bin/bash -lc \"pwd && rg --files -g '\"'!**/.git/**'\"' -g '\"'!**/__pycache__/**'\"' -g '\"'!**/.venv/**'\"'\"",
+          "status": 0,
+          "output": "/tmp/parcel-study-njv3CErd/workspaces/python-self\nactivity.py\nquantities.py\nregister.py\nsummary.py\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc 'ls -la && rg -n . activity.py quantities.py register.py summary.py'",
+          "status": 0,
+          "output": "total 16\ndrwxr-xr-x 2 ativaro ativaro 140 Nov 16 22:11 .\ndrwxr-xr-x 6 ativaro ativaro 120 Nov 16 22:11 ..\n-rw-r--r-- 1 ativaro ativaro 350 Nov 16 22:11 activity.py\n-rw-r--r-- 1 ativaro ativaro 278 Nov 16 22:11 quantities.py\n-rw-r--r-- 1 ativaro ativaro 539 Nov 16 22:11 register.py\n-rw-r--r-- 1 ativaro ativaro 344 Nov 16 22:11 summary.py\nlrwxrwxrwx 1 ativaro ativaro  41 Nov 16 22:11 verify -> /tmp/parcel-study-njv3CErd/control/verify\nsummary.py:1:from activity import order_count, run_count\nsummary.py:2:from quantities import booked_units\nsummary.py:3:from register import register\nsummary.py:6:def summarize(notices):\nsummary.py:7:    entries = register(notices)\nsummary.py:8:    return {\"runs\": run_count(entries), \"orders\": order_count(entries), \"units\": booked_units(entries)}\nsummary.py:11:def main(batches):\nsummary.py:12:    return [summarize(batch) for batch in batches]\nactivity.py:1:from register import Entry\nactivity.py:4:def order_count(entries: list[Entry]) -> int:\nactivity.py:5:    return sum(1 for entry in entries if entry.begins_run)\nactivity.py:8:def run_count(entries: list[Entry]) -> int:\nactivity.py:9:    return sum(entry.begins_run for entry in entries)\nactivity.py:12:def tickets_in_order(entries: list[Entry]) -> list[int]:\nactivity.py:13:    return [entry.notice[\"ticket\"] for entry in entries]\nregister.py:1:from dataclasses import dataclass\nregister.py:4:@dataclass(frozen=True)\nregister.py:5:class Entry:\nregister.py:6:    notice: dict[str, int]\nregister.py:7:    begins_run: bool\nregister.py:8:    first_copy: bool\nregister.py:11:def register(notices: list[dict[str, int]]) -> list[Entry]:\nregister.py:12:    seen = set()\nregister.py:13:    previous = None\nregister.py:14:    entries = []\nregister.py:15:    for notice in notices:\nregister.py:16:        ticket = notice[\"ticket\"]\nregister.py:17:        entries.append(Entry(notice, ticket != previous, ticket not in seen))\nregister.py:18:        seen.add(ticket)\nregister.py:19:        previous = ticket\nregister.py:20:    return entries\nregister.py:23:def last_notice(notices):\nregister.py:24:    return notices[-1] if notices else None\nquantities.py:1:from register import Entry\nquantities.py:4:def booked_units(entries: list[Entry]) -> int:\nquantities.py:5:    return sum(entry.notice[\"units\"] for entry in entries if entry.begins_run)\nquantities.py:8:def largest_notice(entries: list[Entry]) -> int:\nquantities.py:9:    return max((entry.notice[\"units\"] for entry in entries), default=0)\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc ./verify",
+          "status": 1,
+          "output": "{\"passed\":17,\"failed\":8,\"first_failure\":{\"input\":[{\"ticket\":41,\"units\":4},{\"ticket\":52,\"units\":7},{\"ticket\":41,\"units\":99}],\"expected\":{\"runs\":3,\"orders\":2,\"units\":11},\"actual\":{\"runs\":3,\"orders\":3,\"units\":110}}}\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport activity\nimport quantities\n\nchanges = [\n    (activity, 'return sum(1 for entry in entries if entry.begins_run)', 'return sum(1 for entry in entries if entry.first_copy)'),\n    (quantities, 'return sum(entry.notice[\\\"units\\\"] for entry in entries if entry.begins_run)', 'return sum(entry.notice[\\\"units\\\"] for entry in entries if entry.first_copy)'),\n]\nfor module, old, replacement in changes:\n    source = Path(module.__file__).read_text()\n    assert source.count(old) == 1\n    exec(compile(source.replace(old, replacement), module.__file__, 'exec'), module.__dict__)\n\nfrom summary import summarize, main\n\ncases = [\n    ([], {'runs': 0, 'orders': 0, 'units': 0}),\n    ([(41, 4), (52, 7), (41, 99)], {'runs': 3, 'orders': 2, 'units': 11}),\n    ([(0, 0)], {'runs': 1, 'orders': 1, 'units': 0}),\n    ([(0, 0), (0, 99)], {'runs': 1, 'orders': 1, 'units': 0}),\n    ([(0, 0), (1, 7), (0, 99), (1, 0)], {'runs': 4, 'orders': 2, 'units': 7}),\n    ([(41, 4), (41, 99), (52, 7), (52, 0), (41, 0)], {'runs': 3, 'orders': 2, 'units': 11}),\n]\nfor pairs, expected in cases:\n    notices = [{'ticket': ticket, 'units': units} for ticket, units in pairs]\n    assert summarize(notices) == expected, pairs\nassert main([[{'ticket': 0, 'units': 5}], [{'ticket': 0, 'units': 8}]]) == [\n    {'runs': 1, 'orders': 1, 'units': 5},\n    {'runs': 1, 'orders': 1, 'units': 8},\n]\nprint('Proposed edits passed 7 in-memory checks covering the regression, empty batches, zero values, consecutive copies, and independent batches.')\nPY\"",
+          "status": 0,
+          "output": "Proposed edits passed 7 in-memory checks covering the regression, empty batches, zero values, consecutive copies, and independent batches.\n"
+        }
+      ],
+      "edits": [
+        {
+          "file": "activity.py",
+          "old": "return sum(1 for entry in entries if entry.begins_run)",
+          "replacement": "return sum(1 for entry in entries if entry.first_copy)"
+        },
+        {
+          "file": "quantities.py",
+          "old": "return sum(entry.notice[\"units\"] for entry in entries if entry.begins_run)",
+          "replacement": "return sum(entry.notice[\"units\"] for entry in entries if entry.first_copy)"
+        }
+      ],
+      "acceptance": {
+        "passed": 25,
+        "failed": 0,
+        "first_failure": null
+      },
+      "seconds_to_green": 28.74386643,
+      "seconds_to_prepare": 0.000873008,
+      "seconds_after_answer": 0.04261674,
+      "total_tokens": 81700,
+      "excluding_cached": 22180
+    },
+    {
+      "id": "tide-packet",
+      "prompt": "A parcel intake summary is wrong. Given (ticket, units) notices (41,4), (52,7), (41,99), it reports 3 runs, 3 orders, 110 units. The customer expects 3 runs, 2 orders, 11 units. The first appearance of a ticket books its order and quantity. Later copies cannot change the booking. A run is a maximal group of consecutive notices for the same ticket. Each batch is independent. Ticket IDs and quantities are nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify.\n\nThe verifier and source collection already ran. Use this automatically prepared context directly if sufficient.\n{\"passed\":17,\"failed\":8,\"first_failure\":{\"input\":[{\"ticket\":41,\"units\":4},{\"ticket\":52,\"units\":7},{\"ticket\":41,\"units\":99}],\"expected\":{\"runs\":3,\"orders\":2,\"units\":11},\"actual\":{\"runs\":3,\"orders\":3,\"units\":110}}}\n\n--- summary.tide ---\nrecord Summary\nruns:i orders:i units:i\n\nsummarize notices:*{Notice} > {Summary}\nlet entries register notices\nmake Summary runs (run_count entries) orders (order_count entries) units (booked_units entries)\n\nmain batches:**{Notice} > *{Summary}\nfold batches (list {Summary} 0) summaries row batch append summaries (summarize batch)\n\n\n--- activity.tide ---\norder_count entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total 1) total\n\nrun_count entries:*{Entry} > i\nfold entries 0 total row entry\n  + total (if get begins_run entry 1 0)\n\n\n--- register.tide ---\nrecord Notice\nticket:i units:i\n\nrecord Entry\nnotice:{Notice} begins_run:b first_copy:b\n\nrecord History\nseen:*i previous:?i entries:*{Entry}\n\nseen_ticket tickets:*i ticket:i > b\nfold tickets false found row item or found eq ticket item\n\nrecord_notice history:{History} notice:{Notice} > {History}\nlet ticket get ticket notice\nlet fresh not seen_ticket (get seen history) ticket\nlet starts case (get previous history) true last not eq last ticket\nlet entry make Entry notice notice begins_run starts first_copy fresh\nmake History seen (if fresh (append (get seen history) ticket) (get seen history))\n  previous (some ticket) entries (append (get entries history) entry)\n\nregister notices:*{Notice} > *{Entry}\nlet initial make History seen (list i 0) previous (nil i) entries (list {Entry} 0)\nget entries (fold notices initial history row notice record_notice history notice)\n\n\n--- quantities.tide ---\nbooked_units entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total (get units (get notice entry))) total\n\n",
+      "unix_ns": [
+        "1794863561132800306",
+        "1794863561263679498",
+        "1794863568025447816",
+        "1794863568090398422"
+      ],
+      "usage": {
+        "input_tokens": 19607,
+        "cached_input_tokens": 17920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 226,
+        "reasoning_output_tokens": 117
+      },
+      "actions": [],
+      "edits": [
+        {
+          "file": "activity.tide",
+          "old": "  if (get begins_run entry) (+ total 1) total",
+          "replacement": "  if (get first_copy entry) (+ total 1) total"
+        },
+        {
+          "file": "quantities.tide",
+          "old": "  if (get begins_run entry) (+ total (get units (get notice entry))) total",
+          "replacement": "  if (get first_copy entry) (+ total (get units (get notice entry))) total"
+        }
+      ],
+      "acceptance": {
+        "passed": 25,
+        "failed": 0,
+        "first_failure": null
+      },
+      "seconds_to_green": 6.957598116,
+      "seconds_to_prepare": 0.130879192,
+      "seconds_after_answer": 0.064950606,
+      "total_tokens": 19833,
+      "excluding_cached": 1913
+    },
+    {
+      "id": "python-packet",
+      "prompt": "A parcel intake summary is wrong. Given (ticket, units) notices (41,4), (52,7), (41,99), it reports 3 runs, 3 orders, 110 units. The customer expects 3 runs, 2 orders, 11 units. The first appearance of a ticket books its order and quantity. Later copies cannot change the booking. A run is a maximal group of consecutive notices for the same ticket. Each batch is independent. Ticket IDs and quantities are nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify.\n\nThe verifier and source collection already ran. Use this automatically prepared context directly if sufficient.\n{\"passed\":17,\"failed\":8,\"first_failure\":{\"input\":[{\"ticket\":41,\"units\":4},{\"ticket\":52,\"units\":7},{\"ticket\":41,\"units\":99}],\"expected\":{\"runs\":3,\"orders\":2,\"units\":11},\"actual\":{\"runs\":3,\"orders\":3,\"units\":110}}}\n\n--- activity.py ---\nfrom register import Entry\n\n\ndef order_count(entries: list[Entry]) -> int:\n    return sum(1 for entry in entries if entry.begins_run)\n\n\ndef run_count(entries: list[Entry]) -> int:\n    return sum(entry.begins_run for entry in entries)\n\n\ndef tickets_in_order(entries: list[Entry]) -> list[int]:\n    return [entry.notice[\"ticket\"] for entry in entries]\n\n\n--- quantities.py ---\nfrom register import Entry\n\n\ndef booked_units(entries: list[Entry]) -> int:\n    return sum(entry.notice[\"units\"] for entry in entries if entry.begins_run)\n\n\ndef largest_notice(entries: list[Entry]) -> int:\n    return max((entry.notice[\"units\"] for entry in entries), default=0)\n\n\n--- register.py ---\nfrom dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass Entry:\n    notice: dict[str, int]\n    begins_run: bool\n    first_copy: bool\n\n\ndef register(notices: list[dict[str, int]]) -> list[Entry]:\n    seen = set()\n    previous = None\n    entries = []\n    for notice in notices:\n        ticket = notice[\"ticket\"]\n        entries.append(Entry(notice, ticket != previous, ticket not in seen))\n        seen.add(ticket)\n        previous = ticket\n    return entries\n\n\ndef last_notice(notices):\n    return notices[-1] if notices else None\n\n\n--- summary.py ---\nfrom activity import order_count, run_count\nfrom quantities import booked_units\nfrom register import register\n\n\ndef summarize(notices):\n    entries = register(notices)\n    return {\"runs\": run_count(entries), \"orders\": order_count(entries), \"units\": booked_units(entries)}\n\n\ndef main(batches):\n    return [summarize(batch) for batch in batches]\n\n",
+      "unix_ns": [
+        "1794863568094037037",
+        "1794863568129406085",
+        "1794863578232520389",
+        "1794863578278519038"
+      ],
+      "usage": {
+        "input_tokens": 19566,
+        "cached_input_tokens": 17920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 295,
+        "reasoning_output_tokens": 151
+      },
+      "actions": [],
+      "edits": [
+        {
+          "file": "activity.py",
+          "old": "    return sum(1 for entry in entries if entry.begins_run)",
+          "replacement": "    return sum(1 for entry in entries if entry.first_copy)"
+        },
+        {
+          "file": "quantities.py",
+          "old": "    return sum(entry.notice[\"units\"] for entry in entries if entry.begins_run)",
+          "replacement": "    return sum(entry.notice[\"units\"] for entry in entries if entry.first_copy)"
+        }
+      ],
+      "acceptance": {
+        "passed": 25,
+        "failed": 0,
+        "first_failure": null
+      },
+      "seconds_to_green": 10.184482001,
+      "seconds_to_prepare": 0.035369048,
+      "seconds_after_answer": 0.045998649,
+      "total_tokens": 19861,
+      "excluding_cached": 1941
+    },
+    {
+      "id": "tide-self",
+      "prompt": "A parcel intake summary is wrong. Given (ticket, units) notices (41,4), (52,7), (41,99), it reports 3 runs, 3 orders, 110 units. The customer expects 3 runs, 2 orders, 11 units. The first appearance of a ticket books its order and quantity. Later copies cannot change the booking. A run is a maximal group of consecutive notices for the same ticket. Each batch is independent. Ticket IDs and quantities are nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify.\n",
+      "unix_ns": [
+        "1794863578282860849",
+        "1794863578283791848",
+        "1794863599578591145",
+        "1794863599657309334"
+      ],
+      "usage": {
+        "input_tokens": 78784,
+        "cached_input_tokens": 76032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 844,
+        "reasoning_output_tokens": 372
+      },
+      "actions": [
+        {
+          "command": "/usr/bin/bash -lc pwd",
+          "status": 0,
+          "output": "/tmp/parcel-study-njv3CErd/workspaces/tide-self\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc \"rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+          "status": 1,
+          "output": ""
+        },
+        {
+          "command": "/usr/bin/bash -lc 'ls -la'",
+          "status": 0,
+          "output": "total 16\ndrwxr-xr-x 2 ativaro ativaro 140 Nov 16 22:11 .\ndrwxr-xr-x 6 ativaro ativaro 120 Nov 16 22:11 ..\n-rw-r--r-- 1 ativaro ativaro 356 Nov 16 22:11 activity.tide\n-rw-r--r-- 1 ativaro ativaro 300 Nov 16 22:11 quantities.tide\n-rw-r--r-- 1 ativaro ativaro 950 Nov 16 22:11 register.tide\n-rw-r--r-- 1 ativaro ativaro 360 Nov 16 22:11 summary.tide\nlrwxrwxrwx 1 ativaro ativaro  41 Nov 16 22:11 verify -> /tmp/parcel-study-njv3CErd/control/verify\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+          "status": 0,
+          "output": "activity.tide\nquantities.tide\nregister.tide\nsummary.tide\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc 'cat activity.tide quantities.tide register.tide summary.tide'",
+          "status": 0,
+          "output": "use register\n\norder_count entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total 1) total\n\nrun_count entries:*{Entry} > i\nfold entries 0 total row entry\n  + total (if get begins_run entry 1 0)\n\ntickets_in_order entries:*{Entry} > *i\nfold entries (list i 0) tickets row entry append tickets (get ticket (get notice entry))\nuse register\n\nbooked_units entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total (get units (get notice entry))) total\n\nlargest_notice entries:*{Entry} > i\nfold entries 0 largest row entry\n  let units get units (get notice entry)\n  if > units largest units largest\nrecord Notice\nticket:i units:i\n\nrecord Entry\nnotice:{Notice} begins_run:b first_copy:b\n\nrecord History\nseen:*i previous:?i entries:*{Entry}\n\nseen_ticket tickets:*i ticket:i > b\nfold tickets false found row item or found eq ticket item\n\nrecord_notice history:{History} notice:{Notice} > {History}\nlet ticket get ticket notice\nlet fresh not seen_ticket (get seen history) ticket\nlet starts case (get previous history) true last not eq last ticket\nlet entry make Entry notice notice begins_run starts first_copy fresh\nmake History seen (if fresh (append (get seen history) ticket) (get seen history))\n  previous (some ticket) entries (append (get entries history) entry)\n\nregister notices:*{Notice} > *{Entry}\nlet initial make History seen (list i 0) previous (nil i) entries (list {Entry} 0)\nget entries (fold notices initial history row notice record_notice history notice)\n\nlast_notice notices:*{Notice} > ?{Notice}\nat notices (- (length notices) 1)\nuse activity\n\nuse quantities\n\nrecord Summary\nruns:i orders:i units:i\n\nsummarize notices:*{Notice} > {Summary}\nlet entries register notices\nmake Summary runs (run_count entries) orders (order_count entries) units (booked_units entries)\n\nmain batches:**{Notice} > *{Summary}\nfold batches (list {Summary} 0) summaries row batch append summaries (summarize batch)\n"
+        },
+        {
+          "command": "/usr/bin/bash -lc ./verify",
+          "status": 1,
+          "output": "{\"passed\":17,\"failed\":8,\"first_failure\":{\"input\":[{\"ticket\":41,\"units\":4},{\"ticket\":52,\"units\":7},{\"ticket\":41,\"units\":99}],\"expected\":{\"runs\":3,\"orders\":2,\"units\":11},\"actual\":{\"runs\":3,\"orders\":3,\"units\":110}}}\n"
+        }
+      ],
+      "edits": [
+        {
+          "file": "activity.tide",
+          "old": "if (get begins_run entry) (+ total 1) total",
+          "replacement": "if (get first_copy entry) (+ total 1) total"
+        },
+        {
+          "file": "quantities.tide",
+          "old": "if (get begins_run entry) (+ total (get units (get notice entry))) total",
+          "replacement": "if (get first_copy entry) (+ total (get units (get notice entry))) total"
+        }
+      ],
+      "acceptance": {
+        "passed": 25,
+        "failed": 0,
+        "first_failure": null
+      },
+      "seconds_to_green": 21.374448485,
+      "seconds_to_prepare": 0.000930999,
+      "seconds_after_answer": 0.078718189,
+      "total_tokens": 79628,
+      "excluding_cached": 3596
+    }
+  ]
+}

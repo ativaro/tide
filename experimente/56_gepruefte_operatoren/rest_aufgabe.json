@@ -1,0 +1,5 @@
+{
+  "contract": "Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.",
+  "tide": {"panel":"use packing\n\nmain a:i b:i > i\nunpacked a b\n","packing":"use loads\n\nunpacked units:i cap:i > i\nleftover units cap\n","loads":"leftover units:i cap:i > i\n+ units cap\n"},
+  "python": {"panel":"from packing import unpacked\n\ndef main(a: int, b: int) -> int:\n    return unpacked(a, b)\n","packing":"from loads import leftover\n\ndef unpacked(units: int, cap: int) -> int:\n    return leftover(units, cap)\n","loads":"def leftover(units: int, cap: int) -> int:\n    return units + cap\n"}
+}

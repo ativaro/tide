@@ -1,0 +1,477 @@
+{
+  "bench_source": "import gc\nimport itertools\nimport json\nimport os\nimport platform\nimport statistics\nimport sys\nimport time\nfrom pathlib import Path\n\nroot = Path(sys.argv[1])\nfamily = sys.argv[2]\nrepo = Path.cwd()\nsys.path.insert(0, str(repo))\nfrom tide_lang.workbench import project\nfrom tide_lang.program import compile_source\nfrom tide_lang.runtime import Run\n\ncpu = min(os.sched_getaffinity(0))\nos.sched_setaffinity(0, {cpu})\ncases = json.loads((root / 'control' / family / 'cases.json').read_text())\nbatches = [case['input'] for case in cases]\nexpected = [case['expect'] for case in cases]\narms = {}\nsteps = {}\nfor arm in ('tide-plain', 'tide-lib'):\n    path = root / 'canonical' / f'{family}-{arm}' / 'summary.tide'\n    defs, _ = compile_source(*project(path))\n    body = defs['main'].body\n    run = Run(defs)\n    start_budget = run.remaining\n    assert run.eval(body, {'batches': batches}) == expected\n    steps[arm] = start_budget - run.remaining\n    arms[arm] = lambda defs=defs, body=body: Run(defs).eval(body, {'batches': batches})\nsys.path.insert(0, str(root / 'canonical' / f'{family}-python-native'))\nfrom summary import main\narms['python-native'] = lambda: main(batches)\ngc.disable()\nfor call in arms.values():\n    for _ in range(3):\n        assert call() == expected\n\norders = list(itertools.permutations(arms))\nsamples = []\nfor i in range(18):\n    order = orders[i % len(orders)]\n    measurements = {}\n    for arm in order:\n        call = arms[arm]\n        start = time.perf_counter_ns()\n        for _ in range(8):\n            result = call()\n        elapsed = time.perf_counter_ns() - start\n        assert result == expected\n        measurements[arm] = elapsed\n    samples.append({'order': order, 'elapsed_ns_for_eight_calls': measurements})\nmedians = {a: statistics.median(row['elapsed_ns_for_eight_calls'][a] / 8 for row in samples) for a in arms}\nprint(json.dumps(dict(family=family, cases=len(cases), python=platform.python_version(), machine=platform.machine(),\n                      cpu=cpu, steps=steps, samples=samples, warmup=3, repeats=8, median_ns_per_call=medians), indent=2))\n",
+  "families": {
+    "allocation": {
+      "family": "allocation",
+      "cases": 40,
+      "python": "3.14.10",
+      "machine": "x86_64",
+      "cpu": 0,
+      "steps": {
+        "tide-plain": 9043,
+        "tide-lib": 13531
+      },
+      "samples": [
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 25827490,
+            "tide-lib": 47315326,
+            "python-native": 620628
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 28565428,
+            "python-native": 413862,
+            "tide-lib": 40875121
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 40408248,
+            "tide-plain": 32109370,
+            "python-native": 487334
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 51300830,
+            "python-native": 464323,
+            "tide-plain": 36679961
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 642989,
+            "tide-plain": 32284455,
+            "tide-lib": 44171126
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 595167,
+            "tide-lib": 44257938,
+            "tide-plain": 30895275
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 30723030,
+            "tide-lib": 45390121,
+            "python-native": 418572
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 30999698,
+            "python-native": 414882,
+            "tide-lib": 45130923
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 45445523,
+            "tide-plain": 31091721,
+            "python-native": 470853
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 44729632,
+            "python-native": 412801,
+            "tide-plain": 26660314
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 410222,
+            "tide-plain": 28908039,
+            "tide-lib": 44941588
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 600407,
+            "tide-lib": 44555947,
+            "tide-plain": 30661149
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 29947588,
+            "tide-lib": 42338493,
+            "python-native": 427902
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 30913226,
+            "python-native": 656379,
+            "tide-lib": 43716783
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 45534775,
+            "tide-plain": 30639888,
+            "python-native": 452493
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 44573097,
+            "python-native": 465913,
+            "tide-plain": 31136322
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 510125,
+            "tide-plain": 30621497,
+            "tide-lib": 45144683
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 424893,
+            "tide-lib": 45551895,
+            "tide-plain": 31366229
+          }
+        }
+      ],
+      "warmup": 3,
+      "repeats": 8,
+      "median_ns_per_call": {
+        "tide-plain": 3851144.0625,
+        "tide-lib": 5604451.25,
+        "python-native": 58139.75
+      }
+    },
+    "journal": {
+      "family": "journal",
+      "cases": 40,
+      "python": "3.14.10",
+      "machine": "x86_64",
+      "cpu": 0,
+      "steps": {
+        "tide-plain": 10948,
+        "tide-lib": 13659
+      },
+      "samples": [
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 39869112,
+            "tide-lib": 49139738,
+            "python-native": 345099
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 38362839,
+            "python-native": 541266,
+            "tide-lib": 47750988
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 48575572,
+            "tide-plain": 38461162,
+            "python-native": 343989
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 46328648,
+            "python-native": 342469,
+            "tide-plain": 39868403
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 339689,
+            "tide-plain": 39090961,
+            "tide-lib": 45192415
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 345530,
+            "tide-lib": 47625675,
+            "tide-plain": 39169043
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 39973385,
+            "tide-lib": 47868762,
+            "python-native": 391891
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 40818020,
+            "python-native": 456653,
+            "tide-lib": 49375246
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 48922932,
+            "tide-plain": 40430849,
+            "python-native": 460733
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 47953354,
+            "python-native": 344929,
+            "tide-plain": 40241734
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 584987,
+            "tide-plain": 40508081,
+            "tide-lib": 48452279
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 343920,
+            "tide-lib": 49146809,
+            "tide-plain": 41103958
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "tide-lib",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 39345008,
+            "tide-lib": 41676735,
+            "python-native": 346120
+          }
+        },
+        {
+          "order": [
+            "tide-plain",
+            "python-native",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-plain": 34209341,
+            "python-native": 335119,
+            "tide-lib": 41436179
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "tide-plain",
+            "python-native"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 41582272,
+            "tide-plain": 34913561,
+            "python-native": 345660
+          }
+        },
+        {
+          "order": [
+            "tide-lib",
+            "python-native",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "tide-lib": 41794438,
+            "python-native": 344919,
+            "tide-plain": 34380965
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-plain",
+            "tide-lib"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 335040,
+            "tide-plain": 38541645,
+            "tide-lib": 49808088
+          }
+        },
+        {
+          "order": [
+            "python-native",
+            "tide-lib",
+            "tide-plain"
+          ],
+          "elapsed_ns_for_eight_calls": {
+            "python-native": 341260,
+            "tide-lib": 48820150,
+            "tide-plain": 40675026
+          }
+        }
+      ],
+      "warmup": 3,
+      "repeats": 8,
+      "median_ns_per_call": {
+        "tide-plain": 4950838.1875,
+        "tide-lib": 5988882.25,
+        "python-native": 43126.75
+      }
+    }
+  }
+}

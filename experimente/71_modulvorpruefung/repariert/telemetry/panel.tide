@@ -1,0 +1,28 @@
+use route
+
+main label:t inbound:i outbound:i > i
+adjust label inbound outbound
+
+example public_0 main
+{"inputs":{"label":"","inbound":0,"outbound":0},"expect":0}
+
+example public_1 main
+{"inputs":{"label":"A1","inbound":1,"outbound":0},"expect":3}
+
+example public_2 main
+{"inputs":{"label":"猫猫3","inbound":3,"outbound":0},"expect":10}
+
+example public_3 main
+{"inputs":{"label":"猫猫123","inbound":12,"outbound":24},"expect":-3}
+
+example public_4 main
+{"inputs":{"label":"é872","inbound":21,"outbound":19},"expect":7}
+
+example public_5 main
+{"inputs":{"label":"éΩ4097","inbound":27,"outbound":13},"expect":23}
+
+example public_6 main
+{"inputs":{"label":"31110","inbound":30,"outbound":22},"expect":13}
+
+example public_7 main
+{"inputs":{"label":"猫猫55041","inbound":22,"outbound":3},"expect":30}

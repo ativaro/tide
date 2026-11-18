@@ -1,0 +1,10 @@
+record ReceiptCount
+n:i
+
+main db:d ids:*t > i
+transaction db
+  let created sql_exec db "CREATE TABLE IF NOT EXISTS receipt(id TEXT PRIMARY KEY)" (dict t)
+  let added fold ids 0 saved pos item
+    + saved (sql_exec db "INSERT OR IGNORE INTO receipt(id) VALUES(:id)" (dict_put (dict t) "id" item))
+  let rows sql_query {ReceiptCount} db "SELECT COUNT(*) AS n FROM receipt" (dict t)
+  get n (need (at rows 0) "count" 0)

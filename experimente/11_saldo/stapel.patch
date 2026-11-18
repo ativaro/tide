@@ -1,0 +1,30 @@
+--- a/fold_i64.tide
++++ b/fold_i64.tide
+@@ -33,16 +33,24 @@
+ let op word expr 6
+ if text_eq op "+" "480306" if text_eq op "-" "482b06" if text_eq op "*" "480faf06" reject_line "unsupported_fold_operator" 2
+ 
++batch_repetitions > i
++1048576
++
+ emit_fold opcode:t initial:i count:i data:t > t
+ let output print_integer
+ let advance "4883c608ffc9"
+-let overflow_jump + (bytes_in advance) (+ 2 bytes_in output)
++let outer_counter_bytes 5
++let overflow_jump + outer_counter_bytes (+ (bytes_in advance) (+ 2 bytes_in output))
+ if > overflow_jump 127 fail "short_branch_range"
+ let checked_op concat opcode (concat "70" (byte_hex overflow_jump))
+ let loop_code back_if "75" (concat checked_op advance)
+-let tail concat "85c9" (concat (skip_if "74" loop_code) (concat output overflow_error))
++let inner concat "85c9" (skip_if "74" loop_code)
++let data_offset + (bytes_in inner) (+ outer_counter_bytes (+ (bytes_in output) (bytes_in overflow_error)))
+ let setup concat "48b8" (concat (le64 initial) (concat "b9" (le32 count)))
+-elf_image (concat setup (concat "488d35" (concat (le32 bytes_in tail) (concat tail data))))
++let iteration concat setup (concat "488d35" (concat (le32 data_offset) inner))
++let repeated back_if "75" (concat iteration "41ffc8")
++let repetitions_in_r8d concat "41b8" (le32 batch_repetitions)
++elf_image (concat repetitions_in_r8d (concat repeated (concat output (concat overflow_error data))))
+ 
+ literal_call name:t opcode:t args:*t > t
+ if < length args 5 reject_line "expected_literal_list_call" 5

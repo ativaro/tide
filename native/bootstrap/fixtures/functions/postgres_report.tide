@@ -1,0 +1,7 @@
+record PgReading
+sensor:t temperature:q observed:z note:?t
+
+main pg:p sensor:t > *{PgReading}
+let created pg_exec pg "CREATE TEMP TABLE readings(sensor text,temperature numeric,observed timestamptz,note text)" (list ?t 0)
+let saved pg_exec pg "INSERT INTO readings VALUES($1,21.75,'2024-02-29T01:30:00+01:30',$2)" (list ?t 2 (some sensor) (nil t))
+pg_query {PgReading} pg "SELECT sensor,temperature,observed,note FROM readings WHERE sensor=$1" (list ?t 1 (some sensor))

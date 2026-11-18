@@ -1,0 +1,21 @@
+{
+  "model": "qwen3:4b",
+  "endpoint": "127.0.0.1:11435",
+  "runner": "Ollama 0.40.16",
+  "system": "Return exactly one function replacement as a JSON object with string fields function and body. A correct repair is possible by replacing just one function body. Use the language shown in the packet. Do not include its signature, Markdown, or explanations.",
+  "response_schema": {"type":"object","properties":{"function":{"type":"string"},"body":{"type":"string"}},"required":["function","body"],"additionalProperties":false},
+  "options": {"temperature":0.2,"top_p":0.9,"num_predict":700,"num_ctx":4096},
+  "think": false,
+  "attempts": 1,
+  "fixtures": "../38_fehlerkontext/versuchsplan.json",
+  "prompts": "../38_fehlerkontext/messung.json",
+  "prompt_selection": "First stored prompt for the same family and arm, byte-identical.",
+  "schedule": [
+    ["locator",73,"T","P"],["dial",73,"P","T"],
+    ["locator",117,"P","T"],["dial",117,"T","P"],
+    ["locator",203,"T","P"],["dial",203,"P","T"]
+  ],
+  "acceptance": "6 public and 72 hidden inputs per family. Apply the one body to a fresh copy. TIDE uses revision-bound edits and tide test. CPython is an isolated external comparison, and result vectors are checked by TIDE. Report all failures and all Ollama token counters.",
+  "timing": "Warm runner, fresh request without conversation context. Record server durations and elapsed request plus application and acceptance. Prompt construction is precomputed for both arms.",
+  "scope": "Local single-turn repair with prepared context and no tools inside the local model. Two existing tasks, no claim about autonomous agents or model classes."
+}

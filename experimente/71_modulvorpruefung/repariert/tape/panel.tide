@@ -1,0 +1,28 @@
+use route
+
+main bank:i track:i sector:i > i
+address bank track sector
+
+example public_0 main
+{"inputs":{"bank":0,"track":0,"sector":0},"expect":0}
+
+example public_1 main
+{"inputs":{"bank":0,"track":0,"sector":1},"expect":1}
+
+example public_2 main
+{"inputs":{"bank":0,"track":0,"sector":3},"expect":3}
+
+example public_3 main
+{"inputs":{"bank":1,"track":2,"sector":3},"expect":123}
+
+example public_4 main
+{"inputs":{"bank":8,"track":7,"sector":2},"expect":872}
+
+example public_5 main
+{"inputs":{"bank":0,"track":9,"sector":7},"expect":97}
+
+example public_6 main
+{"inputs":{"bank":1,"track":1,"sector":0},"expect":110}
+
+example public_7 main
+{"inputs":{"bank":0,"track":4,"sector":1},"expect":41}

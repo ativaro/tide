@@ -1,0 +1,4 @@
+use rulebook
+
+relay label:t > i
+policy label

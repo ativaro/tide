@@ -1,0 +1,126 @@
+use cursor
+
+variant Input
+character control left right up down home_key end_key backspace delete_key enter_key escape stored io_error
+
+variant Effect
+idle store finish
+
+variant Mode
+writing confirm_exit
+
+record Buffer
+body:t caret:i goal:i clip:t eol:t dirty:b mode:{Mode} notice:t
+
+record View
+body:t caret:i title:t status:t help:t
+
+main body:t > {Buffer}
+let eol case (text_find body "\n" 0) "\n" lf
+    if text_eq (text_slice body (- lf 1) lf) "\r" "\r\n" "\n"
+make Buffer body body caret 0 goal -1 clip "" eol eol dirty false mode (tag Mode writing) notice ""
+
+moved world:{Buffer} dest:i goal:i > {Buffer}
+make Buffer body (get body world) caret dest goal goal clip (get clip world) eol (get eol world)
+dirty (get dirty world) mode (tag Mode writing) notice ""
+
+vertical world:{Buffer} upwards:b > {Buffer}
+let body get body world
+let pos get caret world
+let begin line_begin body pos
+let limit line_limit body pos
+let goal if < get goal world 0 (- pos begin) get goal world
+if or (and upwards eq begin 0) (and not upwards eq limit text_len body) world
+let row if upwards (previous_pos body begin) (next_pos body limit)
+let target + (line_begin body row) goal
+let last line_limit body row
+moved world (if > target last last target) goal
+
+splice world:{Buffer} lo:i hi:i value:t clip:t > {Buffer}
+if and eq lo hi text_eq value "" world
+let body get body world
+let result concat (text_slice body 0 lo) (concat value (text_slice body hi (text_len body)))
+make Buffer body result caret (+ lo text_len value) goal -1 clip clip eol (get eol world)
+dirty true mode (tag Mode writing) notice ""
+
+insert_text world:{Buffer} value:t > {Buffer}
+splice world (get caret world) (get caret world) value (get clip world)
+
+cut_line world:{Buffer} > {Buffer}
+let body get body world
+let pos get caret world
+let lo line_begin body pos
+let hi next_pos body (line_limit body pos)
+splice world lo hi "" (text_slice body lo hi)
+
+stay world:{Buffer} > &{Buffer}{Effect}
+pair world (tag Effect idle)
+
+shortcut world:{Buffer} value:t > &{Buffer}{Effect}
+if text_eq value "o" (pair world (tag Effect store))
+if text_eq value "x"
+   (if get dirty world (stay with mode world (tag Mode confirm_exit)) (pair world (tag Effect finish)))
+if text_eq value "k" (stay cut_line world)
+if text_eq value "u" (stay insert_text world get clip world)
+stay world
+
+edit_key world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}
+let body get body world
+let pos get caret world
+match key
+character  stay insert_text world value
+enter_key  stay insert_text world get eol world
+backspace  stay splice world (previous_pos body pos) pos "" (get clip world)
+delete_key stay splice world pos (next_pos body pos) "" (get clip world)
+left       stay moved world (previous_pos body pos) -1
+right      stay moved world (next_pos body pos) -1
+home_key   stay moved world (line_begin body pos) -1
+end_key    stay moved world (line_limit body pos) -1
+up         stay vertical world true
+down       stay vertical world false
+control    shortcut world value
+escape     stay world
+stored     stay with notice (with dirty world false) "Gespeichert"
+io_error   stay with notice world value
+end
+
+confirm_key world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}
+match key
+character  if or (or text_eq value "j" text_eq value "J") (or text_eq value "y" text_eq value "Y")
+           (pair world (tag Effect store))
+           if or text_eq value "n" text_eq value "N" (pair world (tag Effect finish)) (stay world)
+control    if text_eq value "c" (stay with mode world (tag Mode writing)) (stay world)
+escape     stay with mode world (tag Mode writing)
+stored     pair world (tag Effect finish)
+io_error   stay with notice (with mode world (tag Mode writing)) value
+left       stay world
+right      stay world
+up         stay world
+down       stay world
+home_key   stay world
+end_key    stay world
+backspace  stay world
+delete_key stay world
+enter_key  stay world
+end
+
+step world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}
+match get mode world
+writing      edit_key world key value
+confirm_exit confirm_key world key value
+end
+
+view world:{Buffer} name:t > {View}
+let title concat "TIDE nano  " (concat name (if get dirty world "  *" ""))
+let prompt match get mode world
+  writing get notice world
+  confirm_exit "Vor dem Beenden speichern?  J Ja   N Verwerfen   Esc Abbrechen"
+end
+make View body (get body world) caret (get caret world) title title status prompt
+help "^O Speichern   ^X Beenden   ^K Zeile ausschneiden   ^U Einsetzen"
+
+example unicode_insert insert_text
+{"inputs":{"world":{"body":"Tür","caret":1,"goal":-1,"clip":"","eol":"\n","dirty":false,"mode":"writing","notice":""},"value":"Ω"},"expect":{"body":"TΩür","caret":2,"goal":-1,"clip":"","eol":"\n","dirty":true,"mode":"writing","notice":""}}
+
+example dirty_exit shortcut
+{"inputs":{"world":{"body":"hi","caret":2,"goal":-1,"clip":"","eol":"\n","dirty":true,"mode":"writing","notice":""},"value":"x"},"expect":[{"body":"hi","caret":2,"goal":-1,"clip":"","eol":"\n","dirty":true,"mode":"confirm_exit","notice":""},"idle"]}

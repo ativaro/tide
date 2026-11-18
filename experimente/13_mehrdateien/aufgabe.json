@@ -1,0 +1,288 @@
+{
+  "prompt": "A rental invoice is wrong. A rental starting at minute 537 for 3 minutes, at 3 cents per minute plus a premium of 2 cents per minute during 09:00–10:00, returns 14 cents; the customer expects 9. The receipt reports the end minute and the total price. Charge each occupied minute at the base rate, add the premium for each occupied minute within that window, and support empty rentals. Inputs are nonnegative whole minutes and rates within a single day.\n\nFind and repair the regression in the project in your current directory. Inspect the files you need. You may run ./verify to reproduce the failure. Only use the current project's implementation and that command. Preserve the existing public interface. Return your production edits as JSON, each naming a relative file, a unique exact substring to replace, and its replacement. You can change any implementation file. An external runner will apply your edits and run ./verify; if it fails, you will receive its result.",
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "edits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "old": {
+              "type": "string"
+            },
+            "replacement": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "file",
+            "old",
+            "replacement"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "additionalProperties": false
+  },
+  "sources": {
+    "tide/periods.tide": "record Span\nstart:i stop:i\n\nperiod start:i duration:i > {Span}\nmake Span start start stop (+ start duration)\n\nclip left:{Span} right:{Span} > {Span}\nlet a get start left\nlet b get start right\nlet c get stop left\nlet d get stop right\nmake Span start (if > a b a b) stop (if < c d c d)\n",
+    "tide/usage.tide": "use periods\n\nusage_charge period_value:{Span} rate:i > i\nlet start get start period_value\nlet stop get stop period_value\nif < stop start 0\n* rate (+ 1 (- stop start))\n",
+    "tide/premium.tide": "use periods\n\npremium_charge period_value:{Span} rate:i > i\nlet overlap clip period_value (period 540 60)\nlet start get start overlap\nlet stop get stop overlap\nif < stop start 0\n* rate (+ 1 (- stop start))\n",
+    "tide/invoice.tide": "use usage\n\nuse premium\n\nrecord Rental\nstart:i duration:i base_rate:i extra_rate:i\n\nrecord Receipt\nend_minute:i cents:i\n\ninvoice rental:{Rental} > {Receipt}\nlet slot period (get start rental) (get duration rental)\nlet base usage_charge slot (get base_rate rental)\nlet extra premium_charge slot (get extra_rate rental)\nmake Receipt end_minute (get stop slot) cents (+ base extra)\n\nmain rentals:*{Rental} > *{Receipt}\nfold rentals (list {Receipt} 0) receipts row rental append receipts (invoice rental)\n",
+    "python/periods.py": "from typing import NamedTuple\n\n\nclass Span(NamedTuple):\n    start: int\n    stop: int\n\n\ndef period(start: int, duration: int) -> Span:\n    return Span(start, start + duration)\n\n\ndef clip(left: Span, right: Span) -> Span:\n    return Span(max(left.start, right.start), min(left.stop, right.stop))\n",
+    "python/usage.py": "from periods import Span\n\n\ndef usage_charge(period_value: Span, rate: int) -> int:\n    start, stop = period_value\n    if stop < start:\n        return 0\n    return rate * (stop - start + 1)\n",
+    "python/premium.py": "from periods import Span, clip, period\n\n\ndef premium_charge(period_value: Span, rate: int) -> int:\n    overlap = clip(period_value, period(540, 60))\n    start, stop = overlap\n    if stop < start:\n        return 0\n    return rate * (stop - start + 1)\n",
+    "python/invoice.py": "from periods import period\nfrom premium import premium_charge\nfrom usage import usage_charge\n\n\ndef invoice(rental: dict[str, int]) -> dict[str, int]:\n    slot = period(rental[\"start\"], rental[\"duration\"])\n    base = usage_charge(slot, rental[\"base_rate\"])\n    extra = premium_charge(slot, rental[\"extra_rate\"])\n    return {\"end_minute\": slot.stop, \"cents\": base + extra}\n\n\ndef main(rentals: list[dict[str, int]]) -> list[dict[str, int]]:\n    return [invoice(rental) for rental in rentals]\n"
+  },
+  "cases": [
+    {
+      "input": {
+        "start": 537,
+        "duration": 3,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 540,
+        "cents": 9
+      }
+    },
+    {
+      "input": {
+        "start": 530,
+        "duration": 3,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 533,
+        "cents": 9
+      }
+    },
+    {
+      "input": {
+        "start": 598,
+        "duration": 4,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 602,
+        "cents": 16
+      }
+    },
+    {
+      "input": {
+        "start": 600,
+        "duration": 3,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 603,
+        "cents": 9
+      }
+    },
+    {
+      "input": {
+        "start": 605,
+        "duration": 1,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 606,
+        "cents": 3
+      }
+    },
+    {
+      "input": {
+        "start": 540,
+        "duration": 1,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 541,
+        "cents": 5
+      }
+    },
+    {
+      "input": {
+        "start": 599,
+        "duration": 1,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 600,
+        "cents": 5
+      }
+    },
+    {
+      "input": {
+        "start": 540,
+        "duration": 60,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 600,
+        "cents": 300
+      }
+    },
+    {
+      "input": {
+        "start": 520,
+        "duration": 100,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 620,
+        "cents": 420
+      }
+    },
+    {
+      "input": {
+        "start": 570,
+        "duration": 0,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 570,
+        "cents": 0
+      }
+    },
+    {
+      "input": {
+        "start": 540,
+        "duration": 0,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 540,
+        "cents": 0
+      }
+    },
+    {
+      "input": {
+        "start": 600,
+        "duration": 0,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 600,
+        "cents": 0
+      }
+    },
+    {
+      "input": {
+        "start": 700,
+        "duration": 0,
+        "base_rate": 3,
+        "extra_rate": 2
+      },
+      "expect": {
+        "end_minute": 700,
+        "cents": 0
+      }
+    },
+    {
+      "input": {
+        "start": 569,
+        "duration": 4,
+        "base_rate": 0,
+        "extra_rate": 7
+      },
+      "expect": {
+        "end_minute": 573,
+        "cents": 28
+      }
+    },
+    {
+      "input": {
+        "start": 569,
+        "duration": 4,
+        "base_rate": 7,
+        "extra_rate": 0
+      },
+      "expect": {
+        "end_minute": 573,
+        "cents": 28
+      }
+    },
+    {
+      "input": {
+        "start": 580,
+        "duration": 3,
+        "base_rate": 0,
+        "extra_rate": 0
+      },
+      "expect": {
+        "end_minute": 583,
+        "cents": 0
+      }
+    },
+    {
+      "input": {
+        "start": 0,
+        "duration": 1440,
+        "base_rate": 1,
+        "extra_rate": 1
+      },
+      "expect": {
+        "end_minute": 1440,
+        "cents": 1500
+      }
+    },
+    {
+      "input": {
+        "start": 1439,
+        "duration": 1,
+        "base_rate": 11,
+        "extra_rate": 5
+      },
+      "expect": {
+        "end_minute": 1440,
+        "cents": 11
+      }
+    },
+    {
+      "input": {
+        "start": 539,
+        "duration": 2,
+        "base_rate": 1,
+        "extra_rate": 11
+      },
+      "expect": {
+        "end_minute": 541,
+        "cents": 13
+      }
+    },
+    {
+      "input": {
+        "start": 599,
+        "duration": 2,
+        "base_rate": 1,
+        "extra_rate": 11
+      },
+      "expect": {
+        "end_minute": 601,
+        "cents": 13
+      }
+    }
+  ],
+  "verify_command": "#!/usr/bin/env bash\nset -euo pipefail\ncases=$(dirname \"$(realpath \"$0\")\")/cases.json\nrentals=$(jq -c 'map(.input)' \"$cases\")\nif [[ -f invoice.tide ]]; then\n    actual=$(/home/ativaro/Documents/tide/tide run invoice.tide --inputs \"{\\\"rentals\\\":$rentals}\")\nelse\n    actual=$(python3 -B -c 'import json, sys; from invoice import main; print(json.dumps(main(json.load(sys.stdin))))' <<< \"$rentals\")\nfi\njq -cen --slurpfile cases \"$cases\" --argjson actual \"$actual\" '\n    $cases[0] as $cases |\n    if (($actual | type) != \"array\" or ($actual | length) != ($cases | length)) then error(\"wrong number of receipts\") else\n        [range($cases|length) as $i | select($actual[$i] != $cases[$i].expect) | {input:$cases[$i].input, expected:$cases[$i].expect, actual:$actual[$i]}] as $fail |\n        {passed:(($cases|length)-($fail|length)), failed:($fail|length), first_failure:($fail[0] // null)}\n    end' | { read -r result; echo \"$result\"; jq -e '.failed == 0' <<< \"$result\" >/dev/null; }\n"
+}

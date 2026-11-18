@@ -1,0 +1,21 @@
+{
+  "model": "qwen3:4b",
+  "endpoint": "http://127.0.0.1:11435/api/generate",
+  "options": {"temperature":0.2,"top_p":0.9,"num_predict":360,"num_ctx":4096},
+  "think": false,
+  "families": ["balance","dispatch","windows","invoice"],
+  "seeds": [83,137,269],
+  "arms": ["TIDE-Rumpf","TIDE-Knoten","Python-AST"],
+  "order": "Rotate the three arms by seed index plus family index. Rotate family order by seed index.",
+  "attempts": 2,
+  "retry": "Only after failing public acceptance. Replay the frozen original packet plus the previous response and a concise actual/public diagnostic. Every repair applies to the original snapshot. No hidden input, expected value or feedback goes to the model.",
+  "acceptance": "Three public and 72 hidden TIDE-oracle cases. A result counts only if all 75 pass. Prove the first public witness fails in both languages and validate a known correction before inference.",
+  "accounting": "Sum Ollama prompt_eval_count plus eval_count over every attempt including failures, repeat prompts, and tool feedback delivered to the model. Divide total across all runs by successful runs for costs per successful repair. Also report successful first attempts and per-family outcomes.",
+  "system_common": "Repair the program to satisfy the complete contract. Only one edit is needed and can be in any listed helper or in the entry. Choose the smallest repair that preserves unrelated behaviour. Return only the requested JSON.",
+  "tide_grammar": "TIDE uses prefix expressions: (+ a b), (- a b), (* a b), (div a b), (mod a b), (> a b), (< a b), (eq a b), (not condition), (if condition yes no), (let name value body). Pass bare names as operands.",
+  "body_instructions": "Return {\"function\":\"function_name\",\"body\":\"one complete replacement expression on one line\"}. Omit the signature.",
+  "node_instructions": "Return {\"node\":\"an offered id\",\"kind\":\"op or replace\",\"text\":\"operator or expression\"}. For op use one of the node's ops; its operands stay unchanged. For replace give one complete expression in the shown language.",
+  "python_language": "Python 3.14 uses infix arithmetic and comparison expressions.",
+  "context": "Both TIDE arms get the same observed input, expected/actual and entered definitions. The two node arms also get scalar operator nodes in these definitions. The nodes are candidate edit locations, not statements of causality. The Python AST alternatives include Python's native inclusive comparisons.",
+  "scope": "One defect per project with three files, at most one change per attempt, prepared context, no tools inside the local model. No generalisation beyond this setting."
+}

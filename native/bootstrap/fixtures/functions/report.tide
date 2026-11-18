@@ -1,0 +1,29 @@
+use adjustment
+
+after amount:i change:i active:b > i
+let updated if active (adjust amount change) amount
+if (< updated 0) 0 updated
+
+main > i
+after 5 -2 true
+
+guarded amount:i count:i > i
+if (eq count 0) amount (ratio amount count)
+
+example update after
+{"inputs":{"amount":5,"change":-2,"active":true},"expect":3}
+
+example floor_at_zero after
+{"inputs":{"amount":5,"change":-8,"active":true},"expect":0}
+
+example inactive after
+{"inputs":{"amount":9223372036854775807,"change":1,"active":false},"expect":9223372036854775807}
+
+example active_limit after
+{"inputs":{"amount":9223372036854775807,"change":1,"active":true},"expect_error":{"code":"E_OVERFLOW"}}
+
+example skipped_division guarded
+{"inputs":{"amount":8,"count":0},"expect":8}
+
+example division_error ratio
+{"inputs":{"amount":8,"count":0},"expect_error":{"code":"E_DATA","reason":"division_by_zero"}}

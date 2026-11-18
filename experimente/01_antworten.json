@@ -1,0 +1,18 @@
+{
+  "P01": [2, 2, 2],
+  "P02": "(if (> z x) (if (> x y) (+ z y) x) (+ (if (< z y) (+ x 0) y) z))",
+  "P03": "if < x y if > y z + x z y + if > x z + y -1 z x",
+  "P04": "(+ (if (< z x) (+ (if (< x y) (+ z y) x) x) (if (< z y) (+ x -1) y)) y)",
+  "P05": "+ if > x y + if > y z + x z y y if > x z + y -1 z z",
+  "P06": "(+ (if (> x z) (+ (if (> z y) (+ x y) z) z) (if (> x y) (+ z -1) y)) y)",
+  "P07": "if > x y if < y z + x z y + if > x z + y 1 z x",
+  "P08": [1, -1, 4],
+  "P09": [-4, 2, -5],
+  "P10": "+ if > y x + if > x z + y z x x if > y z + x -1 z z",
+  "P11": [-3, -3, -4],
+  "P12": [2, -1, 0],
+  "P13": [-6, 4, 1],
+  "P14": [-4, 4, -3],
+  "P15": "(if (< y x) (if (> x z) (+ y z) x) (+ (if (> y z) (+ x 1) z) y))",
+  "P16": [1, 2, -1]
+}

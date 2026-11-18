@@ -1,0 +1,152 @@
+use schema
+
+root_diagnostic file:t code:t message:t > t
+cat3 "{\"file\":" (json_string file) (cat3 ",\"code\":" (json_string code) (cat3 ",\"message\":" (json_string message) "}"))
+
+record JsonToken
+kind:t value:t end:i
+
+record JsonOrigin
+file:t site:?{Site} fixed:t
+
+json_origin file:t > {JsonOrigin}
+make JsonOrigin file file site (nil {Site}) fixed ""
+
+internal_json > {JsonOrigin}
+with fixed (json_origin "") "defer_check"
+
+json_error origin:{JsonOrigin} message:t > t
+if (not (text_eq (get fixed origin) "")) (get fixed origin)
+let msg concat "Invalid JSON: " message
+case (get site origin) (root_diagnostic (get file origin) "E_JSON" msg) site (diagnosis (get file origin) site "E_JSON" msg)
+
+string_problem source:t pos:i origin:{JsonOrigin} message:t > t
+if (not (text_eq (get fixed origin) "")) (get fixed origin)
+let loc fold (indices (chunk_count pos)) (pair 1 0) prior block unused
+  let start * (- block 1) 2048
+  let size - pos start
+  fold (indices (if (> size 2048) 2048 size)) prior acc row ch
+    let end + start row
+    if (text_eq (text_slice source (- end 1) end) "\n") (pair (+ (first acc) 1) end) acc
+let detail cat3 message ": line " (cat3 (decimal (first loc)) " column " (decimal (+ 1 (- pos (second loc)))))
+json_error origin (concat detail (cat3 " (char " (decimal pos) ")"))
+
+hex_digit code:i > i
+if (and (> code 47) (< code 58)) (- code 48)
+if (and (> code 96) (< code 103)) (- code 87)
+if (and (> code 64) (< code 71)) (- code 55) -1
+
+json_hex source:t start:i origin:{JsonOrigin} > i
+let error_pos - start 1
+if (> (+ start 4) (text_len source)) fail (string_problem source error_pos origin "Invalid \\uXXXX escape")
+fold (indices 4) 0 acc row unused
+  let n hex_digit (bootstrap_code_at source (+ start (- row 1)))
+  if (< n 0) fail (string_problem source error_pos origin "Invalid \\uXXXX escape")
+  + (* acc 16) n
+
+record StringScan
+pos:i begin:i value:t closed:b valid:b
+
+json_escape source:t opening:i origin:{JsonOrigin} end:i > &ii
+let esc text_slice source (+ end 1) (+ end 2)
+if (text_eq esc "") fail (string_problem source opening origin "Unterminated string starting at")
+if (text_eq esc "u")
+  (let n json_hex source (+ end 2) origin
+   if (or (< n 55296) (> n 57343)) (pair (+ end 6) n)
+   if (or (> n 56319) (not (text_eq (text_slice source (+ end 6) (+ end 8)) "\\u"))) (pair (+ end 6) -1)
+   let low json_hex source (+ end 8) origin
+   if (or (< low 56320) (> low 57343)) (pair (+ end 6) -1)
+   pair (+ end 12) (+ 65536 (+ (* (- n 55296) 1024) (- low 56320))))
+  (let digit need (text_find "\"\\/bfnrt" esc 0) (string_problem source end origin "Invalid \\escape") 0
+   pair (+ end 2) (bootstrap_code_at "\"\\/\b\f\n\r\t" digit))
+
+json_string_page source:t opening:i origin:{JsonOrigin} start:i > {StringScan}
+let end if (> (+ start 64) (text_len source)) (text_len source) (+ start 64)
+let chunk fold (indices (- end start)) (make StringScan pos start begin start value "" closed false valid true) acc row unused
+  let i + start (- row 1)
+  if (or (get closed acc) (< i (get pos acc))) acc
+  let code bootstrap_code_at source i
+  if (< code 32) fail (string_problem source i origin "Invalid control character at")
+  if (and (not (eq code 34)) (not (eq code 92))) acc
+  let raw concat (get value acc) (text_slice source (get begin acc) i)
+  if (eq code 34) (make StringScan pos (+ i 1) begin (+ i 1) value raw closed true valid (get valid acc))
+  let decoded json_escape source opening origin i
+  make StringScan pos (first decoded) begin (first decoded) value (if (< (second decoded) 0) raw (concat raw (bootstrap_character (second decoded)))) closed false valid (and (get valid acc) (not (< (second decoded) 0)))
+if (get closed chunk) chunk
+let resume if (> (get pos chunk) end) (get pos chunk) end
+if (eq resume (text_len source)) fail (string_problem source opening origin "Unterminated string starting at")
+make StringScan pos resume begin resume value (concat (get value chunk) (text_slice source (get begin chunk) resume)) closed false valid (get valid chunk)
+
+decode_json_string source:t pos:i origin:{JsonOrigin} > {JsonToken}
+let end case (text_find source "\"" (+ pos 1)) (text_len source) found found
+let raw text_slice source (+ pos 1) end
+let plain case (text_find raw "\\" 0) true found false
+if (and plain (< end (text_len source)))
+  (let control if (< (text_len raw) 32)
+      (fold (indices (text_len raw)) false found row unused or found (< (bootstrap_code_at raw (- row 1)) 32))
+      (includes_break raw control_chars)
+   if (not control) (make JsonToken kind "string" value raw end (+ end 1))
+   let invalid json_string_page source pos origin (+ pos 1)
+   decode_escaped_string source pos origin invalid)
+let first_page json_string_page source pos origin (+ pos 1)
+decode_escaped_string source pos origin first_page
+
+decode_escaped_string source:t pos:i origin:{JsonOrigin} first_page:{StringScan} > {JsonToken}
+let scan if (get closed first_page) first_page
+  (let pages div (+ (- (text_len source) (get pos first_page)) 63) 64
+   fold (indices (div (+ pages 127) 128)) first_page prior block unused
+     if (get closed prior) prior
+     let left - pages (* (- block 1) 128)
+     let local with value prior ""
+     let part fold (indices (if (> left 128) 128 left)) local acc row skip
+       if (get closed acc) acc
+       let next json_string_page source pos origin (get pos acc)
+       with valid (with value next (concat (get value acc) (get value next))) (and (get valid acc) (get valid next))
+     with value part (concat (get value prior) (get value part)))
+make JsonToken kind (if (get valid scan) "string" "surrogate") value (get value scan) end (get pos scan)
+
+unicode_escape value:i > t
+let hex "0123456789abcdef"
+let a div value 4096
+let b mod (div value 256) 16
+let c mod (div value 16) 16
+let d mod value 16
+concat (cat3 "\\u" (text_slice hex a (+ a 1)) (text_slice hex b (+ b 1))) (concat (text_slice hex c (+ c 1)) (text_slice hex d (+ d 1)))
+
+project_escape cp:i > t
+if (eq cp 34) "\\\""
+if (eq cp 92) "\\\\"
+if (eq cp 8) "\\b"
+if (eq cp 9) "\\t"
+if (eq cp 10) "\\n"
+if (eq cp 12) "\\f"
+if (eq cp 13) "\\r"
+if (< cp 65536) (unicode_escape cp)
+let n - cp 65536
+concat (unicode_escape (+ 55296 (div n 1024))) (unicode_escape (+ 56320 (mod n 1024)))
+
+example wire_supplementary project_escape
+{"inputs":{"cp":128008},"expect":"\\ud83d\\udc08"}
+
+ascii_piece value:t start:i stop:i steps:*t > t
+let part fold steps (pair "" start) acc row skip
+  let i + start (- row 1)
+  let cp bootstrap_code_at value i
+  if (and (and (> cp 31) (< cp 127)) (and (not (eq cp 34)) (not (eq cp 92)))) acc
+  pair (cat3 (first acc) (text_slice value (second acc) i) (project_escape cp)) (+ i 1)
+concat (first part) (text_slice value (second part) stop)
+
+ascii_string value:t > t
+let n text_len value
+if (< n 65) (cat3 "\"" (ascii_piece value 0 n (indices n)) "\"")
+let steps indices 64
+let encoded fold (indices (chunk_count n)) "\"" prior block unused
+  let start * (- block 1) 2048
+  let left - n start
+  let size if (> left 2048) 2048 left
+  let page fold (indices (div (+ size 63) 64)) "" acc row skip
+    let from + start (* (- row 1) 64)
+    let stop if (> (+ from 64) n) n (+ from 64)
+    concat acc (ascii_piece value from stop (if (eq (- stop from) 64) steps (indices (- stop from))))
+  concat prior page
+concat encoded "\""

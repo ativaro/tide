@@ -1,0 +1,14 @@
+peak_lines rows:*t > ?&ii
+fold rows (nil &ii) best row line
+let value need (int line) "invalid_integer" row
+case best (some (pair value row)) previous
+if (> value (first previous)) (some (pair value row)) best
+
+example first_maximum peak_lines
+{"inputs":{"rows":["-8","-2","-2"]},"expect":{"some":[-2,2]}}
+
+example no_rows peak_lines
+{"inputs":{"rows":[]},"expect":{"none":true}}
+
+example invalid_row peak_lines
+{"inputs":{"rows":["4","","7"]},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}

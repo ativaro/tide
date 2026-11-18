@@ -1,0 +1,14 @@
+record Input
+a:i b:i
+
+main > *{Input}
+map {Input} (list i 6 0 1 2 3 4 5) a (make Input a a b 1)
+
+expected_remainder a:i b:i > i
+- a (* b (div a b))
+
+example single_capacity expected_remainder
+{"inputs":{"a":1,"b":1},"expect":0}
+
+example complete_crates expected_remainder
+{"inputs":{"a":11,"b":3},"expect":2}

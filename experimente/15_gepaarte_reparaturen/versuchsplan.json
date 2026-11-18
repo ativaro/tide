@@ -1,0 +1,2309 @@
+{
+  "model": "gpt-6-astra",
+  "reasoning": "xhigh",
+  "service_tier": "priority",
+  "cli": "0.157.1",
+  "language_versions": {
+    "tide": "0.5.0",
+    "python": "3.14.10"
+  },
+  "instructions": "Find and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.",
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "edits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "old": {
+              "type": "string"
+            },
+            "replacement": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "file",
+            "old",
+            "replacement"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "additionalProperties": false
+  },
+  "families": {
+    "range": {
+      "prompt": "A ranking report for tickets 9 and 2, both scoring 7, reports high=9 and low=9; the customer expects high=2 and low=2. Report the ticket with the highest and lowest score in each batch. For equal scores at either extreme the smallest ticket number wins, independent of input order. An empty batch must yield zeros. Tickets are positive and scores are signed small integers.",
+      "sources": {
+        "tide/rows.tide": "record Row\nticket:i score:i\n\ninitial rows:*{Row} > {Row}\ncase (at rows 0) (make Row ticket 0 score 0) first_row first_row\n",
+        "python/rows.py": "def initial(rows):\n    return rows[0] if rows else {\"ticket\": 0, \"score\": 0}\n",
+        "tide/upper.tide": "use rows\n\nupper rows:*{Row} > i\nlet chosen fold rows (initial rows) best row candidate\n  if (> (get score candidate) (get score best)) candidate best\nget ticket chosen\n",
+        "python/upper.py": "from rows import initial\n\n\ndef upper(rows):\n    best = initial(rows)\n    for candidate in rows:\n        if candidate[\"score\"] > best[\"score\"]:\n            best = candidate\n    return best[\"ticket\"]\n",
+        "tide/lower.tide": "use rows\n\nlower rows:*{Row} > i\nlet chosen fold rows (initial rows) best row candidate\n  if (< (get score candidate) (get score best)) candidate best\nget ticket chosen\n",
+        "python/lower.py": "from rows import initial\n\n\ndef lower(rows):\n    best = initial(rows)\n    for candidate in rows:\n        if candidate[\"score\"] < best[\"score\"]:\n            best = candidate\n    return best[\"ticket\"]\n",
+        "tide/summary.tide": "use upper\n\nuse lower\n\nrecord Ranking\nhigh:i low:i\n\nranking rows:*{Row} > {Ranking}\nmake Ranking high (upper rows) low (lower rows)\n\nmain batches:**{Row} > *{Ranking}\nfold batches (list {Ranking} 0) reports row batch append reports (ranking batch)\n",
+        "python/summary.py": "from upper import upper\nfrom lower import lower\n\n\ndef ranking(rows):\n    return {\"high\": upper(rows), \"low\": lower(rows)}\n\n\ndef main(batches):\n    return [ranking(batch) for batch in batches]\n"
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expect": {
+            "high": 2,
+            "low": 2
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "high": 0,
+            "low": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 8,
+              "score": 4
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 2,
+              "score": 7
+            },
+            {
+              "ticket": 9,
+              "score": 7
+            }
+          ],
+          "expect": {
+            "high": 2,
+            "low": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 1,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 8
+            },
+            {
+              "ticket": 2,
+              "score": 8
+            }
+          ],
+          "expect": {
+            "high": 2,
+            "low": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 4,
+              "score": 5
+            },
+            {
+              "ticket": 2,
+              "score": 5
+            },
+            {
+              "ticket": 1,
+              "score": 6
+            }
+          ],
+          "expect": {
+            "high": 1,
+            "low": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 1,
+              "score": 3
+            },
+            {
+              "ticket": 9,
+              "score": 7
+            }
+          ],
+          "expect": {
+            "high": 9,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 22,
+              "score": -4
+            },
+            {
+              "ticket": 10,
+              "score": -4
+            },
+            {
+              "ticket": 7,
+              "score": 0
+            },
+            {
+              "ticket": 1,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 1,
+            "low": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 1,
+              "score": 9
+            },
+            {
+              "ticket": 3,
+              "score": -5
+            },
+            {
+              "ticket": 4,
+              "score": -5
+            },
+            {
+              "ticket": 7,
+              "score": 9
+            }
+          ],
+          "expect": {
+            "high": 1,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            },
+            {
+              "ticket": 5,
+              "score": 1
+            },
+            {
+              "ticket": 2,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 2,
+            "low": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 5,
+              "score": -7
+            },
+            {
+              "ticket": 3,
+              "score": -8
+            },
+            {
+              "ticket": 2,
+              "score": -6
+            }
+          ],
+          "expect": {
+            "high": 2,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 0
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 11,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 1
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 11,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 11,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 0
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 11,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 11,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 1
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 0
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 1
+            }
+          ],
+          "expect": {
+            "high": 8,
+            "low": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "ticket": 11,
+              "score": 2
+            },
+            {
+              "ticket": 8,
+              "score": 2
+            },
+            {
+              "ticket": 3,
+              "score": 2
+            }
+          ],
+          "expect": {
+            "high": 3,
+            "low": 3
+          }
+        }
+      ],
+      "preflight_fixes": {
+        "tide": [
+          {
+            "file": "upper.tide",
+            "old": "(> (get score candidate) (get score best))",
+            "replacement": "(or (> (get score candidate) (get score best)) (and (eq (get score candidate) (get score best)) (< (get ticket candidate) (get ticket best))))"
+          },
+          {
+            "file": "lower.tide",
+            "old": "(< (get score candidate) (get score best))",
+            "replacement": "(or (< (get score candidate) (get score best)) (and (eq (get score candidate) (get score best)) (< (get ticket candidate) (get ticket best))))"
+          }
+        ],
+        "python": [
+          {
+            "file": "upper.py",
+            "old": "if candidate[\"score\"] > best[\"score\"]:",
+            "replacement": "if candidate[\"score\"] > best[\"score\"] or (candidate[\"score\"] == best[\"score\"] and candidate[\"ticket\"] < best[\"ticket\"]):"
+          },
+          {
+            "file": "lower.py",
+            "old": "if candidate[\"score\"] < best[\"score\"]:",
+            "replacement": "if candidate[\"score\"] < best[\"score\"] or (candidate[\"score\"] == best[\"score\"] and candidate[\"ticket\"] < best[\"ticket\"]):"
+          }
+        ]
+      }
+    },
+    "bills": {
+      "prompt": "A settlement for two readings, both bought=400 and sold=600, shows debit_cents=0 and credit_cents=2. The customer expects one cent on each side. Readings are nonnegative thousandths of a cent. Within each batch, round the total on each side to the nearest whole cent, with exact halves rounded up. An empty batch settles to zero on both sides.",
+      "sources": {
+        "tide/amounts.tide": "record Reading\nbought:i sold:i\n\ncents mills:i > i\ndiv (+ mills 500) 1000\n",
+        "python/amounts.py": "def cents(mills):\n    return (mills + 500) // 1000\n",
+        "tide/debit.tide": "use amounts\n\ndebit readings:*{Reading} > i\nfold readings 0 total row item + total (cents get bought item)\n",
+        "python/debit.py": "from amounts import cents\n\n\ndef debit(readings):\n    return sum(cents(item[\"bought\"]) for item in readings)\n",
+        "tide/credit.tide": "use amounts\n\ncredit readings:*{Reading} > i\nfold readings 0 total row item + total (cents get sold item)\n",
+        "python/credit.py": "from amounts import cents\n\n\ndef credit(readings):\n    return sum(cents(item[\"sold\"]) for item in readings)\n",
+        "tide/summary.tide": "use debit\n\nuse credit\n\nrecord Bill\ndebit_cents:i credit_cents:i\n\nbilling readings:*{Reading} > {Bill}\nmake Bill debit_cents (debit readings) credit_cents (credit readings)\n\nmain batches:**{Reading} > *{Bill}\nfold batches (list {Bill} 0) reports row batch append reports (billing batch)\n",
+        "python/summary.py": "from debit import debit\nfrom credit import credit\n\n\ndef billing(readings):\n    return {\"debit_cents\": debit(readings), \"credit_cents\": credit(readings)}\n\n\ndef main(batches):\n    return [billing(batch) for batch in batches]\n"
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "debit_cents": 0,
+            "credit_cents": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 0,
+              "sold": 0
+            }
+          ],
+          "expect": {
+            "debit_cents": 0,
+            "credit_cents": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 499,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 0,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 501,
+              "sold": 499
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1000,
+              "sold": 0
+            },
+            {
+              "bought": 0,
+              "sold": 1000
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 250,
+              "sold": 200
+            },
+            {
+              "bought": 250,
+              "sold": 200
+            },
+            {
+              "bought": 250,
+              "sold": 200
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 0,
+              "sold": 500
+            },
+            {
+              "bought": 0,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 0,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 500,
+              "sold": 0
+            },
+            {
+              "bought": 500,
+              "sold": 0
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 125,
+              "sold": 875
+            },
+            {
+              "bought": 125,
+              "sold": 875
+            },
+            {
+              "bought": 125,
+              "sold": 875
+            },
+            {
+              "bought": 125,
+              "sold": 875
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 9999,
+              "sold": 345
+            },
+            {
+              "bought": 542,
+              "sold": 321
+            },
+            {
+              "bought": 710,
+              "sold": 873
+            }
+          ],
+          "expect": {
+            "debit_cents": 11,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            }
+          ],
+          "expect": {
+            "debit_cents": 0,
+            "credit_cents": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1,
+              "sold": 499
+            },
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1,
+              "sold": 501
+            },
+            {
+              "bought": 501,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1,
+              "sold": 999
+            },
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 499
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 499,
+              "sold": 499
+            },
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 499
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 499,
+              "sold": 501
+            },
+            {
+              "bought": 501,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 499
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 499,
+              "sold": 999
+            },
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 499
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 500,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 500,
+              "sold": 499
+            },
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 500,
+              "sold": 501
+            },
+            {
+              "bought": 501,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 500,
+              "sold": 999
+            },
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 500
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 999
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 999,
+              "sold": 499
+            },
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 999
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 999,
+              "sold": 501
+            },
+            {
+              "bought": 501,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 999
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 999,
+              "sold": 999
+            },
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 999
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1000,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1000
+            }
+          ],
+          "expect": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1000,
+              "sold": 499
+            },
+            {
+              "bought": 499,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1000
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1000,
+              "sold": 501
+            },
+            {
+              "bought": 501,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1000
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "bought": 1000,
+              "sold": 999
+            },
+            {
+              "bought": 999,
+              "sold": 1
+            },
+            {
+              "bought": 1,
+              "sold": 1000
+            }
+          ],
+          "expect": {
+            "debit_cents": 2,
+            "credit_cents": 2
+          }
+        }
+      ],
+      "preflight_fixes": {
+        "tide": [
+          {
+            "file": "debit.tide",
+            "old": "fold readings 0 total row item + total (cents get bought item)",
+            "replacement": "cents (fold readings 0 total row item + total (get bought item))"
+          },
+          {
+            "file": "credit.tide",
+            "old": "fold readings 0 total row item + total (cents get sold item)",
+            "replacement": "cents (fold readings 0 total row item + total (get sold item))"
+          }
+        ],
+        "python": [
+          {
+            "file": "debit.py",
+            "old": "sum(cents(item[\"bought\"]) for item in readings)",
+            "replacement": "cents(sum(item[\"bought\"] for item in readings))"
+          },
+          {
+            "file": "credit.py",
+            "old": "sum(cents(item[\"sold\"]) for item in readings)",
+            "replacement": "cents(sum(item[\"sold\"] for item in readings))"
+          }
+        ]
+      }
+    },
+    "tracks": {
+      "prompt": "A trip contains heights 100, 105, 80, 76, 90, 93 in that order. The samples at 80 and 90 mark restarts. The customer expects ascent=8 and descent=4. A restart sample is the first observation of its new segment. Sum the positive gains and the absolute losses between consecutive heights within each segment. The first sample of a batch also starts a segment. Empty batches yield zero totals.",
+      "sources": {
+        "tide/samples.tide": "record Sample\nheight:i restart:b\n\nrecord Edge\nchange:i valid:b\n",
+        "python/samples.py": "from typing import NamedTuple\n\n\nclass Edge(NamedTuple):\n    change: int\n    valid: bool\n",
+        "tide/history.tide": "use samples\n\nrecord Track\nprevious:?i restarted:b edges:*{Edge}\n\nadvance track:{Track} sample:{Sample} > {Track}\nlet height get height sample\nlet edges case (get previous track) (get edges track) last\n  append (get edges track) (make Edge change (- height last) valid (not get restarted track))\nmake Track previous (some height) restarted (get restart sample) edges edges\n\nhistory samples:*{Sample} > *{Edge}\nlet initial make Track previous (nil i) restarted false edges (list {Edge} 0)\nget edges (fold samples initial track row sample advance track sample)\n",
+        "python/history.py": "from samples import Edge\n\n\ndef history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges\n",
+        "tide/profile.tide": "use samples\n\nrecord Profile\nascent:i descent:i\n\nprofile edges:*{Edge} > {Profile}\nfold edges (make Profile ascent 0 descent 0) totals row edge\n  let change get change edge\n  make Profile ascent (+ (get ascent totals) (if (and (get valid edge) (> change 0)) change 0))\n    descent (+ (get descent totals) (if (< change 0) (- 0 change) 0))\n",
+        "python/profile.py": "from samples import Edge\n\n\ndef profile(edges: list[Edge]):\n    ascent = descent = 0\n    for edge in edges:\n        if edge.valid and edge.change > 0:\n            ascent += edge.change\n        if edge.change < 0:\n            descent -= edge.change\n    return {\"ascent\": ascent, \"descent\": descent}\n",
+        "tide/summary.tide": "use history\n\nuse profile\n\nmain batches:**{Sample} > *{Profile}\nfold batches (list {Profile} 0) reports row batch append reports (profile (history batch))\n",
+        "python/summary.py": "from history import history\nfrom profile import profile\n\n\ndef main(batches):\n    return [profile(history(batch)) for batch in batches]\n"
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 8,
+            "descent": 4
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 3,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 5,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 5,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 4,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 4,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 1,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 15,
+              "restart": false
+            },
+            {
+              "height": 10,
+              "restart": false
+            },
+            {
+              "height": 11,
+              "restart": false
+            },
+            {
+              "height": 20,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 10,
+            "descent": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 10,
+              "restart": false
+            },
+            {
+              "height": 13,
+              "restart": true
+            },
+            {
+              "height": 7,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            },
+            {
+              "height": -5,
+              "restart": false
+            },
+            {
+              "height": -6,
+              "restart": false
+            },
+            {
+              "height": -1,
+              "restart": true
+            },
+            {
+              "height": 6,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 7,
+            "descent": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": false
+            },
+            {
+              "height": 3,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 4,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            },
+            {
+              "height": 3,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 4,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": false
+            },
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 4,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            },
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 4,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": false
+            },
+            {
+              "height": 3,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 4,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            },
+            {
+              "height": 3,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 3,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 4,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": false
+            },
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 4,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": false
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 0,
+              "restart": true
+            },
+            {
+              "height": 3,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 5,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 4,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            },
+            {
+              "height": 1,
+              "restart": true
+            }
+          ],
+          "expect": {
+            "ascent": 0,
+            "descent": 0
+          }
+        }
+      ],
+      "preflight_fixes": {
+        "tide": [
+          {
+            "file": "history.tide",
+            "old": "not get restarted track",
+            "replacement": "not get restart sample"
+          },
+          {
+            "file": "profile.tide",
+            "old": "(if (< change 0)",
+            "replacement": "(if (and (get valid edge) (< change 0))"
+          }
+        ],
+        "python": [
+          {
+            "file": "history.py",
+            "old": "height - previous, not restarted",
+            "replacement": "height - previous, not sample[\"restart\"]"
+          },
+          {
+            "file": "profile.py",
+            "old": "if edge.change < 0:",
+            "replacement": "if edge.valid and edge.change < 0:"
+          }
+        ]
+      }
+    }
+  },
+  "schedule": [
+    {
+      "family": "range",
+      "rep": 1,
+      "language": "tide"
+    },
+    {
+      "family": "range",
+      "rep": 1,
+      "language": "python"
+    },
+    {
+      "family": "tracks",
+      "rep": 1,
+      "language": "tide"
+    },
+    {
+      "family": "tracks",
+      "rep": 1,
+      "language": "python"
+    },
+    {
+      "family": "bills",
+      "rep": 1,
+      "language": "python"
+    },
+    {
+      "family": "bills",
+      "rep": 1,
+      "language": "tide"
+    },
+    {
+      "family": "bills",
+      "rep": 2,
+      "language": "tide"
+    },
+    {
+      "family": "bills",
+      "rep": 2,
+      "language": "python"
+    },
+    {
+      "family": "range",
+      "rep": 2,
+      "language": "python"
+    },
+    {
+      "family": "range",
+      "rep": 2,
+      "language": "tide"
+    },
+    {
+      "family": "tracks",
+      "rep": 2,
+      "language": "python"
+    },
+    {
+      "family": "tracks",
+      "rep": 2,
+      "language": "tide"
+    },
+    {
+      "family": "tracks",
+      "rep": 3,
+      "language": "tide"
+    },
+    {
+      "family": "tracks",
+      "rep": 3,
+      "language": "python"
+    },
+    {
+      "family": "bills",
+      "rep": 3,
+      "language": "python"
+    },
+    {
+      "family": "bills",
+      "rep": 3,
+      "language": "tide"
+    },
+    {
+      "family": "range",
+      "rep": 3,
+      "language": "tide"
+    },
+    {
+      "family": "range",
+      "rep": 3,
+      "language": "python"
+    },
+    {
+      "family": "range",
+      "rep": 4,
+      "language": "python"
+    },
+    {
+      "family": "range",
+      "rep": 4,
+      "language": "tide"
+    },
+    {
+      "family": "bills",
+      "rep": 4,
+      "language": "tide"
+    },
+    {
+      "family": "bills",
+      "rep": 4,
+      "language": "python"
+    },
+    {
+      "family": "tracks",
+      "rep": 4,
+      "language": "python"
+    },
+    {
+      "family": "tracks",
+      "rep": 4,
+      "language": "tide"
+    }
+  ],
+  "design": "3 newly built bugs, four adjacent TIDE/Python pairs per bug; each language first twice per bug. New read-only ephemeral model process for every attempt. Fixed order, same project path, serial local execution. Both arms get the same test observation and the four source files in identical basename order. TIDE uses project_context starting at the public main, Python receives full sources. All production functions in these fixtures are reachable. No defect location or expected edit count in the model instruction.",
+  "outcomes": "Measure from before initial verification and source collection to green external tests with a monotonic clock. Include all attempts, including discarded patches. Each failed attempt receives its previous proposal and diagnostic over the original project; up to three attempts with 180s per model process. Report completion and missing telemetry separately. Primary measures: median of paired TIDE minus Python differences and wins per metric, per family and pooled, gross input+output tokens and time. Secondary: cache-adjusted counts, output and medians per arm. For pooled paired differences report median and observed range. Repetitions are nested in 3 selected bugs, no cross-population inference."
+}

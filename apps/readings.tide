@@ -1,0 +1,5 @@
+reading line:t row:i > i
+need int line "invalid_integer" row
+
+higher value:i previous:?i > ?i
+some case previous value old if > value old value old

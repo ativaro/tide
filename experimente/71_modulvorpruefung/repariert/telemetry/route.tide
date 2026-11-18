@@ -1,0 +1,28 @@
+use rulebook
+
+adjust label:t inbound:i outbound:i > i
++ (difference inbound outbound) (size label)
+
+example direct_0 adjust
+{"inputs":{"label":"","inbound":0,"outbound":0},"expect":0}
+
+example direct_1 adjust
+{"inputs":{"label":"A1","inbound":1,"outbound":0},"expect":3}
+
+example direct_2 adjust
+{"inputs":{"label":"猫猫3","inbound":3,"outbound":0},"expect":10}
+
+example direct_3 adjust
+{"inputs":{"label":"猫猫123","inbound":12,"outbound":24},"expect":-3}
+
+example direct_4 adjust
+{"inputs":{"label":"é872","inbound":21,"outbound":19},"expect":7}
+
+example direct_5 adjust
+{"inputs":{"label":"éΩ4097","inbound":27,"outbound":13},"expect":23}
+
+example direct_6 adjust
+{"inputs":{"label":"31110","inbound":30,"outbound":22},"expect":13}
+
+example direct_7 adjust
+{"inputs":{"label":"猫猫55041","inbound":22,"outbound":3},"expect":30}

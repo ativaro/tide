@@ -1,0 +1,30 @@
+{
+  "balance": {
+    "contract": "The main function returns the remaining budget a after paying for b units. Each unit costs 3 and there is a fixed fee of 2. The remainder may be negative. Inputs are nonnegative integers.",
+    "tide": {"panel": "use ledger\n\nmain a:i b:i > i\nremaining a b\n", "ledger": "use charge\n\nremaining budget:i units:i > i\nbalance budget (fee units)\n\nbalance budget:i cost:i > i\n+ budget cost\n", "charge": "fee units:i > i\n+ (* units 3) 2\n"},
+    "python": {"panel": "from ledger import remaining\n\ndef main(a: int, b: int) -> int:\n    return remaining(a, b)\n", "ledger": "from charge import fee\n\ndef remaining(budget: int, units: int) -> int:\n    return balance(budget, fee(units))\n\ndef balance(budget: int, cost: int) -> int:\n    return budget + cost\n", "charge": "def fee(units: int) -> int:\n    return units * 3 + 2\n"},
+    "known_tide": {"function":"balance","body":"(- budget cost)"},
+    "known_python": {"expr":"budget + cost","op":"-"}
+  },
+  "dispatch": {
+    "contract": "Return shipping code 10 when load a is at most capacity b, including equality. Return code 90 above capacity. Inputs are nonnegative integers.",
+    "tide": {"panel": "use routing\n\nmain a:i b:i > i\nshipping a b\n", "routing": "use capacity\n\nshipping load:i cap:i > i\nif (fits load cap) 10 90\n", "capacity": "fits load:i cap:i > b\n< load cap\n"},
+    "python": {"panel": "from routing import shipping\n\ndef main(a: int, b: int) -> int:\n    return shipping(a, b)\n", "routing": "from capacity import fits\n\ndef shipping(load: int, cap: int) -> int:\n    return 10 if fits(load, cap) else 90\n", "capacity": "def fits(load: int, cap: int) -> bool:\n    return load < cap\n"},
+    "known_tide": {"function":"fits","body":"(not (> load cap))"},
+    "known_python": {"expr":"load < cap","op":"<="}
+  },
+  "windows": {
+    "contract": "A session lasts a minutes. Reserve its first 2 minutes and return the number of whole windows of b minutes that fit in the remaining time. Ignore partial windows. a is at least 2 and b is positive.",
+    "tide": {"panel": "use session\n\nmain a:i b:i > i\navailable a b\n", "session": "use windows\n\navailable minutes:i width:i > i\ncount_windows (- minutes 2) width\n", "windows": "count_windows minutes:i width:i > i\nmod minutes width\n"},
+    "python": {"panel": "from session import available\n\ndef main(a: int, b: int) -> int:\n    return available(a, b)\n", "session": "from windows import count_windows\n\ndef available(minutes: int, width: int) -> int:\n    return count_windows(minutes - 2, width)\n", "windows": "def count_windows(minutes: int, width: int) -> int:\n    return minutes % width\n"},
+    "known_tide": {"function":"count_windows","body":"(div minutes width)"},
+    "known_python": {"expr":"minutes % width","op":"//"}
+  },
+  "invoice": {
+    "contract": "Return the invoice total for a units at base unit rate b. A surcharge of 2 applies to each unit. Zero units cost zero. Inputs are nonnegative integers.",
+    "tide": {"panel": "use invoice\n\nmain a:i b:i > i\ntotal a b\n", "invoice": "use prices\n\ntotal units:i rate:i > i\nsubtotal units rate\n", "prices": "subtotal units:i rate:i > i\n+ (* units rate) 2\n"},
+    "python": {"panel": "from invoice import total\n\ndef main(a: int, b: int) -> int:\n    return total(a, b)\n", "invoice": "from prices import subtotal\n\ndef total(units: int, rate: int) -> int:\n    return subtotal(units, rate)\n", "prices": "def subtotal(units: int, rate: int) -> int:\n    return units * rate + 2\n"},
+    "known_tide": {"function":"subtotal","body":"(* units (+ rate 2))"},
+    "known_python": {"expr":"units * rate + 2","replace":"units * (rate + 2)"}
+  }
+}

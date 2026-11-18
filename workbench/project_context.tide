@@ -1,0 +1,103 @@
+use source_layout
+
+record Definition
+name:t calls:*t
+
+record Unit
+file:t source:t
+
+record View
+offset:i header:b include:b found:*t source:t
+
+record Bundle
+files:*{Unit} found:*t
+
+record Packet
+observation:t files:*{Unit}
+
+contains_name names:*t target:t > b
+fold names false hit row name or hit text_eq name target
+
+enqueue names:*t target:t > *t
+if contains_name names target names append names target
+
+callees graph:*{Definition} target:t > *t
+let definition fold graph (nil {Definition}) found row node
+  if text_eq (get name node) target (some node) found
+get calls (need definition "definition_missing_from_graph" 0)
+
+reachable graph:*{Definition} root:t > *t
+let queue fold graph (list t 1 root) names row unused
+  case (at names (- row 1)) names target
+  fold (callees graph target) names acc index child enqueue acc child
+if > length queue length graph fail "incomplete_graph" queue
+
+record ApiSignature
+name:t kind:t signature:t
+
+unused_signatures signatures:*{ApiSignature} reachable_names:*t > *t
+fold signatures (list t 0) acc row entry
+  if (and (text_eq (get kind entry) "function") (not (contains_name reachable_names (get name entry))))
+     (append acc (get signature entry)) acc
+
+ordinary_name signature:t wanted:*t > ?t
+let leading case (text_find signature " " 0) "" pos (text_slice signature 0 pos)
+if (and (not (text_eq leading "")) (contains_name wanted leading)) (some leading)
+if (or (text_eq leading "record") (or (text_eq leading "variant") (or (text_eq leading "use") (text_eq leading "example")))) (nil t)
+fold wanted (nil t) previous row name
+  case previous (if function_header signature name (some name) (nil t)) match_name previous
+
+selected_name header:t wanted:*t > ?t
+let signature if (function_header header "rule")
+  (text_slice header (+ 4 (need (text_find header "rule" 0) "invalid_header" 0)) (text_len header)) header
+ordinary_name signature wanted
+
+visit_line text:t wanted:*t view:{View} line:t > {View}
+if (case (text_find line "\r" 0) false idx true) fail "expected_lf_or_crlf"
+let start get offset view
+let stop + start text_len line
+let next if eq stop (text_len text) stop (+ stop (if text_eq (text_slice text stop (+ stop 2)) "\r\n" 2 1))
+let blank indent_only line
+let header and (get header view) (not blank)
+let name if header (selected_name line wanted) (nil t)
+let include if blank false
+  if header (case name (or (function_header line "record") (function_header line "variant")) selected true)
+  get include view
+let found case name (get found view) selected
+  if (contains_name (get found view) selected) fail "duplicate_definition_source" (append (get found view) selected)
+let output get source view
+let separator if (and header (> (text_len output) 0)) "\n" ""
+make View offset next header blank include include found found
+  source (if include (concat output (concat separator (text_slice text start next))) output)
+
+collect_file bundle:{Bundle} unit:{Unit} wanted:*t > {Bundle}
+let text get source unit
+if other_line_ending text fail "expected_lf_or_crlf"
+let initial make View offset 0 header true include false found (get found bundle) source ""
+let view fold (lines text) initial acc row line visit_line text wanted acc line
+let excerpt get source view
+make Bundle files (if text_eq excerpt "" (get files bundle)
+  (append (get files bundle) (with source unit excerpt))) found (get found view)
+
+source_packet wanted:*t observation:t units:*{Unit} > {Packet}
+let bundle fold units (make Bundle files (list {Unit} 0) found (list t 0)) acc row unit collect_file acc unit wanted
+if not eq (length get found bundle) (length wanted) fail "definition_missing_from_source"
+make Packet observation observation files (get files bundle)
+
+main root:t observation:t graph:*{Definition} units:*{Unit} > {Packet}
+source_packet (reachable graph root) observation units
+
+example shared_leaf reachable
+{"inputs":{"root":"top","graph":[{"name":"leaf","calls":[]},{"name":"other","calls":[]},{"name":"aa","calls":["leaf"]},{"name":"bb","calls":["leaf"]},{"name":"top","calls":["aa","bb"]}]},"expect":["top","aa","bb","leaf"]}
+
+example imported_api unused_signatures
+{"inputs":{"reachable_names":["main"],"signatures":[{"name":"main","kind":"function","signature":"main > i"},{"name":"tick","kind":"rule","signature":"rule tick"},{"name":"double","kind":"function","signature":"double x:i > i"}]},"expect":["double x:i > i"]}
+
+example crosses_files main
+{"inputs":{"root":"app","observation":"expected 2, got 3","graph":[{"name":"helper","calls":[]},{"name":"app","calls":["helper"]},{"name":"extra","calls":[]}],"units":[{"file":"entry.tide","source":"use lib\n\napp v:i > i\nhelper v\n\nexample test app\n{}"},{"file":"lib.tide","source":"record Box\r\nv:i\r\n\r\nextra > i\r\n0\r\n\r\n\trule\thelper v:i > i\r\nstate n:i=0\r\nelse -> n=set v\r\nout n\r\n"}]},"expect":{"observation":"expected 2, got 3","files":[{"file":"entry.tide","source":"app v:i > i\nhelper v\n"},{"file":"lib.tide","source":"record Box\r\nv:i\r\n\n\trule\thelper v:i > i\r\nstate n:i=0\r\nelse -> n=set v\r\nout n\r\n"}]}}
+
+example source_missing main
+{"inputs":{"root":"app","observation":"","graph":[{"name":"app","calls":[]}],"units":[]},"expect_error":{"code":"E_DATA","reason":"definition_missing_from_source"}}
+
+example unknown_root main
+{"inputs":{"root":"other","observation":"","graph":[{"name":"app","calls":[]}],"units":[]},"expect_error":{"code":"E_DATA","reason":"definition_missing_from_graph"}}

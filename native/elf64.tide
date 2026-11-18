@@ -1,0 +1,71 @@
+hex_digit n:i > t
+text_slice "0123456789abcdef" n (+ n 1)
+
+byte_hex n:i > t
+let low mod n 256
+let v if < low 0 (+ low 256) low
+concat (hex_digit div v 16) (hex_digit mod v 16)
+
+le64 n:i > t
+second fold (list i 8 0 0 0 0 0 0 0 0) (pair n "") state64 row unused
+let v first state64
+let quotient div v 256
+pair (if < mod v 256 0 (- quotient 1) quotient) (concat (second state64) (byte_hex v))
+
+le32 n:i > t
+text_slice (le64 n) 0 8
+
+bytes_in hex:t > i
+div (text_len hex) 2
+
+skip_if opcode:t block:t > t
+if > bytes_in block 127 fail "short_branch_range"
+concat opcode (concat (byte_hex bytes_in block) block)
+
+back_if opcode:t block:t > t
+let displacement - -2 bytes_in block
+if < displacement -128 fail "short_branch_range"
+concat block (concat opcode (byte_hex displacement))
+
+exit_process status:i > t
+concat "bf" (concat (le32 status) "b83c0000000f05")
+
+integer_text suffix_setup:t > t
+let digits back_if "75" "31d249f7f180c23048ffce8816ffc14885c0"
+let magnitude skip_if "79" "48f7d8"
+let minus skip_if "79" "48ffcec6062dffc1"
+concat "4989c0" (concat suffix_setup (concat "41b90a0000004885c0"
+  (concat magnitude (concat digits (concat "4d85c0" minus)))))
+
+print_integer > t
+let output concat "89cabf01000000b8010000000f054839d0" (concat (skip_if "75" (exit_process 0)) (exit_process 1))
+concat (integer_text "488d7424ffc6060ab901000000") output
+
+diagnostic_exit message:t > t
+let write_error concat "ba" (concat (le32 bytes_in message) "bf02000000b8010000000f05")
+let finish_error concat write_error (exit_process 1)
+concat "488d35" (concat (le32 bytes_in finish_error) (concat finish_error message))
+
+overflow_error > t
+diagnostic_exit "7b22636f6465223a22455f4f564552464c4f57227d0a"
+
+elf_with_buffer payload:t writable:i > t
+if (< writable 0) fail "invalid_segment_size"
+let extended > writable 0
+let header_size if extended 232 176
+if (and extended (> (+ header_size (bytes_in payload)) 2097152)) fail "native_segment_range"
+let size le64 (+ header_size bytes_in payload)
+let address le64 4194304
+let ident "7f454c46020101000000000000000000"
+let header concat ident (concat "02003e0001000000" (concat (le64 + 4194304 header_size) (concat "400000000000000000000000000000000000000040003800" (if extended "0300000000000000" "0200000000000000"))))
+let load_segment concat "01000000050000000000000000000000" (concat address (concat address (concat size (concat size le64 4096))))
+let stack_segment "51e5746406000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000"
+let buffer if extended
+  (concat "01000000060000000000000000000000000060000000000000006000000000000000000000000000" (concat (le64 writable) (le64 4096))) ""
+concat header (concat load_segment (concat buffer (concat stack_segment payload)))
+
+elf_image payload:t > t
+elf_with_buffer payload 0
+
+example negative_encoding le64
+{"inputs":{"n":-9223372036854775808},"expect":"0000000000000080"}

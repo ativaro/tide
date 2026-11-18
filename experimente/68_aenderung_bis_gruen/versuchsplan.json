@@ -1,0 +1,11 @@
+{
+  "task":"Correct the row argument forwarded by measurements.parse, then run the entire streaming report test suite.",
+  "entry":"apps/report_packages/stream_report.tide",
+  "arms":["installed TIDE before", "installed TIDE after", "unchanged CPython baseline A", "unchanged CPython baseline B"],
+  "timing":"Monotonic wall time from starting the atomic save of the fixed package source through fresh test process exit, output drain and validation of all seven passes. Red setup is outside the clock and must fail for the row mismatch every time.",
+  "cases":"Six in-memory streaming report examples and the package's signed integer example, with the same values and expected results.",
+  "rounds":"8 warm-up blocks and 64 measured four-arm blocks. Rotate and reverse order in an eight-block cycle, all arms on CPU 24. Warm file caches, unchanged imports may reuse bytecode, the saved Python module has a different source length and must be recompiled.",
+  "counters":"Paired median and nearest-rank P95, plus individual raw samples in milliseconds. Measure source checkout separately. Exclude tool build and installation.",
+  "network":"disabled",
+  "additional_model_calls":0
+}

@@ -1,0 +1,10 @@
+nearest value:i > i
+let base div value 10
+let rest mod value 10
+let magnitude if (< rest 0) (- 0 rest) rest
+if (< magnitude 5) base
+let step if (< value 0) -1 1
+if (> magnitude 5) (+ base step) (on_half base step)
+
+on_half base:i step:i > i
+if (eq (mod base 2) 0) (+ base step) base

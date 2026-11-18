@@ -1,0 +1,39 @@
+record NativeCase
+name:t source:t expected:t
+
+native_case name:t step:t initial:t items:t expected:t > {NativeCase}
+let header "apply initial:i xs:*i > i\n(fold xs initial a row x\n  "
+let entry ")\n\nmain > i\n(apply "
+make NativeCase name name source (concat header (concat step (concat entry (concat initial (concat " (list i " (concat items "))\n")))))) expected expected
+
+main > *{NativeCase}
+list {NativeCase} 29
+  (native_case "seed_empty" "if true (+ a 1) a" "-7" "0" "-7")
+  (native_case "original_plus" "+ a x" "100" "4 -20 15 -8 10" "97")
+  (native_case "original_minus" "- a x" "-10" "2 -2 3" "-11")
+  (native_case "original_times" "* a x" "7" "2 -2 -3" "42")
+  (native_case "row_index" "+ a (* row x)" "0" "3 1 -2 4" "9")
+  (native_case "seed_binding" "+ a (+ initial x)" "3" "2 2 5" "16")
+  (native_case "reversed_minus" "- x a" "3" "2 10 2" "-5")
+  (native_case "signed_min" "if (< x a) x a" "9223372036854775807" "3 0 -5 -9223372036854775808" "-9223372036854775808")
+  (native_case "signed_max" "if (> x a) x a" "-9223372036854775808" "3 -1 0 9223372036854775807" "9223372036854775807")
+  (native_case "equal" "if (eq a x) row a" "7" "2 7 1" "2")
+  (native_case "if_true_skips_overflow" "if true a (+ a 1)" "9223372036854775807" "1 0" "9223372036854775807")
+  (native_case "if_false_skips_overflow" "if false (* a -1) x" "-9223372036854775808" "1 -43" "-43")
+  (native_case "and_skips_overflow" "if (and false (> (+ a 1) x)) 7 4" "9223372036854775807" "1 0" "4")
+  (native_case "or_skips_overflow" "if (or true (< (- a 1) x)) 7 4" "-9223372036854775808" "1 0" "7")
+  (native_case "and_evaluates_rhs" "if (and true (> (+ a 1) x)) 0 1" "9223372036854775807" "1 0" "E_OVERFLOW")
+  (native_case "or_evaluates_rhs" "if (or false (> (* a -1) x)) 0 1" "-9223372036854775808" "1 0" "E_OVERFLOW")
+  (native_case "not_and_equality" "if (not (eq row x)) (+ a 2) (- a 1)" "0" "3 1 0 3" "0")
+  (native_case "boolean_if" "if (if (< x 0) true (eq x 0)) (- a 1) (+ a 1)" "4" "3 -3 0 5" "3")
+  (native_case "early_overflow" "if (> row 0) (+ a x) a" "9223372036854775807" "2 1 -1" "E_OVERFLOW")
+  (native_case "sub_overflow" "- x a" "-9223372036854775808" "1 0" "E_OVERFLOW")
+  (native_case "mul_value" "* (- a 1) x" "4" "2 -3 2" "-20")
+  (native_case "overflow_as_rhs" "+ row (* a x)" "9223372036854775807" "1 2" "E_OVERFLOW")
+  (native_case "literal_untaken" "if (< x 0) (+ 9223372036854775807 1) -9223372036854775808" "10" "1 3" "-9223372036854775808")
+  (native_case "prefix" "if > x 0 + a * row x - a 1" "2" "3 3 0 2" "10")
+  (native_case "near_skip" "if false (+ 1 (+ 2 (+ 3 (+ 4 (+ 5 (+ 6 a)))))) x" "0" "2 7 33" "33")
+  (native_case "near_taken" "if true (+ 1 (+ 2 (+ 3 (+ 4 (+ 5 (+ 6 a)))))) x" "0" "2 7 33" "42")
+  (native_case "skipped_second_operand" "if (or (eq a x) (and false true)) row 0" "1" "2 1 1" "2")
+  (native_case "short_circuit_with_false" "if (and (< x a) (not (eq x row))) a x" "3" "3 1 2 -5" "2")
+  (native_case "main_extreme" "+ a (- x initial)" "-9223372036854775808" "1 -9223372036854775808" "-9223372036854775808")

@@ -1,0 +1,17 @@
+{
+  "familien": [
+    "W",
+    "E",
+    "R"
+  ],
+  "offen_je_familie": 5,
+  "verdeckt_je_familie": 5,
+  "public": 3,
+  "abnahme": 4,
+  "rounds": 8,
+  "search_rounds": 4,
+  "seed": "keine zufällige Auswahl im offenen Lauf; balancierte Reihenfolge",
+  "search": "W: gemeinsame feste Liste typgerechter vollständiger Ausdrücke, erster öffentlich grüner Entwurf. Zwei Ganzzahlen: 0, 1, a, b, a+b, a-b, b-a, a*b, min(a,b), max(a,b). Ein Text: 0, 1, Zeichenlänge, UTF-8-Bytelänge. Andere Signaturen: Enthaltung. E/R: strukturelle Suche aus Versuch 70 mit Modulvorprüfung aus 71, 32 Einzeländerungen/64 Paare, erste grüne Option sortiert nach Datei/Position/Ausdruck. Ein Versuch ohne zweite Auswahl nach verdeckter Fallabnahme.",
+  "timing": "Neue Arbeitskopie je Versuch, anfängliche Anlage vor Uhr. Lösung ab Aufgabenübergabe an Werkzeug bis Ende der unabhängigen Abnahme oder Enthaltung. Programm separat am ersten Abnahmefall der korrekten Referenz: neuer Prozess, Standard-CLI run, gleicher JSON-Eingang, kein AOT; Spitzen-RSS via zsh time %M. 1 Warmup, alternierende Paare, 8 Laufzeitpaare und 4 Suchpaare je Aufgabe. CPU 24, keine Netzwerkschnittstelle ausser lo. Suchphasen und Programmzeit getrennt.",
+  "tokens": "Offline-BPE Llama, Hash 036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b. Kompakte JSON-Nachrichten: Auftrag, Signatur, freigegebene Fälle, Startquellen, öffentlicher Suchbefund samt grünen Optionen, Auswahl und Abnahmestatus. Keine Modelläufe. Lösungsquote ist Werkzeugquote, Zeit ist Werkzeugzeit; menschliche Entwicklungszeit und Agentenleistung bleiben offen."
+}

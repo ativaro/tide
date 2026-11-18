@@ -1,0 +1,1045 @@
+{
+  "summary": {
+    "before": {
+      "accepted": 1,
+      "total": 10,
+      "tokens": {
+        "tide": {
+          "all": {
+            "input": 2826,
+            "output": 83,
+            "total": 2909
+          },
+          "accepted": {
+            "input": 320,
+            "output": 20,
+            "total": 340
+          },
+          "all_per_success": 2909
+        },
+        "python": {
+          "all": {
+            "input": 3086,
+            "output": 86,
+            "total": 3172
+          },
+          "accepted": {
+            "input": 359,
+            "output": 23,
+            "total": 382
+          },
+          "all_per_success": 3172
+        }
+      },
+      "successful_time": {
+        "blocks": 12,
+        "tide": {
+          "median_ms": 15.901974500000051,
+          "p95_ms": 17.10359200000039
+        },
+        "python": {
+          "median_ms": 31.702756499999396,
+          "p95_ms": 33.06359300000031
+        },
+        "median_paired_ratio": 2.0040163456477096,
+        "q1_ratio": 1.9717473448067258,
+        "q3_ratio": 2.02393173693583,
+        "tide_faster": 12
+      },
+      "unsuccessful_time": {
+        "blocks": 108,
+        "tide": {
+          "median_ms": 6.492721000000529,
+          "p95_ms": 7.523155999999744
+        },
+        "python": {
+          "median_ms": 17.99127050000061,
+          "p95_ms": 19.724194000000352
+        },
+        "median_paired_ratio": 2.7844417210723407,
+        "q1_ratio": 2.6498969097579805,
+        "q3_ratio": 2.8614394062728308,
+        "tide_faster": 108
+      },
+      "all_time": {
+        "blocks": 120,
+        "tide": {
+          "median_ms": 6.544342500000312,
+          "p95_ms": 15.880339000000276
+        },
+        "python": {
+          "median_ms": 18.06117600000016,
+          "p95_ms": 31.672716000000037
+        },
+        "median_paired_ratio": 2.7592633869493413,
+        "q1_ratio": 2.6177485760653276,
+        "q3_ratio": 2.8529248930679354,
+        "tide_faster": 120
+      }
+    },
+    "after": {
+      "accepted": 9,
+      "total": 10,
+      "tokens": {
+        "tide": {
+          "all": {
+            "input": 3167,
+            "output": 307,
+            "total": 3474
+          },
+          "accepted": {
+            "input": 2889,
+            "output": 300,
+            "total": 3189
+          },
+          "all_per_success": 386
+        },
+        "python": {
+          "all": {
+            "input": 3450,
+            "output": 319,
+            "total": 3769
+          },
+          "accepted": {
+            "input": 3147,
+            "output": 312,
+            "total": 3459
+          },
+          "all_per_success": 418.77777777777777
+        }
+      },
+      "successful_time": {
+        "blocks": 108,
+        "tide": {
+          "median_ms": 16.59589799999958,
+          "p95_ms": 22.437856999999894
+        },
+        "python": {
+          "median_ms": 32.00704299999984,
+          "p95_ms": 35.04120200000034
+        },
+        "median_paired_ratio": 1.9355960842682176,
+        "q1_ratio": 1.7330003826267142,
+        "q3_ratio": 1.9922954678596811,
+        "tide_faster": 108
+      },
+      "unsuccessful_time": {
+        "blocks": 12,
+        "tide": {
+          "median_ms": 6.454610500000399,
+          "p95_ms": 6.858334000000468
+        },
+        "python": {
+          "median_ms": 18.458869499999764,
+          "p95_ms": 19.019669999999678
+        },
+        "median_paired_ratio": 2.8796734323467765,
+        "q1_ratio": 2.7599991598668274,
+        "q3_ratio": 2.95438057715195,
+        "tide_faster": 12
+      },
+      "all_time": {
+        "blocks": 120,
+        "tide": {
+          "median_ms": 16.30364700000041,
+          "p95_ms": 22.408126000000266
+        },
+        "python": {
+          "median_ms": 31.92095600000107,
+          "p95_ms": 34.17230500000005
+        },
+        "median_paired_ratio": 1.9495691070928984,
+        "q1_ratio": 1.7752312463262028,
+        "q3_ratio": 2.0079052469119345,
+        "tide_faster": 120
+      }
+    }
+  },
+  "tokenizer": {
+    "version": "0.23.3",
+    "sha256": "036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b",
+    "description": "Llama BPE, no special tokens"
+  },
+  "tasks": {
+    "cut": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          8,
+          16
+        ],
+        "tokens": {
+          "tide": {
+            "source": 239,
+            "diagnosis": 38,
+            "decision": 7,
+            "receipt": 15,
+            "input": 292,
+            "output": 7,
+            "total": 299
+          },
+          "python": {
+            "source": 275,
+            "diagnosis": 38,
+            "decision": 7,
+            "receipt": 15,
+            "input": 328,
+            "output": 7,
+            "total": 335
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.6282594999997855,
+            "p95_ms": 7.194880000000012
+          },
+          "python": {
+            "median_ms": 18.063791499999752,
+            "p95_ms": 20.301094999999805
+          },
+          "median_paired_ratio": 2.7613192589329545,
+          "q1_ratio": 2.634608907171731,
+          "q3_ratio": 2.8181437060404466,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 2,
+        "tested": [
+          12,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 239,
+            "diagnosis": 76,
+            "decision": 20,
+            "receipt": 14,
+            "input": 329,
+            "output": 20,
+            "total": 349
+          },
+          "python": {
+            "source": 275,
+            "diagnosis": 88,
+            "decision": 29,
+            "receipt": 14,
+            "input": 377,
+            "output": 29,
+            "total": 406
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 17.131593000000066,
+            "p95_ms": 18.750844000000143
+          },
+          "python": {
+            "median_ms": 32.06882399999995,
+            "p95_ms": 33.629495000000134
+          },
+          "median_paired_ratio": 1.8722002459818516,
+          "q1_ratio": 1.7967122804895008,
+          "q3_ratio": 1.902970557002786,
+          "tide_faster": 12
+        }
+      }
+    },
+    "tape": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          18,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 258,
+            "diagnosis": 38,
+            "decision": 7,
+            "receipt": 15,
+            "input": 311,
+            "output": 7,
+            "total": 318
+          },
+          "python": {
+            "source": 303,
+            "diagnosis": 38,
+            "decision": 7,
+            "receipt": 15,
+            "input": 356,
+            "output": 7,
+            "total": 363
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 7.349702999999863,
+            "p95_ms": 8.86651299999994
+          },
+          "python": {
+            "median_ms": 19.379227499999615,
+            "p95_ms": 24.413596000000325
+          },
+          "median_paired_ratio": 2.6294813230341663,
+          "q1_ratio": 2.5371522190480325,
+          "q3_ratio": 2.7222377335923786,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 2,
+        "tested": [
+          24,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 258,
+            "diagnosis": 78,
+            "decision": 20,
+            "receipt": 14,
+            "input": 350,
+            "output": 20,
+            "total": 370
+          },
+          "python": {
+            "source": 303,
+            "diagnosis": 92,
+            "decision": 29,
+            "receipt": 14,
+            "input": 409,
+            "output": 29,
+            "total": 438
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 18.808851000000686,
+            "p95_ms": 21.1743120000001
+          },
+          "python": {
+            "median_ms": 33.04998800000021,
+            "p95_ms": 40.42399599999953
+          },
+          "median_paired_ratio": 1.7756305204846332,
+          "q1_ratio": 1.725855134243636,
+          "q3_ratio": 1.7781108015455547,
+          "tide_faster": 12
+        }
+      }
+    },
+    "page": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          8,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 191,
+            "diagnosis": 32,
+            "decision": 7,
+            "receipt": 15,
+            "input": 238,
+            "output": 7,
+            "total": 245
+          },
+          "python": {
+            "source": 212,
+            "diagnosis": 32,
+            "decision": 7,
+            "receipt": 15,
+            "input": 259,
+            "output": 7,
+            "total": 266
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.386009000000058,
+            "p95_ms": 7.269390999999814
+          },
+          "python": {
+            "median_ms": 18.04989099999989,
+            "p95_ms": 20.745143999999527
+          },
+          "median_paired_ratio": 2.819658949289969,
+          "q1_ratio": 2.7082866838718576,
+          "q3_ratio": 2.8824835994267275,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          9,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 191,
+            "diagnosis": 58,
+            "decision": 28,
+            "receipt": 14,
+            "input": 263,
+            "output": 28,
+            "total": 291
+          },
+          "python": {
+            "source": 212,
+            "diagnosis": 60,
+            "decision": 30,
+            "receipt": 14,
+            "input": 286,
+            "output": 30,
+            "total": 316
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 15.98679599999923,
+            "p95_ms": 21.24390399999993
+          },
+          "python": {
+            "median_ms": 31.552403499999855,
+            "p95_ms": 40.60450100000071
+          },
+          "median_paired_ratio": 1.9662143455044334,
+          "q1_ratio": 1.948237548758358,
+          "q3_ratio": 1.9922954678596811,
+          "tide_faster": 12
+        }
+      }
+    },
+    "ticket": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          4,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 233,
+            "diagnosis": 32,
+            "decision": 7,
+            "receipt": 15,
+            "input": 280,
+            "output": 7,
+            "total": 287
+          },
+          "python": {
+            "source": 259,
+            "diagnosis": 32,
+            "decision": 7,
+            "receipt": 15,
+            "input": 306,
+            "output": 7,
+            "total": 313
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.310598000000027,
+            "p95_ms": 7.794561000000613
+          },
+          "python": {
+            "median_ms": 17.839126500000475,
+            "p95_ms": 22.303663999999117
+          },
+          "median_paired_ratio": 2.8564480585690615,
+          "q1_ratio": 2.730547209560932,
+          "q3_ratio": 2.90112406501184,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          5,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 233,
+            "diagnosis": 63,
+            "decision": 33,
+            "receipt": 14,
+            "input": 310,
+            "output": 33,
+            "total": 343
+          },
+          "python": {
+            "source": 259,
+            "diagnosis": 65,
+            "decision": 35,
+            "receipt": 14,
+            "input": 338,
+            "output": 35,
+            "total": 373
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 15.984641000000465,
+            "p95_ms": 21.39015599999948
+          },
+          "python": {
+            "median_ms": 31.670591500000228,
+            "p95_ms": 40.04776899999888
+          },
+          "median_paired_ratio": 1.9634054940604821,
+          "q1_ratio": 1.9332065972280452,
+          "q3_ratio": 1.981915422961969,
+          "tide_faster": 12
+        }
+      }
+    },
+    "namespace": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          4,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 196,
+            "diagnosis": 31,
+            "decision": 7,
+            "receipt": 15,
+            "input": 242,
+            "output": 7,
+            "total": 249
+          },
+          "python": {
+            "source": 208,
+            "diagnosis": 31,
+            "decision": 7,
+            "receipt": 15,
+            "input": 254,
+            "output": 7,
+            "total": 261
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.414549499999794,
+            "p95_ms": 7.59078799999952
+          },
+          "python": {
+            "median_ms": 17.92577849999998,
+            "p95_ms": 18.756644999999935
+          },
+          "median_paired_ratio": 2.794560902327718,
+          "q1_ratio": 2.6177485760653276,
+          "q3_ratio": 2.9028820639291832,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          5,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 196,
+            "diagnosis": 61,
+            "decision": 32,
+            "receipt": 14,
+            "input": 271,
+            "output": 32,
+            "total": 303
+          },
+          "python": {
+            "source": 208,
+            "diagnosis": 57,
+            "decision": 28,
+            "receipt": 14,
+            "input": 279,
+            "output": 28,
+            "total": 307
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 15.949665000000323,
+            "p95_ms": 16.822626999999557
+          },
+          "python": {
+            "median_ms": 31.747933500000272,
+            "p95_ms": 36.128732999999556
+          },
+          "median_paired_ratio": 1.9973486311068782,
+          "q1_ratio": 1.9554955345766656,
+          "q3_ratio": 2.043645957070186,
+          "tide_faster": 12
+        }
+      }
+    },
+    "annotation": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          0,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 198,
+            "diagnosis": 33,
+            "decision": 7,
+            "receipt": 15,
+            "input": 246,
+            "output": 7,
+            "total": 253
+          },
+          "python": {
+            "source": 208,
+            "diagnosis": 33,
+            "decision": 7,
+            "receipt": 15,
+            "input": 256,
+            "output": 7,
+            "total": 263
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.171049999999923,
+            "p95_ms": 6.95873599999959
+          },
+          "python": {
+            "median_ms": 17.854772500000763,
+            "p95_ms": 18.593011999999817
+          },
+          "median_paired_ratio": 2.8431636205909867,
+          "q1_ratio": 2.781296223166955,
+          "q3_ratio": 2.9036238508501886,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          1,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 198,
+            "diagnosis": 73,
+            "decision": 42,
+            "receipt": 14,
+            "input": 285,
+            "output": 42,
+            "total": 327
+          },
+          "python": {
+            "source": 208,
+            "diagnosis": 61,
+            "decision": 30,
+            "receipt": 14,
+            "input": 283,
+            "output": 30,
+            "total": 313
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 15.632039500000246,
+            "p95_ms": 16.22223600000052
+          },
+          "python": {
+            "median_ms": 31.64216050000141,
+            "p95_ms": 32.47559199999887
+          },
+          "median_paired_ratio": 2.010723547234205,
+          "q1_ratio": 1.9730742861402137,
+          "q3_ratio": 2.03972387929792,
+          "tide_faster": 12
+        }
+      }
+    },
+    "telemetry": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          8,
+          16
+        ],
+        "tokens": {
+          "tide": {
+            "source": 286,
+            "diagnosis": 41,
+            "decision": 7,
+            "receipt": 15,
+            "input": 342,
+            "output": 7,
+            "total": 349
+          },
+          "python": {
+            "source": 328,
+            "diagnosis": 41,
+            "decision": 7,
+            "receipt": 15,
+            "input": 384,
+            "output": 7,
+            "total": 391
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.723781000000599,
+            "p95_ms": 7.457765000000109
+          },
+          "python": {
+            "median_ms": 18.220219499999985,
+            "p95_ms": 18.610741999999846
+          },
+          "median_paired_ratio": 2.681504301970346,
+          "q1_ratio": 2.519456847796284,
+          "q3_ratio": 2.789337171594858,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 2,
+        "tested": [
+          11,
+          35
+        ],
+        "tokens": {
+          "tide": {
+            "source": 286,
+            "diagnosis": 125,
+            "decision": 43,
+            "receipt": 14,
+            "input": 425,
+            "output": 43,
+            "total": 468
+          },
+          "python": {
+            "source": 328,
+            "diagnosis": 141,
+            "decision": 53,
+            "receipt": 14,
+            "input": 483,
+            "output": 53,
+            "total": 536
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 22.42299150000008,
+            "p95_ms": 24.508347000000867
+          },
+          "python": {
+            "median_ms": 32.697146000000885,
+            "p95_ms": 35.07591299999967
+          },
+          "median_paired_ratio": 1.4437286534358589,
+          "q1_ratio": 1.4311823233120713,
+          "q3_ratio": 1.469308531773639,
+          "tide_faster": 12
+        }
+      }
+    },
+    "trailer": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          4,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 229,
+            "diagnosis": 33,
+            "decision": 7,
+            "receipt": 15,
+            "input": 277,
+            "output": 7,
+            "total": 284
+          },
+          "python": {
+            "source": 233,
+            "diagnosis": 33,
+            "decision": 7,
+            "receipt": 15,
+            "input": 281,
+            "output": 7,
+            "total": 288
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.498656500000379,
+            "p95_ms": 6.783711999999468
+          },
+          "python": {
+            "median_ms": 17.830001999999695,
+            "p95_ms": 18.711583999999675
+          },
+          "median_paired_ratio": 2.767087202170303,
+          "q1_ratio": 2.6716599997171664,
+          "q3_ratio": 2.811453946599553,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          7,
+          6
+        ],
+        "tokens": {
+          "tide": {
+            "source": 229,
+            "diagnosis": 93,
+            "decision": 62,
+            "receipt": 14,
+            "input": 336,
+            "output": 62,
+            "total": 398
+          },
+          "python": {
+            "source": 233,
+            "diagnosis": 86,
+            "decision": 55,
+            "receipt": 14,
+            "input": 333,
+            "output": 55,
+            "total": 388
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 18.936558999999306,
+            "p95_ms": 21.168942000000243
+          },
+          "python": {
+            "median_ms": 32.041173500000696,
+            "p95_ms": 35.04120200000034
+          },
+          "median_paired_ratio": 1.6893149906397933,
+          "q1_ratio": 1.6553119187534235,
+          "q3_ratio": 1.698710358344261,
+          "tide_faster": 12
+        }
+      }
+    },
+    "thermal": {
+      "before": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          8,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 249,
+            "diagnosis": 57,
+            "decision": 20,
+            "receipt": 14,
+            "input": 320,
+            "output": 20,
+            "total": 340
+          },
+          "python": {
+            "source": 285,
+            "diagnosis": 60,
+            "decision": 23,
+            "receipt": 14,
+            "input": 359,
+            "output": 23,
+            "total": 382
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 15.901974500000051,
+            "p95_ms": 17.10359200000039
+          },
+          "python": {
+            "median_ms": 31.702756499999396,
+            "p95_ms": 33.06359300000031
+          },
+          "median_paired_ratio": 2.0040163456477096,
+          "q1_ratio": 1.9717473448067258,
+          "q3_ratio": 2.02393173693583,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "accepted",
+        "green": 1,
+        "tested": [
+          8,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 249,
+            "diagnosis": 57,
+            "decision": 20,
+            "receipt": 14,
+            "input": 320,
+            "output": 20,
+            "total": 340
+          },
+          "python": {
+            "source": 285,
+            "diagnosis": 60,
+            "decision": 23,
+            "receipt": 14,
+            "input": 359,
+            "output": 23,
+            "total": 382
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 16.032341500000257,
+            "p95_ms": 18.237465000000157
+          },
+          "python": {
+            "median_ms": 31.699417000000267,
+            "p95_ms": 33.926610999999866
+          },
+          "median_paired_ratio": 1.9895380975302168,
+          "q1_ratio": 1.9305430430811852,
+          "q3_ratio": 1.9994828362316837,
+          "tide_faster": 12
+        }
+      }
+    },
+    "flag": {
+      "before": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          0,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 228,
+            "diagnosis": 35,
+            "decision": 7,
+            "receipt": 15,
+            "input": 278,
+            "output": 7,
+            "total": 285
+          },
+          "python": {
+            "source": 253,
+            "diagnosis": 35,
+            "decision": 7,
+            "receipt": 15,
+            "input": 303,
+            "output": 7,
+            "total": 310
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.340422999999646,
+            "p95_ms": 6.54849699999977
+          },
+          "python": {
+            "median_ms": 17.655689000000166,
+            "p95_ms": 18.302236000001358
+          },
+          "median_paired_ratio": 2.793230742509556,
+          "q1_ratio": 2.744830165736967,
+          "q3_ratio": 2.836699804736451,
+          "tide_faster": 12
+        }
+      },
+      "after": {
+        "status": "no_candidate",
+        "green": 0,
+        "tested": [
+          0,
+          0
+        ],
+        "tokens": {
+          "tide": {
+            "source": 228,
+            "diagnosis": 35,
+            "decision": 7,
+            "receipt": 15,
+            "input": 278,
+            "output": 7,
+            "total": 285
+          },
+          "python": {
+            "source": 253,
+            "diagnosis": 35,
+            "decision": 7,
+            "receipt": 15,
+            "input": 303,
+            "output": 7,
+            "total": 310
+          }
+        },
+        "time": {
+          "blocks": 12,
+          "tide": {
+            "median_ms": 6.454610500000399,
+            "p95_ms": 6.858334000000468
+          },
+          "python": {
+            "median_ms": 18.458869499999764,
+            "p95_ms": 19.019669999999678
+          },
+          "median_paired_ratio": 2.8796734323467765,
+          "q1_ratio": 2.7599991598668274,
+          "q3_ratio": 2.95438057715195,
+          "tide_faster": 12
+        }
+      }
+    }
+  }
+}

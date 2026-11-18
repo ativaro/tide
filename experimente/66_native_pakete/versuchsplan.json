@@ -1,0 +1,8 @@
+{
+  "application": "../../apps/report_packages/report.tide",
+  "counterpart": "python/report.py",
+  "packages": {"rowtext":"2.0.0","measurements":"1.3.0"},
+  "contract": "Both report the count above an i64 limit and the optional maximum from LF/CRLF decimal measurements. Three arms receive identical file bytes and JSON. Validate exact success output and compare failure code, reason and input row when present. Check the shared input byte and line ceilings. The TIDE guest work and allocation limits remain native.",
+  "times": "TIDE CLI, TIDE native AOT executable and CPython CLI. Monotonic wall clock from process launch to complete stdout/stderr. Report median and nearest-rank P95, and TIDE AOT build time separately. Successful rows: 4, 512, 2048 and 3072 from the TIDE fixture. Both libraries export parse and every timed arm runs the complete report.",
+  "repetitions": "Five warmup triplets per input and 31 measured triplets with rotating first arm and one logical CPU. Use a native staged install without make on the measured launch path, CPython -E -S, and cached Python bytecode produced by the warmups in a scratch copy. Keep filesystem caches warm. No network calls and no model calls."
+}

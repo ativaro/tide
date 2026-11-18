@@ -1,0 +1,105 @@
+use forms
+
+use schema
+
+record CheckedPoint
+x:i
+
+variant CheckFlag
+on off
+
+variant OtherFlag
+on off
+
+type_probe value:&?{CheckedPoint}*i > i
+let point need (first value) "missing_point" 0
+let moved with x point 9
++ (get x point) (+ (get x moved) (length (second value)))
+
+projected_snapshots > b
+let root pair (pair (list t 1 "Ω\u0000猫") 9) (make CheckedPoint x 7)
+let item need (at (first (first root)) 0) "literal_missing" 0
+let temporary need (at (first (pair (list t 1 "a\u0000") false)) 0) "temporary" 0
+let changed append (first (first root)) temporary
+and (eq (length (first (first root))) 1) (and (text_eq item (concat "Ω" "\u0000猫"))
+  (and (eq (get x (second root)) 7) (eq (text_len (need (at changed 1) "last" 0)) 2)))
+
+local_values > b
+let min_value -09223372036854775808
+let max_value 009223372036854775807
+let point make CheckedPoint x 0008
+let projected get x (with x point 009)
+let values list i 2 (get x point) projected
+let sum fold values 0 total row x + x total
+let expanded fold values values history row x append history (+ x (length history))
+if (not (and (eq (length values) 2) (eq (need (at expanded 3) "last_value" 0) 12))) fail "fold_append_snapshot"
+case (some (make CheckedPoint x sum)) false result
+  and (eq (get x result) 17) (and (eq (+ min_value max_value) -1) (eq -000 0))
+
+indexed_values > b
+let original list {CheckedPoint} 1 (make CheckedPoint x 12)
+let saved need (at original 0) "unused" (div 1 0)
+let changed append original (with x saved 42)
+let copied need (at (list b 1 true) 0) "temporary" 0
+let flags list b 2 copied false
+let chosen need (at flags 0) "flag" 0
+if (not chosen) (let message "unselected" (fail message))
+if (not copied) (case (at flags 1) (fail "missing") flag (fail "present"))
+and (eq (get x saved) 12) (and (eq (length original) 1) (eq (get x (need (at changed 1) "appended" 0)) 42))
+
+page_snapshots > b
+let origin fold (indices 16) (list {CheckedPoint} 0) acc row unused append acc (make CheckedPoint x row)
+let first_branch append origin (make CheckedPoint x 70)
+let other_branch append origin (make CheckedPoint x -8)
+let middle fold (indices 16) first_branch acc row unused append acc (make CheckedPoint x row)
+let last append middle (make CheckedPoint x 91)
+let items fold last 0 sum row point + sum (get x point)
+if (not (eq items 433)) fail "page_iteration"
+if (not (and (eq (length origin) 16) (case (at origin 16) true x false))) fail "page_original"
+if (not (eq (get x (need (at other_branch 16) "other_page" 0)) -8)) fail "page_branch"
+and (eq (length middle) 33) (eq (get x (need (at first_branch 16) "first_page" 0)) 70)
+
+bootstrap_checks > b
+let lo -9223372036854775808
+let hi 9223372036854775807
+if (not (and (<= lo lo) (and (>= hi hi) (and (not (<= hi lo)) (not (>= lo hi)))))) fail "inclusive_signed_comparison"
+let mapped map i (list i 2 2 7) item (+ 3 item)
+if (not (eq (need (at mapped 1) "map_result" 0) 10)) fail "map_lowering"
+if (not (eq (length (map i (list i 0) unused (fail "empty_map_body"))) 0)) fail "map_empty"
+if (not (eq (bootstrap_bit_and -1 -9223372036854775808) -9223372036854775808)) fail "word_sign_bit"
+if (not (eq (bootstrap_bit_xor -9223372036854775808 9223372036854775807) -1)) fail "word_complement"
+if (not (eq (bootstrap_rotr32 4294967297 33) 2147483648)) fail "rotate_word_width"
+if (not (eq (bootstrap_rotr32 -2147483648 -1) 1)) fail "rotate_left_sign_bit"
+if (not page_snapshots) fail "page_snapshots"
+if (not local_values) fail "immutable_local_and_i64_literals"
+if (not indexed_values) fail "indexed_values"
+if (not projected_snapshots) fail "projected_snapshots"
+let terms tokens "concat \"a (b)\" \"c\""
+if (not (eq (length terms) 3)) fail "string_lexing"
+if (not (text_eq (need (at terms 1) "missing_literal" 0) "\"a (b)\"")) fail "quoted_literal_changed"
+if (not (text_eq (cpp_type "?&ii") "Opt<std::pair<I,I>>")) fail "pair_type"
+if (not (eq (type_probe (pair (some (make CheckedPoint x 2)) (list i 1 7))) 12)) fail "nested_type_value"
+let flags pair (tag CheckFlag on) (tag OtherFlag off)
+let code match (first flags) off (fail "unselected_flag") on
+  (match (second flags) on (fail "unselected_other_flag") off 7 end) end
+if (not (eq code 7)) fail "variant_value"
+if (not (eq (need (text_rfind "猫🐈猫🐈" "猫🐈" 3) "missing_pair" 0) 0)) fail "reverse_find_bound"
+if (not (eq (need (text_rfind "猫🐈" "" 100) "missing_empty" 0) 2)) fail "reverse_find_empty"
+if (case (text_rfind "猫🐈" "猫" -1) false idx true) fail "reverse_find_negative"
+let schema_result schema_report "record X\na:&{Tag}?i\n\nvariant Tag\nz A" "test.tide"
+if (not (text_eq schema_result "\"records\":{\"X\":{\"a\":\"&{Tag}?i\"}},\"variants\":{\"Tag\":[\"A\",\"z\"]},\"definitions\":{},\"examples\":0")) fail "schema_result"
+let input "take value:i > i\nif (< value 0) (- 0 value) value\n\nmain > i\n(take -3)\n"
+let decls declarations input " \t\r"
+let env symbols decls " \t\r"
+let decl need (at decls 1) "missing_main" 0
+if (not (text_eq (expression (get body decl) env) (expression (list t 1 "take -3") env))) fail "grouping_difference"
+let listed group_forms_text "variant V\na b\n\nf v:{V} > *i\nmatch v a list i 01 0 b list i 0 end"
+if (not (text_eq listed "f\t(match v a (list i 1 0) b (list i 0) end)\n")) fail "grouped_match"
+let unicode group_forms_text "f\u00a0s:t > t\nconcat\u3000s \"Grüße 🐈　x\""
+if (not (text_eq unicode "f\t(concat s \"Grüße 🐈　x\")\n")) fail "unicode_grouping"
+let sample "a🐈猫é"
+if (not (and (eq (text_len sample) 5) (and (text_eq (text_slice sample 1 3) "🐈猫") (eq (need (text_find sample "e" 0) "missing_e" 0) 3)))) fail "codepoint_positions"
+true
+
+example native_bootstrap bootstrap_checks
+{"inputs":{},"expect":true}

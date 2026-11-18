@@ -1,0 +1,122 @@
+[
+  {
+    "id": "timecode",
+    "name": "Bildnummer",
+    "contract": "Ermittle die Bildnummer am Anfang der angegebenen Sekunde ab Minute null.",
+    "tide": {
+      "panel": "use route\n\nmain minutes:i seconds:i fps:i > i\nat_frame minutes seconds fps\n",
+      "route": "use rulebook\n\nat_frame minutes:i seconds:i fps:i > i\n* (elapsed minutes seconds) fps\n",
+      "rulebook": "elapsed minutes:i seconds:i > i\n+ (+ minutes 60) seconds\n"
+    },
+    "python": {
+      "panel": "from route import at_frame\n\ndef main(minutes: int, seconds: int, fps: int) -> int:\n    return at_frame(minutes, seconds, fps)\n",
+      "route": "from rulebook import elapsed\n\ndef at_frame(minutes: int, seconds: int, fps: int) -> int:\n    return elapsed(minutes, seconds) * fps\n",
+      "rulebook": "def elapsed(minutes: int, seconds: int) -> int:\n    return (minutes + 60) + seconds\n"
+    }
+  },
+  {
+    "id": "rowgroup",
+    "name": "Archivgruppe",
+    "contract": "Liefere die Gruppenkennung eines ab eins gezählten Datensatzes. Jede Gruppe umfasst width Datensätze, die erste heisst base.",
+    "tide": {
+      "panel": "use route\n\nmain record_no:i width:i base:i > i\nlocate record_no width base\n",
+      "route": "use rulebook\n\nlocate record_no:i width:i base:i > i\n* base (div (offset record_no) width)\n",
+      "rulebook": "offset record_no:i > i\n+ record_no 1\n"
+    },
+    "python": {
+      "panel": "from route import locate\n\ndef main(record_no: int, width: int, base: int) -> int:\n    return locate(record_no, width, base)\n",
+      "route": "from rulebook import offset\n\ndef locate(record_no: int, width: int, base: int) -> int:\n    return base * (offset(record_no) // width)\n",
+      "rulebook": "def offset(record_no: int) -> int:\n    return record_no + 1\n"
+    }
+  },
+  {
+    "id": "flood",
+    "name": "Pegelalarm",
+    "contract": "Jede Messung mindestens auf Warnhöhe zählt eine volle Messperiode. Liefere die Gesamtdauer in Minuten.",
+    "tide": {
+      "panel": "use route\n\nmain samples:*i level:i period:i > i\nduration samples level period\n",
+      "route": "use rulebook\n\nduration samples:*i level:i period:i > i\n- (intervals samples level) period\n",
+      "rulebook": "intervals samples:*i level:i > i\nfold samples 0 count index sample (if (> sample level) (+ count 1) count)\n"
+    },
+    "python": {
+      "panel": "from route import duration\n\ndef main(samples: list[int], level: int, period: int) -> int:\n    return duration(samples, level, period)\n",
+      "route": "from rulebook import intervals\n\ndef duration(samples: list[int], level: int, period: int) -> int:\n    return intervals(samples, level) - period\n",
+      "rulebook": "def intervals(samples: list[int], level: int) -> int:\n    count = 0\n    for sample in samples:\n        if sample > level:\n            count = count + 1\n    return count\n"
+    }
+  },
+  {
+    "id": "wire",
+    "name": "Nachrichtenlänge",
+    "contract": "Jede Nachricht enthält ein Headerbyte und den Text in UTF-8. Liefere die Gesamtzahl der Bytes für copies Nachrichten.",
+    "tide": {
+      "panel": "use route\n\nmain label:t copies:i > i\nwire_size label copies\n",
+      "route": "use rulebook\n\nwire_size label:t copies:i > i\n* (payload label) copies\n",
+      "rulebook": "payload label:t > i\n+ (text_len label) 1\n"
+    },
+    "python": {
+      "panel": "from route import wire_size\n\ndef main(label: str, copies: int) -> int:\n    return wire_size(label, copies)\n",
+      "route": "from rulebook import payload\n\ndef wire_size(label: str, copies: int) -> int:\n    return payload(label) * copies\n",
+      "rulebook": "def payload(label: str) -> int:\n    return len(label) + 1\n"
+    }
+  },
+  {
+    "id": "mosaic",
+    "name": "Mosaikadresse",
+    "contract": "Jede Bildzeile umfasst pitch Speicherplätze. Liefere den nullbasierten Speicherplatz von row, column.",
+    "tide": {
+      "panel": "use route\n\nmain row:i column:i pitch:i > i\naddress row column pitch\n",
+      "route": "use rulebook\n\naddress row:i column:i pitch:i > i\noffset column row pitch\n",
+      "rulebook": "offset row:i column:i pitch:i > i\n+ (* row pitch) column\n"
+    },
+    "python": {
+      "panel": "from route import address\n\ndef main(row: int, column: int, pitch: int) -> int:\n    return address(row, column, pitch)\n",
+      "route": "from rulebook import offset\n\ndef address(row: int, column: int, pitch: int) -> int:\n    return offset(column, row, pitch)\n",
+      "rulebook": "def offset(row: int, column: int, pitch: int) -> int:\n    return row * pitch + column\n"
+    }
+  },
+  {
+    "id": "reserve",
+    "name": "Spiegelpuffer",
+    "contract": "Zwei Spiegel verarbeiten dieselben Blöcke. Ziehe den höheren Belegungsstand von capacity ab, mindestens null Plätze bleiben frei.",
+    "tide": {
+      "panel": "use route\n\nmain left:i right:i capacity:i > i\nfree_space left right capacity\n",
+      "route": "use rulebook\n\nfree_space left:i right:i capacity:i > i\nlet free - capacity (used left right)\nif (< free 0) 0 free\n",
+      "rulebook": "used left:i right:i > i\nif (< left right) left right\n"
+    },
+    "python": {
+      "panel": "from route import free_space\n\ndef main(left: int, right: int, capacity: int) -> int:\n    return free_space(left, right, capacity)\n",
+      "route": "from rulebook import used\n\ndef free_space(left: int, right: int, capacity: int) -> int:\n    free = capacity - used(left, right)\n    return 0 if free < 0 else free\n",
+      "rulebook": "def used(left: int, right: int) -> int:\n    return left if left < right else right\n"
+    }
+  },
+  {
+    "id": "spread",
+    "name": "Spektralbreite",
+    "contract": "Die erste Liste enthält untere, die zweite obere Bandgrenzen. Gib den Abstand von der kleinsten unteren bis zur grössten oberen Grenze aus. Beide Listen sind belegt.",
+    "tide": {
+      "panel": "use route\n\nmain lows:*i highs:*i > i\nwidth lows highs\n",
+      "route": "use rulebook\n\nwidth lows:*i highs:*i > i\nlet top fold highs (need (at highs 0) \"empty\" 0) best pos item (if (> item best) item best)\n+ top (bottom lows)\n",
+      "rulebook": "bottom lows:*i > i\nfold lows (need (at lows 0) \"empty\" 0) best pos item (if (> item best) item best)\n"
+    },
+    "python": {
+      "panel": "from route import width\n\ndef main(lows: list[int], highs: list[int]) -> int:\n    return width(lows, highs)\n",
+      "route": "from rulebook import bottom\n\ndef width(lows: list[int], highs: list[int]) -> int:\n    top = highs[0]\n    for item in highs:\n        top = item if item > top else top\n    return top + bottom(lows)\n",
+      "rulebook": "def bottom(lows: list[int]) -> int:\n    best = lows[0]\n    for item in lows:\n        best = item if item > best else best\n    return best\n"
+    }
+  },
+  {
+    "id": "suffix",
+    "name": "Pfadkomponente",
+    "contract": "Ein Archivschlüssel besteht aus durch Schrägstriche getrennten Komponenten. Liefere die Zeichenzahl der letzten Komponente.",
+    "tide": {
+      "panel": "use route\n\nmain key:t > i\ntail_size key\n",
+      "route": "use rulebook\n\ntail_size key:t > i\nlet split separator key\n- (text_len key) (+ split 1)\n",
+      "rulebook": "separator key:t > i\ncase (text_find key \"/\" 0) -1 pos pos\n"
+    },
+    "python": {
+      "panel": "from route import tail_size\n\ndef main(key: str) -> int:\n    return tail_size(key)\n",
+      "route": "from rulebook import separator\n\ndef tail_size(key: str) -> int:\n    split = separator(key)\n    return len(key) - (split + 1)\n",
+      "rulebook": "def separator(key: str) -> int:\n    return key.find('/')\n"
+    }
+  }
+]

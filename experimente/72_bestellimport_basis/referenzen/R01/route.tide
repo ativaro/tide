@@ -1,0 +1,4 @@
+use rulebook
+
+relay ordered:i delivered:i > i
+delta ordered delivered

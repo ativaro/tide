@@ -1,0 +1,13 @@
+{
+  "model":"qwen3:4b",
+  "endpoint":"http://127.0.0.1:11435/api/generate",
+  "options":{"temperature":0.2,"top_p":0.9,"num_predict":48,"num_ctx":4096},
+  "think":false,
+  "families":["balance","dispatch","windows","invoice","remainder"],
+  "seeds":[83,137,269],
+  "arms":["TIDE","Python-AST"],
+  "sweep":"At most 32 sites and 32 single-operator edits in entered definitions. Use the same operator groups with the native spellings of each language. Python additionally offers its inclusive comparison operators; TIDE does not emulate them with expression edits.",
+  "policy":"No passing candidate: abstain. Exactly one: select it as a proposal without model. Two or more: one fresh model call selecting one public-green candidate via an enumerated label, with contract, first witness and only the verified edits. Rotate candidate and language order per seed.",
+  "acceptance":"Use the same three public cases and 72 hidden cases in both languages. Hidden cases never enter enumeration or inference. The first four tasks and oracle cases are unchanged from experiment 55; remainder is new and intentionally has two public-green operators. Materialise and independently recheck every offered TIDE candidate through tide edit before inference.",
+  "accounting":"Sum all Ollama prompt_eval_count and eval_count. Deterministic choices and abstentions cost zero model tokens. Count abstentions as failed repairs, include all spent tokens in cost per success and report per-task outcomes."
+}

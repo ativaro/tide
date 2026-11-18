@@ -1,0 +1,67 @@
+use samples
+
+record NodeEdit
+id:?t method:t value:?t members:i
+
+empty_node_edit > {NodeEdit}
+make NodeEdit id (nil t) method "" value (nil t) members 0
+
+record EditPayload
+edits:*{NodeEdit} count:i valid_nodes:b unit:?t mixed:b
+
+edit_module id:t > ?t
+case (text_find id ":" 0) (nil t) first_cut
+case (text_find id ":" (+ first_cut 1)) (nil t) second_cut
+case (text_find id ":" (+ second_cut 1)) (some (text_slice id 0 first_cut)) extra (nil t)
+
+same_unit a:?t b:?t > b
+case a (case b true found false) name (case b false next (text_eq name next))
+
+record EditJsonReader
+stream:{JsonStream} current:{NodeEdit} payload:{EditPayload}
+
+edit_member item:{NodeEdit} key:t token:{JsonToken} > {NodeEdit}
+let value if (text_eq (get kind token) "string") (some (get value token)) (nil t)
+let row with members item (+ 1 (get members item))
+if (text_eq key "node") (with id row value)
+if (or (text_eq key "op") (text_eq key "replace")) (with value (with method row key) value) row
+
+edit_json_step reader:{EditJsonReader} source:t file:t > {EditJsonReader}
+let before get stream reader
+let after stream_step before source (text_len source) (json_origin file) true
+let moved with stream reader after
+let event get event after
+if (text_eq event "") moved
+let parents get parents before
+let depth + 1 (length parents)
+let frame get frame before
+let kind get kind frame
+let payload get payload reader
+if (text_eq event "close")
+  (if (not (and (eq depth 3) (and (text_eq kind "object") (text_eq (get kind (need (at parents 1) "container" 0)) "array")))) moved
+   let item get current reader
+   let id get id item
+   let name case id (nil t) val (edit_module val)
+   let records if (> (get count payload) 256) (get edits payload) (append (get edits payload) item)
+   let first_row eq (get count payload) 1
+   with payload moved (make EditPayload edits records count (get count payload) valid_nodes (and (get valid_nodes payload) (case id false key true)) unit (if first_row name (get unit payload)) mixed (or (get mixed payload) (and (not first_row) (not (same_unit name (get unit payload)))))))
+let token get token after
+let op get kind token
+let root eq depth 1
+let item and (eq depth 2) (text_eq kind "array")
+let valid and (get valid_nodes payload) (and (or (not root) (text_eq op "[")) (or (not item) (text_eq op "{")))
+let data with valid_nodes (with count payload (+ (get count payload) (if item 1 0))) valid
+let current if item empty_node_edit (if (and (eq depth 3) (text_eq kind "object")) (edit_member (get current reader) (get field after) token) (get current reader))
+with payload (with current moved current) data
+
+read_edit_json source:t file:t > {EditPayload}
+if (> (text_len (bootstrap_utf8_octets source)) 131072) fail (root_diagnostic file "E_LIMIT" "JSON size limit")
+let payload make EditPayload edits (list {NodeEdit} 0) count 0 valid_nodes true unit (nil t) mixed false
+let initial make EditJsonReader stream (stream_start 0) current empty_node_edit payload payload
+let n + 1 (text_len source)
+let result fold (indices (div (+ n 63) 64)) initial prior block unused
+  if (not (< (get pos (get stream prior)) n)) prior
+  let left - n (* (- block 1) 64)
+  fold (indices (if (> left 64) 64 left)) prior acc row skip
+    if (< (get pos (get stream acc)) n) (edit_json_step acc source file) acc
+get payload result

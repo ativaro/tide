@@ -1,0 +1,8 @@
+{
+  "versandetiketten": {"a":{"ge":1,"lt":97,"le":"b"},"b":{"ge":1,"le":96},"c":{"eq":"a","ge":1,"le":96}},
+  "nettogewicht": {"a":{"gt":-5,"lt":89,"le":"b"},"b":{"ge":1,"le":100}},
+  "taktfenster": {"a":{"ge":0,"le":96,"lt":"b"},"b":{"ge":1,"le":96}},
+  "lackbedarf": {"a":{"ge":0,"le":240,"eq":"b"},"b":{"ge":1,"le":200}},
+  "restladung": {"a":{"gt":-1,"ge":"b","le":96},"b":{"ge":1,"le":96}},
+  "gleichlauf": {"a":{"ge":0,"le":96,"lt":"b"},"b":{"ge":1,"le":96}}
+}

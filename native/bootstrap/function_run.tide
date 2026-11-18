@@ -1,0 +1,811 @@
+use https
+
+use sqlite
+
+use value_diff
+
+use run_inputs
+
+record TraceRequest
+step:i fields:*t
+
+record ScanState
+phase:t event:i branch:i initial:*{EvalValue} prior:*{EvalValue} updated:*{EvalValue} outputs:*i request:?{TraceRequest}
+
+start_scan > {ScanState}
+make ScanState phase "init" event 0 branch 0 initial (list {EvalValue} 0) prior (list {EvalValue} 0) updated (list {EvalValue} 0) outputs (list i 0) request (nil {TraceRequest})
+
+record EvalFrame
+owner:i node:i env:*{EvalValue} values:*{EvalValue} entered:b started:i cursor:i stream_pos:i trap:i map_index:i scan_state:?{ScanState} transaction_db:?{NativeHandle}
+
+record CallCache
+target:i args:*{EvalValue} value:{EvalValue} work:i misses:i
+
+record EvalMachine
+stack:*{EvalFrame} remaining:i answer:{ScalarResult} cache:*{CallCache} memory:i reads:*{ReadSnapshot} read_left:i stream_left:i
+
+eval_frame owner:i node:i env:*{EvalValue} > {EvalFrame}
+make EvalFrame owner owner node node env env values (list {EvalValue} 0) entered false started -1 cursor 0 stream_pos 0 trap 0 map_index -1 scan_state (nil {ScanState}) transaction_db (nil {NativeHandle})
+
+eval_root program:{CheckedFunctions} index:i env:*{EvalValue} > {EvalFrame}
+let tree need (at (get trees program) index) "function_tree" 0
+let frame eval_frame index (- (node_count (get nodes tree)) 1) env
+if (> (length (get starts (get plan tree))) 0) (with scan_state frame (some start_scan)) frame
+
+eval_parents stack:*{EvalFrame} > *{EvalFrame}
+fold stack (list {EvalFrame} 0) acc row frame
+  if (eq row (length stack)) acc (append acc frame)
+
+unwind_error parents:*{EvalFrame} left:i result:{ScalarResult} machine:{EvalMachine} > {EvalMachine}
+let bit error_bit (get code result)
+let handler if (eq bit 0) 0 (fold parents 0 index row frame if (eq (get trap frame) bit) row index)
+let closed fold parents 0 rc pos unused
+  let row + 1 (- (length parents) pos)
+  if (not (> row handler)) rc
+  let exited need (at parents (- row 1)) "unwind_frame" 0
+  case (get transaction_db exited) rc db
+  let rolled sql_rollback db
+  if (eq rc 0) rolled rc
+if (not (eq closed 0))
+  (with stack (with answer machine (scalar_failure "" (make Site word "transaction" line 1 column 1) "E_TRANSACTION" "SQLite rollback failed" "")) (list {EvalFrame} 0))
+let event fold (get stack machine) 0 idx row ancestor
+  if (not (> row handler)) idx
+  case (get scan_state ancestor) idx scanning if (or (text_eq (get phase scanning) "init") (text_eq (get phase scanning) "event")) idx (get event scanning)
+let detail get detail result
+let reported if (and (> event 0) (case (text_find detail ",\"event\":" 0) true found false)) (with detail result (extra_fields detail (concat "\"event\":" (decimal event)))) result
+let index fold (get stack machine) -1 inner row ancestor
+  if (and (> row handler) (> (get map_index ancestor) -1)) (get map_index ancestor) inner
+let error if (and (> index -1) (case (text_find detail ",\"map_index\":" 0) true found false))
+  (with detail reported (extra_fields (get detail reported) (concat "\"map_index\":" (decimal index)))) reported
+let stack if (eq handler 0) (list {EvalFrame} 0)
+  (fold parents (list {EvalFrame} 0) frames row frame
+   if (< row handler) (append frames frame)
+   if (eq row handler) (append frames (with trap (with cursor (with values frame (list {EvalValue} 1 (caught_value error))) 1) 0)) frames)
+make EvalMachine stack stack remaining left answer error cache (get cache machine) memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine)
+
+eval_return parents:*{EvalFrame} left:i result:{ScalarResult} machine:{EvalMachine} > {EvalMachine}
+if (not (text_eq (get code result) "")) (unwind_error parents left result machine)
+if (eq (length parents) 0) (make EvalMachine stack parents remaining left answer result cache (get cache machine) memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine))
+let parent need (at parents (- (length parents) 1)) "return_frame" 0
+let resumed with values parent (append (get values parent) (get value result))
+make EvalMachine stack (append (eval_parents parents) resumed) remaining left answer result cache (get cache machine) memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine)
+
+next_operand op:t values:*{EvalValue} count:i > i
+let done length values
+if (and (text_eq op "fold_rows") (eq done 4)) -1
+if (and (text_eq op "fold_lines") (eq done 3)) -1
+if (or (not (< done count)) (and (text_eq op "fold") (eq done 2))) -1
+if (and (text_eq op "map") (> done 0)) -1
+if (text_eq op "need")
+  (if (eq done 0) 0 (if (get present (need (at values 0) "option" 0)) -1 done))
+if (text_eq op "case")
+  (if (eq done 0) 0 (if (eq done 2) -1 (if (get present (need (at values 0) "option" 0)) 2 1)))
+if (text_eq op "if")
+  (if (eq done 0) 0 (if (eq done 2) -1 (if (eq (get num (need (at values 0) "condition" 0)) 0) 2 1)))
+if (and (eq done 1) (or (and (text_eq op "and") (eq (get num (need (at values 0) "lhs" 0)) 0))
+                        (and (text_eq op "or") (eq (get num (need (at values 0) "lhs" 0)) 1)))) -1 done
+
+lazy_operand op:t > b
+or (or (text_eq op "if") (text_eq op "case")) (or (text_eq op "need") (or (text_eq op "and") (text_eq op "or")))
+
+child_env op:t values:*{EvalValue} env:*{EvalValue} > *{EvalValue}
+if (and (text_eq op "case") (eq (length values) 1))
+  (let option need (at values 0) "case_value" 0
+   if (get present option) (append env (with present option false)) env)
+if (and (text_eq op "let") (eq (length values) 1)) (append env (need (at values 0) "let_value" 0)) env
+
+leaf_value node:{FunctionNode} env:*{EvalValue} > {EvalValue}
+if (text_eq (get word (get site node)) "tag") (with text (number_value (get value node)) (get literal node))
+if (< (get slot node) 0) (if (text_eq (get typ node) "t") (text_value (get literal node)) (number_value (get value node))) (need (at env (get slot node)) "binding" 0)
+
+operand_binding slot:i op:t values:*{EvalValue} env:*{EvalValue} > {EvalValue}
+if (< slot (length env)) (need (at env slot) "binding" 0)
+need (at (child_env op values env) slot) "local_binding" 0
+
+record LeafRun
+values:*{EvalValue} left:i stopped:b error:{ScalarResult}
+
+immediate_projection node:{FunctionNode} tree:{FunctionTree} env:*{EvalValue} parent_op:t file:t acc:{LeafRun} > {LeafRun}
+let site get site node
+let op get word site
+if (not (or (text_eq op "get") (or (text_eq op "first") (text_eq op "second")))) (with stopped acc true)
+let child node_at (get nodes tree) (need (at (get children node) 0) "pair_operand" 0)
+let slot get slot child
+if (< slot 0) (with stopped acc true)
+let left get left acc
+if (< left 2)
+  (let exhausted if (eq left 0) site (get site child)
+   with stopped (with error acc (scalar_failure file exhausted "E_LIMIT" "Work budget exhausted" "")) true)
+let values get values acc
+let arg operand_binding slot parent_op values env
+with left (with values acc (append values (project_member node arg))) (- left 2)
+
+project_member node:{FunctionNode} value:{EvalValue} > {EvalValue}
+let op get word (get site node)
+if (text_eq op "get") (member_value value (get value node)) (pair_member value (text_eq op "first") (get typ node))
+
+immediate_operands op:t kids:*i env:*{EvalValue} tree:{FunctionTree} file:t initial:{LeafRun} > {LeafRun}
+fold (list i 3 0 1 2) initial acc row unused
+  if (get stopped acc) acc
+  let values get values acc
+  let next next_operand op values (length kids)
+  if (< next 0) (with stopped acc true)
+  let index need (at kids next) "child" 0
+  let node node_at (get nodes tree) index
+  if (> (length (get children node)) 0) (immediate_projection node tree env op file acc)
+  if (or (or (text_eq (get word (get site node)) "list") (text_eq (get word (get site node)) "dict")) (not (< (get target node) 0))) (with stopped acc true)
+  if (eq (get left acc) 0) (with stopped (with error acc (scalar_failure file (get site node) "E_LIMIT" "Work budget exhausted" "")) true)
+  let slot get slot node
+  let value if (< slot 0) (leaf_value node env) (operand_binding slot op values env)
+  with left (with values acc (append values value)) (- (get left acc) 1)
+
+cache_entry cache:*{CallCache} slot:i entry:{CallCache} > *{CallCache}
+fold cache (list {CallCache} 0) acc row old append acc (if (eq (- row 1) slot) entry old)
+
+eval_step machine:{EvalMachine} program:{CheckedFunctions} observing:b > {EvalMachine}
+let stack get stack machine
+if (eq (length stack) 0) machine
+let frame need (at stack (- (length stack) 1)) "active_frame" 0
+let owner get owner frame
+let tree need (at (get trees program) owner) "function_tree" 0
+case (get scan_state frame) (ordinary_step machine program frame tree observing) scanning (scan_step machine program frame tree scanning observing)
+
+ordinary_step machine:{EvalMachine} program:{CheckedFunctions} frame:{EvalFrame} tree:{FunctionTree} observing:b > {EvalMachine}
+let stack get stack machine
+let owner get owner frame
+let node node_at (get nodes tree) (get node frame)
+let site get site node
+let op get word site
+let fn need (at (get signatures program) owner) "function" 0
+let file get file fn
+let left - (get remaining machine) (if (get entered frame) 0 1)
+let parents eval_parents stack
+let cache get cache machine
+if (eq (get started frame) -2) (eval_return parents left (value_ok (need (at (get values frame) 0) "recursive_result" 0)) machine)
+if (not (< (get started frame) 0))
+  (let value need (at (get values frame) 0) "call_result" 0
+   let key get target node
+   let slot mod key (length cache)
+   let prior need (at cache slot) "cache_entry" 0
+   let misses if (eq (get target prior) key) (+ 1 (get misses prior)) 0
+   let entry make CallCache target key args (get env frame) value value work (- (get started frame) left) misses misses
+   let updated cache_entry cache slot entry
+   eval_return parents left (value_ok value) (with cache machine updated))
+if (< left 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") machine)
+if (text_eq op "while") (eval_while machine frame node parents left)
+if (text_eq op "transaction") (eval_transaction machine frame node fn parents left)
+if (and (get diagnostic node) (text_eq op "catch")) (eval_catch machine frame node parents left)
+if (text_eq op "match")
+  (let values get values frame
+   let pending eq (length values) 0
+   let next if pending 0 (match_arm node (need (at values 0) "variant_subject" 0))
+   let child eval_frame owner (need (at (get children node) next) "match_child" 0) (get env frame)
+   let path if pending (append parents (with entered frame true)) parents
+   with remaining (with stack machine (append path child)) left)
+let kids get children node
+let operands if (or (eq (length kids) 0) (and observing (lazy_operand op)))
+  (make LeafRun values (get values frame) left left stopped true error (scalar_ok 0))
+  (immediate_operands op kids (get env frame) tree file (make LeafRun values (get values frame) left left stopped false error (scalar_ok 0)))
+let error get error operands
+if (not (text_eq (get code error) "")) (eval_return parents 0 error machine)
+let values get values operands
+let done length values
+let remaining get left operands
+let next next_operand op values (length kids)
+if (not (< next 0))
+  (let index need (at kids next) "expression_operand" 0
+   let child eval_frame owner index (child_env op values (get env frame))
+   let waiting with entered (with values frame values) true
+   make EvalMachine stack (append (append parents waiting) child) remaining remaining answer (get answer machine) cache cache memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine))
+if (get simple node) (eval_return parents remaining (completed_scalar node (get env frame) values file) machine)
+if (get diagnostic node) (eval_return parents remaining (eval_diagnostic op site file values) machine)
+collection_step machine frame node tree fn program values parents remaining observing
+
+collection_step machine:{EvalMachine} frame:{EvalFrame} node:{FunctionNode} tree:{FunctionTree} fn:{Signature} program:{CheckedFunctions} values:*{EvalValue} parents:*{EvalFrame} remaining:i observing:b > {EvalMachine}
+let site get site node
+let file get file fn
+let op get word site
+let done length values
+let kids get children node
+let owner get owner frame
+let cache get cache machine
+if (text_eq op "write_bytes") (eval_return parents remaining (write_action (need (at values 0) "write_grant" 0) (need (at values 1) "write_data" 0) file site) machine)
+if (https_op op)
+  (let action https_action values file site
+   let memory - (get memory machine) (get bytes action)
+   if (< memory 0) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+   eval_return parents remaining (get result action) (with memory machine memory))
+if (or (or (text_eq op "pg_query") (text_eq op "pg_exec")) (or (text_eq op "sql_exec") (text_eq op "sql_query")))
+  (let action if (text_eq (text_slice op 0 3) "pg_") (pg_action values (get typ node) (get schemas fn) file site (get memory machine)) (sql_action values (get typ node) (get schemas fn) file site (get memory machine))
+   eval_return parents remaining (get result action) (with memory machine (- (get memory machine) (get bytes action))))
+if (public_data_op op)
+  (let action data_operation op (if (text_eq op "json_encode") (get literal node) (get typ node)) values (get schemas fn) file site
+   let work - remaining (get work action)
+   let memory - (get memory machine) (get bytes action)
+   if (< work 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") machine)
+   if (< memory 0) (eval_return parents work (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+   eval_return parents work (get result action) (with memory machine memory))
+if (text_eq op "fold_rows") (eval_stream_rows machine parents frame node fn values remaining)
+if (text_eq op "fold_lines") (eval_stream_lines machine parents frame node file values remaining)
+if (or (text_eq op "read") (text_eq op "read_bytes")) (eval_read (need (at values 0) "read_grant" 0) machine parents remaining file site)
+if (text_eq op "get")
+  (let record_value need (at values 0) "record_operand" 0
+   eval_return parents remaining (value_ok (member_value record_value (get value node))) machine)
+if (or (text_eq op "make") (text_eq op "with"))
+  (eval_record machine parents remaining node fn values)
+if (text_eq op "pair")
+  (let a need (at values 0) "left" 0
+   let b need (at values 1) "right" 0
+   let available - (get memory machine) (pair_cost a b (get typ node))
+   if (< available 0) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+   eval_return parents remaining (value_ok (pair_value a b (get typ node))) (with memory machine available))
+if (or (text_eq op "first") (text_eq op "second"))
+  (eval_return parents remaining (value_ok (pair_member (need (at values 0) "pair" 0) (text_eq op "first") (get typ node))) machine)
+if (or (text_eq op "some") (or (text_eq op "case") (text_eq op "need")))
+  (eval_option node file values machine parents remaining)
+if (text_operation op) (eval_text node file values machine parents remaining)
+if (text_eq op "map")
+  (let direct if (and (not observing) (eq done 1)) (projected_map tree node frame (need (at values 0) "map_source" 0) machine parents remaining) (nil {EvalMachine})
+   case direct (eval_map machine parents frame node file values remaining) result result)
+if (text_eq op "fold")
+  (let seq need (at values 0) "fold_source" 0
+   let acc need (at values 1) "fold_start" 0
+   let cursor get cursor frame
+   let body need (at kids 2) "fold_body" 0
+   let direct if (and (eq cursor 0) (> (length (get items seq)) 0))
+     (numeric_fold tree body (get env frame) (get items seq) acc file remaining) (nil {FoldResult})
+   case direct
+     (case (sequence_item seq cursor) (eval_return parents remaining (value_ok acc) machine) item
+   let env append (append (append (get env frame) acc) (number_value (+ cursor 1))) item
+   let child eval_frame owner body env
+   let waiting with cursor (with entered (with values frame (list {EvalValue} 1 seq)) true) (+ cursor 1)
+   make EvalMachine stack (append (append parents waiting) child) remaining remaining answer (get answer machine) cache cache memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine))
+     result (eval_return parents (get left result) (get result result) machine))
+if (text_eq op "length")
+  (let seq need (at values 0) "length_operand" 0
+   eval_return parents remaining (scalar_ok (sequence_size seq)) machine)
+if (text_eq op "at")
+  (let item sequence_item (need (at values 0) "at_sequence" 0) (get num (need (at values 1) "at_index" 0))
+   eval_return parents remaining (value_ok (case item (number_value 0) value (with present value true))) machine)
+if (or (text_eq op "list") (text_eq op "append")) (eval_list machine parents remaining node file values)
+if (text_eq op "recur")
+  (let depth fold parents 0 n row ancestor + n (if (eq (get started ancestor) -2) 1 0)
+   if (eq depth 48) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Recursion depth limit" "") machine)
+   let marker with started (with entered (with values frame (list {EvalValue} 0)) true) -2
+   with remaining (with stack machine (append (append parents marker) (eval_root program owner values))) remaining)
+if (not (< (get target node) 0)) (eval_call machine program frame (get target node) values parents remaining)
+eval_return parents remaining (completed_scalar node (get env frame) values file) machine
+
+projected_map tree:{FunctionTree} node:{FunctionNode} frame:{EvalFrame} seq:{EvalValue} machine:{EvalMachine} parents:*{EvalFrame} left:i > ?{EvalMachine}
+let n length (get members seq)
+if (or (eq n 0) (not (or (text_eq (get typ node) "*i") (text_eq (get typ node) "*b")))) (nil {EvalMachine})
+let body need (at (get children node) 1) "map_body" 0
+let nodes get nodes tree
+let start get subtree_start (node_at nodes body)
+let depth - body start
+let cost + 8 (* 16 n)
+let work * n (+ depth 1)
+if (or (> depth 48) (or (< left work) (< (get memory machine) cost))) (nil {EvalMachine})
+if (not (eq (get slot (node_at nodes start)) (length (get env frame)))) (nil {EvalMachine})
+let path fold (indices depth) (list {FunctionNode} 0) steps row unused
+  let step node_at nodes (+ start row)
+  let op get word (get site step)
+  if (or (text_eq op "get") (or (text_eq op "first") (text_eq op "second"))) (append steps step) steps
+if (not (eq depth (length path))) (nil {EvalMachine})
+let nums map i (get members seq) relative
+  (get num (fold path (member_from_offset seq relative) value row step project_member step value))
+some (eval_return parents (- left work) (value_ok (list_value nums)) (with memory machine (- (get memory machine) cost)))
+
+map_append result:{EvalValue} item:{EvalValue} typ:t bytes:i > {EvalValue}
+if (scalar_type typ) (list_value (append (get items result) (get num item)))
+if (text_eq typ "t") (text_list_value (append (get texts result) (get text item)))
+add_member result "" typ item bytes
+
+eval_map machine:{EvalMachine} parents:*{EvalFrame} frame:{EvalFrame} node:{FunctionNode} file:t values:*{EvalValue} left:i > {EvalMachine}
+let seq need (at values 0) "map_sequence" 0
+let kind get typ node
+let typ text_slice kind 1 (text_len kind)
+let output at values 2
+let bytes case output 0 item (field_bytes item typ)
+let available - (get memory machine) (+ 8 bytes)
+if (< available 0) (eval_return parents left (scalar_failure file (get site node) "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let acc case output (number_value 8) item (map_append (need (at values 1) "map_result" 0) item typ bytes)
+let index + 1 (get map_index frame)
+let charged with memory machine available
+case (sequence_item seq index) (eval_return parents left (value_ok acc) charged) item
+let env append (get env frame) item
+let body need (at (get children node) 1) "map_body" 0
+let waiting with map_index (with entered (with values frame (list {EvalValue} 2 seq acc)) true) index
+make EvalMachine stack (append (append parents waiting) (eval_frame (get owner frame) body env)) remaining left answer (get answer machine) cache (get cache machine) memory available reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine)
+
+eval_record machine:{EvalMachine} parents:*{EvalFrame} remaining:i node:{FunctionNode} fn:{Signature} values:*{EvalValue} > {EvalMachine}
+let site get site node
+let op get word site
+let file get file fn
+let budget get memory machine
+if (text_eq op "make")
+  (let decl need (at (get entries (get schemas fn)) (get value node)) "record_constructor" 0
+   let costs fold values (list i 0) acc row v append acc (field_bytes v (need (at (get types decl) (- row 1)) "field_type" 0))
+   let cost fold costs 16 total row bytes + total bytes
+   if (> cost budget) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+   let record_value fold values (number_value 16) acc row v
+     let idx - row 1
+     add_member acc (need (at (get fields decl) idx) "field_name" 0) (need (at (get types decl) idx) "field_type" 0) v (need (at costs idx) "field_cost" 0)
+   eval_return parents remaining (value_ok record_value) (with memory machine (- budget cost)))
+let previous need (at values 0) "record_operand" 0
+let fresh need (at values 1) "field_value" 0
+let idx get value node
+let old member_cell previous idx
+let bytes field_bytes fresh (get kind old)
+let cost + (- (get num previous) (get bytes old)) bytes
+if (> cost budget) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let updated if (and (eq (get span old) 0) (eq (get span fresh) 0))
+  (let index + (get offset previous) (need (at (get members previous) idx) "member_slot" 0)
+   with tape (with num previous cost) (replace_cell (get tape previous) index (packed_member (get name old) (get kind old) fresh bytes)))
+  (fold (get members previous) (number_value 16) acc row unused
+   let slot - row 1
+   let cell member_cell previous slot
+   let changed eq slot idx
+   add_member acc (get name cell) (get kind cell) (if changed fresh (member_value previous slot)) (if changed bytes (get bytes cell)))
+eval_return parents remaining (value_ok updated) (with memory machine (- budget cost))
+
+eval_list machine:{EvalMachine} parents:*{EvalFrame} remaining:i node:{FunctionNode} file:t values:*{EvalValue} > {EvalMachine}
+let site get site node
+let op get word site
+let done length values
+if (not (atom_type (text_slice (get typ node) 1 (text_len (get typ node)))))
+  (eval_named_list machine parents remaining node file values)
+if (text_eq (get typ node) "*t")
+  (let extending text_eq op "append"
+   let size if extending (+ 1 (length (get texts (need (at values 0) "append_sequence" 0)))) done
+   if (> size 4096) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "List length limit" "") machine)
+   let texts if extending (append (get texts (need (at values 0) "append_sequence" 0)) (get text (need (at values 1) "append_item" 0)))
+     (fold values (list t 0) acc row value append acc (get text value))
+   return_strings texts machine parents remaining file site)
+let extending text_eq op "append"
+let base if extending (get items (need (at values 0) "append_sequence" 0)) (list i 0)
+let size if extending (+ 1 (length base)) done
+if (> size 4096) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "List length limit" "") machine)
+let memory - (get memory machine) (+ 8 (* 16 size))
+if (< memory 0) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let items if extending (append base (get num (need (at values 1) "append_item" 0))) (fold values (list i 0) acc row item append acc (get num item))
+eval_return parents remaining (value_ok (list_value items)) (with memory machine memory)
+
+eval_named_list machine:{EvalMachine} parents:*{EvalFrame} remaining:i node:{FunctionNode} file:t values:*{EvalValue} > {EvalMachine}
+let site get site node
+let extending text_eq (get word site) "append"
+let typ text_slice (get typ node) 1 (text_len (get typ node))
+let budget get memory machine
+if extending
+  (let base need (at values 0) "append_sequence" 0
+   if (eq (length (get members base)) 4096) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "List length limit" "") machine)
+   let item need (at values 1) "append_item" 0
+   let bytes field_bytes item typ
+   let cost + (get num base) (+ 8 bytes)
+   if (> cost budget) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+   eval_return parents remaining (value_ok (add_member base "" typ item bytes)) (with memory machine (- budget cost)))
+let cost fold values 8 total row v + total (+ 8 (field_bytes v typ))
+if (> cost budget) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let items fold values (number_value 8) acc row v add_member acc "" typ v (field_bytes v typ)
+eval_return parents remaining (value_ok items) (with memory machine (- budget cost))
+
+eval_call machine:{EvalMachine} program:{CheckedFunctions} frame:{EvalFrame} callee:i values:*{EvalValue} parents:*{EvalFrame} remaining:i > {EvalMachine}
+let cache get cache machine
+let info need (at (get info program) callee) "call_info" 0
+let profitable and (not (get allocates info)) (and (not (< (get work info) 8)) (and (not (> (length values) 16))
+  (fold (get types (need (at (get signatures program) callee) "callee" 0)) true ok pos typ and ok (scalar_type typ))))
+let slot mod callee (length cache)
+let saved need (at cache slot) "call_cache" 0
+let eligible and profitable (or (not (eq (get target saved) callee)) (< (get misses saved) 4))
+let hit and profitable (and (eq (get target saved) callee) (and (not (> (get work saved) remaining))
+  (fold values true ok row item and ok (eq (get num item) (get num (need (at (get args saved) (- row 1)) "cached_argument" 0))))))
+if hit
+  (let refreshed if (eq (get misses saved) 0) cache (cache_entry cache slot (with misses saved 0))
+   eval_return parents (- remaining (get work saved)) (value_ok (get value saved)) (with cache machine refreshed))
+let callers if eligible
+  (append parents (make EvalFrame owner (get owner frame) node (get node frame) env values values (list {EvalValue} 0) entered true started remaining cursor 0 stream_pos 0 trap 0 map_index -1 scan_state (nil {ScanState}) transaction_db (nil {NativeHandle}))) parents
+make EvalMachine stack (append callers (eval_root program callee values)) remaining remaining answer (get answer machine) cache cache memory (get memory machine) reads (get reads machine) read_left (get read_left machine) stream_left (get stream_left machine)
+
+match_arm node:{FunctionNode} subject:{EvalValue} > i
++ 1 (need (at (get dispatch node) (get num subject)) "match_arm" 0)
+
+eval_while machine:{EvalMachine} frame:{EvalFrame} node:{FunctionNode} parents:*{EvalFrame} left:i > {EvalMachine}
+let values get values frame
+let stage length values
+let acc case (at values (if (eq stage 3) 2 0)) (number_value 0) v v
+if (and (eq stage 2) (eq (get num (need (at values 1) "while_condition" 0)) 0)) (eval_return parents left (value_ok acc) machine)
+let slot if (eq stage 3) 1 stage
+let waiting with entered (with values frame (if (eq stage 3) (list {EvalValue} 1 acc) values)) true
+let env if (eq slot 0) (get env frame) (append (get env frame) acc)
+let child eval_frame (get owner frame) (need (at (get children node) slot) "while_child" 0) env
+with stack (with remaining machine left) (append (append parents waiting) child)
+
+eval_transaction machine:{EvalMachine} frame:{EvalFrame} node:{FunctionNode} fn:{Signature} parents:*{EvalFrame} left:i > {EvalMachine}
+let values get values frame
+let stage length values
+let file get file fn
+let site get site node
+if (eq stage 2)
+  (let db need (get transaction_db frame) "transaction_handle" 0
+   let result sql_commit db file site
+   eval_return parents left (if (text_eq (get code result) "") (value_ok (need (at values 1) "transaction_result" 0)) result) machine)
+let grant at values 0
+let handle case grant (nil {NativeHandle}) arg (get handle arg)
+let begun case handle (scalar_ok 0) db (sql_begin db file site)
+if (not (text_eq (get code begun) "")) (eval_return parents left begun machine)
+let waiting with transaction_db (with entered frame true) handle
+let child eval_frame (get owner frame) (need (at (get children node) stage) "transaction_child" 0) (get env frame)
+with remaining (with stack machine (append (append parents waiting) child)) left
+
+eval_catch machine:{EvalMachine} frame:{EvalFrame} node:{FunctionNode} parents:*{EvalFrame} left:i > {EvalMachine}
+let kids get children node
+let env get env frame
+let owner get owner frame
+if (not (get entered frame))
+  (let waiting with trap (with entered frame true) (get value node)
+   let body eval_frame owner (need (at kids 0) "protected_body" 0) env
+   with remaining (with stack machine (append (append parents waiting) body)) left)
+let value need (at (get values frame) 0) "protected_result" 0
+if (eq (get cursor frame) 0) (eval_return parents left (value_ok value) machine)
+let key need (at (get binders node) 0) "handler_name" 0
+let alt eval_frame owner (need (at kids 1) "handler_body" 0) (if (text_eq key "_") env (append env value))
+with remaining (with stack machine (append parents alt)) left
+
+eval_diagnostic op:t site:{Site} file:t values:*{EvalValue} > {ScalarResult}
+let first_arg need (at values 0) "fault_operand" 0
+if (text_eq op "fail") (data_rejected file site (get text first_arg))
+if (text_eq op "input_line") (value_ok (with present (number_value (get num first_arg)) (get present first_arg)))
+if (text_eq op "raise") (diagnostic_result first_arg)
+let reason get text (need (at values 1) "reason_operand" 0)
+scalar_ok (if (diagnostic_has_reason first_arg reason) 1 0)
+
+record FoldResult
+left:i result:{ScalarResult}
+
+fold_operand node:{FunctionNode} env:*{EvalValue} > &ii
+let slot get slot node
+if (< slot 0) (pair -1 (get value node))
+let base length env
+if (< slot base) (pair -1 (get num (need (at env slot) "outer_binding" 0))) (pair (- slot base) 0)
+
+fold_number operand:&ii acc:i row:i item:i > i
+let binding first operand
+if (< binding 0) (second operand) (if (eq binding 0) acc (if (eq binding 1) row item))
+
+numeric_fold tree:{FunctionTree} idx:i env:*{EvalValue} items:*i initial:{EvalValue} file:t remaining:i > ?{FoldResult}
+let nodes get nodes tree
+let body node_at nodes idx
+let kids get children body
+let site get site body
+if (or (not (get simple body)) (not (eq (length kids) 2))) (nil {FoldResult})
+if (text_eq (get word site) "let") (nil {FoldResult})
+let a node_at nodes (need (at kids 0) "lhs" 0)
+let b node_at nodes (need (at kids 1) "rhs" 0)
+if (not (and (numeric_leaf a) (numeric_leaf b))) (nil {FoldResult})
+let lhs fold_operand a env
+let rhs fold_operand b env
+let start make FoldResult left remaining result (value_ok initial)
+some (fold items start state row item
+  if (not (text_eq (get code (get result state)) "")) state
+  let left get left state
+  if (< left 3)
+    (let exhausted if (eq left 0) site (if (eq left 1) (get site a) (get site b))
+     make FoldResult left 0 result (scalar_failure file exhausted "E_LIMIT" "Work budget exhausted" ""))
+  let acc get num (get value (get result state))
+  make FoldResult left (- left 3) result (numeric_operator site file (fold_number lhs acc row item) (fold_number rhs acc row item)))
+
+numeric_leaf node:{FunctionNode} > b
+and (text_eq (get typ node) "i") (and (< (get target node) 0) (eq (length (get children node)) 0))
+
+sequence_item seq:{EvalValue} index:i > ?{EvalValue}
+if (> (length (get members seq)) 0) (case (at (get members seq) index) (nil {EvalValue}) slot (some (member_value seq index)))
+if (> (length (get texts seq)) 0)
+  (case (at (get texts seq) index) (nil {EvalValue}) v (some (text_value v)))
+case (at (get items seq) index) (nil {EvalValue}) v (some (number_value v))
+
+return_strings texts:*t machine:{EvalMachine} parents:*{EvalFrame} left:i file:t site:{Site} > {EvalMachine}
+let cost string_list_bytes texts
+let remaining - (get memory machine) cost
+if (< remaining 0) (eval_return parents left (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+eval_return parents left (value_ok (text_list_value texts)) (with memory machine remaining)
+
+eval_option node:{FunctionNode} file:t values:*{EvalValue} machine:{EvalMachine} parents:*{EvalFrame} left:i > {EvalMachine}
+let op get word (get site node)
+let value need (at values 0) "option" 0
+if (text_eq op "case") (eval_return parents left (value_ok (need (at values 1) "branch" 0)) machine)
+if (text_eq op "need")
+  (if (get present value) (eval_return parents left (value_ok (with present value false)) machine)
+   let reason get text (need (at values 1) "failure_reason" 0)
+   let line get num (need (at values 2) "failure_line" 0)
+   eval_return parents left (need_failure file (get site node) reason line) machine)
+let cost option_bytes value (get typ node)
+let available - (get memory machine) cost
+if (< available 0) (eval_return parents left (scalar_failure file (get site node) "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+eval_return parents left (value_ok (with present value true)) (with memory machine available)
+
+text_operation op:t > b
+if (or (text_eq op "int") (text_eq op "lines")) true
+if (or (text_eq op "text_find") (text_eq op "text_rfind")) true
+or (or (text_eq op "text_len") (text_eq op "text_eq")) (or (text_eq op "text_slice") (text_eq op "concat"))
+
+eval_text node:{FunctionNode} file:t values:*{EvalValue} machine:{EvalMachine} parents:*{EvalFrame} left:i > {EvalMachine}
+let site get site node
+let op get word site
+let a get text (need (at values 0) "text_argument" 0)
+let n text_len a
+if (or (text_eq op "lines") (text_eq op "int"))
+  (let remaining - left (+ 1 (div n 32))
+   if (< remaining 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") machine)
+   if (text_eq op "int") (eval_return parents remaining (value_ok (case (int a) (number_value 0) result (with present (number_value result) true))) machine)
+   if (not (line_count_ok a)) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Line count limit" "") machine)
+   return_strings (lines a) machine parents remaining file site)
+if (text_eq op "text_len") (eval_return parents left (scalar_ok n) machine)
+let arg need (at values 1) "text_argument" 0
+let b get text arg
+if (or (text_eq op "text_find") (text_eq op "text_rfind"))
+  (let bound clamp_offset (get num (need (at values 2) "search_bound" 0)) n
+   let remaining - left (+ 1 (div (+ n (text_len b)) 32))
+   if (< remaining 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") machine)
+   let pos if (text_eq op "text_find") (text_find a b bound) (text_rfind a b bound)
+   let result case pos (number_value 0) offset (with present (number_value offset) true)
+   eval_return parents remaining (value_ok result) machine)
+if (text_eq op "text_eq")
+  (let shortest if (< n (text_len b)) n (text_len b)
+   let remaining - left (+ 1 (div shortest 32))
+   if (< remaining 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") machine)
+   eval_return parents remaining (scalar_ok (if (text_eq a b) 1 0)) machine)
+let balance get memory machine
+let slicing text_eq op "text_slice"
+let lo if slicing (clamp_offset (get num arg) n) 0
+let hi if slicing (clamp_offset (get num (need (at values 2) "text_stop" 0)) n) 0
+let size if slicing (if (> hi lo) (- hi lo) 0) (+ n (text_len b))
+let bytes * 4 size
+if (and (not slicing) (> bytes balance)) (eval_return parents left (scalar_failure file site "E_LIMIT" "Text budget exhausted" "") machine)
+let available - balance (+ 8 bytes)
+if (< available 0) (eval_return parents left (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let value if slicing (text_slice a lo hi) (concat a b)
+eval_return parents left (value_ok (text_value value)) (with memory machine available)
+
+clamp_offset pos:i size:i > i
+if (< pos 0) 0 (if (> pos size) size pos)
+
+eval_stream_rows machine:{EvalMachine} parents:*{EvalFrame} frame:{EvalFrame} node:{FunctionNode} fn:{Signature} values:*{EvalValue} left:i > {EvalMachine}
+let file get file fn
+let site get site node
+let counter get cursor frame
+let decl need (named_schema (get schemas fn) (get literal node)) "stream_record" 0
+let saved need (at values 0) "stream_grant" 0
+let sql need (at values 1) "stream_sql" 0
+let params need (at values 2) "stream_params" 0
+let acc need (at values 3) "stream_acc" 0
+let open if (eq counter 0) (sql_stream_open saved (get text sql) params decl file site) (value_ok saved)
+if (not (text_eq (get code open) "")) (eval_return parents left open machine)
+let stream get value open
+let read_row sql_stream_next stream decl counter file site
+if (not (text_eq (get code read_row) "")) (eval_return parents left read_row machine)
+let item get value read_row
+if (not (get present item)) (eval_return parents left (value_ok acc) machine)
+let memory - (get memory machine) (get num item)
+if (< memory 0) (eval_return parents left (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let env append (append (append (get env frame) acc) (number_value (+ counter 1))) (with present item false)
+let body need (at (get children node) 4) "sql_body" 0
+let waiting with cursor (with entered (with values frame (list {EvalValue} 3 stream sql params)) true) (+ counter 1)
+with stack (with remaining (with memory machine memory) left) (append (append parents waiting) (eval_frame (get owner frame) body env))
+
+eval_stream_lines machine:{EvalMachine} parents:*{EvalFrame} frame:{EvalFrame} node:{FunctionNode} file:t values:*{EvalValue} remaining:i > {EvalMachine}
+let grant need (at values 0) "stream_grant" 0
+let budget need (at values 1) "stream_budget" 0
+let acc need (at values 2) "stream_acc" 0
+let site get site node
+let row + (get cursor frame) 1
+let pos get stream_pos frame
+let left stream_remaining (get num budget) pos (get stream_left machine)
+if (< left 0) (eval_return parents remaining (stream_failure -5 file site row) machine)
+let input bootstrap_line (get num grant) (get text grant) pos left
+let status first input
+let bytes first (second input)
+let charged with stream_left machine (- (get stream_left machine) bytes)
+if (< status 0) (eval_return parents remaining (stream_failure status file site row) charged)
+if (eq status 0) (eval_return parents remaining (value_ok acc) charged)
+let line second (second input)
+let work stream_credit remaining bytes 32 100000
+let memory - (stream_credit (get memory machine) bytes 128 4194304) (+ 8 (* 4 (text_len line)))
+if (< memory 0) (eval_return parents work (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") charged)
+let env append (append (append (get env frame) acc) (number_value row)) (text_value line)
+let body need (at (get children node) 3) "stream_body" 0
+let waiting with stream_pos (with cursor (with entered (with values frame (list {EvalValue} 2 grant budget)) true) row) (+ pos bytes)
+with stack (with remaining (with memory charged memory) work) (append (append parents waiting) (eval_frame (get owner frame) body env))
+
+eval_read grant:{EvalValue} machine:{EvalMachine} parents:*{EvalFrame} left:i file:t site:{Site} > {EvalMachine}
+let binary text_eq (get word site) "read_bytes"
+let handle get num grant
+let cached find_snapshot (get reads machine) handle
+let item case cached (take_snapshot grant (get read_left machine) binary) snapshot snapshot
+let bytes get bytes item
+if (eq bytes -1) (eval_return parents left (scalar_failure file site "E_IO" "Granted read failed" "") machine)
+if (eq bytes -2) (eval_return parents left (scalar_failure file site "E_LIMIT" "Read byte budget exhausted" "") machine)
+let updated case cached
+  (with read_left (with reads machine (append (get reads machine) item)) (- (get read_left machine) bytes))
+  snapshot machine
+let remaining - left (+ 1 (div bytes 32))
+if (< remaining 0) (eval_return parents 0 (scalar_failure file site "E_LIMIT" "Work budget exhausted" "") updated)
+case (snapshot_data item binary)
+  (eval_return parents remaining (scalar_failure file site "E_UTF8" "Invalid UTF-8 input" "") updated) body
+let value text_value body
+let memory - (get memory updated) (field_bytes value (if binary "y" "t"))
+if (< memory 0) (eval_return parents remaining (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "") updated)
+eval_return parents remaining (value_ok value) (with memory updated memory)
+
+completed_scalar node:{FunctionNode} env:*{EvalValue} values:*{EvalValue} file:t > {ScalarResult}
+let site get site node
+let op get word site
+if (eq (length values) 0) (value_ok (leaf_value node env))
+if (and (eq (length values) 1) (or (text_eq op "and") (text_eq op "or"))) (value_ok (need (at values 0) "lhs" 0))
+scalar_operator site file values
+
+scalar_eval program:{CheckedFunctions} index:i args:*{EvalValue} > {ScalarResult}
+evaluate_call program index args (nil {TraceRequest})
+
+begin_call program:{CheckedFunctions} index:i args:*{EvalValue} request:?{TraceRequest} > {EvalMachine}
+let fn need (at (get signatures program) index) "entry_signature" 0
+let base eval_root program index (sql_connect args fn)
+let first_frame case request base query with scan_state base (some (with request start_scan (some query)))
+let n length (get names program)
+let cache fold (indices (if (< n 16) n 16)) (list {CallCache} 0) acc pos unused
+  append acc (make CallCache target -1 args (list {EvalValue} 0) value (number_value 0) work 0 misses 0)
+make EvalMachine stack (list {EvalFrame} 1 first_frame) remaining 100000 answer (scalar_ok 0) cache cache memory 4194304 reads (list {ReadSnapshot} 0) read_left 131072 stream_left stream_quota
+
+evaluate_call program:{CheckedFunctions} index:i args:*{EvalValue} request:?{TraceRequest} > {ScalarResult}
+let start begin_call program index args request
+let final bootstrap_while start machine (> (length (get stack machine)) 0) (eval_step machine program false)
+get answer final
+
+example_wrong ex:{FunctionExample} message:t expected:t actual:t > t
+let base diagnosis (get file ex) (get loc ex) "E_EXAMPLE" message
+extra_fields base (cat3 "\"example\":" (json_string (get name ex)) (cat3 ",\"expected\":" expected (concat ",\"actual\":" actual)))
+
+example_mismatch ex:{FunctionExample} sample:{SampleArgs} program:{CheckedFunctions} root_file:t > t
+sample_mismatch ex sample program root_file (scalar_eval program (get target sample) (get args sample)) false
+
+expected_wire ex:{FunctionExample} value:{EvalValue} kind:t > t
+if (or (scalar_type kind) (or (text_eq kind "*i") (text_eq kind "*b"))) (need (json_at (get data ex) ".expect") "expected_value" 0)
+scalar_wire value kind
+
+sample_mismatch ex:{FunctionExample} sample:{SampleArgs} program:{CheckedFunctions} root_file:t result:{ScalarResult} compact:b > t
+let idx get target sample
+let code get code result
+let fn need (at (get signatures program) idx) "definition" 0
+let is_rule rule_signature fn
+let kind if is_rule (concat "*" (get result fn)) (get result fn)
+let expected get expected sample
+let actual_value get value result
+if (not (text_eq code ""))
+  (let path_matches case (json_at (get data ex) ".expect_error.path") true token
+     let details read_scalar_json (get detail result) internal_json false
+     case (json_at details ".issue.path") false actual (text_eq (get value (string_token token)) (get value (string_token actual)))
+   if (and path_matches (and (case (get line sample) true wanted (case (get line result) false found (eq wanted found))) (and (text_eq code (get error_code sample)) (case (json_at (get data ex) ".expect_error.reason") true specified (and (text_eq code "E_DATA") (text_eq (get reason sample) (get reason result))))))) ""
+   let detail get detail result
+   let prefix concat "{\"file\":" (json_string root_file)
+   let actual if (text_eq (text_slice detail 0 (+ (text_len prefix) 1)) (concat prefix ","))
+     (concat "{" (text_slice detail (+ (text_len prefix) 1) (text_len detail))) detail
+   let want if (text_eq (get error_code sample) "") (expected_wire ex expected kind) (get error_wire sample)
+   example_wrong ex "Example raised an unexpected error" want actual)
+if (not (text_eq (get error_code sample) "")) (example_wrong ex "Expected an error" (get error_wire sample) (scalar_wire actual_value kind))
+case (value_difference expected actual_value kind) "" diff
+if is_rule
+  (let path get path diff
+   let pos need (int (text_slice path 1 (text_len path))) "event_index" 0
+   let msg example_wrong ex "Wrong event output" (get expected diff) (get actual diff)
+   extra_fields msg (concat "\"event\":" (decimal (+ pos 1))))
+if (and compact (or (not (text_eq (get path diff) "")) (not (text_eq (get aspect diff) ""))))
+  (extra_fields (diagnosis (get file ex) (get loc ex) "E_EXAMPLE" "Wrong output")
+    (cat3 "\"example\":" (json_string (get name ex)) (concat "," (difference_fields diff))))
+example_wrong ex "Wrong output" (expected_wire ex expected kind) (scalar_wire actual_value kind)
+
+scan_continue machine:{EvalMachine} parents:*{EvalFrame} frame:{EvalFrame} scanning:{ScanState} child:?{EvalFrame} > {EvalMachine}
+let next with values (with scan_state frame (some scanning)) (list {EvalValue} 0)
+let stack append parents next
+with stack machine (case child stack pending append stack pending)
+
+scan_scope event:i fields:*{EvalValue} > *{EvalValue}
+fold fields (list {EvalValue} 1 (number_value event)) acc row value append acc value
+
+scan_expression machine:{EvalMachine} parents:*{EvalFrame} frame:{EvalFrame} scanning:{ScanState} tree:{FunctionTree} fn:{Signature} index:i env:*{EvalValue} observing:b > {EvalMachine}
+let node node_at (get nodes tree) index
+let op get word (get site node)
+let kids get children node
+if (or (not (get simple node)) (and observing (lazy_operand op))) (scan_continue machine parents frame scanning (some (eval_frame (get owner frame) index env)))
+let left - (get remaining machine) 1
+let file get file fn
+if (< left 0) (eval_return parents 0 (scalar_failure file (get site node) "E_LIMIT" "Work budget exhausted" "") machine)
+let operands if (eq (length kids) 0) (make LeafRun values (list {EvalValue} 0) left left stopped true error (scalar_ok 0))
+  (immediate_operands op kids env tree file (make LeafRun values (list {EvalValue} 0) left left stopped false error (scalar_ok 0)))
+let err get error operands
+if (not (text_eq (get code err) "")) (eval_return parents 0 err machine)
+let values get values operands
+if (not (< (next_operand op values (length kids)) 0)) (scan_continue machine parents frame scanning (some (eval_frame (get owner frame) index env)))
+let result completed_scalar node env values file
+let remaining get left operands
+if (not (text_eq (get code result) "")) (eval_return parents remaining result machine)
+let next with values (with scan_state frame (some scanning)) (list {EvalValue} 1 (get value result))
+with stack (with remaining machine remaining) (append parents next)
+
+scan_step machine:{EvalMachine} program:{CheckedFunctions} frame:{EvalFrame} tree:{FunctionTree} scanning:{ScanState} observing:b > {EvalMachine}
+let owner get owner frame
+let fn need (at (get signatures program) owner) "rule_definition" 0
+let plan get plan tree
+let phase get phase scanning
+let parents eval_parents (get stack machine)
+let received at (get values frame) 0
+let left get remaining machine
+let no_child nil {EvalFrame}
+if (text_eq phase "init")
+  (let stored get initial scanning
+   let initial case received stored v (append stored v)
+   let next with initial scanning initial
+   case (at (get starts plan) (length initial))
+     (scan_continue machine parents frame (with phase (with prior next initial) "event") no_child)
+     index (scan_expression machine parents frame next tree fn index (list {EvalValue} 0) observing))
+let events get items (need (at (get env frame) 0) "scan_events" 0)
+let event get event scanning
+if (text_eq phase "event")
+  (if (eq event (length events)) (eval_return parents left (value_ok (list_value (get outputs scanning))) machine)
+   if (eq left 0)
+     (let error scalar_failure (get file fn) (get loc fn) "E_LIMIT" "Work budget exhausted" ""
+      eval_return parents 0 (with detail error (extra_fields (get detail error) (concat "\"event\":" (decimal (+ event 1))))) machine)
+   let next with event (with branch (with phase scanning "guard") 0) (+ event 1)
+   scan_continue (with remaining machine (- left 1)) parents frame next no_child)
+let input_value need (at events (- event 1)) "scan_event" 0
+let branch_index get branch scanning
+if (text_eq phase "guard")
+  (let accepted case received false v (not (eq (get num v) 0))
+   let index + branch_index (if (and (not accepted) (case received false v true)) 1 0)
+   let branch need (at (get branches plan) index) "scan_guard" 0
+   let next with branch scanning index
+   if (or accepted (< (get guard branch) 0)) (scan_continue machine parents frame (with phase next "actions") no_child)
+   scan_expression machine parents frame next tree fn (get guard branch) (scan_scope input_value (get prior scanning)) observing)
+if (text_eq phase "actions")
+  (let changed get updated scanning
+   let updated case received changed v (append changed v)
+   let next with updated scanning updated
+   let branch need (at (get branches plan) branch_index) "scan_branch" 0
+   let pos length updated
+   case (at (get actions branch) pos)
+     (scan_expression machine parents frame (with phase next "emit") tree fn (last_node tree) (scan_scope input_value updated) observing)
+     action
+     if (eq left 0) (eval_return parents 0 (scalar_failure (get file fn) (get loc fn) "E_LIMIT" "Work budget exhausted" "") machine)
+     let charged with remaining machine (- left 1)
+     if (not (< action 0)) (scan_expression charged parents frame next tree fn action (scan_scope input_value (get prior scanning)) observing)
+     let source if (eq action -1) (get prior scanning) (get initial scanning)
+     scan_continue charged parents frame (with updated next (append updated (need (at source pos) "scan_slot" 0))) no_child)
+let value get num (need received "scan_output" 0)
+let memory - (get memory machine) 8
+if (< memory 0) (eval_return parents left (scalar_failure (get file fn) (get loc fn) "E_LIMIT" "Guest allocation budget exhausted" "") machine)
+let capture case (get request scanning) false query (eq (get step query) event)
+if capture
+  (let query need (get request scanning) "trace_request" 0
+   let info trace_record fn plan scanning query input_value value
+   eval_return parents left (with trace (scalar_ok value) info) (with memory machine memory))
+let next with outputs (with prior (with updated (with phase scanning "event") (list {EvalValue} 0)) (get updated scanning)) (append (get outputs scanning) value)
+scan_continue (with memory machine memory) parents frame next no_child
+
+trace_record fn:{Signature} plan:{RulePlan} scanning:{ScanState} query:{TraceRequest} input_value:i output_value:i > t
+let branch need (at (get branches plan) (get branch scanning)) "trace_branch" 0
+let fields fold (get fields query) "" body row key
+  let pos need (entry_at (get fields plan) key) "trace_field" 0
+  let kind need (at (get types plan) pos) "trace_type" 0
+  let mode need (at (get actions branch) pos) "trace_action" 0
+  let before wire_number (get num (need (at (get prior scanning) pos) "trace_before" 0)) kind
+  let after wire_number (get num (need (at (get updated scanning) pos) "trace_after" 0)) kind
+  let action if (eq mode -1) "keep" (if (eq mode -2) "reset" "set")
+  json_item body (cat3 (json_string key) ":{\"before\":" (cat3 before ",\"action\":" (cat3 (json_string action) ",\"after\":" (concat after "}"))))
+let prefix cat3 "{\"rule\":" (json_string (get name fn)) (cat3 ",\"step\":" (decimal (get event scanning)) ",\"event\":")
+let payload wire_number input_value (need (at (get types fn) 0) "event_type" 0)
+cat3 prefix payload (cat3 ",\"branch\":" (decimal (+ (get branch scanning) 1))
+  (cat3 ",\"fields\":{" fields (cat3 "},\"output\":" (wire_number output_value (get result fn)) "}")))
+
+passed_examples compiled:{CompiledProject} file:t > i
+let samples get samples compiled
+fold (get examples (get declarations compiled)) 0 passed row ex
+  let mismatch example_mismatch ex (need (at samples (- row 1)) "sample" 0) (get program compiled) file
+  if (text_eq mismatch "") (+ passed 1) (fail mismatch)

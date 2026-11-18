@@ -1,0 +1,42 @@
+use function_body
+
+record Fragment
+name:t before:t after:t
+
+substitute body:t before:t after:t > t
+if (text_eq before "") (one_line after)
+let start need (text_find body before 0) "fragment_not_found" 0
+if (case (text_find body before (+ start 1)) false again true) fail "ambiguous_fragment"
+one_line (concat (text_slice body 0 start) (concat after (text_slice body (+ start (text_len before)) (text_len body))))
+
+to_change forms:*{Form} edit:{Fragment} > {Change}
+let name get name edit
+let body fold forms (nil t) found row form
+  if (text_eq name (get name form))
+    (case found (some (get body form)) duplicate (fail "ambiguous_function")) found
+make Change name name body (substitute (need body "unknown_function" 0) (get before edit) (get after edit))
+
+fragment_files files:*{SourceFile} forms:*{Form} edits:*{Fragment} > *{SourceFile}
+let changes fold edits (list {Change} 0) result row edit append result (to_change forms edit)
+candidate_files files forms changes
+
+example two_fragments fragment_files
+{"inputs":{"files":[{"file":"x.tide","source":"f a:i > i\r\n+ a 1\r\n\r\nh > i\r\n3\r\n"},{"file":"y.tide","source":"g > i\n3"}],"forms":[{"file":"x.tide","name":"f","body":"(+ a 1)"},{"file":"y.tide","name":"g","body":"3"}],"edits":[{"name":"f","before":"1","after":"2"},{"name":"g","before":"","after":"(f 3)"}]},"expect":[{"file":"x.tide","source":"f a:i > i\r\n(+ a 2)\r\n\r\nh > i\r\n3\r\n"},{"file":"y.tide","source":"g > i\n(f 3)"}]}
+
+example overlapping substitute
+{"inputs":{"body":"aaaa","before":"aaa","after":"b"},"expect_error":{"code":"E_DATA","reason":"ambiguous_fragment"}}
+
+example unicode substitute
+{"inputs":{"body":"(concat \"猫\" \"café\")","before":"猫","after":"龍"},"expect":"(concat \"龍\" \"café\")"}
+
+example absent substitute
+{"inputs":{"body":"(+ x 1)","before":"(- x","after":"(+ x"},"expect_error":{"code":"E_DATA","reason":"fragment_not_found"}}
+
+example multiline substitute
+{"inputs":{"body":"(+ x 1)","before":"x","after":"y\nz"},"expect_error":{"code":"E_DATA","reason":"expected_one_expression_line"}}
+
+example empty_replacement_is_valid substitute
+{"inputs":{"body":"(+ 12 3)","before":"2","after":""},"expect":"(+ 1 3)"}
+
+example incomplete_set fragment_files
+{"inputs":{"files":[{"file":"x","source":"f > i\n1\n\ng > i\n2"}],"forms":[{"file":"x","name":"f","body":"1"},{"file":"x","name":"g","body":"2"}],"edits":[{"name":"f","before":"1","after":"3"},{"name":"g","before":"4","after":"5"}]},"expect_error":{"code":"E_DATA","reason":"fragment_not_found"}}

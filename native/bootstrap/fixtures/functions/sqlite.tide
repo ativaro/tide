@@ -1,0 +1,60 @@
+record Bindings
+name:t n:i raw:y flag:b note:?t
+
+record NumberRow
+n:i
+
+roundtrip db:d params:{Bindings} > *{Bindings}
+sql_query {Bindings} db "SELECT :note AS note,:raw AS raw,:name AS name,:flag AS flag,:n AS n WHERE :name=:name" params
+
+run_sql db:d sql:t > i
+sql_exec db sql (dict i)
+
+named db:d > *{NumberRow}
+sql_query {NumberRow} db "SELECT :n AS n" (dict_put (dict i) "other" 5)
+
+wrong_column db:d > *{NumberRow}
+sql_query {NumberRow} db "SELECT '5' AS n" (dict i)
+
+changed db:d > i
+let added sql_exec db "INSERT INTO items(n) VALUES(:n)" (dict_put (dict i) "n" 99)
+let found sql_query {NumberRow} db "SELECT n FROM items WHERE n=:n" (dict_put (dict i) "n" 99)
+if (eq (length found) 1) (fail "visible_before_rollback") 0
+
+guest_rollback db:d > i
+let created sql_exec db "CREATE TABLE items(n INTEGER)" (dict i)
+let witnessed catch E_DATA (transaction db (changed db)) issue (if (has_reason issue "visible_before_rollback") 1 0)
+let remaining sql_query {NumberRow} db "SELECT n FROM items" (dict i)
+- witnessed (length remaining)
+
+example typed_params roundtrip
+{"inputs":{"db":":memory:","params":{"name":"O'Brien; Ω\u0000x","n":9223372036854775807,"raw":"00ff80","flag":true,"note":{"none":true}}},"expect":[{"name":"O'Brien; Ω\u0000x","n":9223372036854775807,"raw":"00ff80","flag":true,"note":{"none":true}}]}
+
+example empty_blob roundtrip
+{"inputs":{"db":":memory:","params":{"name":"","n":-9223372036854775808,"raw":"","flag":false,"note":{"some":""}}},"expect":[{"name":"","n":-9223372036854775808,"raw":"","flag":false,"note":{"some":""}}]}
+
+example reject_batch run_sql
+{"inputs":{"db":":memory:","sql":"CREATE TABLE items(n); DROP TABLE items"},"expect_error":{"code":"E_DATA","reason":"sqlite_statement"}}
+
+example reject_manual_commit run_sql
+{"inputs":{"db":":memory:","sql":"COMMIT"},"expect_error":{"code":"E_DATA","reason":"sqlite_denied"}}
+
+example unmatched_binding named
+{"inputs":{"db":":memory:"},"expect_error":{"code":"E_DATA","reason":"sqlite_parameters"}}
+
+example bad_column wrong_column
+{"inputs":{"db":":memory:"},"expect_error":{"code":"E_DATA","reason":"sqlite_column","path":"/0/n"}}
+
+example observed_rollback guest_rollback
+{"inputs":{"db":":memory:"},"expect":1}
+
+conflict db:d > i
+let inserted sql_exec db "INSERT INTO items(n) VALUES(1)" (dict i)
+sql_exec db "INSERT OR ROLLBACK INTO items(n) VALUES(1)" (dict i)
+
+aborted db:d > i
+let created sql_exec db "CREATE TABLE items(n INTEGER UNIQUE)" (dict i)
+transaction db (catch E_DATA (conflict db) _ 0)
+
+example sqlite_aborts_entire_transaction aborted
+{"inputs":{"db":":memory:"},"expect_error":{"code":"E_TRANSACTION"}}

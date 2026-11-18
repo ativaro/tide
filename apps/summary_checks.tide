@@ -1,0 +1,13 @@
+use summary
+
+example threshold summarize
+{"inputs":{"rows":["80","81","98"],"limit":80},"expect":{"peak":{"some":98},"above":2}}
+
+example negative_peak summarize
+{"inputs":{"rows":["-2","-8","-2"],"limit":-2},"expect":{"above":0,"peak":{"some":-2}}}
+
+example empty summarize
+{"inputs":{"rows":[],"limit":80},"expect":{"above":0,"peak":{"none":true}}}
+
+example invalid summarize
+{"inputs":{"rows":["80","x","98"],"limit":80},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}

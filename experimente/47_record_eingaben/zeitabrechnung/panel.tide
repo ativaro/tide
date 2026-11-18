@@ -1,0 +1,9 @@
+use clocking
+
+use billing
+
+main slot:{Interval} > i
+billable (elapsed slot)
+
+example half_unit main
+{"inputs":{"slot":{"begin":18,"finish":43}},"expect":3}

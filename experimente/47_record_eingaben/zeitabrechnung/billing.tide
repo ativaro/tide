@@ -1,0 +1,2 @@
+billable ticks:i > i
+div (+ ticks 4) 10

@@ -1,0 +1,64 @@
+use composite_pairs
+
+positions_map entries:*&{Cursor}{Outcome} > *i
+map i entries item (get pos (first item))
+
+offset xs:*i shift:i > *i
+map i xs item (+ item shift)
+
+long_names rows:*{Cursor} > *b
+map b rows cursor (> (text_len (get label cursor)) 1)
+
+outcomes entries:*&{Cursor}{Outcome} > *{Outcome}
+map {Outcome} entries item (second item)
+
+advanced cursors:*{Cursor} > *&{Cursor}{Outcome}
+map &{Cursor}{Outcome} cursors c (transition c)
+
+cursors_only entries:*&{Cursor}{Outcome} > *{Cursor}
+map {Cursor} entries item (first item)
+
+labels entries:*{Cursor} > *t
+map t entries item (get label item)
+
+divide values:*i > *i
+map i values n (div 12 n)
+
+safe_divide values:*i > *i
+map i values n (catch E_DATA (div 12 n) _ 0)
+
+nested xs:*i > *i
+map i xs outer (length (map i xs inner (+ outer inner)))
+
+example order positions_map
+{"inputs":{"entries":[[{"pos":8,"label":"x"},"finish"],[{"pos":-2,"label":"y"},"waiting"],[{"pos":8,"label":"Ω"},"finish"]]},"expect":[8,-2,8]}
+
+example captured offset
+{"inputs":{"xs":[4,0,-5],"shift":-1},"expect":[3,-1,-6]}
+
+example text_length long_names
+{"inputs":{"rows":[{"label":"猫","pos":0},{"label":"Ω猫","pos":9}]},"expect":[false,true]}
+
+example variants outcomes
+{"inputs":{"entries":[[{"pos":0,"label":""},"waiting"],[{"pos":0,"label":""},"finish"]]},"expect":["waiting","finish"]}
+
+example pairs advanced
+{"inputs":{"cursors":[{"label":"Ω","pos":3}]},"expect":[[{"label":"Ω","pos":4},"finish"]]}
+
+example records cursors_only
+{"inputs":{"entries":[[{"pos":6,"label":"猫"},"waiting"]]},"expect":[{"label":"猫","pos":6}]}
+
+example unicode labels
+{"inputs":{"entries":[{"pos":0,"label":"Ω\u0000🐈"}]},"expect":["Ω\u0000🐈"]}
+
+example no_divisors divide
+{"inputs":{"values":[]},"expect":[]}
+
+example stop_at_zero divide
+{"inputs":{"values":[3,0,0]},"expect_error":{"code":"E_DATA","reason":"division_by_zero"}}
+
+example handled safe_divide
+{"inputs":{"values":[3,0,4]},"expect":[4,0,3]}
+
+example nested_capture nested
+{"inputs":{"xs":[2,1,2]},"expect":[3,3,3]}

@@ -1,0 +1,1156 @@
+{
+  "werkzeug": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": 2,
+    "kernel": "Linux 7.3.4-1-cachyos x86_64 GNU/Linux",
+    "rounds": 21,
+    "warm": 3,
+    "unit": "wall ms, new installed CLI process through exit, input source and project validated each time",
+    "tokenizer": "gpt-tokenizer 3.4.0 o200k_base, full UTF-8 CLI diagnostic including newline",
+    "binaries": {
+      "before": "3d407ac8e264de6720091995ba680a89b495e8f5d5db1af0d1f493a426005443",
+      "static": "d48647ef5a0da5bd975275a0c768b62b91006654f4ec9551d7418eb454450ae4",
+      "prototype": "3b8345396e383b8b9537fa429f5c98d6430f193b6aedc3ca9a16dff77f80e20e",
+      "executed": "d48647ef5a0da5bd975275a0c768b62b91006654f4ec9551d7418eb454450ae4"
+    },
+    "cases": {
+      "fan": {
+        "entry": "checkout.tide",
+        "source_hashes": {
+          "bands.tide": "4214049ee31705a2b2d03a9399a78aa56acaf64a1c08104c287586cf8b9274f8",
+          "checkout.tide": "c27c55e7e2c605fce34ef2d03e4c39bb9f6a53e6af6181d542f9e01dd859864e",
+          "tariffs.tide": "f921f7768e525b4e4612d3e7689c57e175b499712c58013944e1283a64fdefb3"
+        },
+        "cells": {
+          "before": {
+            "ms": 5.899835,
+            "tokens": 452,
+            "bytes": 1354,
+            "definitions": 10,
+            "sha256": "b4489ce673892d652aeda53f92da7f46d433f1dec74870fbfb4be201765e8194"
+          },
+          "static": {
+            "ms": 5.906325,
+            "tokens": 452,
+            "bytes": 1354,
+            "definitions": 10,
+            "sha256": "b4489ce673892d652aeda53f92da7f46d433f1dec74870fbfb4be201765e8194"
+          },
+          "prototype": {
+            "ms": 5.874404,
+            "tokens": 278,
+            "bytes": 839,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": [
+                {
+                  "node": "4:1",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "4:33",
+                  "op": "if",
+                  "arm": "then"
+                },
+                {
+                  "node": "tariffs.tide:7:1",
+                  "op": "if",
+                  "arm": "else"
+                }
+              ]
+            },
+            "sha256": "b8075e5bb796ee081d253faa0b34d5c2184edd8bebf63d0448126afc1ff35ed8"
+          },
+          "executed": {
+            "ms": 5.865764,
+            "tokens": 255,
+            "bytes": 770,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": {
+                "4:1": [
+                  "else"
+                ],
+                "4:33": [
+                  "then"
+                ],
+                "tariffs.tide:7:1": [
+                  "else"
+                ]
+              }
+            },
+            "sha256": "70a5f724956fbfa5f2513d103abb36286eea5e9f762916f92b9092e7ea7978ce"
+          }
+        },
+        "times": {
+          "before": [
+            7.074888,
+            6.342183,
+            5.823294,
+            5.940646,
+            5.895325,
+            5.899835,
+            5.895425,
+            5.819433,
+            5.938465,
+            5.936146,
+            5.800083,
+            5.892015,
+            5.907075,
+            5.899394,
+            5.903995,
+            5.823983,
+            5.909635,
+            5.903635,
+            5.894835,
+            5.915735,
+            5.853274
+          ],
+          "static": [
+            6.876513,
+            6.193991,
+            5.820574,
+            5.922906,
+            5.917515,
+            5.907755,
+            5.887545,
+            5.860774,
+            5.826004,
+            5.948116,
+            5.847074,
+            5.807933,
+            5.898775,
+            5.912975,
+            5.994987,
+            5.877425,
+            5.818323,
+            5.790462,
+            5.906325,
+            5.910885,
+            5.990697
+          ],
+          "prototype": [
+            6.62866,
+            6.085908,
+            5.834813,
+            5.868264,
+            5.784293,
+            5.886225,
+            5.864204,
+            5.853484,
+            5.934065,
+            5.893435,
+            5.878414,
+            5.874404,
+            5.783083,
+            5.787452,
+            5.874014,
+            5.880785,
+            5.877555,
+            5.883604,
+            5.783323,
+            5.899465,
+            5.819673
+          ],
+          "executed": [
+            7.044027,
+            5.796383,
+            5.905845,
+            5.872414,
+            5.866884,
+            5.829923,
+            5.746052,
+            5.867674,
+            5.882015,
+            5.761032,
+            5.888155,
+            5.865764,
+            5.853714,
+            5.850504,
+            5.789543,
+            5.878554,
+            5.854444,
+            5.863884,
+            5.868444,
+            5.792483,
+            5.875294
+          ]
+        }
+      },
+      "locator": {
+        "entry": "panel.tide",
+        "source_hashes": {
+          "choice.tide": "dd16b4c83ee093351a769bc513b1842cfbaea5bea75c22f648c0d1acf581362c",
+          "geometry.tide": "dc286cd829a26aefebb06e8e4d91f5c858b333dce7770f93d8b887d43a10bf62",
+          "panel.tide": "f06f6dd92903ab068019a48d3187dbe9b6adeafb6c6a4b373ab7cc07c1d4fe3f"
+        },
+        "cells": {
+          "before": {
+            "ms": 6.130009,
+            "tokens": 265,
+            "bytes": 870,
+            "definitions": 3,
+            "sha256": "fd0e9715253a3ee55e7b26c5da463198b6ffe0028abd6f8464b413f9943f42da"
+          },
+          "static": {
+            "ms": 6.1301,
+            "tokens": 265,
+            "bytes": 870,
+            "definitions": 3,
+            "sha256": "fd0e9715253a3ee55e7b26c5da463198b6ffe0028abd6f8464b413f9943f42da"
+          },
+          "prototype": {
+            "ms": 6.326813,
+            "tokens": 380,
+            "bytes": 1209,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": [
+                {
+                  "node": "4:1",
+                  "op": "case",
+                  "arm": "some"
+                },
+                {
+                  "node": "geometry.tide:3:1",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "choice.tide:6:1",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "choice.tide:6:24",
+                  "op": "if",
+                  "arm": "then"
+                },
+                {
+                  "node": "choice.tide:6:43",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "geometry.tide:3:1",
+                  "op": "if",
+                  "arm": "then"
+                }
+              ]
+            },
+            "sha256": "f98436660f597d6f9a055900df8868474586de75afaf1ef4ea8f52fa32ba6592"
+          },
+          "executed": {
+            "ms": 6.307353,
+            "tokens": 327,
+            "bytes": 1047,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": {
+                "4:1": [
+                  "some"
+                ],
+                "geometry.tide:3:1": [
+                  "else",
+                  "then"
+                ],
+                "choice.tide:6:1": [
+                  "else"
+                ],
+                "choice.tide:6:24": [
+                  "then"
+                ],
+                "choice.tide:6:43": [
+                  "else"
+                ]
+              }
+            },
+            "sha256": "5201fa5ed377a7d025d9985d06ea191f5abeff7e5aff72e240ed9d2a80635840"
+          }
+        },
+        "times": {
+          "before": [
+            6.129549,
+            6.13875,
+            6.075439,
+            6.16813,
+            6.127209,
+            6.071318,
+            6.117129,
+            6.130009,
+            6.142549,
+            6.136059,
+            6.072648,
+            6.16635,
+            6.14709,
+            6.081498,
+            6.127559,
+            6.123329,
+            6.15209,
+            6.137069,
+            6.15721,
+            6.16157,
+            6.074738
+          ],
+          "static": [
+            6.057628,
+            6.124799,
+            6.13295,
+            6.049108,
+            6.17268,
+            6.14421,
+            6.941425,
+            6.127899,
+            6.074988,
+            6.148089,
+            6.137749,
+            6.067698,
+            6.138509,
+            6.117719,
+            6.18238,
+            6.040518,
+            6.14686,
+            6.129459,
+            6.061628,
+            6.16006,
+            6.1301
+          ],
+          "prototype": [
+            6.334273,
+            6.226571,
+            6.384474,
+            6.326813,
+            6.304803,
+            6.319413,
+            6.251312,
+            6.346044,
+            6.331063,
+            6.235892,
+            6.345284,
+            6.339664,
+            6.270642,
+            6.330153,
+            6.296413,
+            6.315803,
+            6.254962,
+            6.333563,
+            6.333144,
+            6.257702,
+            6.334553
+          ],
+          "executed": [
+            6.265221,
+            6.309553,
+            6.299212,
+            6.295993,
+            6.280032,
+            6.307353,
+            6.283382,
+            6.205111,
+            6.293633,
+            6.321573,
+            6.337153,
+            6.322193,
+            6.292963,
+            6.320083,
+            6.217371,
+            6.519767,
+            6.308223,
+            6.337413,
+            6.330233,
+            6.326083,
+            6.278732
+          ]
+        }
+      },
+      "dial": {
+        "entry": "panel.tide",
+        "source_hashes": {
+          "panel.tide": "547f6dad9b4a5ebd02833c00356c339dc1783e732b8c11d82f2e1a1643e37f75",
+          "scale.tide": "f8b2e5934db03a859ab00a740c74cd75c1952e5e57843603a7f0e91a93c4aa13",
+          "units.tide": "f373564218cafb55e46f32a13093e6bf7eeee8d467530364635b35168dffe283"
+        },
+        "cells": {
+          "before": {
+            "ms": 6.040408,
+            "tokens": 264,
+            "bytes": 870,
+            "definitions": 3,
+            "sha256": "31b7c488e68e10fae53b74c1fbd940aa901be8de4ab6f60bda259a2796582931"
+          },
+          "static": {
+            "ms": 6.038248,
+            "tokens": 264,
+            "bytes": 870,
+            "definitions": 3,
+            "sha256": "31b7c488e68e10fae53b74c1fbd940aa901be8de4ab6f60bda259a2796582931"
+          },
+          "prototype": {
+            "ms": 6.15168,
+            "tokens": 329,
+            "bytes": 1061,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": [
+                {
+                  "node": "scale.tide:4:15",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "units.tide:4:1",
+                  "op": "if",
+                  "arm": "else"
+                },
+                {
+                  "node": "scale.tide:6:1",
+                  "op": "if",
+                  "arm": "else"
+                }
+              ]
+            },
+            "sha256": "15af398c3f88f030a8a6edae44f4dec2a1651aeacf821b574003c970fb603ef5"
+          },
+          "executed": {
+            "ms": 6.103949,
+            "tokens": 306,
+            "bytes": 992,
+            "definitions": 3,
+            "execution": {
+              "complete": true,
+              "branches": {
+                "scale.tide:4:15": [
+                  "else"
+                ],
+                "units.tide:4:1": [
+                  "else"
+                ],
+                "scale.tide:6:1": [
+                  "else"
+                ]
+              }
+            },
+            "sha256": "310be1c46b0dc900ff3c1d8e58668e077beaa315511db8ae1c0459eb54674802"
+          }
+        },
+        "times": {
+          "before": [
+            6.054938,
+            6.074268,
+            5.939306,
+            6.040408,
+            5.950566,
+            6.030448,
+            6.062848,
+            5.947625,
+            6.082898,
+            5.973936,
+            6.048948,
+            6.032297,
+            6.051618,
+            5.952906,
+            6.068058,
+            6.057458,
+            5.963576,
+            6.087609,
+            6.000127,
+            6.059208,
+            6.028367
+          ],
+          "static": [
+            6.068628,
+            6.058008,
+            6.378605,
+            6.038248,
+            6.006067,
+            5.941865,
+            6.014807,
+            6.048618,
+            6.050838,
+            6.055518,
+            5.971336,
+            6.023178,
+            6.037228,
+            6.040527,
+            5.985096,
+            6.361773,
+            6.049968,
+            6.026807,
+            6.038198,
+            5.952895,
+            6.042427
+          ],
+          "prototype": [
+            6.103799,
+            6.15644,
+            6.153849,
+            6.142709,
+            6.15484,
+            6.13066,
+            6.17018,
+            6.164059,
+            6.118299,
+            6.194481,
+            6.15136,
+            6.071918,
+            6.17754,
+            6.138519,
+            6.167561,
+            6.127559,
+            6.1752,
+            6.14891,
+            6.16844,
+            6.15168,
+            6.076508
+          ],
+          "executed": [
+            6.368344,
+            6.030687,
+            6.101109,
+            6.104098,
+            6.103408,
+            6.119279,
+            6.029427,
+            6.11601,
+            6.13508,
+            6.099659,
+            6.123839,
+            6.104829,
+            5.999146,
+            6.103949,
+            6.126859,
+            6.068678,
+            6.100419,
+            6.014607,
+            6.125699,
+            6.112039,
+            6.088688
+          ]
+        }
+      },
+      "fold32": {
+        "entry": "fold.tide",
+        "source_hashes": {
+          "fold.tide": "34723cddf9239a9a453d8e2b8dbff4bc1caa92dcb7443e30b778d67925079287"
+        },
+        "cells": {
+          "before": {
+            "ms": 5.679431,
+            "tokens": 208,
+            "bytes": 510,
+            "definitions": 1,
+            "sha256": "ccd344ce646d4149e2a593c8bf2fd8a33da6c161d7d4063d5d3f9d9c48042687"
+          },
+          "static": {
+            "ms": 5.66493,
+            "tokens": 208,
+            "bytes": 510,
+            "definitions": 1,
+            "sha256": "ccd344ce646d4149e2a593c8bf2fd8a33da6c161d7d4063d5d3f9d9c48042687"
+          },
+          "prototype": {
+            "ms": 5.852934,
+            "tokens": 247,
+            "bytes": 631,
+            "definitions": 1,
+            "execution": {
+              "complete": true,
+              "branches": [
+                {
+                  "node": "2:34",
+                  "op": "if",
+                  "arm": "then"
+                },
+                {
+                  "node": "2:34",
+                  "op": "if",
+                  "arm": "else"
+                }
+              ]
+            },
+            "sha256": "27d72bd594374e91df8176af6d68f14691863519916363220b3daee4a1a58959"
+          },
+          "executed": {
+            "ms": 5.836813,
+            "tokens": 226,
+            "bytes": 576,
+            "definitions": 1,
+            "execution": {
+              "complete": true,
+              "branches": {
+                "2:34": [
+                  "then",
+                  "else"
+                ]
+              }
+            },
+            "sha256": "ce19173da34240444cf7beabc899c9c1ef5df24197fd563ffed94b6f2122a2c4"
+          }
+        },
+        "times": {
+          "before": [
+            5.684701,
+            5.65796,
+            5.870934,
+            5.693571,
+            5.574319,
+            5.610159,
+            5.590149,
+            5.688331,
+            5.679431,
+            5.67315,
+            5.798843,
+            5.671231,
+            5.594888,
+            5.608259,
+            5.597919,
+            5.68759,
+            5.681041,
+            5.931885,
+            5.703631,
+            5.710761,
+            5.6168
+          ],
+          "static": [
+            5.579898,
+            6.791662,
+            5.696731,
+            5.65677,
+            5.65733,
+            5.664301,
+            5.616419,
+            5.574308,
+            5.577418,
+            5.66493,
+            5.683421,
+            5.68637,
+            5.679691,
+            5.776363,
+            5.601219,
+            5.589409,
+            5.567458,
+            5.684101,
+            5.679921,
+            5.6765,
+            5.68005
+          ],
+          "prototype": [
+            5.844754,
+            5.867085,
+            5.763642,
+            5.862584,
+            5.852934,
+            5.879914,
+            5.842943,
+            5.868694,
+            5.881195,
+            5.758233,
+            5.762582,
+            5.898465,
+            5.850694,
+            5.864704,
+            5.846603,
+            5.886815,
+            5.889345,
+            5.799533,
+            5.874284,
+            5.844344,
+            5.840644
+          ],
+          "executed": [
+            5.802273,
+            5.850014,
+            5.853044,
+            5.775253,
+            5.834763,
+            5.858764,
+            5.840464,
+            5.848444,
+            5.833344,
+            5.823453,
+            5.871264,
+            5.760132,
+            5.863834,
+            5.847074,
+            5.835963,
+            5.845194,
+            5.842244,
+            5.817893,
+            5.801543,
+            5.743932,
+            5.836813
+          ]
+        }
+      },
+      "fold4096": {
+        "entry": "fold.tide",
+        "source_hashes": {
+          "fold.tide": "b1c2de4f39e800ec0d925018b48caa1d99b9206df649ad3ee96b23e7c5b9c392"
+        },
+        "cells": {
+          "before": {
+            "ms": 19.637373,
+            "tokens": 8341,
+            "bytes": 9997,
+            "definitions": 1,
+            "sha256": "41ca27a33f682346925e618323e13a1947b06bafc74dd090137292af109a4622"
+          },
+          "static": {
+            "ms": 19.850047,
+            "tokens": 8341,
+            "bytes": 9997,
+            "definitions": 1,
+            "sha256": "41ca27a33f682346925e618323e13a1947b06bafc74dd090137292af109a4622"
+          },
+          "prototype": {
+            "ms": 23.520747,
+            "tokens": 8385,
+            "bytes": 10141,
+            "definitions": 1,
+            "execution": {
+              "complete": false,
+              "reason": "step_limit",
+              "branches": [
+                {
+                  "node": "2:34",
+                  "op": "if",
+                  "arm": "then"
+                },
+                {
+                  "node": "2:34",
+                  "op": "if",
+                  "arm": "else"
+                }
+              ]
+            },
+            "sha256": "434dc8605b8956c1f8bdb4d08d0d895c64480e220b45de8b930a45bdd3cf97a5"
+          },
+          "executed": {
+            "ms": 32.586814,
+            "tokens": 166,
+            "bytes": 510,
+            "definitions": 1,
+            "execution": {
+              "complete": true,
+              "branches": {
+                "2:34": [
+                  "then",
+                  "else"
+                ]
+              }
+            },
+            "input_example": "statement",
+            "sha256": "2be4f8cb3c8bc12f8a6e201cac7c2c938f338997e76fc5e457fb6d31921473e8"
+          }
+        },
+        "times": {
+          "before": [
+            19.867747,
+            19.721944,
+            19.569901,
+            19.649942,
+            19.672602,
+            19.652373,
+            19.655203,
+            19.702673,
+            19.882797,
+            19.631462,
+            19.568641,
+            19.614322,
+            19.598161,
+            19.661603,
+            19.554891,
+            19.568621,
+            19.637373,
+            19.55475,
+            19.664952,
+            19.595182,
+            19.574181
+          ],
+          "static": [
+            20.169202,
+            20.014709,
+            19.972539,
+            19.99996,
+            19.913517,
+            19.725744,
+            19.826016,
+            19.871547,
+            19.877287,
+            19.754424,
+            19.909907,
+            19.735724,
+            19.988199,
+            19.731304,
+            19.803716,
+            19.850047,
+            20.07469,
+            19.825746,
+            19.729944,
+            19.685263,
+            19.813735
+          ],
+          "prototype": [
+            23.665241,
+            23.891265,
+            23.520747,
+            23.607779,
+            23.578159,
+            23.702311,
+            23.511998,
+            23.440776,
+            23.462856,
+            23.533598,
+            23.434407,
+            23.471796,
+            23.577069,
+            23.540918,
+            23.414396,
+            23.418216,
+            23.549559,
+            23.509678,
+            23.523088,
+            23.451647,
+            23.511008
+          ],
+          "executed": [
+            33.247087,
+            32.749097,
+            32.688206,
+            32.720737,
+            32.674536,
+            32.586814,
+            32.303448,
+            32.534004,
+            32.585624,
+            32.504613,
+            32.538913,
+            32.438371,
+            32.674826,
+            32.37539,
+            32.813538,
+            32.566273,
+            32.557833,
+            32.716857,
+            32.743657,
+            32.442051,
+            32.771368
+          ]
+        }
+      },
+      "passing": {
+        "entry": "apps/balance.tide",
+        "source_hashes": {
+          "apps/balance.tide": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25"
+        },
+        "cells": {
+          "before": {
+            "ms": 5.998016,
+            "tokens": 5,
+            "bytes": 13,
+            "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877"
+          },
+          "static": {
+            "ms": 5.981796,
+            "tokens": 5,
+            "bytes": 13,
+            "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877"
+          },
+          "prototype": {
+            "ms": 5.987917,
+            "tokens": 5,
+            "bytes": 13,
+            "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877"
+          },
+          "executed": {
+            "ms": 5.989287,
+            "tokens": 5,
+            "bytes": 13,
+            "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877"
+          }
+        },
+        "times": {
+          "before": [
+            5.936395,
+            6.017347,
+            6.035907,
+            5.985587,
+            6.203291,
+            5.998827,
+            6.018277,
+            6.011667,
+            5.971596,
+            5.907275,
+            6.045148,
+            5.998016,
+            5.965086,
+            5.904805,
+            6.024197,
+            5.975007,
+            5.982876,
+            5.905625,
+            6.030487,
+            6.021897,
+            5.966426
+          ],
+          "static": [
+            6.002337,
+            5.911146,
+            5.879595,
+            6.006007,
+            5.987537,
+            5.939135,
+            5.894655,
+            6.001477,
+            5.964326,
+            5.981557,
+            5.876794,
+            5.988997,
+            5.981796,
+            5.950296,
+            5.872604,
+            6.006107,
+            6.011417,
+            5.986987,
+            5.875934,
+            5.983666,
+            5.996107
+          ],
+          "prototype": [
+            5.977326,
+            6.003456,
+            5.994096,
+            5.969196,
+            6.007197,
+            5.987917,
+            5.971306,
+            5.896345,
+            6.018837,
+            5.973516,
+            5.954256,
+            5.885404,
+            6.026128,
+            6.018467,
+            5.977096,
+            5.900675,
+            6.073128,
+            6.021087,
+            6.004357,
+            5.907626,
+            6.026228
+          ],
+          "executed": [
+            6.045497,
+            5.997867,
+            5.966927,
+            5.892524,
+            5.892534,
+            5.987276,
+            6.016508,
+            5.980426,
+            5.879844,
+            6.003957,
+            5.989287,
+            5.970597,
+            5.896735,
+            6.004377,
+            6.011146,
+            5.998346,
+            5.895275,
+            6.024188,
+            6.018317,
+            5.999046,
+            5.908645
+          ]
+        }
+      }
+    }
+  },
+  "abnahme": {
+    "tariff": {
+      "diagnostic": {
+        "file": "checkout.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 6,
+        "column": 1,
+        "example": "band",
+        "expected": 6,
+        "actual": 8,
+        "repair": {
+          "revision": "0f2791dd02c47aa030f2c04cf5f265435c633781b54eedffdfd63a529f33f8e8",
+          "entry": "checkout.tide",
+          "target": "charge",
+          "inputs": {
+            "parcel": 1,
+            "grams": 500
+          },
+          "execution": {
+            "complete": true,
+            "branches": {
+              "4:1": [
+                "else"
+              ],
+              "4:33": [
+                "then"
+              ],
+              "tariffs.tide:7:1": [
+                "else"
+              ]
+            }
+          },
+          "definitions": [
+            {
+              "node": "4:1",
+              "signature": "charge parcel:i grams:i > i",
+              "body": "(if (< parcel 1) (letter grams) (if (eq parcel 1) (packet grams) (freight grams)))"
+            },
+            {
+              "node": "tariffs.tide:7:1",
+              "signature": "packet grams:i > i",
+              "body": "(if (< grams 500) (small grams) (large grams))"
+            },
+            {
+              "node": "bands.tide:11:1",
+              "signature": "large grams:i > i",
+              "body": "(+ 8 (div grams 1000))"
+            }
+          ]
+        }
+      },
+      "full_definitions": 10
+    },
+    "input_threshold": [
+      1024,
+      1025
+    ],
+    "rule": {
+      "complete": true,
+      "branches": {
+        "toggle": [
+          1
+        ]
+      }
+    },
+    "guard_error": {
+      "file": "lib.tide",
+      "code": "E_DATA",
+      "message": "Division by zero",
+      "line": 2,
+      "column": 1,
+      "reason": "division_by_zero"
+    },
+    "short_circuit": {
+      "complete": true,
+      "branches": {
+        "2:6": [
+          "short"
+        ],
+        "2:1": [
+          "rhs"
+        ],
+        "2:23": [
+          "short"
+        ]
+      }
+    },
+    "imported_example": "imported",
+    "large_fold": {
+      "complete": true,
+      "branches": {
+        "2:34": [
+          "then",
+          "else"
+        ]
+      }
+    },
+    "previous_repairs": [
+      {
+        "family": "locator",
+        "former_trial": 1,
+        "edits": [
+          {
+            "node": "choice.tide:4:1",
+            "replace": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      },
+      {
+        "family": "dial",
+        "former_trial": 4,
+        "edits": [
+          {
+            "node": "units.tide:2:1",
+            "replace": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* rest 2) width) whole (+ whole 1))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      },
+      {
+        "family": "locator",
+        "former_trial": 6,
+        "edits": [
+          {
+            "node": "choice.tide:4:1",
+            "replace": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      },
+      {
+        "family": "dial",
+        "former_trial": 7,
+        "edits": [
+          {
+            "node": "units.tide:2:1",
+            "replace": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* rest 2) width) whole (+ whole 1))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      },
+      {
+        "family": "locator",
+        "former_trial": 9,
+        "edits": [
+          {
+            "node": "choice.tide:4:1",
+            "replace": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      },
+      {
+        "family": "dial",
+        "former_trial": 12,
+        "edits": [
+          {
+            "node": "units.tide:2:1",
+            "replace": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* 2 rest) width) whole (+ whole 1))))"
+          }
+        ],
+        "public": 6,
+        "with_hidden": 78
+      }
+    ],
+    "reparierte_faelle": {
+      "paketpreis": {
+        "passed": 14
+      },
+      "abbuchung": {
+        "passed": 7
+      }
+    }
+  }
+}

@@ -1,0 +1,1306 @@
+{
+  "runs": [
+    {
+      "label": "rows=16 invalid=0",
+      "expected": {
+        "none": true
+      },
+      "medians": {
+        "before_option": 5.313914,
+        "initial_option": 5.307563,
+        "after_option": 5.220022,
+        "initial_catch": 5.853894,
+        "after_catch": 5.899365,
+        "cpython": 9.079397
+      },
+      "times": {
+        "before_option": [
+          5.395655,
+          5.265012,
+          5.304563,
+          5.186002,
+          5.313914,
+          5.233742,
+          5.346154,
+          5.217422,
+          5.449285,
+          5.364335,
+          5.326434,
+          5.334874,
+          5.482917,
+          5.271693,
+          5.375545,
+          5.164101,
+          5.295282,
+          5.580579,
+          5.535068,
+          5.271123,
+          5.247172
+        ],
+        "initial_option": [
+          5.291733,
+          5.319493,
+          5.357215,
+          5.387135,
+          5.63509,
+          5.248862,
+          5.360905,
+          5.259223,
+          5.219872,
+          5.307563,
+          5.325284,
+          5.208251,
+          5.242062,
+          5.201641,
+          5.266462,
+          5.258002,
+          5.354774,
+          5.418365,
+          5.337794,
+          5.375394,
+          5.250392
+        ],
+        "after_option": [
+          5.324804,
+          5.288204,
+          5.204012,
+          5.219182,
+          5.312354,
+          5.208811,
+          5.247462,
+          5.165071,
+          5.264872,
+          5.208191,
+          5.297183,
+          5.180611,
+          5.220022,
+          5.193881,
+          5.198551,
+          5.285173,
+          5.208161,
+          5.299803,
+          5.228292,
+          5.206121,
+          5.993947
+        ],
+        "initial_catch": [
+          6.213111,
+          5.924465,
+          5.880585,
+          6.002307,
+          5.922115,
+          5.842644,
+          5.809874,
+          5.853604,
+          5.850525,
+          5.956126,
+          5.995187,
+          5.863924,
+          5.819863,
+          5.821563,
+          5.788853,
+          5.812233,
+          5.853894,
+          5.845294,
+          6.064718,
+          5.922775,
+          5.815514
+        ],
+        "after_catch": [
+          5.899365,
+          5.840604,
+          5.987316,
+          5.989377,
+          5.817963,
+          6.002836,
+          5.815423,
+          5.907895,
+          5.820603,
+          5.809444,
+          6.20851,
+          5.821113,
+          5.830144,
+          5.906124,
+          5.904605,
+          5.928316,
+          5.788322,
+          5.816904,
+          6.099379,
+          5.814143,
+          5.934276
+        ],
+        "cpython": [
+          9.051277,
+          9.038167,
+          8.954965,
+          9.029656,
+          9.012096,
+          8.975305,
+          9.002376,
+          9.132487,
+          9.037076,
+          9.346432,
+          9.159958,
+          9.145248,
+          9.344712,
+          9.079397,
+          9.000986,
+          9.178009,
+          9.020356,
+          9.137388,
+          9.195149,
+          9.158819,
+          9.21164
+        ]
+      },
+      "paired_saving_ms": {
+        "initial_catch_minus_after_catch": -0.005549000000000248,
+        "before_option_minus_after_catch": -0.5430199999999994,
+        "before_option_minus_after_option": 0.07781199999999977
+      }
+    },
+    {
+      "label": "rows=4096 invalid=1",
+      "expected": {
+        "some": 1
+      },
+      "medians": {
+        "before_option": 15.711006,
+        "initial_option": 16.509072,
+        "after_option": 15.36071,
+        "initial_catch": 10.641637,
+        "after_catch": 10.565886,
+        "cpython": 9.358372
+      },
+      "times": {
+        "before_option": [
+          15.846069,
+          15.966311,
+          15.737077,
+          15.711006,
+          15.818968,
+          15.620754,
+          15.654435,
+          15.635965,
+          15.723796,
+          15.686766,
+          15.689936,
+          15.664775,
+          15.756708,
+          15.663665,
+          15.745647,
+          15.683156,
+          15.775818,
+          15.959751,
+          15.653355,
+          15.779448,
+          15.683635
+        ],
+        "initial_option": [
+          16.589133,
+          16.454781,
+          16.499691,
+          16.414609,
+          16.619494,
+          16.521632,
+          16.509072,
+          16.598443,
+          16.46695,
+          16.671085,
+          16.42693,
+          16.444341,
+          16.555242,
+          16.513192,
+          16.341189,
+          16.579013,
+          16.465671,
+          16.496321,
+          16.604733,
+          16.478501,
+          16.553242
+        ],
+        "after_option": [
+          15.269788,
+          15.350859,
+          15.288798,
+          15.308008,
+          15.39021,
+          15.4027,
+          15.454971,
+          15.273777,
+          15.779188,
+          15.39238,
+          15.505493,
+          15.324378,
+          15.496041,
+          15.326109,
+          15.454941,
+          15.363389,
+          15.357309,
+          15.467971,
+          15.333298,
+          15.354319,
+          15.36071
+        ],
+        "initial_catch": [
+          10.661267,
+          10.73932,
+          10.716188,
+          10.659338,
+          10.647037,
+          10.652877,
+          10.648937,
+          10.700448,
+          10.587316,
+          10.652128,
+          10.605967,
+          10.611026,
+          10.583126,
+          10.648727,
+          10.611067,
+          10.635627,
+          10.637577,
+          10.633317,
+          10.625917,
+          10.641637,
+          10.613667
+        ],
+        "after_catch": [
+          10.501395,
+          10.533245,
+          10.589506,
+          10.503235,
+          10.567946,
+          10.631497,
+          10.550536,
+          10.582197,
+          10.596596,
+          10.547316,
+          10.562235,
+          10.558555,
+          10.560336,
+          10.574786,
+          10.606967,
+          10.572566,
+          10.549835,
+          10.615207,
+          10.565886,
+          10.547696,
+          10.597027
+        ],
+        "cpython": [
+          9.384512,
+          9.421084,
+          9.344882,
+          9.327351,
+          9.356532,
+          9.291191,
+          9.370923,
+          9.358662,
+          9.406023,
+          9.397103,
+          9.347033,
+          9.29731,
+          9.304241,
+          9.373643,
+          9.356463,
+          9.305792,
+          9.371313,
+          9.387793,
+          9.358372,
+          9.384423,
+          9.260181
+        ]
+      },
+      "paired_saving_ms": {
+        "initial_catch_minus_after_catch": 0.07394099999999959,
+        "before_option_minus_after_catch": 5.138680000000001,
+        "before_option_minus_after_option": 0.3375559999999993
+      }
+    },
+    {
+      "label": "rows=4096 invalid=2048",
+      "expected": {
+        "some": 2048
+      },
+      "medians": {
+        "before_option": 20.494379,
+        "initial_option": 22.07979,
+        "after_option": 20.401187,
+        "initial_catch": 22.121161,
+        "after_catch": 20.809486,
+        "cpython": 9.497866
+      },
+      "times": {
+        "before_option": [
+          20.494379,
+          20.468479,
+          20.695003,
+          20.56395,
+          20.417268,
+          20.463738,
+          20.371767,
+          20.361997,
+          20.431798,
+          20.445328,
+          20.626302,
+          20.471769,
+          21.329486,
+          20.608121,
+          20.52962,
+          20.630342,
+          20.655843,
+          20.609882,
+          20.453559,
+          20.596651,
+          20.454669
+        ],
+        "initial_option": [
+          22.032279,
+          22.126661,
+          22.100171,
+          22.184783,
+          22.024059,
+          21.986358,
+          21.997169,
+          22.08759,
+          22.04368,
+          21.969588,
+          22.07531,
+          22.192072,
+          22.07979,
+          22.097681,
+          22.393867,
+          22.175453,
+          22.244184,
+          22.206232,
+          22.013059,
+          22.000559,
+          22.015938
+        ],
+        "after_option": [
+          20.538191,
+          20.401187,
+          20.51691,
+          20.345196,
+          20.295226,
+          20.339757,
+          20.410117,
+          20.359207,
+          20.395627,
+          20.339736,
+          20.361347,
+          20.622902,
+          20.470818,
+          21.673083,
+          20.466338,
+          20.413038,
+          20.452288,
+          20.380477,
+          20.294715,
+          20.513779,
+          20.319726
+        ],
+        "initial_catch": [
+          21.961658,
+          22.367346,
+          22.181592,
+          22.131891,
+          22.038109,
+          22.121161,
+          22.07181,
+          22.166392,
+          22.114761,
+          22.087201,
+          22.194633,
+          22.630631,
+          23.543398,
+          21.960298,
+          22.176422,
+          22.06422,
+          22.012019,
+          22.153411,
+          22.165832,
+          22.038589,
+          22.042249
+        ],
+        "after_catch": [
+          20.935598,
+          20.834196,
+          20.929648,
+          20.777925,
+          20.747405,
+          20.765344,
+          20.780074,
+          20.839956,
+          20.809486,
+          20.774975,
+          21.677432,
+          20.685433,
+          21.098041,
+          20.774464,
+          20.848596,
+          20.855016,
+          20.731654,
+          20.977749,
+          20.856556,
+          20.755744,
+          20.806195
+        ],
+        "cpython": [
+          9.511945,
+          9.550296,
+          9.460195,
+          9.475295,
+          9.550776,
+          9.447244,
+          9.548297,
+          9.432844,
+          9.497866,
+          9.424154,
+          9.561506,
+          9.660789,
+          9.676328,
+          9.490525,
+          9.534726,
+          9.571287,
+          9.577806,
+          9.491595,
+          9.421314,
+          9.442404,
+          9.409254
+        ]
+      },
+      "paired_saving_ms": {
+        "initial_catch_minus_after_catch": 1.2917360000000002,
+        "before_option_minus_after_catch": -0.32964700000000136,
+        "before_option_minus_after_option": 0.12204200000000043
+      }
+    },
+    {
+      "label": "rows=4096 invalid=4096",
+      "expected": {
+        "some": 4096
+      },
+      "medians": {
+        "before_option": 25.387475,
+        "initial_option": 27.423054,
+        "after_option": 25.456157,
+        "initial_catch": 33.473303,
+        "after_catch": 31.017555,
+        "cpython": 9.643728
+      },
+      "times": {
+        "before_option": [
+          25.217271,
+          25.575669,
+          25.445955,
+          25.342493,
+          25.453416,
+          25.449436,
+          25.425495,
+          25.314143,
+          25.348514,
+          25.387355,
+          25.393354,
+          25.308483,
+          25.374504,
+          25.593939,
+          25.383675,
+          25.387475,
+          25.352564,
+          25.332533,
+          25.399725,
+          25.586298,
+          25.604609
+        ],
+        "initial_option": [
+          27.590118,
+          27.603088,
+          27.474865,
+          27.350013,
+          27.335073,
+          27.513326,
+          27.326513,
+          27.344523,
+          27.354323,
+          27.363253,
+          27.866723,
+          27.326013,
+          27.478005,
+          27.423054,
+          27.565287,
+          27.851243,
+          27.349853,
+          27.639038,
+          27.355663,
+          27.393923,
+          27.585157
+        ],
+        "after_option": [
+          25.257942,
+          25.574088,
+          25.458336,
+          25.439775,
+          25.487036,
+          25.222462,
+          25.462616,
+          25.480776,
+          25.393645,
+          25.441845,
+          25.466286,
+          25.419855,
+          25.472336,
+          25.450196,
+          25.488366,
+          25.608729,
+          25.337824,
+          25.16366,
+          25.376214,
+          25.456157,
+          26.247271
+        ],
+        "initial_catch": [
+          33.240288,
+          33.265728,
+          33.473303,
+          33.691267,
+          33.559975,
+          33.498103,
+          33.555254,
+          33.597425,
+          33.123006,
+          33.109095,
+          33.38587,
+          33.663536,
+          33.441692,
+          33.39573,
+          33.129876,
+          33.526073,
+          33.709397,
+          33.458972,
+          33.491362,
+          33.328909,
+          33.591525
+        ],
+        "after_catch": [
+          30.930273,
+          30.837502,
+          31.017555,
+          31.27755,
+          31.215358,
+          30.952283,
+          30.912972,
+          30.873892,
+          31.166257,
+          31.019294,
+          31.342711,
+          31.145647,
+          30.866271,
+          31.410572,
+          30.980064,
+          30.922132,
+          31.019454,
+          30.865162,
+          31.266889,
+          31.002034,
+          32.218278
+        ],
+        "cpython": [
+          9.614248,
+          9.736879,
+          9.729829,
+          9.647068,
+          9.643728,
+          9.663739,
+          9.657508,
+          9.633628,
+          9.578127,
+          9.642238,
+          9.620017,
+          9.672599,
+          9.646568,
+          9.663408,
+          9.792671,
+          9.676299,
+          9.595206,
+          9.628148,
+          9.640128,
+          9.587576,
+          9.612478
+        ]
+      },
+      "paired_saving_ms": {
+        "initial_catch_minus_after_catch": 2.413717000000002,
+        "before_option_minus_after_catch": -5.631938999999999,
+        "before_option_minus_after_option": -0.04067099999999968
+      }
+    },
+    {
+      "label": "rows=4096 invalid=0",
+      "expected": {
+        "none": true
+      },
+      "medians": {
+        "before_option": 25.467606,
+        "initial_option": 27.485106,
+        "after_option": 25.450536,
+        "initial_catch": 33.37978,
+        "after_catch": 31.066565,
+        "cpython": 9.673028
+      },
+      "times": {
+        "before_option": [
+          26.13329,
+          26.800573,
+          25.419115,
+          25.586338,
+          25.605968,
+          25.440955,
+          25.510957,
+          25.454446,
+          25.467606,
+          25.64469,
+          25.271462,
+          25.382305,
+          25.547467,
+          25.472557,
+          25.379975,
+          25.372565,
+          25.582069,
+          25.344603,
+          25.320923,
+          25.530268,
+          25.304233
+        ],
+        "initial_option": [
+          27.75101,
+          27.782941,
+          27.454765,
+          27.417835,
+          27.594478,
+          27.539886,
+          27.253881,
+          27.606317,
+          27.551967,
+          27.474495,
+          27.603508,
+          27.595627,
+          27.291051,
+          27.471885,
+          27.303772,
+          27.697139,
+          27.485106,
+          27.356153,
+          27.399053,
+          27.396784,
+          27.548587
+        ],
+        "after_option": [
+          25.732841,
+          25.408065,
+          25.69607,
+          25.486366,
+          25.616719,
+          25.484866,
+          25.348554,
+          25.195151,
+          25.580598,
+          25.401744,
+          25.492286,
+          25.249582,
+          25.370095,
+          25.453046,
+          25.372374,
+          25.323554,
+          25.493867,
+          25.394865,
+          25.403845,
+          25.514757,
+          25.450536
+        ],
+        "initial_catch": [
+          33.300829,
+          33.237708,
+          33.622745,
+          33.518624,
+          33.284859,
+          33.35963,
+          33.619005,
+          33.508893,
+          33.716727,
+          33.451331,
+          33.128266,
+          33.456862,
+          33.275529,
+          33.492013,
+          33.230027,
+          33.34695,
+          33.37978,
+          33.603235,
+          33.165446,
+          33.505523,
+          33.086654
+        ],
+        "after_catch": [
+          31.665758,
+          31.714088,
+          31.078455,
+          31.102706,
+          30.841251,
+          31.057845,
+          31.066565,
+          30.993354,
+          31.025985,
+          31.32217,
+          31.162687,
+          30.948493,
+          31.32332,
+          31.020355,
+          30.883122,
+          31.086836,
+          31.31899,
+          31.024314,
+          31.034555,
+          31.172137,
+          30.884282
+        ],
+        "cpython": [
+          9.939233,
+          9.792861,
+          9.686929,
+          9.655438,
+          9.703819,
+          9.635118,
+          9.663888,
+          9.709729,
+          9.664348,
+          9.673028,
+          9.650158,
+          9.699299,
+          9.645078,
+          9.720589,
+          9.696919,
+          9.616027,
+          9.651798,
+          9.642858,
+          9.691829,
+          9.645378,
+          9.708209
+        ]
+      },
+      "paired_saving_ms": {
+        "initial_catch_minus_after_catch": 2.3333859999999973,
+        "before_option_minus_after_catch": -5.580048999999999,
+        "before_option_minus_after_option": 0.019510999999997836
+      }
+    },
+    {
+      "label": "balance=16",
+      "expected": -4,
+      "medians": {
+        "before": 5.62574,
+        "after": 5.63895
+      },
+      "times": {
+        "before": [
+          5.65344,
+          5.532218,
+          5.63453,
+          5.678511,
+          5.680071,
+          5.516888,
+          5.509057,
+          5.621609,
+          5.497607,
+          5.573099,
+          5.65968,
+          5.547658,
+          5.693081,
+          5.65922,
+          5.62574,
+          5.529257,
+          5.529198,
+          5.63857,
+          5.65473,
+          5.575509,
+          5.63847
+        ],
+        "after": [
+          5.63895,
+          5.740212,
+          5.541708,
+          5.6671,
+          5.525917,
+          5.64505,
+          5.582169,
+          5.615359,
+          5.64856,
+          5.65176,
+          5.525548,
+          5.68374,
+          5.614309,
+          5.538698,
+          5.676541,
+          5.703101,
+          5.66524,
+          5.538728,
+          5.782643,
+          5.62956,
+          5.617179
+        ]
+      }
+    },
+    {
+      "label": "balance=4096",
+      "expected": -1364,
+      "medians": {
+        "before": 7.059628,
+        "after": 7.062117
+      },
+      "times": {
+        "before": [
+          7.026637,
+          7.082418,
+          7.016206,
+          7.033067,
+          7.021426,
+          7.059628,
+          6.969266,
+          7.084718,
+          7.156849,
+          7.440724,
+          7.1672,
+          7.407584,
+          7.094379,
+          7.036857,
+          7.021527,
+          7.066507,
+          7.003247,
+          7.129339,
+          6.950865,
+          7.018117,
+          7.080898
+        ],
+        "after": [
+          7.055207,
+          7.041867,
+          7.031407,
+          7.061707,
+          7.095098,
+          7.113669,
+          7.145289,
+          7.083268,
+          7.062168,
+          7.158469,
+          7.439355,
+          6.977886,
+          7.131299,
+          6.977936,
+          7.013647,
+          7.031478,
+          7.062117,
+          7.069958,
+          7.033557,
+          7.016377,
+          7.111619
+        ]
+      }
+    }
+  ],
+  "warm": 3,
+  "n": 21,
+  "core": 2,
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "python": "Python 3.14.10",
+  "hashes": {
+    "before": "4aa439e8733c948e26493c97dfad0bbbd0c4c985b4615cb431ec3b9e43374917",
+    "initial": "06d560601de3777b0ed7b57ad54e7a17eacacdc1bf327aaff8a7d6bd99461fbb",
+    "after": "3f932facf5440b67d090098779ea73d90818802f1008c55a7aed1928af32fff9"
+  },
+  "unit": "ms, wall clock, process start to exit",
+  "inputs": "rows[i] = String(i % 211 - 105), one-based invalid row replaced by bad; 0 means no invalid row. balance inputs alternate 1,-1,-1 from index 0.",
+  "sources": {
+    "before_option": "first_invalid rows:*t > ?i\nfold rows (nil i) previous row line\ncase previous (case (int line) (some row) value (nil i)) bad previous\n",
+    "after_catch": "use readings\n\nfirst_invalid rows:*t > ?i\ncatch E_DATA\n  (fold rows (nil i) ok row line (let value (reading line row) ok))\n  problem (if (has_reason problem \"invalid_integer\") (input_line problem) (raise problem))\n\nexample all_valid first_invalid\n{\"inputs\":{\"rows\":[\"-9\",\"0\",\"9223372036854775807\"]},\"expect\":{\"none\":true}}\n\nexample first_bad first_invalid\n{\"inputs\":{\"rows\":[\"4\",\"x\",\"-\",\"9\"]},\"expect\":{\"some\":2}}\n\nexample empty first_invalid\n{\"inputs\":{\"rows\":[]},\"expect\":{\"none\":true}}\n",
+    "readings": "reading line:t row:i > i\nneed int line \"invalid_integer\" row\n\nhigher value:i previous:?i > ?i\nsome case previous value old if > value old value old\n",
+    "cpython": "import json\nimport sys\n\ndef first_invalid(rows):\n    if type(rows) is not list or len(rows) > 4096 or any(type(s) is not str for s in rows):\n        raise ValueError(\"invalid rows\")\n    for row, text in enumerate(rows, 1):\n        digits = text.removeprefix(\"-\")\n        if not (digits.isascii() and digits.isdecimal()):\n            return {\"some\": row}\n        magnitude = digits.lstrip(\"0\") or \"0\"\n        limit = \"9223372036854775808\" if text.startswith(\"-\") else \"9223372036854775807\"\n        if len(magnitude) > 19 or (len(magnitude) == 19 and magnitude > limit):\n            return {\"some\": row}\n    return {\"none\": True}\n\nprint(json.dumps(first_invalid(**json.loads(sys.argv[1])), separators=(\",\", \":\")))\n"
+  },
+  "acceptance": [
+    {
+      "source": "main > i\ncatch E_LIMIT 1 _ 2",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unsupported catch target",
+        "line": 2,
+        "column": 7
+      }
+    },
+    {
+      "source": "main > i\ncatch E_CAPABILITY 1 _ 2",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unsupported catch target",
+        "line": 2,
+        "column": 7
+      }
+    },
+    {
+      "source": "main > i\ncatch E_INPUT 1 _ 2",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unsupported catch target",
+        "line": 2,
+        "column": 7
+      }
+    },
+    {
+      "source": "main > i\ncatch E_UNKNOWN 1 _ 2",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unsupported catch target",
+        "line": 2,
+        "column": 7
+      }
+    },
+    {
+      "source": "main > i\ninput_line unknown",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Handler diagnostic name required",
+        "line": 2,
+        "column": 12
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 1 e e",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Diagnostic requires a diagnostic operation",
+        "line": 2,
+        "column": 18
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 1 e 1 e",
+      "op": "check",
+      "expected": "E_SYNTAX",
+      "result": {
+        "file": "case.tide",
+        "code": "E_SYNTAX",
+        "message": "Extra operand",
+        "line": 2,
+        "column": 20
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 1 err (has_reason err 4)",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected operand type",
+        "line": 2,
+        "column": 36,
+        "operation": "has_reason",
+        "argument": 1,
+        "expected": "t",
+        "actual": "i"
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 1 _ true",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected type",
+        "line": 2,
+        "column": 18,
+        "expected": "i",
+        "actual": "b"
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 1 _ (raise _)",
+      "op": "check",
+      "expected": "E_TYPE",
+      "result": {
+        "file": "case.tide",
+        "code": "E_TYPE",
+        "message": "Handler diagnostic name required",
+        "line": 2,
+        "column": 25
+      }
+    },
+    {
+      "source": "main err:i > i\ncatch E_DATA err err 0",
+      "op": "check",
+      "expected": "E_NAME",
+      "result": {
+        "file": "case.tide",
+        "code": "E_NAME",
+        "message": "Invalid or duplicate name: err",
+        "line": 2,
+        "column": 18
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA 9 e (raise e)",
+      "op": "check",
+      "expected": [
+        "E_DATA"
+      ],
+      "result": [
+        "E_DATA"
+      ]
+    },
+    {
+      "source": "main > i\ncatch E_DATA 9 e (raise e)",
+      "op": "run",
+      "expected": 9,
+      "result": 9
+    },
+    {
+      "source": "main > i\ncatch E_IO 9 e (raise e)",
+      "op": "check",
+      "expected": [
+        "E_IO"
+      ],
+      "result": [
+        "E_IO"
+      ]
+    },
+    {
+      "source": "main > i\ncatch E_IO 9 e (raise e)",
+      "op": "run",
+      "expected": 9,
+      "result": 9
+    },
+    {
+      "source": "main > i\ncatch E_OVERFLOW 9 e (raise e)",
+      "op": "check",
+      "expected": [
+        "E_OVERFLOW"
+      ],
+      "result": [
+        "E_OVERFLOW"
+      ]
+    },
+    {
+      "source": "main > i\ncatch E_OVERFLOW 9 e (raise e)",
+      "op": "run",
+      "expected": 9,
+      "result": 9
+    },
+    {
+      "source": "main > i\ncatch E_UTF8 9 e (raise e)",
+      "op": "check",
+      "expected": [
+        "E_UTF8"
+      ],
+      "result": [
+        "E_UTF8"
+      ]
+    },
+    {
+      "source": "main > i\ncatch E_UTF8 9 e (raise e)",
+      "op": "run",
+      "expected": 9,
+      "result": 9
+    },
+    {
+      "source": "main > i\ncatch E_DATA (fail \"\") _ 4",
+      "op": "run",
+      "expected": 4,
+      "result": 4
+    },
+    {
+      "source": "main > i\ncatch E_DATA (catch E_DATA (fail \"a\") _ (fail \"b\")) e (if (has_reason e \"b\") 1 0)",
+      "op": "run",
+      "expected": 1,
+      "result": 1
+    },
+    {
+      "source": "main > i\ncatch E_OVERFLOW (+ 9223372036854775807 1) e (case (input_line e) 12 x x)",
+      "op": "run",
+      "expected": 12,
+      "result": 12
+    },
+    {
+      "source": "main > i\ncatch E_DATA (catch E_DATA (need (nil i) \"r\" 14) orig (catch E_OVERFLOW (+ 9223372036854775807 1) _ (raise orig))) e (need (input_line e) \"missing\" 0)",
+      "op": "run",
+      "expected": 14,
+      "result": 14
+    },
+    {
+      "source": "main > i\ncatch E_DATA (first (pair (fail \"x\") 5)) _ 7",
+      "op": "run",
+      "expected": 7,
+      "result": 7
+    },
+    {
+      "source": "main > *i\ncatch E_DATA (append (fail \"bad\") 1) _ (list i 1 3)",
+      "op": "run",
+      "expected": [
+        3
+      ],
+      "result": [
+        3
+      ]
+    },
+    {
+      "source": "main > ?i\ncatch E_DATA (at (fail \"bad\") 1) _ (some 5)",
+      "op": "run",
+      "expected": {
+        "some": 5
+      },
+      "result": {
+        "some": 5
+      }
+    },
+    {
+      "source": "main > i\ncatch E_DATA (fold (fail \"bad\") 0 n r v (+ v n)) _ 3",
+      "op": "run",
+      "expected": 3,
+      "result": 3
+    },
+    {
+      "source": "main > i\ncatch E_DATA (case (fail \"x\") 8 v v) _ 7",
+      "op": "run",
+      "expected": 7,
+      "result": 7
+    },
+    {
+      "source": "main > i\ncatch E_DATA (if true (fail \"x\") 3) _ 9",
+      "op": "run",
+      "expected": 9,
+      "result": 9
+    },
+    {
+      "source": "main > i\ncatch E_DATA (fail \"r\") e (if (has_reason e \"r\") 6 (fail \"no\"))",
+      "op": "run",
+      "expected": 6,
+      "result": 6
+    },
+    {
+      "source": "main > b\ncatch E_DATA (eq (div 5 0) 3) e (has_reason e \"division_by_zero\")",
+      "op": "run",
+      "expected": true,
+      "result": true
+    },
+    {
+      "source": "main > i\ncatch E_DATA (fail \"r\") e (let x 3 (catch E_OVERFLOW (+ 9223372036854775807 x) nested (if (has_reason e \"r\") x 0)))",
+      "op": "run",
+      "expected": 3,
+      "result": 3
+    },
+    {
+      "case": "same diagnostic bytes through import",
+      "result": {
+        "file": "reader.tide",
+        "code": "E_DATA",
+        "message": "A value is required",
+        "line": 2,
+        "column": 1,
+        "reason": "invalid",
+        "input_line": 17
+      }
+    },
+    {
+      "case": "rule event through two handlers",
+      "result": {
+        "file": "event.tide",
+        "code": "E_OVERFLOW",
+        "message": "i64 overflow",
+        "line": 3,
+        "column": 39,
+        "event": 2
+      }
+    }
+  ],
+  "cross_module_repair": {
+    "binding": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "{\"file\":\"binder.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument x\",\"line\":1,\"column\":1,\"expected\":\"i\"}\n"
+    },
+    "diagnosis": {
+      "file": "agent.tide",
+      "code": "E_EXAMPLE",
+      "message": "Example raised an unexpected error",
+      "line": 6,
+      "column": 1,
+      "example": "wrong",
+      "expected": {
+        "some": 9
+      },
+      "actual": {
+        "file": "reader.tide",
+        "code": "E_DATA",
+        "message": "A value is required",
+        "line": 2,
+        "column": 1,
+        "reason": "bad",
+        "input_line": 9
+      },
+      "repair": {
+        "revision": "470a66458ed6fe612a6d9ed729ccf1b300deda30b9cd0cc886299f6ef63c164e",
+        "entry": "agent.tide",
+        "target": "main",
+        "inputs": {
+          "value": "x"
+        },
+        "definitions": [
+          {
+            "node": "4:1",
+            "signature": "main value:t > ?i",
+            "body": "(catch E_DATA (some (parse value)) fault (if (has_reason fault \"invalid\") (input_line fault) (raise fault)))"
+          },
+          {
+            "node": "reader.tide:2:1",
+            "signature": "parse value:t > i",
+            "body": "(need (int value) \"bad\" 9)"
+          }
+        ]
+      }
+    },
+    "edit": {
+      "base": "470a66458ed6fe612a6d9ed729ccf1b300deda30b9cd0cc886299f6ef63c164e",
+      "revision": "3099f2eb0b0c3ab7d3a36188c49374559e9dc876fb3578896d87b632e8f6144c",
+      "target": "reader.tide",
+      "examples": {
+        "passed": 1
+      },
+      "contract_changes": [],
+      "written": true
+    },
+    "passed": 1
+  },
+  "native_gate": {
+    "target": "make check-no-python",
+    "build": "clean offline Debian trixie-slim build and full native unit suite",
+    "package": "legacy upgrade and separate installed package smoke tests, first_invalid included",
+    "exit": 0
+  }
+}

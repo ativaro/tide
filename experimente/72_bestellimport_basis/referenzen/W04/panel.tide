@@ -1,0 +1,6 @@
+record OrderQty
+qty:i
+
+main payload:t > i
+let item json_decode {OrderQty} (utf8_bytes payload)
+get qty item

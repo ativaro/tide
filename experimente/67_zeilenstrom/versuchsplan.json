@@ -1,0 +1,12 @@
+{
+  "entry": "apps/report_packages/stream_report.tide",
+  "arms": ["TIDE standalone AOT", "CPython streaming (-E -S)"],
+  "input_mib": [1, 10, 100],
+  "inputs": {"bytes": "exact file size", "limit": 80},
+  "data": "Repeat the independent 64-byte, eight-line block from messdaten.tide. For each late error replace the digit 0 in the penultimate row with x without changing file size.",
+  "measurement": "Fresh process to JSON output, warm tmpfs inputs, zsh time %*E (wall seconds to 1 ms) and %M (wait4 process peak RSS in KiB). Build and data generation excluded.",
+  "rounds": "One warmup per arm and size, then eight pairs per size, alternating arm order. Check every result. Median across eight, paired speed ratios.",
+  "affinity": 24,
+  "network": "unshared network namespace",
+  "model_calls": 0
+}

@@ -1,0 +1,203 @@
+use value_tree
+
+record ValueFrame
+kind:t key:t decl:?{SchemaType} optional:b names:*t values:*{EvalValue}
+
+value_frame kind:t key:t decl:?{SchemaType} > {ValueFrame}
+make ValueFrame kind kind key key decl decl optional false names (list t 0) values (list {EvalValue} 0)
+
+record ValueReader
+parents:*{ValueFrame} frame:{ValueFrame} valid:b
+
+initial_value_reader > {ValueReader}
+make ValueReader parents (list {ValueFrame} 0) frame (value_frame "" "" (nil {SchemaType})) valid true
+
+value_parents frames:*{ValueFrame} > *{ValueFrame}
+fold frames (list {ValueFrame} 0) acc row item if (eq row (length frames)) acc (append acc item)
+
+input_child frame:{ValueFrame} key:t root_kind:t > t
+let kind get kind frame
+if (text_eq kind "") root_kind
+let prefix text_slice kind 0 1
+if (dict_kind kind) (text_slice kind 1 (text_len kind))
+if (text_eq prefix "*") (text_slice kind 1 (text_len kind))
+if (text_eq prefix "?") (if (text_eq key "none") "b" (if (text_eq key "some") (text_slice kind 1 (text_len kind)) ""))
+if (text_eq prefix "&") (pair_component kind (length (get values frame)))
+let decl need (get decl frame) "input_schema" 0
+case (entry_at (get fields decl) key) "" idx (need (at (get types decl) idx) "input_type" 0)
+
+tagged_value decl:{SchemaType} label:t > ?{EvalValue}
+case (entry_at (get fields decl) label) (nil {EvalValue}) index (some (with num (text_value label) index))
+
+decoded_atom token:{JsonValueToken} typ:t > ?{EvalValue}
+if (text_eq typ "q") (if (text_eq (get op token) "scalar") (case (fixed_units (get value token)) (nil {EvalValue}) n (some (number_value n))) (nil {EvalValue}))
+if (text_eq typ "z") (if (text_eq (get op token) "string") (case (stamp_seconds (get value token)) (nil {EvalValue}) epoch (some (with num (text_value (get value token)) epoch))) (nil {EvalValue}))
+if (text_eq typ "y") (if (text_eq (get op token) "string") (hex_octets (get value token)) (nil {EvalValue}))
+if (text_eq typ "t")
+  (if (text_eq (get op token) "string") (some (text_value (get value token))) (nil {EvalValue}))
+if (text_eq (get op token) "scalar") (decode_number (get value token) typ) (nil {EvalValue})
+
+decoded_container frame:{ValueFrame} > ?{EvalValue}
+let values get values frame
+let n length values
+let kind get kind frame
+let prefix text_slice kind 0 1
+if (dict_kind kind) (some (dictionary_value (get names frame) values (text_slice kind 1 (text_len kind))))
+if (text_eq prefix "&")
+  (if (eq n 2) (some (pair_value (need (at values 0) "left" 0) (need (at values 1) "right" 0) kind)) (nil {EvalValue}))
+if (text_eq prefix "?")
+  (if (not (eq n 1)) (nil {EvalValue})
+   let v need (at values 0) "optional_input" 0
+   if (text_eq (need (at (get names frame) 0) "option_tag" 0) "some") (some (with present v true))
+   if (eq (get num v) 1) (some (number_value 0)) (nil {EvalValue}))
+if (text_eq prefix "*")
+  (let typ text_slice kind 1 (text_len kind)
+   if (text_eq typ "t") (some (text_list_value (fold values (list t 0) acc row v append acc (get text v))))
+   if (scalar_type typ) (some (list_value (fold values (list i 0) acc row v append acc (get num v))))
+   some (fold values (number_value 8) acc row v add_member acc "" typ v (field_bytes v typ)))
+let decl need (get decl frame) "record_input" 0
+let keys get fields decl
+if (not (eq n (length keys))) (nil {EvalValue})
+some (fold keys (number_value 16) acc row key
+  let idx - row 1
+  let slot if (text_eq (need (at (get names frame) idx) "input_name" 0) key) idx (need (entry_at (get names frame) key) "input_order" 0)
+  let v need (at values slot) "input_value" 0
+  let typ need (at (get types decl) idx) "field_type" 0
+  add_member acc key typ v (field_bytes v typ))
+
+accept_value state:{ValueReader} key:t item:?{EvalValue} > {ValueReader}
+case item (with valid state false) value
+let frame get frame state
+if (eq (length (get values frame)) 4096) (with valid state false)
+let names if (and (text_eq key "") (not (dict_kind (get kind frame)))) (get names frame) (append (get names frame) key)
+let updated with names (with values frame (append (get values frame) value)) names
+with frame state updated
+
+input_container op:t typ:t decl:?{SchemaType} > b
+let prefix text_slice typ 0 1
+if (text_eq op "[") (or (text_eq prefix "*") (text_eq prefix "&"))
+or (dict_kind typ) (or (text_eq prefix "?") (case decl false record_type not (get tagged record_type)))
+
+decode_json_step state:{ValueReader} token:{JsonValueToken} kind:t schemas:{Declarations} > {ValueReader}
+let parents get parents state
+let frame get frame state
+let op get op token
+if (text_eq op "close")
+  (let outer need (at parents (- (length parents) 1)) "value_parent" 0
+   accept_value (make ValueReader parents (value_parents parents) frame outer valid true) (get key frame) (decoded_container frame))
+let key get key token
+let typ input_child frame key kind
+if (text_eq typ "") (with valid state false)
+let decl named_schema schemas typ
+if (or (text_eq op "{") (text_eq op "["))
+  (if (input_container op typ decl) (make ValueReader parents (append parents frame) frame (value_frame typ key decl) valid true) (with valid state false))
+let value if (and (named_kind typ) (text_eq op "string"))
+  (case decl (nil {EvalValue}) named (if (get tagged named) (tagged_value named (get value token)) (nil {EvalValue})))
+  (decoded_atom token typ)
+accept_value state key value
+
+flat_record events:{JsonEvents} start:i decl:{SchemaType} > ?{EvalValue}
+let fields get fields decl
+let size length fields
+if (not (and (text_eq (get op (event_at events start)) "{") (text_eq (get op (event_at events (+ start (+ 1 size)))) "close"))) (nil {EvalValue})
+fold fields (some (number_value 16)) prior row key
+  case prior (nil {EvalValue}) record_value
+  let direct event_at events (+ start row)
+  let token if (text_eq (get key direct) key) (some direct)
+    (fold fields (nil {JsonValueToken}) found pos unused
+       case found (let candidate event_at events (+ start pos)
+                   if (text_eq (get key candidate) key) (some candidate) found) known found)
+  case token (nil {EvalValue}) field
+  let typ need (at (get types decl) (- row 1)) "field_type" 0
+  case (decoded_atom field typ) (nil {EvalValue}) value
+    some (add_member record_value key typ value (field_bytes value typ))
+
+record InputRead
+value:?{EvalValue} field:t bad_row:i bad_event:i
+
+input_read value:?{EvalValue} > {InputRead}
+make InputRead value value field "" bad_row -1 bad_event -1
+
+row_failure index:i width:i > {InputRead}
+make InputRead value (nil {EvalValue}) field "" bad_row index bad_event (+ 1 (* index width))
+
+irregular_row events:{JsonEvents} fields:*t size:i > i
+let width + 2 (length fields)
+fold (indices size) size found row unused
+  if (< found size) found
+  let start + 1 (* (- row 1) width)
+  if (not (and (text_eq (get op (event_at events start)) "{") (text_eq (get op (event_at events (+ start (- width 1)))) "close"))) (- row 1)
+  let flat fold fields true ok slot field
+    if (not ok) false
+    let op get op (event_at events (+ start slot))
+    not (or (text_eq op "{") (or (text_eq op "[") (text_eq op "close")))
+  if flat found (- row 1)
+
+flat_records events:{JsonEvents} typ:t decl:{SchemaType} > {InputRead}
+let count + (* 128 (length (get pages events))) (length (get tail events))
+let width + 2 (length (get fields decl))
+if (< count 2) (input_read (nil {EvalValue}))
+if (not (text_eq (get op (event_at events 0)) "[")) (input_read (nil {EvalValue}))
+let content - count 2
+let rows div content width
+let size if (> rows 4096) 4096 rows
+if (not (eq content (* size width))) (row_failure (irregular_row events (get fields decl) size) width)
+fold (indices size) (input_read (some (number_value 8))) acc row unused
+  case (get value acc) acc collected
+  case (flat_record events (+ 1 (* (- row 1) width)) decl) (row_failure (- row 1) width) record_value
+    input_read (some (add_member collected "" typ record_value (get num record_value)))
+
+record FixedInput
+kind:t decl:?{SchemaType} width:i
+
+fixed_input kind:t schemas:{Declarations} > ?{FixedInput}
+let decl named_schema schemas kind
+let width case decl (if (atom_type kind) 1 0) named
+  if (get tagged named) 1
+  if (fold (get types named) true ok pos typ and ok (atom_type typ)) (+ 2 (length (get fields named))) 0
+if (eq width 0) (nil {FixedInput}) (some (make FixedInput kind kind decl decl width width))
+
+read_fixed events:{JsonEvents} start:i part:{FixedInput} > ?{EvalValue}
+let token event_at events start
+case (get decl part) (decoded_atom token (get kind part)) decl
+if (not (get tagged decl)) (flat_record events start decl)
+if (text_eq (get op token) "string") (tagged_value decl (get value token)) (nil {EvalValue})
+
+fixed_pairs events:{JsonEvents} typ:t left:{FixedInput} right:{FixedInput} > {InputRead}
+let count + (* 128 (length (get pages events))) (length (get tail events))
+if (or (< count 2) (not (text_eq (get op (event_at events 0)) "["))) (input_read (nil {EvalValue}))
+let width + 2 (+ (get width left) (get width right))
+let content - count 2
+let rows div content width
+let size if (> rows 4096) 4096 rows
+let result fold (indices size) (input_read (some (number_value 8))) acc row unused
+  case (get value acc) acc collected
+  let i - row 1
+  let start + 1 (* i width)
+  if (not (and (text_eq (get op (event_at events start)) "[") (text_eq (get op (event_at events (+ start (- width 1)))) "close"))) (row_failure i width)
+  case (read_fixed events (+ start 1) left) (row_failure i width) a
+  case (read_fixed events (+ (+ start 1) (get width left)) right) (row_failure i width) b
+  let item pair_value a b typ
+  input_read (some (add_member collected "" typ item (pair_bytes item)))
+if (or (> (get bad_row result) -1) (eq content (* size width))) result (row_failure size width)
+
+read_events events:{JsonEvents} kind:t schemas:{Declarations} > {InputRead}
+let element named_element kind
+if (text_eq (text_slice kind 0 2) "*&")
+  (let parts case (fixed_input (pair_component element 0) schemas) (nil &{FixedInput}{FixedInput}) left
+     case (fixed_input (pair_component element 1) schemas) (nil &{FixedInput}{FixedInput}) right (some (pair left right))
+   case parts (input_read (decode_nested_events events kind schemas)) plan (fixed_pairs events element (first plan) (second plan)))
+let flat if (text_eq (text_slice kind 0 2) "*{")
+  (case (named_schema schemas element) (nil {SchemaType}) decl
+   if (and (not (get tagged decl)) (fold (get types decl) true ok row typ and ok (atom_type typ))) (some decl) (nil {SchemaType})) (nil {SchemaType})
+case flat
+  (input_read (decode_nested_events events kind schemas)) decl (flat_records events element decl)
+
+decode_events events:{JsonEvents} kind:t schemas:{Declarations} > ?{EvalValue}
+get value (read_events events kind schemas)
+
+decode_nested_events events:{JsonEvents} kind:t schemas:{Declarations} > ?{EvalValue}
+let done fold (append (get pages events) (get tail events)) initial_value_reader prior group batch
+  fold batch prior state row token if (get valid state) (decode_json_step state token kind schemas) state
+if (not (and (get valid done) (eq (length (get parents done)) 0))) (nil {EvalValue})
+at (get values (get frame done)) 0

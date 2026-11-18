@@ -1,0 +1,180 @@
+use json_text
+
+json_digits source:t pos:i chars:t > i
+let n - (text_len source) pos
+if (or (eq n 0) (not (white (text_slice source pos (+ pos 1)) chars))) pos
+if (or (eq n 1) (not (white (text_slice source (+ pos 1) (+ pos 2)) chars))) (+ pos 1)
+let start + pos 2
+let short fold (indices (if (> n 18) 16 (- n 2))) start stop row unused
+  let i + start (- row 1)
+  if (and (eq stop i) (white (text_slice source i (+ i 1)) chars)) (+ i 1) stop
+if (or (< short (+ pos 18)) (eq short (text_len source))) short
+fold (indices (chunk_count (- (text_len source) short))) short prev page unused
+  let base + short (* (- page 1) 2048)
+  if (< prev base) prev
+  let left - (text_len source) base
+  fold (indices (if (> left 2048) 2048 left)) prev acc row skip
+    let i + base (- row 1)
+    if (and (eq acc i) (white (text_slice source i (+ i 1)) chars)) (+ i 1) acc
+
+json_number_end source:t pos:i > i
+let start if (text_eq (text_slice source pos (+ pos 1)) "-") (+ pos 1) pos
+let digits "0123456789"
+let first_digit text_slice source start (+ start 1)
+if (or (text_eq first_digit "") (not (white first_digit digits))) pos
+let whole if (text_eq first_digit "0") (+ start 1) (json_digits source start digits)
+let fraction if (text_eq (text_slice source whole (+ whole 1)) ".")
+  (let stop json_digits source (+ whole 1) digits
+   if (> stop (+ whole 1)) stop whole) whole
+let exponent text_slice source fraction (+ fraction 1)
+if (not (or (text_eq exponent "e") (text_eq exponent "E"))) fraction
+let sign text_slice source (+ fraction 1) (+ fraction 2)
+let from + fraction (if (or (text_eq sign "+") (text_eq sign "-")) 2 1)
+let end json_digits source from digits
+if (> end from) end fraction
+
+skip_json_space source:t pos:i > i
+if (or (not (< pos (text_len source))) (> (bootstrap_code_at source pos) 32)) pos
+json_digits source pos " \t\n\r"
+
+stream_token source:t pos:i origin:{JsonOrigin} > {JsonToken}
+let ch text_slice source pos (+ pos 1)
+if (text_eq ch "\"") (decode_json_string source pos origin)
+if (and (not (text_eq ch "")) (white ch "[]{}:,")) (make JsonToken kind ch value "" end (+ pos 1))
+if (or (and (text_eq ch "N") (text_eq (text_slice source pos (+ pos 3)) "NaN"))
+  (or (and (text_eq ch "I") (text_eq (text_slice source pos (+ pos 8)) "Infinity"))
+      (and (text_eq ch "-") (text_eq (text_slice source pos (+ pos 9)) "-Infinity")))) fail (json_error origin "Invalid JSON constant")
+let end if (and (text_eq ch "t") (text_eq (text_slice source pos (+ pos 4)) "true")) (+ pos 4)
+  if (and (text_eq ch "f") (text_eq (text_slice source pos (+ pos 5)) "false")) (+ pos 5)
+  if (and (text_eq ch "n") (text_eq (text_slice source pos (+ pos 4)) "null")) (+ pos 4)
+  json_number_end source pos
+make JsonToken kind (if (> end pos) "scalar" "invalid") value (text_slice source pos end) end end
+
+record JsonFrame
+kind:t phase:t key:t count:i keys:*t
+
+json_frame kind:t phase:t > {JsonFrame}
+make JsonFrame kind kind phase phase key "" count 0 keys (list t 0)
+
+record JsonStream
+pos:i parents:*{JsonFrame} frame:{JsonFrame} event:t field:t token:{JsonToken}
+
+stream_start pos:i > {JsonStream}
+make JsonStream pos pos parents (list {JsonFrame} 0) frame (json_frame "root" "value") event "" field "" token (make JsonToken kind "" value "" end pos)
+
+stream_pop stack:*{JsonFrame} > *{JsonFrame}
+fold stack (list {JsonFrame} 0) acc pos item if (eq pos (length stack)) acc (append acc item)
+
+surrogate_key source:t opening:i stop:i origin:{JsonOrigin} > t
+let start + opening 1
+let size - stop start
+let pages div (+ size 63) 64
+let parsed fold (indices pages) (pair "!" start) prior page unused
+  let base + start (* (- page 1) 64)
+  let width - stop base
+  let chunk fold (indices (if (< width 64) width 64)) (pair "" (second prior)) acc row skip
+    let pos + base (- row 1)
+    if (< pos (second acc)) acc
+    let cp bootstrap_code_at source pos
+    let decoded if (eq cp 92) (json_escape source opening origin pos) (pair (+ pos 1) cp)
+    let unit if (< (second decoded) 0) (json_hex source (+ pos 2) origin) (second decoded)
+    pair (cat3 (first acc) (decimal unit) ",") (first decoded)
+  pair (concat (first prior) (first chunk)) (second chunk)
+first parsed
+
+stream_after source:t limit:i parents:*{JsonFrame} frame:{JsonFrame} token:{JsonToken} event:t field:t > {JsonStream}
+let end get end token
+let comma and (text_eq (get phase frame) "comma") (and (< end limit) (text_eq (text_slice source end (+ end 1)) ","))
+let next if comma (with phase frame (if (text_eq (get kind frame) "array") "value" "key")) frame
+make JsonStream pos (if comma (+ end 1) end) parents parents frame next event event field field token token
+
+stream_value source:t pos:i limit:i origin:{JsonOrigin} strict:b parents:*{JsonFrame} frame:{JsonFrame} > {JsonStream}
+let token stream_token source pos origin
+let op get kind token
+if (and strict (text_eq op "surrogate")) fail (root_diagnostic (get file origin) "E_UTF8" "Invalid Unicode in JSON input")
+let open or (text_eq op "[") (text_eq op "{")
+if (not (or open (or (text_eq op "string") (or (text_eq op "surrogate") (text_eq op "scalar"))))) fail (string_problem source pos origin "Expecting value")
+let depth length parents
+let resumed with count (with phase frame (if (eq depth 0) "done" "comma")) (+ 1 (get count frame))
+if (not open) (stream_after source limit parents resumed token "value" (get key frame))
+if (not (< depth 512)) fail (root_diagnostic (get file origin) "E_LIMIT" "JSON nesting limit")
+make JsonStream pos (get end token) parents (append parents resumed) frame (json_frame (if (text_eq op "[") "array" "object") "first") event "value" field (get key frame) token token
+
+stream_step reader:{JsonStream} source:t limit:i origin:{JsonOrigin} reject_surrogates:b > {JsonStream}
+let pos skip_json_space source (get pos reader)
+let parents get parents reader
+let frame get frame reader
+let phase get phase frame
+let kind get kind frame
+if (text_eq phase "done")
+  (if (eq pos (text_len source)) (with event (with pos reader (+ pos 1)) "") (fail (string_problem source pos origin "Extra data")))
+let ch text_slice source pos (+ pos 1)
+let symbol make JsonToken kind ch value "" end (+ pos 1)
+let closes or (and (text_eq kind "object") (text_eq ch "}")) (and (text_eq kind "array") (text_eq ch "]"))
+if (and closes (or (text_eq phase "key") (and (text_eq kind "array") (text_eq phase "value")))) fail (string_problem source (- (get pos reader) 1) origin (concat "Illegal trailing comma before end of " kind))
+if (and closes (or (text_eq phase "first") (text_eq phase "comma")))
+  (let outer need (at parents (- (length parents) 1)) "json_parent" 0
+   stream_after source limit (stream_pop parents) outer symbol "close" "")
+if (text_eq phase "comma")
+  (if (not (text_eq ch ",")) fail (string_problem source pos origin "Expecting ',' delimiter")
+   make JsonStream pos (+ pos 1) parents parents frame (with phase frame (if (text_eq kind "array") "value" "key")) event "" field "" token symbol)
+if (or (text_eq phase "key") (and (text_eq kind "object") (text_eq phase "first")))
+  (if (not (text_eq ch "\"")) fail (string_problem source pos origin "Expecting property name enclosed in double quotes")
+   let token decode_json_string source pos origin
+   let key get value token
+   let surrogate text_eq (get kind token) "surrogate"
+   if (and reject_surrogates surrogate) fail (root_diagnostic (get file origin) "E_UTF8" "Invalid Unicode in JSON input")
+   let end get end token
+   let identity if reject_surrogates key (if surrogate (surrogate_key source pos (- end 1) origin) (concat "+" key))
+   if (case (entry_at (get keys frame) identity) false dup true) fail (json_error origin "Duplicate JSON key")
+   let colon and (< end limit) (text_eq (text_slice source end (+ end 1)) ":")
+   let member make JsonFrame kind kind phase (if colon "value" "colon") key (if surrogate "" key) count (get count frame) keys (append (get keys frame) identity)
+   let start if colon (+ end 1) end
+   if (and (not (text_eq (get fixed origin) "public_json")) (and colon (< start limit))) (stream_value source (skip_json_space source start) limit origin reject_surrogates parents member)
+   make JsonStream pos start parents parents frame member event "" field "" token token)
+if (text_eq phase "colon")
+  (if (not (text_eq ch ":")) fail (string_problem source pos origin "Expecting ':' delimiter")
+   make JsonStream pos (+ pos 1) parents parents frame (with phase frame "value") event "" field "" token symbol)
+stream_value source pos limit origin reject_surrogates parents frame
+
+record JsonValueToken
+op:t key:t value:t
+
+record JsonEvents
+pages:**{JsonValueToken} tail:*{JsonValueToken}
+
+empty_events > {JsonEvents}
+make JsonEvents pages (list *{JsonValueToken} 0) tail (list {JsonValueToken} 0)
+
+event_at events:{JsonEvents} index:i > {JsonValueToken}
+let page case (at (get pages events) (div index 128)) (get tail events) group group
+need (at page (mod index 128)) "json_event" 0
+
+add_event events:{JsonEvents} token:{JsonValueToken} > {JsonEvents}
+let tail get tail events
+if (eq (length tail) 128) (make JsonEvents pages (append (get pages events) tail) tail (list {JsonValueToken} 1 token))
+with tail events (append tail token)
+
+event_step previous:&{JsonStream}{JsonEvents} source:t stop:i origin:{JsonOrigin} > &{JsonStream}{JsonEvents}
+let prior first previous
+let next stream_step prior source stop origin false
+let event get event next
+let events second previous
+if (text_eq event "") (pair next events)
+let token get token next
+let op if (text_eq event "close") "close" (get kind token)
+pair next (add_event events (make JsonValueToken op op key (get field next) value (get value token)))
+
+indexed_json source:t start:i stop:i origin:{JsonOrigin} > {JsonEvents}
+let size - stop start
+let done fold (indices (chunk_count size)) (pair (stream_start start) empty_events) prior group unused
+  if (not (< (get pos (first prior)) stop)) prior
+  let left - size (* (- group 1) 2048)
+  fold (indices (div (+ (if (> left 2048) 2048 left) 63) 64)) prior before batch ignored
+    if (not (< (get pos (first before)) stop)) before
+    let n - left (* (- batch 1) 64)
+    fold (indices (if (< n 64) n 64)) before acc row skip
+      if (< (get pos (first acc)) stop) (event_step acc source stop origin) acc
+let reader first done
+if (and (eq (get pos reader) stop) (and (eq (length (get parents reader)) 0) (text_eq (get phase (get frame reader)) "done"))) (second done)
+fail (string_problem source stop origin "Expecting ',' delimiter")

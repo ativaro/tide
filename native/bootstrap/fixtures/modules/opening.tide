@@ -1,0 +1,4 @@
+use reading
+
+record Opening
+value:{Reading}

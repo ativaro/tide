@@ -1,0 +1,17 @@
+flat grams:i > i
++ 1 (div grams 10)
+
+thick grams:i > i
++ 5 (div grams 20)
+
+small grams:i > i
++ 1 (div grams 100)
+
+large grams:i > i
++ 8 (div grams 1000)
+
+bulk grams:i > i
++ 200 (div grams 10000)
+
+pallet grams:i > i
++ 40 (div grams 1000)

@@ -1,0 +1,31 @@
+use grouped_view
+
+record SourceQuery
+name:t file:t line:i column:i
+
+record SourceRepair
+forms:*{Form} view:{RepairView}
+
+source_forms unit:{SourceFile} queries:*{SourceQuery} > *{Form}
+let source get source unit
+fold queries (list {Form} 0) result row query
+  if (not (text_eq (get file query) (get file unit))) result
+  let name get name query
+  let span locate source name
+  let raw text_slice source (get body span) (get stop span)
+  let body fold (lines raw) "" acc i part if (eq i 1) part (concat acc (concat " " part))
+  append result (make Form name name file (get file unit) body body)
+
+source_repair observation:t files:*{SourceFile} queries:*{SourceQuery} > {SourceRepair}
+let forms fold files (list {Form} 0) found row unit
+  fold (source_forms unit queries) found acc i form append acc form
+if (not (eq (length forms) (length queries))) fail "expected_one_source_file"
+let view compiler_view observation files forms
+make SourceRepair forms forms view (with instruction view
+  "Inventory, reachable sources and ./verify are from this checked snapshot. Use them for your first proposal. Inspect only for missing facts. Give name, before, after. Replace one unique substring of the displayed body, or use empty before for the whole body. TIDE: one prefix expression per body; (if test yes no), (fold items seed accumulator row item step).")
+
+example source_form_whitespace source_forms
+{"inputs":{"unit":{"file":"a.tide","source":"f x:t > t\r\nconcat \"a  b\"\r\n  x\r\n\r\ng > i\r\n0\r\n"},"queries":[{"name":"f","file":"a.tide","line":2,"column":1}]},"expect":[{"file":"a.tide","name":"f","body":"concat \"a  b\"   x"}]}
+
+example missing_file source_repair
+{"inputs":{"observation":"","files":[],"queries":[{"name":"f","file":"missing.tide","line":2,"column":1}]},"expect_error":{"code":"E_DATA","reason":"expected_one_source_file"}}

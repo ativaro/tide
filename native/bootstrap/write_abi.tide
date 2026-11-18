@@ -1,0 +1,22 @@
+write_abi > t
+let rows list t 19
+  "I t_bootstrap_replace(const Text& target,const Text& payload){"
+  "    auto path=encode(target);auto sep=path.find_last_of('/');"
+  "    auto parent=sep==std::string::npos?\".\":sep==0?\"/\":path.substr(0,sep);"
+  "    auto name=path.substr(sep==std::string::npos?0:sep+1);"
+  "    if(name.empty()||name==\".\"||name==\"..\")return -2;"
+  "    int dir=open(parent.c_str(),O_DIRECTORY|O_RDONLY|O_CLOEXEC);if(dir<0)return -1;"
+  "    struct Guard{int dir;int file=-1;std::string tmp;~Guard(){if(file>=0)close(file);if(!tmp.empty())unlinkat(dir,tmp.c_str(),0);close(dir);}} g{dir};"
+  "    struct stat st;mode_t mode=0600;"
+  "    if(fstatat(dir,name.c_str(),&st,AT_SYMLINK_NOFOLLOW)==0){if(!S_ISREG(st.st_mode))return -2;mode=st.st_mode&0777;}"
+  "    else if(errno!=ENOENT)return -1;"
+  "    for(int i=0;i<128;++i){auto t=\".tide-\"+std::to_string(getpid())+\"-\"+std::to_string(i);if(t==name)continue;g.file=openat(dir,t.c_str(),O_EXCL|O_CREAT|O_WRONLY|O_CLOEXEC,0600);if(g.file>=0){g.tmp=t;break;}if(errno!=EEXIST)return -1;}"
+  "    if(g.file<0)return -1;"
+  "    std::string data(payload.begin(),payload.end());"
+  "    for(size_t off=0;off<data.size();){ssize_t n=write(g.file,data.data()+off,data.size()-off);if(n<0&&errno==EINTR)continue;if(n<=0)return -1;off+=n;}"
+  "    if(fchmod(g.file,mode)||fsync(g.file))return -1;"
+  "    int fd=g.file;g.file=-1;if(close(fd))return -1;"
+  "    if(renameat(dir,g.tmp.c_str(),dir,name.c_str()))return -1;"
+  "    g.tmp.clear();return fsync(dir)?-1:I(data.size());"
+  "}"
+fold rows "" code row line concat code (concat line "\n")

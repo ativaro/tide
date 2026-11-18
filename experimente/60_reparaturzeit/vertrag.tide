@@ -1,0 +1,59 @@
+record Input
+a:i b:i
+
+record Check
+inputs:{Input} expect:i
+
+input a:i b:i > {Input}
+make Input a a b b
+
+expected task:t a:i b:i > i
+if (text_eq task "kisten") (+ a b)
+if (text_eq task "guthaben") (- a b)
+if (text_eq task "ladegrenze") (if (> a b) 3 7)
+if (text_eq task "etiketten") (+ (* a b) (* 2 a))
+if (text_eq task "foerderband") (* b a)
+if (text_eq task "trommeln") (- a (* b (div a b)))
+if (text_eq task "farbrollen") (if (< a b) 0 11)
+if (text_eq task "doppelzaehler") (- (+ (* 10 a) b) 11)
+fail "unknown repair family"
+
+check task:t values:{Input} > {Check}
+make Check inputs values expect (expected task (get a values) (get b values))
+
+visible task:t > *{Input}
+if (text_eq task "kisten") (list {Input} 1 (input 2 2))
+if (text_eq task "guthaben") (list {Input} 3 (input 4 2) (input 4 3) (input 5 4))
+if (text_eq task "ladegrenze") (list {Input} 3 (input 40 40) (input 43 40) (input 55 54))
+if (text_eq task "etiketten") (list {Input} 3 (input 6 6) (input 8 8) (input 9 9))
+if (text_eq task "foerderband") (list {Input} 3 (input 6 4) (input 2 7) (input 21 3))
+if (text_eq task "trommeln") (list {Input} 3 (input 20 6) (input 7 4) (input 66 6))
+if (text_eq task "farbrollen") (list {Input} 3 (input 40 40) (input 42 40) (input 39 40))
+if (text_eq task "doppelzaehler") (list {Input} 3 (input 42 4) (input 7 6) (input 6 5))
+fail "unknown repair family"
+
+public_cases task:t > *{Check}
+map {Check} (visible task) row (check task row)
+
+hidden_cases task:t > *{Check}
+fold (list i 12 12 13 14 15 16 17 18 19 20 21 22 23) (list {Check} 0) cases row a
+  fold (list i 6 14 15 16 17 18 19) cases group col b
+    append group (check task (input a b))
+
+probe_pool task:t > *{Input}
+let declared visible task
+let boundary list i 4 1 2 3 4
+fold boundary (list {Input} 0) pool row a
+  fold boundary pool choices col b
+    let duplicate fold declared false seen pos sample
+      or seen (and (eq (get a sample) a) (eq (get b sample) b))
+    if duplicate choices (append choices (input a b))
+
+example confirm_label expected
+{"inputs":{"task":"etiketten","a":1,"b":2},"expect":4}
+
+example confirm_comparison expected
+{"inputs":{"task":"ladegrenze","a":1,"b":2},"expect":7}
+
+example confirm_counters expected
+{"inputs":{"task":"doppelzaehler","a":12,"b":14},"expect":123}

@@ -1,0 +1,9 @@
+{
+  "prior": "../56_gepruefte_operatoren/messung.json",
+  "protocol": "../56_gepruefte_operatoren/versuchsplan.json",
+  "tasks": "../55_knotenreparatur/aufgaben.json",
+  "remainder": "../56_gepruefte_operatoren/rest_aufgabe.json",
+  "change": "TIDE 0.6.1 adds native <= and >= to the integer comparison group. Re-enumerate every tested operator in both languages. Python comparator, five fixtures, three public and 72 hidden cases, seeds, candidate budget and zero/one/many policy are unchanged.",
+  "ambiguity": "Check that the exact list of labelled public candidates is unchanged for remainder, then replay the previous six local requests with the same prompts and options. Do not send a hidden case or result.",
+  "outcomes": "Record candidate sets, public preflight, hidden outcomes, per-trial and total model tokens, and tokens per successful repair. No requests for the 24 unambiguous/empty slots."
+}

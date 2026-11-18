@@ -1,0 +1,21 @@
+degree_hours initial:i readings:*i > i
+fold readings initial total hour temperature
+  if (< temperature 18) (+ total (- 18 temperature)) total
+
+main > i
+degree_hours 0 (list i 16 18 20 12 14 17 21 19 18 15 11 9 18 22 14 13 19)
+
+example mixed degree_hours
+{"inputs":{"initial":3,"readings":[20,18,12,17]},"expect":10}
+
+example empty degree_hours
+{"inputs":{"initial":-7,"readings":[]},"expect":-7}
+
+example subtraction_overflows degree_hours
+{"inputs":{"initial":-9223372036854775808,"readings":[-9223372036854775808]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example addition_overflows degree_hours
+{"inputs":{"initial":9223372036854775807,"readings":[17]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example skip_above_threshold degree_hours
+{"inputs":{"initial":9223372036854775807,"readings":[9223372036854775807,18]},"expect":9223372036854775807}

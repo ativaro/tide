@@ -1,0 +1,2 @@
+policy status:t > i
+if (or (text_eq status "OK") (or (text_eq status "Ok") (or (text_eq status "oK") (text_eq status "ok")))) 1 0

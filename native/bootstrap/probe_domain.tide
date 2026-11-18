@@ -1,0 +1,117 @@
+use samples
+
+record ProbeAxis
+low:i middle:i high:i pivot:i
+
+probe_midpoint low:i high:i > i
+if (not (and (< low 0) (>= high 0))) (+ low (div (- high low) 2))
+let sum + low high
+- (div sum 2) (if (and (< sum 0) (not (eq (mod sum 2) 0))) 1 0)
+
+probe_limits source:t fn:{Signature} file:t > *&ii
+let error diagnosis file (get loc fn) "E_INPUT" "Expected --probe-range with an inclusive [min,max] for each of 1..8 integer parameters"
+let params get params fn
+let n length params
+if (or (or (eq n 0) (> n 8)) (> (text_len source) 4096)) fail error
+let stop + 1 (need (text_rfind source "}" (text_len source)) error 0)
+if (not (eq (skip_json_space source stop) (text_len source))) fail error
+let events indexed_json source 0 stop (with fixed (json_origin file) error)
+let items get tail events
+if (or (not (eq (length (get pages events)) 0)) (not (eq (length items) (+ 2 (* n 4))))) fail error
+if (not (text_eq (get op (need (at items 0) error 0)) "{")) fail error
+let fields fold (indices n) (list t 0) acc row unused
+  let token need (at items (- (* row 4) 3)) error 0
+  if (not (text_eq (get op token) "[")) fail error
+  append acc (get key token)
+fold params (list &ii 0) acc row name
+  if (not (text_eq (need (at (get types fn) (- row 1)) error 0) "i")) fail error
+  let start + 2 (* 4 (need (entry_at fields name) error 0))
+  let lo_token need (at items start) error 0
+  let hi_token need (at items (+ start 1)) error 0
+  if (not (and (text_eq (get op lo_token) "scalar") (and (text_eq (get op hi_token) "scalar") (text_eq (get op (need (at items (+ start 2)) error 0)) "close")))) fail error
+  let lo need (int (get value lo_token)) error 0
+  let hi need (int (get value hi_token)) error 0
+  if (> lo hi) fail error
+  append acc (pair lo hi)
+
+probe_axes limits:*&ii sample:{SampleArgs} > *{ProbeAxis}
+fold limits (list {ProbeAxis} 0) acc row interval
+  let lo first interval
+  let hi second interval
+  let original get num (need (at (get args sample) (- row 1)) "probe_argument" 0)
+  let pivot if (< original lo) lo (if (> original hi) hi original)
+  append acc (make ProbeAxis low lo middle (probe_midpoint lo hi) high hi pivot pivot)
+
+restricted_probe_domain limits:*&ii declared:{InputDomain} fn:{Signature} file:t > {InputDomain}
+let bounds get bounds declared
+if (eq (length bounds) 0) (with bounds declared limits)
+let error diagnosis file (get loc fn) "E_INPUT" "Probe range does not intersect requires"
+let intersection fold limits (list &ii 0) acc row interval
+  let bound parameter_interval bounds (- row 1)
+  let narrowed intersect_interval interval (first bound) (second bound)
+  if (> (first narrowed) (second narrowed)) fail error
+  append acc narrowed
+tighten_domain (with bounds declared intersection) error
+
+probe_value values:*i index:i > i
+need (at values index) "probe_value" 0
+
+probe_orders_hold values:*i orders:*{ParameterOrder} > b
+fold orders true ok row order
+  and ok (order_holds (probe_value values (get lower order)) (probe_value values (get upper order)) (get strict order))
+
+probe_args_valid args:*{EvalValue} domain:{InputDomain} > b
+let bounded fold (get bounds domain) true acc row interval
+  let actual get num (need (at args (- row 1)) "probe_argument" 0)
+  and acc (and (>= actual (first interval)) (<= actual (second interval)))
+let orders get orders domain
+and bounded (or (eq (length orders) 0) (probe_orders_hold (map i args item (get num item)) orders))
+
+project_probe values:*i orders:*{ParameterOrder} lift:b > *i
+fold (indices (length values)) values acc row unused
+  if (probe_orders_hold acc orders) acc
+  fold orders acc current col order
+    let left get lower order
+    let right get upper order
+    let low probe_value current left
+    let high probe_value current right
+    if (order_holds low high (get strict order)) current
+    let step if (get strict order) 1 0
+    let index if lift right left
+    let value if lift (+ low step) (- high step)
+    fold current (list i 0) updated pos old append updated (if (eq (- pos 1) index) value old)
+
+probe_projections values:*i orders:*{ParameterOrder} > **i
+if (probe_orders_hold values orders) (list *i 1 values)
+list *i 2 (project_probe values orders true) (project_probe values orders false)
+
+probe_limits_json names:*t limits:*&ii > t
+let fields fold names "" acc row name
+  let bounds need (at limits (- row 1)) "probe_bound" 0
+  let values cat3 "[" (signed_text (first bounds)) (cat3 "," (signed_text (second bounds)) "]")
+  json_item acc (cat3 (json_string name) ":" values)
+cat3 "{" fields "}"
+
+probe_axis_values axes:*{ProbeAxis} > **i
+let pivot map i axes axis (get pivot axis)
+let start list *i 4 (map i axes axis (get middle axis)) (map i axes axis (get low axis)) (map i axes axis (get high axis)) pivot
+let nearby fold axes start acc row axis
+  let value get pivot axis
+  let lo get low axis
+  let hi get high axis
+  let choices list i 4 (if (> value lo) (- value 1) lo) (if (< value hi) (+ value 1) hi) lo hi
+  fold choices acc seen pos picked
+    append seen (fold pivot (list i 0) args col n append args (if (eq row col) picked n))
+let size fold axes 1 n row axis (* n 2)
+fold (indices (if (> size 32) 32 size)) nearby acc row skip
+  let corner fold axes (pair (- row 1) (list i 0)) state col axis
+    let mask first state
+    let value if (eq (mod mask 2) 0) (get low axis) (get high axis)
+    pair (div mask 2) (append (second state) value)
+  append acc (second corner)
+
+probe_input names:*t values:*i > t
+let fields fold names "" acc row name
+  let value need (at values (- row 1)) "probe_value" 0
+  json_item acc (cat3 (json_string name) ":" (signed_text value))
+cat3 "{" fields "}"

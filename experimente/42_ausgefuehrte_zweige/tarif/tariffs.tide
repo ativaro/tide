@@ -1,0 +1,10 @@
+use bands
+
+letter grams:i > i
+if (> grams 50) (thick grams) (flat grams)
+
+packet grams:i > i
+if (< grams 500) (small grams) (large grams)
+
+freight grams:i > i
+if (> grams 12000) (bulk grams) (pallet grams)

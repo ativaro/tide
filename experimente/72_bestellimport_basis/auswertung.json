@@ -1,0 +1,768 @@
+{
+  "all": {
+    "tide": {
+      "solved": 9,
+      "attempts": 15,
+      "program_ms": {
+        "median": 5,
+        "p95": 5
+      },
+      "peak_kib": {
+        "median": 4166,
+        "p95": 5236
+      },
+      "success_ms": {
+        "median": 11.84554399999979,
+        "p95": 18.536275999999816
+      },
+      "all_search_ms": {
+        "median": 10.024917500000015,
+        "p95": 18.536275999999816
+      },
+      "input_tokens": 2920,
+      "output_tokens": 267,
+      "total_tokens": 3187,
+      "tokens_all_per_success": 354.1111111111111,
+      "tokens_accepted": 2013
+    },
+    "python": {
+      "solved": 9,
+      "attempts": 15,
+      "program_ms": {
+        "median": 10,
+        "p95": 12
+      },
+      "peak_kib": {
+        "median": 10600,
+        "p95": 12932
+      },
+      "success_ms": {
+        "median": 31.079823499999975,
+        "p95": 105.1706350000004
+      },
+      "all_search_ms": {
+        "median": 29.743436499999916,
+        "p95": 101.54426399999988
+      },
+      "input_tokens": 3271,
+      "output_tokens": 312,
+      "total_tokens": 3583,
+      "tokens_all_per_success": 398.1111111111111,
+      "tokens_accepted": 2290
+    },
+    "paired_success_ratio": 2.4927294850359765,
+    "paired_program_ratio": 2.2
+  },
+  "groups": {
+    "W": {
+      "tide": {
+        "solved": 3,
+        "attempts": 5,
+        "program_ms": {
+          "median": 5,
+          "p95": 5
+        },
+        "peak_kib": {
+          "median": 4160,
+          "p95": 5236
+        },
+        "success_ms": {
+          "median": 9.032902999999806,
+          "p95": 10.826213999999936
+        },
+        "all_search_ms": {
+          "median": 5.157496500000093,
+          "p95": 10.214541000000054
+        },
+        "input_tokens": 726,
+        "output_tokens": 81,
+        "total_tokens": 807,
+        "tokens_all_per_success": 269,
+        "tokens_accepted": 472
+      },
+      "python": {
+        "solved": 3,
+        "attempts": 5,
+        "program_ms": {
+          "median": 10,
+          "p95": 12
+        },
+        "peak_kib": {
+          "median": 10600,
+          "p95": 13160
+        },
+        "success_ms": {
+          "median": 99.23122799999987,
+          "p95": 110.81112699999994
+        },
+        "all_search_ms": {
+          "median": 54.49891100000025,
+          "p95": 105.1706350000004
+        },
+        "input_tokens": 750,
+        "output_tokens": 105,
+        "total_tokens": 855,
+        "tokens_all_per_success": 285,
+        "tokens_accepted": 520
+      },
+      "paired_success_ratio": 10.607409871631155,
+      "paired_program_ratio": 2.4
+    },
+    "E": {
+      "tide": {
+        "solved": 2,
+        "attempts": 5,
+        "program_ms": {
+          "median": 5,
+          "p95": 5
+        },
+        "peak_kib": {
+          "median": 4416,
+          "p95": 4416
+        },
+        "success_ms": {
+          "median": 12.03538750000007,
+          "p95": 13.058587999999872
+        },
+        "all_search_ms": {
+          "median": 11.631229999999732,
+          "p95": 19.316880999999967
+        },
+        "input_tokens": 1048,
+        "output_tokens": 70,
+        "total_tokens": 1118,
+        "tokens_all_per_success": 559,
+        "tokens_accepted": 469
+      },
+      "python": {
+        "solved": 2,
+        "attempts": 5,
+        "program_ms": {
+          "median": 10.5,
+          "p95": 11
+        },
+        "peak_kib": {
+          "median": 10600,
+          "p95": 10856
+        },
+        "success_ms": {
+          "median": 29.323398500000167,
+          "p95": 31.99684100000013
+        },
+        "all_search_ms": {
+          "median": 20.368051999999693,
+          "p95": 31.20585600000004
+        },
+        "input_tokens": 1203,
+        "output_tokens": 75,
+        "total_tokens": 1278,
+        "tokens_all_per_success": 639,
+        "tokens_accepted": 528
+      },
+      "paired_success_ratio": 2.480268308278261,
+      "paired_program_ratio": 2.2
+    },
+    "R": {
+      "tide": {
+        "solved": 4,
+        "attempts": 5,
+        "program_ms": {
+          "median": 5,
+          "p95": 5
+        },
+        "peak_kib": {
+          "median": 4160,
+          "p95": 4416
+        },
+        "success_ms": {
+          "median": 12.528132000000028,
+          "p95": 18.739910000000236
+        },
+        "all_search_ms": {
+          "median": 12.14876449999997,
+          "p95": 18.536275999999816
+        },
+        "input_tokens": 1146,
+        "output_tokens": 116,
+        "total_tokens": 1262,
+        "tokens_all_per_success": 315.5,
+        "tokens_accepted": 1072
+      },
+      "python": {
+        "solved": 4,
+        "attempts": 5,
+        "program_ms": {
+          "median": 11,
+          "p95": 11
+        },
+        "peak_kib": {
+          "median": 10600,
+          "p95": 11112
+        },
+        "success_ms": {
+          "median": 30.130549999999857,
+          "p95": 33.110013999999865
+        },
+        "all_search_ms": {
+          "median": 29.922090000000026,
+          "p95": 32.27823699999999
+        },
+        "input_tokens": 1318,
+        "output_tokens": 132,
+        "total_tokens": 1450,
+        "tokens_all_per_success": 362.5,
+        "tokens_accepted": 1242
+      },
+      "paired_success_ratio": 2.4001062469923475,
+      "paired_program_ratio": 2.2
+    }
+  },
+  "by_task": {
+    "W01": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 133,
+        "output_tokens": 20,
+        "total_tokens": 153,
+        "tested": [
+          8,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 9.042168499999889,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 142,
+        "output_tokens": 29,
+        "total_tokens": 171,
+        "tested": [
+          8,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 99.35048549999965,
+        "program_ms": 10,
+        "peak_kib": 10600
+      }
+    },
+    "W02": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 140,
+        "output_tokens": 24,
+        "total_tokens": 164,
+        "tested": [
+          9,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 9.782568500000025,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 148,
+        "output_tokens": 32,
+        "total_tokens": 180,
+        "tested": [
+          9,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 104.51408700000025,
+        "program_ms": 10,
+        "peak_kib": 10596
+      }
+    },
+    "W03": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 132,
+        "output_tokens": 23,
+        "total_tokens": 155,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 5.157496500000093,
+        "program_ms": 4.5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 139,
+        "output_tokens": 30,
+        "total_tokens": 169,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 54.49891100000025,
+        "program_ms": 10,
+        "peak_kib": 10856
+      }
+    },
+    "W04": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 156,
+        "output_tokens": 7,
+        "total_tokens": 163,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 4.247938500000146,
+        "program_ms": 4.5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 156,
+        "output_tokens": 7,
+        "total_tokens": 163,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 41.43825750000019,
+        "program_ms": 10,
+        "peak_kib": 10582
+      }
+    },
+    "W05": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 165,
+        "output_tokens": 7,
+        "total_tokens": 172,
+        "tested": [
+          0,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 0.009739999999965221,
+        "program_ms": 5,
+        "peak_kib": 5236
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 165,
+        "output_tokens": 7,
+        "total_tokens": 172,
+        "tested": [
+          0,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 0.010890500000073189,
+        "program_ms": 12,
+        "peak_kib": 12958
+      }
+    },
+    "E01": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 229,
+        "output_tokens": 21,
+        "total_tokens": 250,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 12.200650500000165,
+        "program_ms": 4.5,
+        "peak_kib": 4416
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 259,
+        "output_tokens": 24,
+        "total_tokens": 283,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 30.054962999999816,
+        "program_ms": 10.5,
+        "peak_kib": 10600
+      }
+    },
+    "E02": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 191,
+        "output_tokens": 28,
+        "total_tokens": 219,
+        "tested": [
+          1,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 11.97443149999981,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 215,
+        "output_tokens": 30,
+        "total_tokens": 245,
+        "tested": [
+          1,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 29.323398500000167,
+        "program_ms": 10,
+        "peak_kib": 10846
+      }
+    },
+    "E03": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 200,
+        "output_tokens": 7,
+        "total_tokens": 207,
+        "tested": [
+          6,
+          9
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 7.05373950000012,
+        "program_ms": 5,
+        "peak_kib": 4416
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 236,
+        "output_tokens": 7,
+        "total_tokens": 243,
+        "tested": [
+          6,
+          9
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 18.87756750000017,
+        "program_ms": 11,
+        "peak_kib": 10600
+      }
+    },
+    "E04": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 192,
+        "output_tokens": 7,
+        "total_tokens": 199,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 5.503113999999982,
+        "program_ms": 5,
+        "peak_kib": 4416
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 219,
+        "output_tokens": 7,
+        "total_tokens": 226,
+        "tested": [
+          0,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 18.29979149999963,
+        "program_ms": 11,
+        "peak_kib": 10600
+      }
+    },
+    "E05": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 236,
+        "output_tokens": 7,
+        "total_tokens": 243,
+        "tested": [
+          16,
+          64
+        ],
+        "truncated": [
+          false,
+          true
+        ],
+        "solve_ms": 18.91888849999998,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 274,
+        "output_tokens": 7,
+        "total_tokens": 281,
+        "tested": [
+          16,
+          64
+        ],
+        "truncated": [
+          false,
+          true
+        ],
+        "solve_ms": 20.13894699999969,
+        "program_ms": 10,
+        "peak_kib": 10718
+      }
+    },
+    "R01": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 233,
+        "output_tokens": 23,
+        "total_tokens": 256,
+        "tested": [
+          6,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 12.385323999999969,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 271,
+        "output_tokens": 27,
+        "total_tokens": 298,
+        "tested": [
+          6,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 29.793957500000033,
+        "program_ms": 10.5,
+        "peak_kib": 10600
+      }
+    },
+    "R02": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 300,
+        "output_tokens": 46,
+        "total_tokens": 346,
+        "tested": [
+          11,
+          35
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 18.292755999999827,
+        "program_ms": 5,
+        "peak_kib": 4416
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 349,
+        "output_tokens": 52,
+        "total_tokens": 401,
+        "tested": [
+          11,
+          35
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 31.748221499999772,
+        "program_ms": 11,
+        "peak_kib": 11086
+      }
+    },
+    "R03": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 212,
+        "output_tokens": 20,
+        "total_tokens": 232,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 12.697450499999832,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 246,
+        "output_tokens": 23,
+        "total_tokens": 269,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 30.130549999999857,
+        "program_ms": 10.5,
+        "peak_kib": 10600
+      }
+    },
+    "R04": {
+      "tide": {
+        "status": "accepted",
+        "input_tokens": 218,
+        "output_tokens": 20,
+        "total_tokens": 238,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 11.853699000000006,
+        "program_ms": 5,
+        "peak_kib": 4160
+      },
+      "python": {
+        "status": "accepted",
+        "input_tokens": 251,
+        "output_tokens": 23,
+        "total_tokens": 274,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 29.646049999999832,
+        "program_ms": 10.5,
+        "peak_kib": 10600
+      }
+    },
+    "R05": {
+      "tide": {
+        "status": "no_candidate",
+        "input_tokens": 183,
+        "output_tokens": 7,
+        "total_tokens": 190,
+        "tested": [
+          0,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 5.123000999999704,
+        "program_ms": 5,
+        "peak_kib": 4416
+      },
+      "python": {
+        "status": "no_candidate",
+        "input_tokens": 201,
+        "output_tokens": 7,
+        "total_tokens": 208,
+        "tested": [
+          4,
+          0
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "solve_ms": 18.30873150000025,
+        "program_ms": 11,
+        "peak_kib": 10600
+      }
+    }
+  },
+  "tokenizer": {
+    "version": "0.23.3",
+    "vocabulary_sha256": "036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b"
+  },
+  "model_calls": 0,
+  "actual_model_tokens": 0
+}

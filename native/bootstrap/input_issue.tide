@@ -1,0 +1,83 @@
+use compound_json
+
+input_issue path:t expected:t actual:t > t
+cat3 "\"issue\":{\"path\":" (json_string path) (cat3 "," (expected_actual expected actual) "}")
+
+input_segment path:t frame:{ValueFrame} key:t > t
+let kind get kind frame
+if (text_eq kind "") path
+let prefix text_slice kind 0 1
+let part if (or (text_eq prefix "*") (text_eq prefix "&")) (decimal (length (get values frame))) key
+pointer_child path part
+
+pointer_child path:t part:t > t
+let escaped if (and (case (text_find part "/" 0) true found false) (case (text_find part "~" 0) true found false)) part
+  (fold (indices (chunk_count (text_len part))) "" before page unused
+    let base * (- page 1) 2048
+    let left - (text_len part) base
+    concat before (fold (indices (if (> left 2048) 2048 left)) "" acc row skip
+      let i + base (- row 1)
+      let ch text_slice part i (+ i 1)
+      concat acc (if (text_eq ch "/") "~1" (if (text_eq ch "~") "~0" ch))))
+cat3 path "/" escaped
+
+input_frame_path state:{ValueReader} root:t > t
+let parents get parents state
+fold parents root path row parent
+  let child case (at parents row) (get frame state) inner inner
+  input_segment path parent (get key child)
+
+input_wire_type token:{JsonValueToken} > t
+let op get op token
+if (text_eq op "[") "array"
+if (text_eq op "{") "object"
+if (text_eq op "string") "string"
+if (text_eq op "surrogate") "invalid Unicode string"
+let value get value token
+if (text_eq value "null") "null"
+if (or (text_eq value "true") (text_eq value "false")) "boolean"
+if (case (int value) false n true) "integer"
+if (and (case (text_find value "." 0) true pos false) (and (case (text_find value "e" 0) true pos false) (case (text_find value "E" 0) true pos false))) "integer outside i64" "number"
+
+incomplete_input frame:{ValueFrame} path:t > t
+let kind get kind frame
+let count length (get values frame)
+let prefix text_slice kind 0 1
+if (text_eq prefix "&")
+  (input_issue (input_segment path frame "") (pair_component kind count) "missing")
+if (text_eq prefix "?")
+  (if (eq count 1) (input_issue (concat path "/none") "true" "false")
+   input_issue path kind (if (eq count 0) "empty object" "multiple option keys"))
+let decl need (get decl frame) "input_record" 0
+let missing fold (get fields decl) -1 index row key
+  if (or (> index -1) (case (entry_at (get names frame) key) false found true)) index (- row 1)
+let key need (at (get fields decl) missing) "missing_field" 0
+input_issue (input_segment path frame key) (need (at (get types decl) missing) "field_type" 0) "missing"
+
+rejected_input state:{ValueReader} token:{JsonValueToken} root:t kind:t schemas:{Declarations} > t
+let path input_frame_path state root
+let frame get frame state
+let op get op token
+if (text_eq op "close") (incomplete_input frame path)
+let key get key token
+let expected input_child frame key kind
+if (and (text_eq expected "") (or (> (text_len key) 128) (and (text_eq key "") (not (pair_type (get kind frame)))))) (input_issue path (get kind frame) "undeclared field")
+let child input_segment path frame key
+if (text_eq expected "") (input_issue child "absent" (input_wire_type token))
+let actual if (and (text_eq op "string") (variant_kind schemas expected)) "unknown variant tag" (input_wire_type token)
+input_issue child expected actual
+
+input_event_issue events:{JsonEvents} start:i root:t kind:t schemas:{Declarations} base:t > t
+let checked fold (append (get pages events) (get tail events)) (pair initial_value_reader "") before page group
+  let first_index * (- page 1) 128
+  if (or (not (> (+ first_index (length group)) start)) (not (text_eq (second before) ""))) before
+  fold group before prior row token
+    if (or (< (+ first_index (- row 1)) start) (not (text_eq (second prior) ""))) prior
+    let state first prior
+    let frame get frame state
+    if (and (text_eq (get kind frame) "") (> (length (get values frame)) 0)) prior
+    if (and (eq (length (get values frame)) 4096) (and (text_eq (text_slice (get kind frame) 0 1) "*") (not (text_eq (get op token) "close"))))
+      (pair state (input_issue (input_segment (input_frame_path state root) frame "") "at most 4096 items" "extra item"))
+    let next decode_json_step state token kind schemas
+    if (get valid next) (pair next "") (pair state (rejected_input state token root kind schemas))
+if (text_eq (second checked) "") base (extra_fields base (second checked))

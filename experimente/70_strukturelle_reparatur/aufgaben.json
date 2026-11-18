@@ -1,0 +1,152 @@
+[
+  {
+    "id": "cut",
+    "name": "Schnittliste",
+    "contract": "Rechne die Dauer eines Ausschnitts von begin bis end in Abtastpunkte um.",
+    "tide": {
+      "panel": "use route\n\nmain begin:i finish:i rate:i > i\nsamples begin finish rate\n",
+      "route": "use rulebook\n\nsamples begin:i finish:i rate:i > i\n* rate (span finish begin)\n",
+      "rulebook": "span start:i stop:i > i\n- stop start\n"
+    },
+    "python": {
+      "panel": "from route import samples\n\ndef main(begin: int, finish: int, rate: int) -> int:\n    return samples(begin, finish, rate)\n",
+      "route": "from rulebook import span\n\ndef samples(begin: int, finish: int, rate: int) -> int:\n    return rate * span(finish, begin)\n",
+      "rulebook": "def span(start: int, stop: int) -> int:\n    return stop - start\n"
+    }
+  },
+  {
+    "id": "tape",
+    "name": "Bandadresse",
+    "contract": "Kodiere Bank, Spur und Sektor als dreistellige Dezimaladresse. Bank ist die Hunderterstelle.",
+    "tide": {
+      "panel": "use route\n\nmain bank:i track:i sector:i > i\naddress bank track sector\n",
+      "route": "use rulebook\n\naddress bank:i track:i sector:i > i\ndecimal_address sector track bank\n",
+      "rulebook": "decimal_address hundreds:i tens:i units:i > i\n+ (* hundreds 100) (+ (* tens 10) units)\n"
+    },
+    "python": {
+      "panel": "from route import address\n\ndef main(bank: int, track: int, sector: int) -> int:\n    return address(bank, track, sector)\n",
+      "route": "from rulebook import decimal_address\n\ndef address(bank: int, track: int, sector: int) -> int:\n    return decimal_address(sector, track, bank)\n",
+      "rulebook": "def decimal_address(hundreds: int, tens: int, units: int) -> int:\n    return hundreds * 100 + (tens * 10 + units)\n"
+    }
+  },
+  {
+    "id": "page",
+    "name": "Speicherseiten",
+    "contract": "Eine UTF-8-Nachricht belegt ganze Seiten zu je 8 Bytes. Zähle den drei Byte langen Vorspann mit.",
+    "tide": {
+      "panel": "use route\n\nmain message:t > i\npages message\n",
+      "route": "use rulebook\n\npages message:t > i\ndiv (+ (used message) 10) 8\n",
+      "rulebook": "used message:t > i\ntext_len message\n"
+    },
+    "python": {
+      "panel": "from route import pages\n\ndef main(message: str) -> int:\n    return pages(message)\n",
+      "route": "from rulebook import used\n\ndef pages(message: str) -> int:\n    return (used(message) + 10) // 8\n",
+      "rulebook": "def used(message: str) -> int:\n    return len(message)\n"
+    }
+  },
+  {
+    "id": "ticket",
+    "name": "Druckauftrag",
+    "contract": "Jede Kopie enthält die UTF-8-Bytes des Textes mit vorangestelltem Zeichen §. Ermittle die gesamte Bytezahl.",
+    "tide": {
+      "panel": "use route\n\nmain title:t copies:i > i\njob title copies\n",
+      "route": "use rulebook\n\njob title:t copies:i > i\n* copies (row_size title)\n",
+      "rulebook": "row_size title:t > i\ntext_len (concat \"§\" title)\n"
+    },
+    "python": {
+      "panel": "from route import job\n\ndef main(title: str, copies: int) -> int:\n    return job(title, copies)\n",
+      "route": "from rulebook import row_size\n\ndef job(title: str, copies: int) -> int:\n    return copies * row_size(title)\n",
+      "rulebook": "def row_size(title: str) -> int:\n    return len(f'§{title}')\n"
+    }
+  },
+  {
+    "id": "namespace",
+    "name": "Namensraum",
+    "contract": "Liefere die einsbasierte Zeichenposition des letzten Doppelkolons. Fehlt es, ist das Ergebnis null.",
+    "tide": {
+      "panel": "use route\n\nmain name:t > i\nposition name\n",
+      "route": "use rulebook\n\nposition name:t > i\n+ (marker name) 1\n",
+      "rulebook": "marker name:t > i\ncase (text_find name \"::\" 0) -1 hit hit\n"
+    },
+    "python": {
+      "panel": "from route import position\n\ndef main(name: str) -> int:\n    return position(name)\n",
+      "route": "from rulebook import marker\n\ndef position(name: str) -> int:\n    return marker(name) + 1\n",
+      "rulebook": "def marker(name: str) -> int:\n    return name.find('::')\n"
+    }
+  },
+  {
+    "id": "annotation",
+    "name": "Anmerkungsgrenze",
+    "contract": "Stelle dem Logtext das Zeichen > voran. Liefere den nullbasierten Index der letzten Raute oder −1.",
+    "tide": {
+      "panel": "use route\n\nmain text:t > i\nboundary text\n",
+      "route": "use rulebook\n\nboundary text:t > i\nlocate text\n",
+      "rulebook": "locate text:t > i\ncase (text_find (concat \">\" text) \"#\" 0) -1 hit hit\n"
+    },
+    "python": {
+      "panel": "from route import boundary\n\ndef main(text: str) -> int:\n    return boundary(text)\n",
+      "route": "from rulebook import locate\n\ndef boundary(text: str) -> int:\n    return locate(text)\n",
+      "rulebook": "def locate(text: str) -> int:\n    return f'>{text}'.find('#')\n"
+    }
+  },
+  {
+    "id": "telemetry",
+    "name": "Telemetriekorrektur",
+    "contract": "Addiere zur vorzeichenbehafteten Differenz inbound minus outbound die UTF-8-Bytezahl der Kennung.",
+    "tide": {
+      "panel": "use route\n\nmain label:t inbound:i outbound:i > i\nadjust label inbound outbound\n",
+      "route": "use rulebook\n\nadjust label:t inbound:i outbound:i > i\n+ (difference outbound inbound) (size label)\n",
+      "rulebook": "difference a:i b:i > i\n- a b\n\nsize label:t > i\ntext_len label\n"
+    },
+    "python": {
+      "panel": "from route import adjust\n\ndef main(label: str, inbound: int, outbound: int) -> int:\n    return adjust(label, inbound, outbound)\n",
+      "route": "from rulebook import difference, size\n\ndef adjust(label: str, inbound: int, outbound: int) -> int:\n    return difference(outbound, inbound) + size(label)\n",
+      "rulebook": "def difference(a: int, b: int) -> int:\n    return a - b\n\ndef size(label: str) -> int:\n    return len(label)\n"
+    }
+  },
+  {
+    "id": "trailer",
+    "name": "Trailerlänge",
+    "contract": "Ein Feld steht nach der letzten senkrechten Linie. Gib die UTF-8-Bytezahl dieses Felds an. Ohne Linie gilt der ganze Text.",
+    "tide": {
+      "panel": "use route\n\nmain frame:t > i\ntrailer frame\n",
+      "route": "use rulebook\n\ntrailer frame:t > i\nlet start + 1 (marker frame)\ntext_len (text_slice frame start (text_len frame))\n",
+      "rulebook": "marker frame:t > i\ncase (text_find frame \"|\" 0) -1 hit hit\n"
+    },
+    "python": {
+      "panel": "from route import trailer\n\ndef main(frame: str) -> int:\n    return trailer(frame)\n",
+      "route": "from rulebook import marker\n\ndef trailer(frame: str) -> int:\n    start = 1 + marker(frame)\n    return len(frame[start:len(frame)])\n",
+      "rulebook": "def marker(frame: str) -> int:\n    return frame.find('|')\n"
+    }
+  },
+  {
+    "id": "thermal",
+    "name": "Wärmekonto",
+    "contract": "Berechne den Anfangsbestand plus die je Intervall aufgelaufenen Einheiten.",
+    "tide": {
+      "panel": "use route\n\nmain start:i intervals:i units:i > i\nbalance start intervals units\n",
+      "route": "use rulebook\n\nbalance start:i intervals:i units:i > i\n+ start (change intervals units)\n",
+      "rulebook": "change count:i units:i > i\n+ count units\n"
+    },
+    "python": {
+      "panel": "from route import balance\n\ndef main(start: int, intervals: int, units: int) -> int:\n    return balance(start, intervals, units)\n",
+      "route": "from rulebook import change\n\ndef balance(start: int, intervals: int, units: int) -> int:\n    return start + change(intervals, units)\n",
+      "rulebook": "def change(count: int, units: int) -> int:\n    return count + units\n"
+    }
+  },
+  {
+    "id": "flag",
+    "name": "Statuskennzeichen",
+    "contract": "Zähle für das Kennzeichen ON in beliebiger ASCII-Gross-/Kleinschreibung alle Pakete, sonst null.",
+    "tide": {
+      "panel": "use route\n\nmain mode:t packets:i > i\ncount mode packets\n",
+      "route": "use rulebook\n\ncount mode:t packets:i > i\nif (active mode) packets 0\n",
+      "rulebook": "active mode:t > b\ntext_eq mode \"ON\"\n"
+    },
+    "python": {
+      "panel": "from route import count\n\ndef main(mode: str, packets: int) -> int:\n    return count(mode, packets)\n",
+      "route": "from rulebook import active\n\ndef count(mode: str, packets: int) -> int:\n    return packets if active(mode) else 0\n",
+      "rulebook": "def active(mode: str) -> bool:\n    return mode in ('ON',)\n"
+    }
+  }
+]

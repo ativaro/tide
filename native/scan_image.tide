@@ -1,0 +1,65 @@
+use argv_i64
+
+address_then opcode:t body:t target:t > t
+concat opcode (concat (le32 (bytes_in body)) (concat body target))
+
+expect_bytes bytes:*t offset:i > t
+fold bytes "" code row value
+  let pos byte_hex (+ offset (- row 1))
+  concat code (concat "807b" (concat pos (concat value (input_guard "74"))))
+
+bool_argument > t
+let yes concat (expect_bytes (list t 4 "72" "75" "65" "00") 1) "b801000000"
+let no concat (expect_bytes (list t 6 "66" "61" "6c" "73" "65" "00") 0) "31c0"
+concat "488b1f803b74" (concat (skip_if "75" (concat yes (concat "eb" (byte_hex (bytes_in no))))) no)
+
+event_arguments kind:t > t
+let too_many diagnostic_exit "7b22636f6465223a22455f494e505554222c22726561736f6e223a226c6973745f746f6f5f6c6f6e67222c226c696d6974223a343039367d0a"
+let count concat "488b0c2448ffc94881f900100000" (skip_if "76" too_many)
+let slots "488d7424104889f74c8d14ce"
+let parse if (text_eq kind "b") bool_argument decimal_argument
+let iteration concat parse "4889074883c7084c39d7"
+let loop_code concat iteration (concat "0f82" (le32 (- -6 (bytes_in iteration))))
+concat count (concat slots (concat "85c90f84" (concat (le32 (bytes_in loop_code)) loop_code)))
+
+render_scan_value kind:t > t
+if (text_eq kind "b")
+  (let yes "41c706747275654983c604"
+   let no "41c70666616c7341c64604654983c605"
+   concat "4885c0" (concat (skip_if "74" (concat yes (concat "eb" (byte_hex (bytes_in no))))) no))
+concat "415051564151" (concat (integer_text "4889e631c9") "4c89f7fcf3a44989fe41595e594158")
+
+write_scan > t
+let syscall_write "bf01000000b8010000000f05"
+let retry back_if "74" (concat syscall_write "4883f8fc")
+let failed skip_if "7f" (exit_process 1)
+let advance concat retry (concat "4885c0" (concat failed "4801c64829c2"))
+concat "6641c7065d0a4983c6024c89d64c89f24829f2" (concat (back_if "75" advance) (exit_process 0))
+
+record ScanCode
+input_kind:t output_kind:t state_bytes:i metered:b init:t transition:t output:t
+
+scan_image compiled:{ScanCode} setup:i literal:?t count:i > t
+let output_kind get output_kind compiled
+let state_size le32 (get state_bytes compiled)
+let base concat "41bf000060004d8d87" (concat state_size (concat "4d8db0" (concat state_size "4d89f241c6065b49ffc64531c9")))
+let metered get metered compiled
+let iteration concat "49ffc1" (concat (if metered tick_code "") (concat (get transition compiled) (concat "4d87f8" (concat (get output compiled)
+  (concat (render_scan_value output_kind) "41c6062c49ffc64883c608ffc9")))))
+let loop_code concat iteration (concat "0f85" (le32 (- -6 (bytes_in iteration))))
+let events concat loop_code "49ffce"
+let budget if metered (concat "bd" (le32 (- 100000 setup))) ""
+let body concat base (concat (get init compiled) (concat budget (concat "85c90f84" (concat (le32 (bytes_in events)) (concat events write_scan)))))
+let data_fail numbered_error "7b22636f6465223a22455f44415441222c22726561736f6e223a226469766973696f6e5f62795f7a65726f222c226576656e74223a" "4c89c8"
+let limit_fail numbered_error "7b22636f6465223a22455f4c494d4954222c226576656e74223a" "4c89c8"
+let overflow_fail numbered_error "7b22636f6465223a22455f4f564552464c4f57222c226576656e74223a" "4c89c8"
+let with_data address_then "4c8d2d" body data_fail
+let with_limit if metered (address_then "4c8d25" with_data limit_fail) with_data
+let code address_then "4c8d1d" with_limit overflow_fail
+let input_kind get input_kind compiled
+let full case literal
+  (let bad if (text_eq input_kind "b") (numbered_error "7b22636f6465223a22455f494e505554222c22726561736f6e223a2265787065637465645f626f6f6c222c22617267756d656e74223a" "4889f84829f048c1e80348ffc0") bad_argument
+   address_then "4c8d2d" (concat (event_arguments input_kind) code) bad)
+  data (concat "b9" (concat (le32 count) (address_then "488d35" code data)))
+let buffer_size + (* 2 (get state_bytes compiled)) (+ 3 (* 4096 (if (text_eq output_kind "b") 6 21)))
+elf_with_buffer full buffer_size

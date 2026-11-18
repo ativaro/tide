@@ -1,0 +1,2052 @@
+{
+  "date": "2026-11-17",
+  "platform": "Linux x86-64",
+  "acceptance": {
+    "clean_native_build": true,
+    "bootstrap_fixed_point": true,
+    "guest_source_limit_bytes": 131072,
+    "production_work_limit": 100000,
+    "stock_rule_examples": {
+      "heat": 3,
+      "pump": 2,
+      "light": 3
+    },
+    "imported_rule_examples": 4,
+    "elf_hash_matches": 12,
+    "legacy_tests": 35,
+    "prior_installed_trace": {
+      "code": "E_BACKEND",
+      "message": "This invocation is unavailable in the native TIDE package."
+    },
+    "checker_sha256": "6892cc9c8355ba2d20a5d548a362d55eaf902e284284d67bb79e955142ab3491",
+    "initial_native_checker_sha256": "7483816381cdb82b14900dbf1d10c8145b1568f6e3d1a09f9957a51b5891ef5c",
+    "asan_ubsan": {
+      "commands": 9,
+      "errors": 0,
+      "scope": "Eight native test invocations and one trace. Instrumented copy retains CPU and guest budgets. Process address-space cap relaxed for ASan shadow memory only."
+    }
+  },
+  "comparisons": {
+    "rules": 333,
+    "lists": 176,
+    "scalars": 466,
+    "total": 975,
+    "differences": 0
+  },
+  "rule_comparisons": [
+    {
+      "label": "heat",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "fehler",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "fehler",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "fehler",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "fehler",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zustaende",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zustaende",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zustaende",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "zustaende",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "budget",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "budget",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "budget",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "budget",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "ausgabe",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "ausgabe",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "ausgabe",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "ausgabe",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "imported/control",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "imported/control",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "imported/control",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "imported/control",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_0",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_2",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_3",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_4",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_5",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_6",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_7",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_8",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_9",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_10",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_11",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_12",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_13",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_14",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_15",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_16",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_17",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_18",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_19",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_20",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_21",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_22",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_23",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_24",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_25",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_26",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_27",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_28",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_29",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_30",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_31",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_32",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_33",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_34",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_35",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_36",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_37",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_38",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_39",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_40",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_41",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_42",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_43",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_44",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_45",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_46",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_47",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_48",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_49",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_50",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_51",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_52",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_53",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_54",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_55",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_56",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_57",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_58",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_59",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_60",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_61",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_62",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light_63",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_0",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_2",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_3",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_4",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_5",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_6",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_7",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_8",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_9",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_10",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_11",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_12",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_13",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_14",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_15",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_16",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_17",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_18",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_19",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_20",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_21",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_22",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_23",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_24",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_25",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_26",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_27",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_28",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_29",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_30",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_31",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_32",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_33",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_34",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_35",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_36",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_37",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_38",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_39",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_40",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_41",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_42",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_43",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_44",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_45",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_46",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_47",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_48",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_49",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_50",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_51",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_52",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_53",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_54",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_55",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_56",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_57",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_58",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_59",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_60",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_61",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_62",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heat_63",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_0",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_2",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_3",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_4",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_5",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_6",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_7",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_8",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_9",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_10",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_11",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_12",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_13",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_14",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_15",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_16",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_17",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_18",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_19",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_20",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_21",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_22",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_23",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_24",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_25",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_26",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_27",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_28",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_29",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_30",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_31",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_32",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_33",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_34",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_35",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_36",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_37",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_38",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_39",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_40",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_41",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_42",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_43",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_44",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_45",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_46",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_47",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_48",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_49",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_50",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_51",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_52",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_53",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_54",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_55",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_56",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_57",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_58",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_59",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_60",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_61",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_62",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "pump_63",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "threshold_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "threshold_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "threshold_3",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "threshold_4",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_3",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_4",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_5",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "boundaries_6",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "restart_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "restart_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "restart_3",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "restart_4",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "restart_5",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "division_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "division_2",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "output_error_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "output_error_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "output_error_3",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "simultaneous_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "simultaneous_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "simultaneous_3",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "simultaneous_4",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "overflow_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "overflow_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "overflow_3",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "order_1",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "order_2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "order_3",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "order_4",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "light",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_EXAMPLE"
+    },
+    {
+      "label": "budget99999_1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "budget99999_0",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "budget99999_-1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "budget100000_1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "budget100000_0",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "budget100000_-1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "budget100001_1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "budget100001_0",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "budget100001_-1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "budget100002_1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "budget100002_0",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "budget100002_-1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "budget100003_1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "budget100003_0",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "budget100003_-1",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "missing_state",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "empty_state",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "bad_state",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "bad_decl",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "shadow_field",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "dup_state",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "reversed_action_duplicate",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "bad_action_target",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "missing_action",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "unknown_mode",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "keep_arity",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "set_empty",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "set_type",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "bad_guard",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "bad_out",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "out_empty",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "else_first",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "else_missing",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "when_missing",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "missing_arrow",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "trailing_comma",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "scan_scalar",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "scan_unknown",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "scan_func",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "call_rule",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "no_event_param",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "two_event_params",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "rule_cycle",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_CYCLE"
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "inner_event_2",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_scan",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "wrong_event",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_EXAMPLE"
+    },
+    {
+      "label": "too_few_expected",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_EXAMPLE"
+    },
+    {
+      "label": "bad_events",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "wrong_keys",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_EXAMPLE"
+    },
+    {
+      "label": "expected_error",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_EXAMPLE"
+    },
+    {
+      "label": "pump",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_ENTRY"
+    },
+    {
+      "label": "step+2",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "step0002",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "step9223372036854775808",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "step-9223372036854775809",
+      "cmd": "trace",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "long_field_list",
+      "cmd": "trace",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "init_error",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "init_error",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "init_error",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "init_error",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "two_scans",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "two_scans",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "two_scans",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "two_scans",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    }
+  ],
+  "inputs_sha256": {
+    "Makefile": "e3f5b5c24b132ddde0f0c4cb5fe7cf07322faf2f71f1a37b07982498b42d4b4a",
+    "tide": "f9fc198200996fe5c1b5f5a901c549518d930c94afa50df1275029eb060faea2",
+    "native/bootstrap/seed.tide": "7c28809860d72c3e7264c2ee855d049db5be5ccc42446213762489b23c06072c",
+    "native/bootstrap/syntax.tide": "55f9f9d8be39c73a58bf768f3d82ed00ead6a113b959de0d3807bdc2da1beca7",
+    "native/bootstrap/functions.tide": "1c563f96275694b1e4085fa73b4c02ba7477dad5213d0fa9436baddef289768c",
+    "native/bootstrap/rules.tide": "8a1422e507a48a42d2cfd5aff82e39a6624dee2da17dcccff30d3215ee232e62",
+    "native/bootstrap/function_run.tide": "865da4f7c7fdb7b3b30e45b6bc53e4f0e272c553ae7c89d3d2ff1e4761b6b36e",
+    "native/bootstrap/scalar_json.tide": "062c8864f9710cb5f032a00971c6f88a266f3c338ccc641c23dee2cd9ab9c29e",
+    "native/bootstrap/project.tide": "ea055a617cce497542b603e2b45bd818b2be8e9adf46d2343e36349dd7432c51",
+    "native/bootstrap/schema.tide": "cf07d334cb5a09bd00a2b538ccce2c18dc2a7f3047b19968c241fa86927f5548",
+    "native/bootstrap/checks.tide": "b01be75c80589b4265044c01247087625f7c1628c9b6d4410cb2fde7cc4a6cd3",
+    "native/bootstrap/compiler_checks.tide": "8e5c841eb54cc6a3e973d65f47a0d8ac0a12794f2a0328096b005d8b0e3d0401",
+    "native/bootstrap/fixtures/rules/control.tide": "310973f575687c3953c9e927d8af4bdbec70a5ef74b4b7277c1b0cbca99392bb",
+    "native/bootstrap/fixtures/rules/counters.tide": "f8fa1699c1f5719b18ee97f035c45bead435cdd1fb1bc810914e87170cb3b6bf"
+  }
+}

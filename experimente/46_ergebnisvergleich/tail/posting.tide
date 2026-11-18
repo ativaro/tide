@@ -1,0 +1,2 @@
+store history:*i reading:i > *i
+append history (mod reading 10)

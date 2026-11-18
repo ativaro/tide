@@ -1,0 +1,4 @@
+{
+  "system_suffix": "TIDE grammar card. 1 + 2 is (+ 1 2). Difference is (- a b), division is (div a b), remainder is (mod a b), and equality is (eq a b). A conditional is (if condition yes no). A local binding is (let name value expression). An optional value is handled by (case optional fallback binder expression_using_binder). A fold is (fold list initial accumulator row item step), where accumulator, row, and item are bare names visible inside step. There are no lambda or let* forms. Keep existing names and use only operations available in the packet or on this card.",
+  "rerun": "Same six TIDE seeds, frozen packets, validation and options. Only append this card to the TIDE system message. Each request is fresh and receives no earlier attempt or error. The two Python tasks and six earlier Python responses serve as the unchanged exploratory reference. The card was designed after inspecting the initial outcomes."
+}

@@ -1,0 +1,117 @@
+indices n:i > *t
+if (or (< n 0) (> n 4096)) fail "bootstrap_line_limit"
+if (not (> n 16)) (lines (text_slice "x\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\nx\n" 0 (* 2 n)))
+let marks fold (list i 13 4096 2048 1024 512 256 128 64 32 16 8 4 2 1) "" s idx bit
+  concat (concat s s) (if (eq (mod (div n bit) 2) 1) "x\n" "")
+lines marks
+
+white ch:t gaps:t > b
+case (text_find gaps ch 0) false pos true
+
+valid_id name:t > b
+let letters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+if (eq (text_len name) 0) false
+let ok fold (indices (text_len name)) true valid row ignored
+  and valid (case (text_find (if (eq row 1) letters (concat letters "_0123456789")) (text_slice name (- row 1) row) 0) false offset true)
+ok
+
+qualified_id name:t > b
+case (text_find name "." 0) (valid_id name) cut
+and (valid_id (text_slice name 0 cut)) (valid_id (text_slice name (+ cut 1) (text_len name)))
+
+record TypeLex
+parts:*t inside:b name:t valid:b refs:*t
+
+type_lex_step cursor:{TypeLex} ch:t > {TypeLex}
+if (get inside cursor)
+  (if (not (text_eq ch "}")) (with name cursor (concat (get name cursor) ch))
+   let name get name cursor
+   make TypeLex parts (append (get parts cursor) (concat "{" (concat name "}"))) inside false name "" valid (and (get valid cursor) (qualified_id name)) refs (append (get refs cursor) name))
+if (text_eq ch "{") (with inside cursor true)
+with parts cursor (append (get parts cursor) ch)
+
+record TypePart
+target:t depth:i tail:i
+
+record TypeStack
+parts:*{TypePart} top:i valid:b
+
+type_push stack:{TypeStack} target:t depth:i tail:i > {TypeStack}
+let parts get parts stack
+make TypeStack parts (append parts (make TypePart target target depth depth tail tail)) top (length parts) valid (not (> depth 16))
+
+type_step stack:{TypeStack} token:t > {TypeStack}
+if (not (get valid stack)) stack
+let top get top stack
+let leaf if (or (text_eq token "z") (text_eq token "y")) "Text" (if (text_eq token "q") "I" (if (text_eq token "i") "I" (if (text_eq token "t") "Text" (if (text_eq token "b") "bool"
+  (if (text_eq (text_slice token 0 1) "{") (concat "R_" (text_slice token 1 (- (text_len token) 1))) "")))))
+if (not (text_eq leaf "")) (type_push stack leaf 1 top)
+case (at (get parts stack) top) (with valid stack false) lhs
+let depth get depth lhs
+let tail get tail lhs
+if (and (text_eq token "%") (text_eq (text_slice (get target lhs) 0 4) "Opt<")) (with valid stack false)
+if (text_eq token "%") (type_push stack (cat3 "Seq<std::pair<Text," (get target lhs) ">>") (+ 1 depth) tail)
+if (or (text_eq token "?") (text_eq token "*"))
+  (type_push stack (concat (if (text_eq token "?") "Opt<" "Seq<") (concat (get target lhs) ">")) (+ 1 depth) tail)
+if (not (text_eq token "&")) (with valid stack false)
+case (at (get parts stack) tail) (with valid stack false) rhs
+type_push stack (concat "std::pair<" (concat (get target lhs) (concat "," (concat (get target rhs) ">"))))
+  (+ 1 (if (> depth (get depth rhs)) depth (get depth rhs))) (get tail rhs)
+
+record TypeShape
+target:t refs:*t
+
+data_shape typ:t > ?{TypeShape}
+let size text_len typ
+if (or (eq size 0) (> size 128)) (nil {TypeShape})
+let lexed fold (indices size) (make TypeLex parts (list t 0) inside false name "" valid true refs (list t 0)) cursor pos unused
+  type_lex_step cursor (text_slice typ (- pos 1) pos)
+if (or (get inside lexed) (not (get valid lexed))) (nil {TypeShape})
+let parts get parts lexed
+let stack fold parts (make TypeStack parts (list {TypePart} 0) top -1 valid true) held row unused
+  type_step held (need (at parts (- (length parts) row)) "type_token" row)
+if (not (get valid stack)) (nil {TypeShape})
+case (at (get parts stack) (get top stack)) (nil {TypeShape}) part
+if (eq (get tail part) -1) (some (make TypeShape target (get target part) refs (get refs lexed))) (nil {TypeShape})
+
+decimal n:i > t
+if (eq n 0) "0"
+let digits fold (indices 19) (pair n "") acc pos unused
+  let rest first acc
+  if (eq rest 0) acc
+  let digit mod rest 10
+  pair (div rest 10) (concat (text_slice "0123456789" digit (+ digit 1)) (second acc))
+second digits
+
+cat3 a:t b:t c:t > t
+concat a (concat b c)
+
+entry_at words:*t name:t > ?i
+fold words (nil i) found row word
+  if (text_eq word name) (some (- row 1)) found
+
+lookup_size names:*t sizes:*i name:t > ?i
+case (entry_at names name) (nil i) index (at sizes index)
+
+intrinsic name:t > ?i
+let groups list t 9
+  "|recur|utf8_text|q_units|q_from_units|unix_seconds|json_encode|read_bytes|utf8_bytes|byte_len|dict|not|nil|some|lines|int|length|text_len|first|second|read|fail|" "|write_bytes|transaction|json_decode|byte_at|dict_get|+|-|*|div|mod|eq|<|>|<=|>=|and|or|at|concat|text_eq|append|pair|get|tag|match|"
+  "|pg_exec|sql_exec|dict_put|if|let|need|with|text_slice|text_find|text_rfind|" "|pg_query|while|sql_query|case|map|" "" "|https_get|fold|" "|https_post|fold_lines|" "" "|fold_rows|"
+fold groups (nil i) found row group
+  if (case (text_find group (cat3 "|" name "|") 0) false index true) (some row) found
+
+integer_comparison op:t > b
+or (text_eq op "eq") (or (or (text_eq op "<") (text_eq op ">")) (or (text_eq op "<=") (text_eq op ">=")))
+
+display_arity name:t > ?i
+if (or (text_eq name "input_line") (text_eq name "raise")) (some 1)
+if (or (text_eq name "has_reason") (text_eq name "scan")) (some 2)
+if (text_eq name "catch") (some 4) (nil i)
+
+blank_source_line line:t gaps:t > b
+if (eq (text_len line) 0) true
+if (not (white (text_slice line 0 1) gaps)) false
+fold (indices (text_len line)) true ok pos unused and ok (white (text_slice line (- pos 1) pos) gaps)
+
+example closed_arity intrinsic
+{"inputs":{"name":"fold"},"expect":{"some":6}}

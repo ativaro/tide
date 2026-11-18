@@ -1,0 +1,313 @@
+use inspection
+
+inspection_checks > b
+if (not result_difference_checks) fail "typed_result_difference"
+if (not nested_contract_check) fail "nested_array_contract"
+if (not variant_context_checks) fail "variant_context"
+if (not record_context_checks) fail "named_record_context"
+if (not execution_scope_checks) fail "branch_report_scope"
+if (not execution_checks) fail "executed_examples"
+if (not handler_inspection_checks) fail "handler_contract"
+if (not repair_example_checks) fail "failure_context"
+if (not candidate_filter_checks) fail "verified_patch_candidates"
+if (not structural_repair_checks) fail "structural_repair"
+if (not intermediate_example_checks) fail "intermediate_example"
+if (not replacement_filter_checks) fail "verified_expression_replacement"
+if (not counterexample_checks) fail "candidate_counterexample"
+if (not pair_filter_checks) fail "cross_file_candidates"
+if (not mixed_pair_filter_checks) fail "cross_file_expression_candidate"
+if (not generated_probe_checks) fail "generated_counterexample"
+if (not contract_probe_checks) fail "contract_counterexample"
+if (not related_probe_checks) fail "relational_projection"
+let wide fold (indices 4096) "" acc pos unused concat acc "x"
+if (not (text_eq (json_string (concat wide "\n")) (cat3 "\"" wide "\\u000a\""))) fail "wide_json_quote"
+let body "use helper\n\nsum_entries xs:*i > i\nfold xs 0 total pos x (adjust total x)\n\nmain xs:*i > i\nsum_entries xs\n\nexample empty main\n{\"inputs\":{\"xs\":[]},\"expect\":0}"
+let helper "adjust base:i change:i > i\n+ base change"
+let project project_supply (project_begin body "" (text_len body) "demo.tide" ":demo.tide") helper "" (text_len helper)
+let hole project_finish project ":demo.tide" "sum_entries" "!4:24"
+let scope "\"expected_type\":\"i\",\"bindings\":{\"xs\":\"*i\",\"total\":\"i\",\"pos\":\"i\",\"x\":\"i\"}"
+if (case (text_find hole scope 0) true pos false) fail "fold_bindings"
+let brief project_finish project ":demo.tide" "adjust" "?+helper.tide:2:1"
+let response text_slice brief 0 (need (text_find brief "\n" 0) "missing_snapshot" 0)
+let fingerprint "\"contract_sha256\":\"ab68266edbe4926bd4e98e0bfa25a20eebc565462a54edbdbde024b4a7bf482d\""
+if (case (text_find response fingerprint 0) true hit false) fail "indexed_contract_hash"
+if (case (text_find response "\"inputs\":" 0) false hit true) fail "index_included_inputs"
+if (case (text_find response "\"selection\":{" 0) true hit false) fail "index_lost_selection"
+let targeted project_finish project ":demo.tide" "adjust" "=+helper.tide:2:1|empty"
+let detail text_slice targeted 0 (need (text_find targeted "\n" 0) "missing_snapshot" 0)
+if (case (text_find detail "\"inputs\":{\"xs\":[]}" 0) true hit false) fail "missing_example_payload"
+if (not block_hash_checks) fail "block_hash_boundary"
+let imported project_finish project ":demo.tide" "adjust" "+helper.tide:2:1"
+let checks list t 4 "\"direct_callers\":[\"sum_entries\"]" "\"affected_callers\":[\"main\",\"sum_entries\"]" "\"expanded\":\"(+ base change)\"" (concat "\"contract_sha256\":\"" (concat (sha256_utf8 "[\"empty\",\"main\",{\"expect\":0,\"inputs\":{\"xs\":[]}}]") "\""))
+if (not (fold checks true ok row text and ok (case (text_find imported text 0) false pos true))) fail "imported_context"
+and (text_eq (sha256_utf8 "") "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+  (text_eq (sha256_utf8 "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq") "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1")
+
+block_hash_checks > b
+let boundary fold (indices 3275) "" acc pos unused concat acc "🐈a"
+if (not (text_eq (sha256_utf8 boundary) "bea6d186108f64170b81f107c385a02b73d8543313864e2d5e43a70bd42f13c6")) fail "sha_group_last_block"
+if (not (text_eq (sha256_utf8 (concat boundary "!")) "76b4ed2dcd88605d57b8410d30fcae8b92ad470f828d2d5d077b2d570a6adf38")) fail "sha_group_first_block"
+let sizes list i 4 55 56 64 129
+let expected list t 4
+  "d5e285683cd4efc02d021a5c62014694958901005d6f71e89e0989fac77e4072"
+  "04c26261370ee7541549d16dee320c723e3fd14671e66a099afe0a377c16888e"
+  "7ce100971f64e7001e8fe5a51973ecdfe1ced42befe7ee8d5fd6219506b5393c"
+  "0ec9eb33e74510bcdd1f2ea55206e82f21649c5c2becbf2b433eb475b34c01bd"
+fold sizes true ok row count
+  let source fold (indices count) "" acc pos unused concat acc "x"
+  and ok (text_eq (sha256_utf8 source) (need (at expected (- row 1)) "expected_hash" 0))
+
+repair_example_checks > b
+let source "use helper\n\nmain flag:b > i\nif flag (left 3) (right 2)\n\nleft x:i > i\nshared x\n\nexample broken main\n{\"inputs\":{\"flag\":true},\"expect\":5}"
+let lib "right x:i > i\nshared x\n\nshared x:i > i\n+ x 1\n\nunused x:i > i\n0"
+let project project_supply (project_begin source (ascii_string source) (text_len source) "root.tide" ":root.tide") lib (ascii_string lib) (text_len lib)
+let compiled compile_project project (schema_blocks source true)
+let sample need (at (get samples compiled) 0) "sample" 0
+let program get program compiled
+let names reachable_definitions program "main"
+if (not (text_eq (json_labels names) "[\"main\",\"left\",\"right\",\"shared\"]")) fail "reachable_diamond"
+let info repair_context project program sample "root.tide" names "" "broken"
+let result scalar_eval program (get target sample) (get args sample)
+let path failed_context project compiled sample "root.tide" result "executed" "broken"
+if (case (text_find path "\"signature\":\"right x:i > i\"" 0) false pos true) fail "untaken_definition"
+if (case (text_find path "\"branches\":{\"4:1\":[\"then\"]}" 0) true pos false) fail "selected_branch"
+let edits failed_context project compiled sample "root.tide" result "nodes" "broken"
+let offered "\"nodes\":[{\"node\":\"helper.tide:5:1\",\"expr\":\"(+ x 1)\",\"type\":\"i\",\"ops\":[\"-\",\"*\",\"div\",\"mod\"]}]"
+if (case (text_find edits offered 0) true pos false) fail "typed_patch_options"
+let fields list t 3 "\"inputs\":{\"flag\":true}" "\"node\":\"helper.tide:5:1\"" "\"body\":\"(if flag (left 3) (right 2))\""
+fold fields true ok row wanted and ok (case (text_find info wanted 0) false pos true)
+
+candidate_filter_checks > b
+let prefix "use calc\n\nmain x:i > i\nadjust x\n\nexample red main\n{\"inputs\":{\"x\":3},\"expect\":2}\n\nexample steady main\n"
+let lib "adjust x:i > i\n+ x 1"
+fold (list i 2 1 3) true ok row expected
+  let source cat3 prefix "{\"inputs\":{\"x\":2},\"expect\":" (concat (decimal expected) "}")
+  let project project_supply (project_begin source "" (text_len source) "panel.tide" ":panel.tide") lib "" (text_len lib)
+  let compiled compile_project project (schema_blocks source true)
+  let options verified_repair_candidates project compiled (list t 2 "main" "adjust") "panel.tide"
+  let wanted if (eq row 1) "[{\"node\":\"calc.tide:2:1\",\"op\":\"-\"}]" "[]"
+  and ok (text_eq options (concat ",\"candidate_checks\":{\"tested\":4,\"truncated\":false},\"candidates\":" wanted))
+
+replacement_filter_checks > b
+let source "use costs\n\nmain a:i b:i > i\nprice a b\n\nexample per_unit main\n{\"inputs\":{\"a\":3,\"b\":5},\"expect\":21}\n\nexample empty main\n{\"inputs\":{\"a\":0,\"b\":4},\"expect\":0}"
+fold (list t 2 "+ (* a b) 2" "+ 2 (* a b)") true ok row expr
+  let lib concat "price a:i b:i > i\n" expr
+  let project project_supply (project_begin source "" (text_len source) "panel.tide" ":panel.tide") lib "" (text_len lib)
+  let compiled compile_project project (schema_blocks source true)
+  let output verified_repair_candidates project compiled (list t 2 "main" "price") "panel.tide"
+  and ok (text_eq output ",\"candidate_checks\":{\"tested\":10,\"truncated\":false},\"candidates\":[{\"node\":\"costs.tide:2:1\",\"replace\":\"(* a (+ b 2))\"}]")
+
+counterexample_checks > b
+let source "main a:i b:i > i\n+ a b\n\nexample small main\n{\"inputs\":{\"a\":3,\"b\":2},\"expect\":1}\n\nexample medium main\n{\"inputs\":{\"a\":8,\"b\":3},\"expect\":2}"
+let project project_begin source "" (text_len source) "panel.tide" ":panel.tide"
+let compiled compile_project project (schema_blocks source true)
+let fn need (at (get signatures (get program compiled)) 0) "probe_signature" 0
+let scan scan_repair_candidates project compiled (list t 1 "main") "panel.tide" true
+let equal_only "{\"a\":0,\"b\":1}"
+let no_split counterexample_fields scan equal_only "panel.tide" fn 0
+if (not (text_eq no_split ",\"counterexample\":null,\"probes_checked\":1")) fail "agreeing_probe"
+let probes cat3 equal_only "\n" "{\"a\":1,\"b\":1}"
+let output counterexample_fields scan probes "panel.tide" fn 0
+text_eq output ",\"counterexample\":{\"inputs\":{\"a\":1,\"b\":1},\"outcomes\":[{\"edit\":{\"node\":\"2:1\",\"op\":\"div\"},\"actual\":1},{\"edit\":{\"node\":\"2:1\",\"op\":\"mod\"},\"actual\":0}]},\"probes_checked\":2"
+
+pair_filter_checks > b
+let root "use route\n\nmain a:i b:i > i\nroute a b\n\nexample initial_case main\n{\"inputs\":{\"a\":42,\"b\":4},\"expect\":413}\n\nexample later main\n{\"inputs\":{\"a\":7,\"b\":6},\"expect\":65}\n\nexample small main\n{\"inputs\":{\"a\":6,\"b\":5},\"expect\":54}"
+let route "use rulebook\n\nroute a:i b:i > i\n+ (compute a b) (+ b 1)"
+let rulebook "compute a:i b:i > i\n* (+ a 1) 10"
+let initial project_begin root (ascii_string root) (text_len root) "panel.tide" ":panel.tide"
+let imported project_supply initial route (ascii_string route) (text_len route)
+let project project_supply imported rulebook (ascii_string rulebook) (text_len rulebook)
+let compiled compile_project project (schema_blocks root true)
+let names list t 3 "main" "route" "compute"
+let singles scan_repair_candidates project compiled names "panel.tide" false
+let pairs scan_repair_pairs project compiled names "panel.tide" singles true
+let want ",\"pair_checks\":{\"tested\":64,\"truncated\":false},\"pair_candidates\":[[{\"node\":\"route.tide:4:18\",\"op\":\"-\"},{\"node\":\"rulebook.tide:2:4\",\"op\":\"-\"}]]"
+and (text_eq (get actions singles) "") (text_eq (pair_fields pairs) want)
+
+mixed_pair_filter_checks > b
+let root "use costs\n\nmain a:i b:i > i\nif (< a b) (price a b) 0\n\nexample below main\n{\"inputs\":{\"a\":3,\"b\":5},\"expect\":21}\n\nexample limit main\n{\"inputs\":{\"a\":4,\"b\":4},\"expect\":24}\n\nexample above main\n{\"inputs\":{\"a\":7,\"b\":2},\"expect\":0}"
+let costs "price a:i b:i > i\n+ (* a b) 2"
+let project project_supply (project_begin root "" (text_len root) "panel.tide" ":panel.tide") costs "" (text_len costs)
+let compiled compile_project project (schema_blocks root true)
+let names list t 2 "main" "price"
+let singles scan_repair_candidates project compiled names "panel.tide" false
+let pairs scan_repair_pairs project compiled names "panel.tide" singles true
+let wanted "[{\"node\":\"4:5\",\"op\":\"<=\"},{\"node\":\"costs.tide:2:1\",\"replace\":\"(* a (+ b 2))\"}]"
+and (eq (get tested pairs) 40) (and (not (get truncated pairs)) (text_eq (get actions pairs) wanted))
+
+generated_probe_checks > b
+if (not (eq (probe_midpoint -9223372036854775808 9223372036854775807) -1)) fail "probe_signed_midpoint"
+if (not (text_eq (probe_input (list t 1 "n") (list i 1 -9223372036854775808)) "{\"n\":-9223372036854775808}")) fail "probe_signed_input"
+let root "use calc\n\nmain a:i b:i > i\n- (material a b) b\n\nexample square main\n{\"inputs\":{\"a\":2,\"b\":2},\"expect\":8}"
+let helper "material a:i b:i > i\n- a b"
+let project project_supply (project_begin root "" (text_len root) "panel.tide" ":panel.tide") helper "" (text_len helper)
+let compiled compile_project project (schema_blocks root true)
+let program get program compiled
+let target need (entry_at (get names program) "main") "probe_target" 0
+let fn need (at (get signatures program) target) "probe_target" 0
+let sample need (at (get samples compiled) 0) "probe_sample" 0
+let pairs scan_repair_pairs project compiled (list t 2 "main" "material") "panel.tide" empty_candidate_scan true
+let range "{\"a\":[1,3],\"b\":[1,3]}\u001f"
+let generated adaptive_counterexample_fields pairs true (concat range "{\"b\":2,\"a\":2}") "panel.tide" fn sample compiled empty_input_domain true
+let fixed adaptive_counterexample_fields pairs true (concat range "{\"a\":1,\"b\":1}") "panel.tide" fn sample compiled empty_input_domain true
+let headers list t 3 ",\"counterexample\":{\"inputs\":{\"a\":1,\"b\":1}" ",\"probes_checked\":1,\"generated_probes_checked\":1,\"counterexample_source\":\"generated\"" ",\"probes_checked\":1,\"generated_probes_checked\":0,\"counterexample_source\":\"fixed\""
+and (case (text_find generated (need (at headers 0) "probe_header" 0) 0) false found true)
+  (and (case (text_find generated (need (at headers 1) "probe_header" 0) 0) false found true)
+    (case (text_find fixed (need (at headers 2) "probe_header" 0) 0) false found true))
+
+contract_probe_checks > b
+let root "use calc\n\nmain a:i b:i > i\n- (material a b) b\n\nexample square main\n{\"inputs\":{\"a\":2,\"b\":2},\"expect\":8,\"requires\":{\"b\":{\"le\":3,\"gt\":0},\"a\":{\"ge\":-2,\"gt\":0,\"lt\":4}}}"
+let helper "material a:i b:i > i\n- a b"
+let project project_supply (project_begin root "" (text_len root) "panel.tide" ":panel.tide") helper "" (text_len helper)
+let compiled compile_project project (schema_blocks root true)
+let program get program compiled
+let sample need (at (get samples compiled) 0) "probe_sample" 0
+let actual scalar_eval program (get target sample) (get args sample)
+let output failed_context project compiled sample "panel.tide" actual "pair-probes:{\"a\":0,\"b\":1}" "square"
+let facts list t 3 "\"probe_range\":{\"a\":[1,3],\"b\":[1,3]}" "\"counterexample\":{\"inputs\":{\"a\":1,\"b\":1}" "\"probes_checked\":1,\"generated_probes_checked\":1,\"counterexample_source\":\"generated\""
+fold facts true ok row field and ok (case (text_find output field 0) false pos true)
+
+related_probe_checks > b
+let root "main a:i b:i c:i > i\na\n\nexample joint main\n{\"inputs\":{\"a\":6,\"b\":6,\"c\":6},\"expect\":6,\"requires\":{\"a\":{\"ge\":1,\"le\":\"b\"},\"b\":{\"le\":8},\"c\":{\"eq\":\"a\"}}}"
+let project project_begin root "" (text_len root) "panel.tide" ":panel.tide"
+let compiled compile_project project (schema_blocks root true)
+let sample need (at (get samples compiled) 0) "related_sample" 0
+let domain get domain sample
+let names list t 3 "a" "b" "c"
+let limits probe_limits_json names (get bounds domain)
+let rows probe_projections (list i 3 5 6 6) (get orders domain)
+let up probe_input names (need (at rows 0) "projection_up" 0)
+let down probe_input names (need (at rows 1) "projection_down" 0)
+and (text_eq limits "{\"a\":[1,8],\"b\":[1,8],\"c\":[1,8]}")
+  (and (text_eq up "{\"a\":6,\"b\":6,\"c\":6}") (text_eq down "{\"a\":5,\"b\":6,\"c\":5}"))
+
+handler_inspection_checks > b
+let source "use reader\n\nhandled > i\ncatch E_DATA (bad) _ 5\n\nagain > i\ncatch E_DATA (bad) cause (raise cause)\n\npart > i\n+ (handled) (bad)"
+let helper "bad > i\nneed (nil i) \"bad_row\" 11"
+let project project_supply (project_begin source "" (text_len source) "main.tide" ":main.tide") helper "" (text_len helper)
+let program get program (compile_project project (schema_blocks source true))
+let fault scalar_eval program 1 (list {EvalValue} 0)
+let original scalar_eval program 3 (list {EvalValue} 0)
+if (not (and (text_eq (get code fault) "E_DATA") (text_eq (get detail fault) (get detail original)))) fail "raise_location"
+let info get info program
+let masks fold info (list i 0) acc row fn append acc (get errors fn)
+if (not (and (eq (need (at masks 0) "handled" 0) 0) (and (eq (need (at masks 1) "again" 0) 1) (eq (need (at masks 2) "part" 0) 5)))) fail "handled_errors"
+let hole project_finish project ":main.tide" "again" "!7:27"
+case (text_find hole "\"expected_type\":\"i\",\"bindings\":{\"cause\":\"#E_DATA\"}" 0) false pos true
+
+execution_checks > b
+let body "main x:?i flag:b > i\ncatch E_DATA\n(case x (need (nil i) \"missing\" 3) n (if (and flag (or false true)) n 0))\ne (if (has_reason e \"missing\") 7 (raise e))\n\nexample full main\n{\"inputs\":{\"x\":{\"some\":9},\"flag\":true},\"expect\":9}\n\nexample empty main\n{\"inputs\":{\"x\":{\"none\":true},\"flag\":false},\"expect\":7}"
+let project project_begin body "" (text_len body) "arms.tide" ":arms.tide"
+let compiled compile_project project (schema_blocks body true)
+let program get program compiled
+fold (get samples compiled) true ok row sample
+  let call observe_sample program sample
+  let original scalar_eval program (get target sample) (get args sample)
+  let machine get machine call
+  if (not (and (eq (length (get stack machine)) 0) (same_result original (get answer machine) "i"))) fail "observed_result"
+  let fields branch_fields program (get branches (get execution call)) "arms.tide"
+  let wanted if (eq row 1) "\"3:2\":[\"some\"],\"3:43\":[\"rhs\"],\"3:53\":[\"rhs\"],\"3:39\":[\"then\"],\"2:1\":[\"value\"]"
+    "\"3:2\":[\"none\"],\"3:10\":[\"missing\"],\"2:1\":[\"handler\"],\"4:4\":[\"then\"]"
+  and ok (text_eq fields wanted)
+
+execution_scope_checks > b
+let choices fold (indices 65) "" text row skip concat text " (if true 1 0)"
+let many cat3 "main > i\nlength (list i 66" choices " extra)\n\nextra > i\n0\n\nexample size main\n{\"inputs\":{},\"expect\":66}"
+let compiled compile_project (project_begin many "" (text_len many) "size.tide" ":size.tide") (schema_blocks many true)
+let sample need (at (get samples compiled) 0) "sample" 0
+let call observe_sample (get program compiled) sample
+let seen get execution call
+if (not (and (get limited seen) (and (eq (length (get branches seen)) 64) (eq (length (get owners seen)) 2)))) fail "branch_report_limit"
+if (not (eq (get num (get value (get answer (get machine call)))) 66)) fail "branch_report_result"
+let rule_text "rule r event:i > i\nstate n:i=0\nwhen (> event 0) -> n=set (if (> event 2) 2 1)\nelse -> n=keep\nout n\n\nmain events:*i > *i\nscan r events\n\nexample run main\n{\"inputs\":{\"events\":[0,1,3]},\"expect\":[0,1,2]}"
+let rules compile_project (project_begin rule_text "" (text_len rule_text) "rule.tide" ":rule.tide") (schema_blocks rule_text true)
+let trace observe_sample (get program rules) (need (at (get samples rules) 0) "sample" 0)
+let fields branch_fields (get program rules) (get branches (get execution trace)) "rule.tide"
+text_eq fields "\"r\":[2,1],\"3:28\":[\"else\",\"then\"]"
+
+record_context_checks > b
+let source "use point\n\nrecord Other\nunread:i\n\nmain p:{Point} > {Point}\nwith x p (+ (get x p) 1)\n\nexample wrong main\n{\"inputs\":{\"p\":{\"mark\":{\"some\":1},\"x\":2}},\"expect\":{\"mark\":{\"some\":1},\"x\":5}}"
+let decl "record Point\nx:i mark:?i"
+let project project_supply (project_begin source "" (text_len source) "m.tide" ":m.tide") decl "" (text_len decl)
+let compiled compile_project project (schema_blocks source true)
+let ex need (at (get examples (get declarations compiled)) 0) "record_example" 0
+let sample need (at (get samples compiled) 0) "record_sample" 0
+let program get program compiled
+let original scalar_eval program 0 (get args sample)
+let out failed_context project compiled sample "m.tide" original "executed" (get name ex)
+let fields inspect_nodes (get nodes (need (at (get trees program) 0) "record_tree" 0)) (get names program) ""
+if (case (text_find fields "\"operation\":\"get\",\"type\":\"i\",\"field\":\"x\"" 0) true absent false) fail "field_in_node_list"
+let canonical "{\"expect\":{\"mark\":{\"some\":1},\"x\":5},\"inputs\":{\"p\":{\"mark\":{\"some\":1},\"x\":2}}}"
+and (text_eq (contract_object (get data ex)) canonical)
+  (and (case (text_find out "\"records\":{\"Point\":{\"x\":\"i\",\"mark\":\"?i\"}}" 0) false hit true)
+    (case (text_find out "(with x p (+ (get x p) 1))" 0) false hit true))
+
+variant_context_checks > b
+let source "variant Mode\nb a\n\nrecord Job\nmode:{Mode}\n\nmain job:{Job} > {Mode}\nmatch (get mode job) b (fail \"off\") a (tag Mode b) end\n\nexample wrong main\n{\"inputs\":{\"job\":{\"mode\":\"a\"}},\"expect\":\"a\"}"
+let project project_begin source "" (text_len source) "job.tide" ":job.tide"
+let compiled compile_project project (schema_blocks source true)
+let sample need (at (get samples compiled) 0) "sample" 0
+let program get program compiled
+let original scalar_eval program 0 (get args sample)
+let out failed_context project compiled sample "job.tide" original "executed" "wrong"
+if (not (text_eq (scalar_wire (get value original) "{Mode}") "\"b\"")) fail "match_value"
+let checks list t 3 "\"variants\":{\"Mode\":[\"a\",\"b\"]}" "\"branches\":{\"8:1\":[\"a\"]}" "(match (get mode job) b (fail \\\"off\\\") a (tag Mode b) end)"
+fold checks true ok row expected and ok (case (text_find out expected 0) false found true)
+
+nested_contract_check > b
+let a contract_object (scalar_json "{\"rows\":[{\"z\":1,\"a\":[{\"b\":\"Ω\",\"a\":false}]},{\"id\":2}]}")
+let b contract_object (scalar_json "{\"rows\":[ { \"a\": [ { \"a\":false, \"b\":\"\\u03a9\" } ], \"z\":1 }, {\"id\":2} ]}")
+let changed contract_object (scalar_json "{\"rows\":[{\"id\":2},{\"z\":1,\"a\":[{\"a\":false,\"b\":\"Ω\"}]}]}")
+and (text_eq a b) (and (text_eq a "{\"rows\":[{\"a\":[{\"a\":false,\"b\":\"\\u03a9\"}],\"z\":1},{\"id\":2}]}") (not (text_eq a changed)))
+
+result_difference_checks > b
+let source "record Item\npairing:?&ti label:t\n\nrecord Batch\nitems:*{Item}\n\nmain all:*{Batch} > {Batch}\nneed (at all 1) \"missing\" 0"
+let project project_begin source "" (text_len source) "batch.tide" ":batch.tide"
+let program get program (compile_project project (schema_blocks source true))
+let fn need (at (get signatures program) 0) "signature" 0
+let head "{\"items\":[{\"label\":\"🐈\",\"pairing\":{\"none\":true}},{\"label\":\"b\",\"pairing\":"
+let batch cat3 head "{\"some\":[\"Ω\",42]}" "}]}"
+let data scalar_json (cat3 "{\"all\":[{\"items\":[]}," batch "]}")
+let args scalar_inputs data "" fn "batch.tide" (get loc fn)
+let actual get value (scalar_eval program 0 args)
+let cases list &tt 4
+  (pair batch "")
+  (pair (concat head "{\"some\":[\"Ω\",7]}}]}") "\"difference\":{\"path\":\"/items/1/pairing/some/1\",\"expected\":7,\"actual\":42}")
+  (pair (concat head "{\"none\":true}}]}") "\"difference\":{\"path\":\"/items/1/pairing\",\"aspect\":\"option\",\"expected\":\"none\",\"actual\":\"some\"}")
+  (pair "{\"items\":[]}" "\"difference\":{\"path\":\"/items\",\"aspect\":\"length\",\"expected\":0,\"actual\":2}")
+let ok fold cases true valid row item
+  let json scalar_json (cat3 "{\"v\":" (first item) "}")
+  let expected need (get value (read_argument json ".v" "{" "{Batch}" (get schemas fn))) "expected_batch" 0
+  and valid (text_eq (case (value_difference expected actual "{Batch}") "" diff (difference_fields diff)) (second item))
+let prefix fold (indices 70) "" s row unused concat s "Ω"
+let long_diff need (text_difference prefix (concat prefix "🐈") "/title") "missing_text_diff" 0
+and ok (and (eq (get offset long_diff) 70) (and (text_eq (get expected long_diff) "null") (text_eq (get actual long_diff) (json_string "🐈"))))
+
+structural_repair_checks > b
+let fixtures list &tt 4
+  (pair "main title:t > i\ntext_len (concat \"猫\" title)\n\nexample red main\n{\"inputs\":{\"title\":\"Ω\"},\"expect\":5}" "{\"node\":\"2:1\",\"replace\":\"(byte_len (utf8_bytes (concat \\\"猫\\\" title)))\"}")
+  (pair "main s:t > i\ncase (text_find s \"::\" 0) -1 p p\n\nexample red main\n{\"inputs\":{\"s\":\"x::y::z\"},\"expect\":4}" "{\"node\":\"2:7\",\"replace\":\"(text_rfind s \\\"::\\\" (text_len s))\"}")
+  (pair "main x:i s:t y:i > i\nweight (+ x 1) s\n  y\n\nweight a:i s:t b:i > i\n- a b\n\nexample red main\n{\"inputs\":{\"x\":1,\"s\":\"\",\"y\":7},\"expect\":5}" "{\"node\":\"2:1\",\"replace\":\"(weight y s (+ x 1))\"}")
+  (pair "main s:t > i\ncase (text_find s \":\" 2) -1 p p\n\nexample red main\n{\"inputs\":{\"s\":\"a:b:c:d\"},\"expect\":5}" "")
+fold fixtures true ok row fixture
+  let source first fixture
+  let project project_begin source "" (text_len source) "job.tide" ":job.tide"
+  let compiled compile_project project (schema_blocks source true)
+  let program get program compiled
+  let scan scan_repair_candidates project compiled (get names program) "job.tide" false
+  and ok (text_eq (get actions scan) (second fixture))
+
+intermediate_example_checks > b
+let cases "{\"inputs\":{\"a\":3,\"b\":8},\"expect\":5}"
+let root concat "use route\n\nmain a:i b:i > i\nspan a b\n\nexample via_main main\n" cases
+let initial project_begin root "" (text_len root) "panel.tide" ":panel.tide"
+let library "span a:i b:i > i\ndistance b a\n\ndistance start:i finish:i > i\n- finish start"
+let names list t 3 "main" "span" "distance"
+let accepted "{\"node\":\"route.tide:2:1\",\"replace\":\"(distance a b)\"}"
+let upstream "{\"node\":\"4:1\",\"replace\":\"(span b a)\"}"
+fold (list b 2 false true) true ok row direct
+  let route if direct (concat library (concat "\n\nexample via_route span\n" cases)) library
+  let project project_supply initial route "" (text_len route)
+  let compiled compile_project project (schema_blocks root true)
+  let scan scan_repair_candidates project compiled names "panel.tide" false
+  and ok (text_eq (get actions scan) (if direct accepted (json_item upstream accepted)))

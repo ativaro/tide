@@ -1,0 +1,596 @@
+{
+  "platform": "linux x64",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "release": {
+    "language": "0.5",
+    "tool": "0.5.0",
+    "catalog_sha256": "3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab"
+  },
+  "warmups": 3,
+  "measured_pairs": 20,
+  "clock": "process.hrtime.bigint, before spawnSync until return",
+  "commands": {
+    "reference": "lib/tide/reference-tide check FILE --json",
+    "native": "bin/tide check FILE --json"
+  },
+  "fixtures": {
+    "small": {
+      "source": "record Log\nrecords:*{Entry} initial:?&i{Flag}\n\nvariant Flag\nwarn Active z1\n\nrecord Entry\nkey:t hits:*i\n",
+      "sha256": "ca406049fbeb5ae9f72d95104018fd447bb671100ccededc3831419ec8830ab1"
+    },
+    "error": {
+      "source": "record A\nb:{Missing}\n",
+      "sha256": "6695c1d0223493b27b809a8ee173d70f17a70af0ae59f50a15e9b4528ac96d35"
+    },
+    "wide": {
+      "source": "variant Flag\nz B good\n\nrecord R1\nnext:?{Flag} value:&it\n\nrecord R2\nnext:?{Flag} value:&it\n\nrecord R3\nnext:?{Flag} value:&it\n\nrecord R4\nnext:?{Flag} value:&it\n\nrecord R5\nnext:?{Flag} value:&it\n\nrecord R6\nnext:?{Flag} value:&it\n\nrecord R7\nnext:?{Flag} value:&it\n\nrecord R8\nnext:?{Flag} value:&it\n\nrecord R9\nnext:?{Flag} value:&it\n\nrecord R10\nnext:?{Flag} value:&it\n\nrecord R11\nnext:?{Flag} value:&it\n\nrecord R12\nnext:?{Flag} value:&it\n\nrecord R13\nnext:?{Flag} value:&it\n\nrecord R14\nnext:?{Flag} value:&it\n\nrecord R15\nnext:?{Flag} value:&it\n\nrecord R16\nnext:?{Flag} value:&it\n\nrecord R17\nnext:?{Flag} value:&it\n\nrecord R18\nnext:?{Flag} value:&it\n\nrecord R19\nnext:?{Flag} value:&it\n\nrecord R20\nnext:?{Flag} value:&it\n\nrecord R21\nnext:?{Flag} value:&it\n\nrecord R22\nnext:?{Flag} value:&it\n\nrecord R23\nnext:?{Flag} value:&it\n\nrecord R24\nnext:?{Flag} value:&it\n\nrecord R25\nnext:?{Flag} value:&it\n\nrecord R26\nnext:?{Flag} value:&it\n\nrecord R27\nnext:?{Flag} value:&it\n\nrecord R28\nnext:?{Flag} value:&it\n\nrecord R29\nnext:?{Flag} value:&it\n\nrecord R30\nnext:?{Flag} value:&it\n\nrecord R31\nnext:?{Flag} value:&it\n\nrecord R32\nnext:?{Flag} value:&it\n\nrecord R33\nnext:?{Flag} value:&it\n\nrecord R34\nnext:?{Flag} value:&it\n\nrecord R35\nnext:?{Flag} value:&it\n\nrecord R36\nnext:?{Flag} value:&it\n\nrecord R37\nnext:?{Flag} value:&it\n\nrecord R38\nnext:?{Flag} value:&it\n\nrecord R39\nnext:?{Flag} value:&it\n\nrecord R40\nnext:?{Flag} value:&it\n\nrecord R41\nnext:?{Flag} value:&it\n\nrecord R42\nnext:?{Flag} value:&it\n\nrecord R43\nnext:?{Flag} value:&it\n\nrecord R44\nnext:?{Flag} value:&it\n\nrecord R45\nnext:?{Flag} value:&it\n\nrecord R46\nnext:?{Flag} value:&it\n\nrecord R47\nnext:?{Flag} value:&it\n\nrecord R48\nnext:?{Flag} value:&it\n\nrecord R49\nnext:?{Flag} value:&it\n\nrecord R50\nnext:?{Flag} value:&it\n\nrecord R51\nnext:?{Flag} value:&it\n\nrecord R52\nnext:?{Flag} value:&it\n\nrecord R53\nnext:?{Flag} value:&it\n\nrecord R54\nnext:?{Flag} value:&it\n\nrecord R55\nnext:?{Flag} value:&it\n\nrecord R56\nnext:?{Flag} value:&it\n\nrecord R57\nnext:?{Flag} value:&it\n\nrecord R58\nnext:?{Flag} value:&it\n\nrecord R59\nnext:?{Flag} value:&it\n\nrecord R60\nnext:?{Flag} value:&it\n\nrecord R61\nnext:?{Flag} value:&it\n\nrecord R62\nnext:?{Flag} value:&it\n\nrecord R63\nnext:?{Flag} value:&it\n\nrecord R64\nnext:?{Flag} value:&it\n\nrecord R65\nnext:?{Flag} value:&it\n\nrecord R66\nnext:?{Flag} value:&it\n\nrecord R67\nnext:?{Flag} value:&it\n\nrecord R68\nnext:?{Flag} value:&it\n\nrecord R69\nnext:?{Flag} value:&it\n\nrecord R70\nnext:?{Flag} value:&it\n\nrecord R71\nnext:?{Flag} value:&it\n\nrecord R72\nnext:?{Flag} value:&it\n\nrecord R73\nnext:?{Flag} value:&it\n\nrecord R74\nnext:?{Flag} value:&it\n\nrecord R75\nnext:?{Flag} value:&it\n\nrecord R76\nnext:?{Flag} value:&it\n\nrecord R77\nnext:?{Flag} value:&it\n\nrecord R78\nnext:?{Flag} value:&it\n\nrecord R79\nnext:?{Flag} value:&it\n\nrecord R80\nnext:?{Flag} value:&it\n\nrecord R81\nnext:?{Flag} value:&it\n\nrecord R82\nnext:?{Flag} value:&it\n\nrecord R83\nnext:?{Flag} value:&it\n\nrecord R84\nnext:?{Flag} value:&it\n\nrecord R85\nnext:?{Flag} value:&it\n\nrecord R86\nnext:?{Flag} value:&it\n\nrecord R87\nnext:?{Flag} value:&it\n\nrecord R88\nnext:?{Flag} value:&it\n\nrecord R89\nnext:?{Flag} value:&it\n\nrecord R90\nnext:?{Flag} value:&it\n\nrecord R91\nnext:?{Flag} value:&it\n\nrecord R92\nnext:?{Flag} value:&it\n\nrecord R93\nnext:?{Flag} value:&it\n\nrecord R94\nnext:?{Flag} value:&it\n\nrecord R95\nnext:?{Flag} value:&it\n\nrecord R96\nnext:?{Flag} value:&it\n\nrecord R97\nnext:?{Flag} value:&it\n\nrecord R98\nnext:?{Flag} value:&it\n\nrecord R99\nnext:?{Flag} value:&it\n\nrecord R100\nnext:?{Flag} value:&it\n\n",
+      "sha256": "82b67c8e8ff167fffef8beb29285d2fa715632647249ef04df7edc34aa8e2d00"
+    },
+    "labels": {
+      "source": "variant Labels\nv120 v119 v118 v117 v116 v115 v114 v113 v112 v111 v110 v109 v108 v107 v106 v105 v104 v103 v102 v101 v100 v099 v098 v097 v096 v095 v094 v093 v092 v091 v090 v089 v088 v087 v086 v085 v084 v083 v082 v081 v080 v079 v078 v077 v076 v075 v074 v073 v072 v071 v070 v069 v068 v067 v066 v065 v064 v063 v062 v061 v060 v059 v058 v057 v056 v055 v054 v053 v052 v051 v050 v049 v048 v047 v046 v045 v044 v043 v042 v041 v040 v039 v038 v037 v036 v035 v034 v033 v032 v031 v030 v029 v028 v027 v026 v025 v024 v023 v022 v021 v020 v019 v018 v017 v016 v015 v014 v013 v012 v011 v010 v009 v008 v007 v006 v005 v004 v003 v002 v001 \n",
+      "sha256": "4c5c0a297240cad91a740a27c02e114aaa8549bda96a01ed9fde3ba017e84808"
+    },
+    "fallback": {
+      "source": "balance opening:i entries:*i > i\nfold entries opening total row entry + total entry\n\nmain > i\nbalance 100 list i 4 -20 15 -8 10\n\nexample movements balance\n{\"inputs\":{\"opening\":100,\"entries\":[-20,15,-8,10]},\"expect\":97}\n\nexample no_entries balance\n{\"inputs\":{\"opening\":-4,\"entries\":[]},\"expect\":-4}\n\nexample overflow balance\n{\"inputs\":{\"opening\":9223372036854775807,\"entries\":[1]},\"expect_error\":{\"code\":\"E_OVERFLOW\"}}\n",
+      "sha256": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25"
+    }
+  },
+  "groups": {
+    "small": {
+      "control": "reference",
+      "native_median_ms": 7.3981034999999995,
+      "control_median_ms": 31.334276,
+      "paired_factor": 4.212865200020687,
+      "native_faster": 20,
+      "pairs_ms": [
+        {
+          "native": 7.336222,
+          "control": 35.480851
+        },
+        {
+          "control": 32.866974,
+          "native": 8.570245
+        },
+        {
+          "native": 7.253751,
+          "control": 32.582218
+        },
+        {
+          "control": 33.383443,
+          "native": 8.175198
+        },
+        {
+          "native": 6.989336,
+          "control": 32.173682
+        },
+        {
+          "control": 33.660918,
+          "native": 8.092426
+        },
+        {
+          "native": 6.64052,
+          "control": 34.550434
+        },
+        {
+          "control": 34.753928,
+          "native": 6.855244
+        },
+        {
+          "native": 6.531498,
+          "control": 31.01067
+        },
+        {
+          "control": 31.466648,
+          "native": 9.047904
+        },
+        {
+          "native": 7.842102,
+          "control": 32.317934
+        },
+        {
+          "control": 31.033161,
+          "native": 8.030265
+        },
+        {
+          "native": 6.572279,
+          "control": 30.331097
+        },
+        {
+          "control": 31.201904,
+          "native": 7.945214
+        },
+        {
+          "native": 6.64462,
+          "control": 31.04283
+        },
+        {
+          "control": 31.131243,
+          "native": 8.260269
+        },
+        {
+          "native": 6.915394,
+          "control": 30.075703
+        },
+        {
+          "control": 30.191975,
+          "native": 7.459985
+        },
+        {
+          "native": 7.163509,
+          "control": 30.560762
+        },
+        {
+          "control": 30.592343,
+          "native": 8.929791
+        }
+      ]
+    },
+    "error": {
+      "control": "reference",
+      "native_median_ms": 6.2422275,
+      "control_median_ms": 31.1970935,
+      "paired_factor": 4.941007803107756,
+      "native_faster": 20,
+      "pairs_ms": [
+        {
+          "control": 29.804528,
+          "native": 7.577907
+        },
+        {
+          "native": 6.138051,
+          "control": 28.79561
+        },
+        {
+          "control": 28.720429,
+          "native": 7.504865
+        },
+        {
+          "native": 5.57203,
+          "control": 30.156444
+        },
+        {
+          "control": 31.077611,
+          "native": 7.731529
+        },
+        {
+          "native": 6.231652,
+          "control": 31.650171
+        },
+        {
+          "control": 31.923177,
+          "native": 6.785633
+        },
+        {
+          "native": 5.161843,
+          "control": 31.945107
+        },
+        {
+          "control": 31.668902,
+          "native": 7.407664
+        },
+        {
+          "native": 5.156213,
+          "control": 31.293625
+        },
+        {
+          "control": 29.89465,
+          "native": 6.180802
+        },
+        {
+          "native": 5.305266,
+          "control": 29.947402
+        },
+        {
+          "control": 33.092548,
+          "native": 6.884755
+        },
+        {
+          "native": 5.51828,
+          "control": 33.110738
+        },
+        {
+          "control": 31.5474,
+          "native": 6.252803
+        },
+        {
+          "native": 6.303574,
+          "control": 32.053879
+        },
+        {
+          "control": 31.376837,
+          "native": 7.703729
+        },
+        {
+          "native": 5.225134,
+          "control": 31.100562
+        },
+        {
+          "control": 29.820488,
+          "native": 7.488125
+        },
+        {
+          "native": 5.469849,
+          "control": 30.514011
+        }
+      ]
+    },
+    "wide": {
+      "control": "reference",
+      "native_median_ms": 10.684528,
+      "control_median_ms": 31.622106000000002,
+      "paired_factor": 2.929298738229485,
+      "native_faster": 20,
+      "pairs_ms": [
+        {
+          "native": 10.382388,
+          "control": 32.331544
+        },
+        {
+          "control": 30.574552,
+          "native": 11.943476
+        },
+        {
+          "native": 10.750004,
+          "control": 32.133031
+        },
+        {
+          "control": 29.835649,
+          "native": 12.233221
+        },
+        {
+          "native": 10.178114,
+          "control": 31.379917
+        },
+        {
+          "control": 31.608871,
+          "native": 10.575001
+        },
+        {
+          "native": 10.619052,
+          "control": 31.076961
+        },
+        {
+          "control": 32.302633,
+          "native": 11.173232
+        },
+        {
+          "native": 10.181204,
+          "control": 31.932577
+        },
+        {
+          "control": 31.311726,
+          "native": 11.873034
+        },
+        {
+          "native": 11.367945,
+          "control": 30.908409
+        },
+        {
+          "control": 31.635341,
+          "native": 12.18028
+        },
+        {
+          "native": 10.231715,
+          "control": 33.2313
+        },
+        {
+          "control": 32.139381,
+          "native": 11.535288
+        },
+        {
+          "native": 10.440169,
+          "control": 30.611293
+        },
+        {
+          "control": 31.416188,
+          "native": 11.686571
+        },
+        {
+          "native": 9.815838,
+          "control": 32.974746
+        },
+        {
+          "control": 33.590957,
+          "native": 11.806833
+        },
+        {
+          "native": 10.062442,
+          "control": 31.51787
+        },
+        {
+          "control": 32.148931,
+          "native": 10.593642
+        }
+      ]
+    },
+    "labels": {
+      "control": "reference",
+      "native_median_ms": 13.2051235,
+      "control_median_ms": 30.483131,
+      "paired_factor": 2.316146043614139,
+      "native_faster": 20,
+      "pairs_ms": [
+        {
+          "control": 30.827157,
+          "native": 13.437553
+        },
+        {
+          "native": 11.412657,
+          "control": 30.661354
+        },
+        {
+          "control": 30.617073,
+          "native": 14.620474
+        },
+        {
+          "native": 11.387336,
+          "control": 30.396389
+        },
+        {
+          "control": 31.269126,
+          "native": 13.134038
+        },
+        {
+          "native": 11.676921,
+          "control": 31.953247
+        },
+        {
+          "control": 30.064323,
+          "native": 13.248469
+        },
+        {
+          "native": 11.940025,
+          "control": 30.714685
+        },
+        {
+          "control": 30.43155,
+          "native": 13.014335
+        },
+        {
+          "native": 12.061818,
+          "control": 30.866428
+        },
+        {
+          "control": 29.703737,
+          "native": 13.564715
+        },
+        {
+          "native": 12.063838,
+          "control": 30.353638
+        },
+        {
+          "control": 30.011593,
+          "native": 14.320749
+        },
+        {
+          "native": 13.205928,
+          "control": 30.635283
+        },
+        {
+          "control": 29.755208,
+          "native": 14.41799
+        },
+        {
+          "native": 13.910601,
+          "control": 30.227816
+        },
+        {
+          "control": 29.543934,
+          "native": 13.88019
+        },
+        {
+          "native": 13.204319,
+          "control": 30.534712
+        },
+        {
+          "control": 31.436298,
+          "native": 13.979882
+        },
+        {
+          "native": 12.054538,
+          "control": 30.373509
+        }
+      ]
+    },
+    "fallback": {
+      "control": "reference",
+      "native_median_ms": 35.5941035,
+      "control_median_ms": 31.565471000000002,
+      "paired_factor": 0.8716955644818425,
+      "native_faster": 0,
+      "pairs_ms": [
+        {
+          "native": 36.743845,
+          "control": 31.155783
+        },
+        {
+          "control": 32.66576,
+          "native": 38.231311
+        },
+        {
+          "native": 36.676343,
+          "control": 31.706663
+        },
+        {
+          "control": 31.907666,
+          "native": 36.658532
+        },
+        {
+          "native": 35.083364,
+          "control": 31.930437
+        },
+        {
+          "control": 31.919567,
+          "native": 37.10048
+        },
+        {
+          "native": 36.973949,
+          "control": 31.653012
+        },
+        {
+          "control": 31.895817,
+          "native": 34.692387
+        },
+        {
+          "native": 35.663585,
+          "control": 31.589911
+        },
+        {
+          "control": 32.779772,
+          "native": 35.524622
+        },
+        {
+          "native": 35.048553,
+          "control": 30.181395
+        },
+        {
+          "control": 31.091192,
+          "native": 35.302678
+        },
+        {
+          "native": 35.503632,
+          "control": 30.932899
+        },
+        {
+          "control": 31.541031,
+          "native": 36.165474
+        },
+        {
+          "native": 35.148435,
+          "control": 30.758596
+        },
+        {
+          "control": 31.136213,
+          "native": 36.359247
+        },
+        {
+          "native": 34.32353,
+          "control": 31.52305
+        },
+        {
+          "control": 30.612323,
+          "native": 37.192572
+        },
+        {
+          "native": 34.225269,
+          "control": 32.459177
+        },
+        {
+          "control": 31.369986,
+          "native": 35.275388
+        }
+      ]
+    },
+    "wide_before_after": {
+      "control": "previous_native",
+      "native_median_ms": 10.270666,
+      "control_median_ms": 231.1135535,
+      "paired_factor": 22.546281604530403,
+      "native_faster": 20,
+      "pairs_ms": [
+        {
+          "control": 227.396601,
+          "native": 9.97474
+        },
+        {
+          "native": 10.669823,
+          "control": 232.87238
+        },
+        {
+          "control": 234.500239,
+          "native": 10.331937
+        },
+        {
+          "native": 10.108823,
+          "control": 231.22117
+        },
+        {
+          "control": 231.276831,
+          "native": 9.777077
+        },
+        {
+          "native": 11.746132,
+          "control": 227.611616
+        },
+        {
+          "control": 231.973244,
+          "native": 10.113953
+        },
+        {
+          "native": 11.314094,
+          "control": 229.423018
+        },
+        {
+          "control": 234.543131,
+          "native": 9.707446
+        },
+        {
+          "native": 9.814847,
+          "control": 232.370282
+        },
+        {
+          "control": 230.371505,
+          "native": 10.415988
+        },
+        {
+          "native": 10.209395,
+          "control": 229.666183
+        },
+        {
+          "control": 227.354501,
+          "native": 10.633103
+        },
+        {
+          "native": 10.173814,
+          "control": 231.309602
+        },
+        {
+          "control": 228.060565,
+          "native": 10.829585
+        },
+        {
+          "native": 10.598582,
+          "control": 231.714571
+        },
+        {
+          "control": 232.674137,
+          "native": 11.289034
+        },
+        {
+          "native": 10.701794,
+          "control": 231.005937
+        },
+        {
+          "control": 229.328568,
+          "native": 10.148633
+        },
+        {
+          "native": 9.989071,
+          "control": 226.043978
+        }
+      ]
+    }
+  },
+  "inputs_sha256": {
+    "Makefile": "96d34f958fcea8760159ca8825cb1b89a2687c47a96ad7bd0866e4764daa828a",
+    "tide": "d7a79a92da5c50fee49ff1204faafa371210196bfeacb3c473a3ee52b4ed226b",
+    "native/bootstrap/seed.tide": "34b97583605ad74317c37a45db67686abffd622c537068fe8d0b86b841c40c54",
+    "native/bootstrap/schema.tide": "2d55fe8e805ce29c3ecf4dbf0215a2a0acbf6a69dfce13b511112ebfae3fe588",
+    "native/bootstrap/schema_cases.tide": "2751b87aa25575e8f04c1f8ce1b523e19f6b0fef77a0d5f10aff28feda3cf8cc",
+    "native/bootstrap/checks.tide": "f6d63c814944c14ce18aca393013ffb5e35d6d4164473fe0c5dd24d9f77e858d"
+  },
+  "checker_sha256": {
+    "current": "00a860862f07fec30a485b9592048b272fd5ed12ffc88dc431f0dab5153fcfd0",
+    "earlier": "c5e9b8fd62f6fde06c7b8d305b5c8d403d0deb7ba450175668fd424fc9d2c25f"
+  },
+  "comparison": {
+    "cases": 170,
+    "mismatches": 0,
+    "outcomes": {
+      "ok": 96,
+      "E_TYPE": 39,
+      "E_NAME": 29,
+      "E_SYNTAX": 6
+    }
+  }
+}

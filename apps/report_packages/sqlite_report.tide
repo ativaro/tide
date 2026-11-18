@@ -1,0 +1,31 @@
+use reading_store
+
+import_document db:d doc:{Document} limit:i > {Summary}
+transaction db
+let ready schema db
+let saved fold (get readings doc) 0 saved index reading
+  let sensor get sensor reading
+  let threshold case (dict_get (get limits doc) sensor) limit override override
+  let fields make StoredReading sensor sensor value (get value reading) note (get note reading) threshold threshold
+  + saved (insert_reading db fields)
+summary db
+
+main db:d input:r limit:i > {Summary}
+import_document db (parse (read_bytes input)) limit
+
+rollback_probe db:d input:r > *{Reading}
+let seeded import_document db (notes "{\"readings\":[{\"sensor\":\"A\",\"value\":7}],\"limits\":{}}") 80
+let attempted catch E_DATA (main db input 80) _ seeded
+by_sensor db "A"
+
+example persisted_values main
+{"inputs":{"db":":memory:","input":"{\"readings\":[{\"sensor\":\"A\",\"value\":80},{\"sensor\":\"B\",\"value\":80},{\"sensor\":\"C\",\"value\":98}],\"limits\":{\"A\":79}}","limit":80},"expect":{"above":2,"peak":{"some":98}}}
+
+example rollback_after_insert rollback_probe
+{"inputs":{"db":":memory:","input":"{\"readings\":[{\"sensor\":\"A\",\"value\":99},{\"sensor\":\"\",\"value\":40}],\"limits\":{}}"},"expect":[{"sensor":"A","value":7,"note":{"none":true}}]}
+
+example rejected_import main
+{"inputs":{"db":":memory:","input":"{\"readings\":[{\"sensor\":\"A\",\"value\":99},{\"sensor\":\"\",\"value\":40}],\"limits\":{}}","limit":80},"expect_error":{"code":"E_DATA","reason":"sqlite_constraint"}}
+
+example json_failure main
+{"inputs":{"db":":memory:","input":"{\"readings\":[{\"sensor\":\"A\",\"value\":true}],\"limits\":{}}","limit":80},"expect_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/0/value"}}

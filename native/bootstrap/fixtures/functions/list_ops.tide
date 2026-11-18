@@ -1,0 +1,2 @@
+weighted values:*i > i
+fold values 0 total pos x (+ total (* pos x))

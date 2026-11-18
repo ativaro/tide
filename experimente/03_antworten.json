@@ -1,0 +1,34 @@
+{
+  "Pumpe": {
+    "erste_abweichung": 1,
+    "diagnose": "Die ausgeschaltete Pumpe startet beim ersten Wert 20. Der Startvergleich schließt die Grenze fälschlich ein.",
+    "tausch": [
+      "value <= 20",
+      "value < 20"
+    ],
+    "vorhersage": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
+  },
+  "Licht": {
+    "erste_abweichung": 3,
+    "diagnose": "Nach Bewegung ist missed null. Beim ersten Ausbleiben wird missed eins. Die Bedingung missed < 1 schaltet bereits an dieser Stelle aus.",
+    "tausch": [
+      "missed < 1",
+      "missed < 2"
+    ],
+    "vorhersage": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  }
+}

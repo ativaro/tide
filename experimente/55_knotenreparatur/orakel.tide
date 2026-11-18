@@ -1,0 +1,41 @@
+record Inputs
+a:i b:i
+
+record Trial
+inputs:{Inputs} expect:i
+
+wanted task:t a:i b:i > i
+if (text_eq task "balance") (- a (+ (* b 3) 2))
+if (text_eq task "dispatch") (if (> a b) 90 10)
+if (text_eq task "windows") (div (- a 2) b)
++ (* a b) (* a 2)
+
+trial task:t a:i b:i > {Trial}
+make Trial inputs (make Inputs a a b b) expect (wanted task a b)
+
+public_cases task:t > *{Trial}
+if (text_eq task "balance") (list {Trial} 3 (trial task 20 4) (trial task 0 0) (trial task 7 8))
+if (text_eq task "dispatch") (list {Trial} 3 (trial task 10 10) (trial task 9 10) (trial task 11 10))
+if (text_eq task "windows") (list {Trial} 3 (trial task 18 5) (trial task 2 1) (trial task 15 4))
+list {Trial} 3 (trial task 3 5) (trial task 0 0) (trial task 9 0)
+
+hidden_cases task:t > *{Trial}
+fold (list i 6 0 1 2 3 4 5) (list {Trial} 0) cases batch group
+fold (list i 12 0 1 2 3 4 5 6 7 8 9 10 11) cases result row index
+let r + (* group 12) index
+let a + (if (text_eq task "windows") 2 0) (mod (+ (* r 17) 5) 39)
+let b if (text_eq task "dispatch") (+ a (if (and (eq a 0) (eq (mod r 3) 0)) 0 (- (mod r 3) 1)))
+  (+ (if (text_eq task "windows") 1 0) (mod (+ (* r 7) 2) 13))
+append result (trial task a b)
+
+example no_debt_floor wanted
+{"inputs":{"task":"balance","a":7,"b":8},"expect":-19}
+
+example equality_admitted wanted
+{"inputs":{"task":"dispatch","a":10,"b":10},"expect":10}
+
+example full_windows wanted
+{"inputs":{"task":"windows","a":18,"b":5},"expect":3}
+
+example surcharge_per_unit wanted
+{"inputs":{"task":"invoice","a":3,"b":5},"expect":21}

@@ -1,0 +1,2 @@
+policy movements:*i > i
+fold movements 0 total pos value (+ total (if (> value 0) value 0))

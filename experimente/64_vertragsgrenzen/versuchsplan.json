@@ -1,0 +1,8 @@
+{
+  "families": ["versandetiketten", "nettogewicht", "taktfenster", "lackbedarf", "restladung"],
+  "fixtures": "Use the five equivalent broken projects and unchanged public and 72 held-out cases from experiment 62, with the fixed pools from experiment 63. Add the same requires metadata from vertraege.json to the first public example in each language. Include strict, inclusive, intersecting and signed bounds. Both sides derive the intervals inside the timed CLI; neither receives precomputed intervals.",
+  "policy": "Same signed i64 interval rules. Search the same fixed pool first, omitting points outside the contract, and generate within the derived inclusive intervals if the fixed pool does not split the green pairs. Preserve the single-edit, pair, fixed and generated probe budgets and the ordered generator from experiment 63.",
+  "resolution": "Check parity for normalized ranges, witness inputs, output-to-edit mapping, candidate counts and search counts in each round. Confirm each separating input with the separate TIDE expected-value contract, add it to the public cases and repeat. Use the same checked two-file preview, scratch copy and independent public and held-out acceptance on both sides.",
+  "timer": "Wall-clock time from fixed-pool generation to acceptance or abstention. Include derivation of the contract bounds on each CLI invocation, all probe stages, confirmation, application and tests. Exclude tool builds and initial fixture preparation.",
+  "repetitions": "12 measured pairs per project after qualification. Rotate task order and alternate first language, with fresh processes and projects on one logical core and warm file caches. Count abstentions and failed acceptance as unsuccessful. No model or network access."
+}

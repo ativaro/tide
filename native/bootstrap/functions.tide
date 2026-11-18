@@ -1,0 +1,806 @@
+use scalar_json
+
+record Signature
+name:t file:t loc:{Site} params:*t types:*t result:t body:{SiteBuffer} schemas:{Declarations} scope:{SymbolScope}
+
+record FunctionExample
+name:t target:t file:t loc:{Site} data:{ScalarJson}
+
+scalar_type typ:t > b
+or (text_eq typ "i") (text_eq typ "b")
+
+atom_type typ:t > b
+or (scalar_type typ) (text_eq typ "t")
+
+atomic_pair typ:t > b
+and (eq (text_len typ) 3) (and (text_eq (text_slice typ 0 1) "&")
+  (and (atom_type (text_slice typ 1 2)) (atom_type (text_slice typ 2 3))))
+
+pair_type typ:t > b
+if (not (text_eq (text_slice typ 0 1) "&")) false
+if (eq (text_len typ) 3) (atomic_pair typ)
+and (case (data_shape typ) false shape true)
+  (fold (list t 4 "??" "?*" "*?" "**") true ok row prefix and ok (case (text_find typ prefix 0) true found false))
+
+pair_boundary typ:t > i
+let prefix text_slice typ 1 2
+let start if (or (dict_kind prefix) (or (text_eq prefix "?") (text_eq prefix "*"))) 2 1
+let head text_slice typ start (+ start 1)
+if (text_eq head "{") (+ 1 (need (text_find typ "}" start) "pair_type" 0))
+if (not (text_eq head "&")) (+ start 1)
+let cut fold (indices (- (text_len typ) 1)) (pair 1 1) cursor pos unused
+  if (or (eq (first cursor) 0) (< pos (second cursor))) cursor
+  let ch text_slice typ pos (+ pos 1)
+  let next if (text_eq ch "{") (+ 1 (need (text_find typ "}" pos) "pair_type" 0)) (+ pos 1)
+  let todo first cursor
+  pair (if (text_eq ch "&") (+ todo 1) (if (or (dict_kind ch) (or (text_eq ch "?") (text_eq ch "*"))) todo (- todo 1))) next
+second cut
+
+pair_component typ:t slot:i > t
+if (> slot 1) ""
+let n text_len typ
+if (eq n 3) (text_slice typ (+ 1 slot) (+ 2 slot))
+let cut pair_boundary typ
+if (eq slot 0) (text_slice typ 1 cut) (text_slice typ cut n)
+
+option_payload typ:t > b
+or (atom_type typ) (pair_type typ)
+
+option_type typ:t > b
+and (text_eq (text_slice typ 0 1) "?") (option_payload (text_slice typ 1 (text_len typ)))
+
+function_type typ:t > b
+if (and (text_eq (text_slice typ 0 2) "?&") (> (text_len typ) 4))
+  (and (option_type typ) (case (data_shape typ) false valid true))
+or (or (option_payload typ) (option_type typ)) (and (text_eq (text_slice typ 0 1) "*") (atom_type (text_slice typ 1 (text_len typ))))
+
+wrapped_type prefix:t element:t file:t site:{Site} > t
+let typ concat prefix element
+if (< (text_len typ) 5) typ
+case (data_shape typ) (fail (diagnosis file site "E_TYPE" "Type exceeds type limits")) valid typ
+
+public_data_op op:t > b
+case (text_find "|utf8_text|utf8_bytes|q_units|q_from_units|unix_seconds|json_encode|byte_len|byte_at|dict|dict_get|dict_put|json_decode|" (cat3 "|" op "|") 0) false found true
+
+dict_kind kind:t > b
+text_eq (text_slice kind 0 1) "%"
+
+named_kind kind:t > b
+text_eq (text_slice kind 0 1) "{"
+
+named_element kind:t > t
+if (named_kind kind) kind
+let prefix text_slice kind 0 1
+if (or (text_eq prefix "*") (text_eq prefix "?")) (text_slice kind 1 (text_len kind)) ""
+
+constructible_element typ:t > b
+signature_kind typ
+
+signature_kind kind:t > b
+if (and (> (text_len kind) 1) (white (text_slice kind 0 1) "*?"))
+  (and (not (text_eq (text_slice kind 0 2) "??")) (and (case (data_shape kind) false shape true) (signature_kind (text_slice kind 1 (text_len kind)))))
+if (or (measurement_type kind) (text_eq kind "y")) true
+if (dict_kind kind) (and (case (data_shape kind) false shape true) (signature_kind (text_slice kind 1 (text_len kind))))
+if (and (or (text_eq (text_slice kind 0 1) "?") (text_eq (text_slice kind 0 1) "*")) (or (measurement_type (text_slice kind 1 (text_len kind))) (or (text_eq (text_slice kind 1 (text_len kind)) "y") (dict_kind (text_slice kind 1 (text_len kind)))))) (and (case (data_shape kind) false shape true) (signature_kind (text_slice kind 1 (text_len kind))))
+if (function_type kind) true
+let element named_element kind
+if (named_kind element) (case (data_shape kind) false valid true)
+and (text_eq (text_slice kind 0 1) "*") (and (pair_type element) (case (data_shape kind) false valid true))
+
+type_names typ:t > *t
+let kind named_element typ
+if (named_kind kind) (list t 1 (text_slice kind 1 (- (text_len kind) 1)))
+if (case (text_find typ "{" 0) true found false) (list t 0)
+case (data_shape typ) (list t 0) shape (get refs shape)
+
+check_type_names typ:t schemas:{Declarations} file:t site:{Site} > b
+fold (type_names typ) true ok row name
+  case (entry_at (get names schemas) name) (fail (diagnosis file site "E_TYPE" (concat "Unknown named type: " name))) found ok
+
+scoped_type_name name:t scope:{SymbolScope} schemas:{Declarations} file:t site:{Site} > t
+let visible scope_index (get types scope) (get names schemas) name (get space scope)
+let index need visible (diagnosis file site "E_TYPE" (concat "Unknown named type: " name)) 0
+need (at (get names schemas) index) "type_name" 0
+
+scoped_type typ:t scope:{SymbolScope} schemas:{Declarations} file:t site:{Site} > t
+if (eq (length (get types scope)) 0) typ
+let parts type_names typ
+if (eq (length parts) 0) typ
+let converted fold parts (pair "" 0) acc row name
+  let start need (text_find typ "{" (second acc)) "scoped_type_open" 0
+  let stop + 1 (need (text_find typ "}" start) "scoped_type_close" 0)
+  let resolved scoped_type_name name scope schemas file site
+  pair (cat3 (first acc) (text_slice typ (second acc) (+ start 1)) (concat resolved "}")) stop
+let resolved concat (first converted) (text_slice typ (second converted) (text_len typ))
+if (> (text_len resolved) 128) fail (diagnosis file site "E_TYPE" "Type exceeds type limits")
+resolved
+
+scoped_call fn:{Signature} names:*t word:t > ?i
+let scope get scope fn
+scope_index (get calls scope) names word (get space scope)
+
+call_bindings fn:{Signature} names:*t > *t
+let aliases get calls (get scope fn)
+if (eq (length aliases) 0) names aliases
+
+named_schema schemas:{Declarations} kind:t > ?{SchemaType}
+if (not (named_kind kind)) (nil {SchemaType})
+let name text_slice kind 1 (- (text_len kind) 1)
+case (entry_at (get names schemas) name) (nil {SchemaType}) idx (at (get entries schemas) idx)
+
+variant_kind schemas:{Declarations} kind:t > b
+case (named_schema schemas kind) false decl get tagged decl
+
+record_schema schemas:{Declarations} name:t file:t site:{Site} > {SchemaType}
+let invalid diagnosis file site "E_TYPE" "Unknown record"
+let index need (entry_at (get names schemas) name) invalid 0
+let decl need (at (get entries schemas) index) "record_schema" 0
+if (get tagged decl) fail invalid
+decl
+
+signature block:{SchemaBlock} file:t names:*t schemas:{Declarations} space:t > {Signature}
+let head get head block
+let loc need (at head 0) "function_head" 0
+let is_rule text_eq (get word loc) "rule"
+let offset if is_rule 1 0
+if (eq (length (get tail (get body block))) 0) fail (diagnosis file loc "E_SYNTAX" "Missing declaration body")
+let marker fold head (length head) earliest row item if (and (< row (+ earliest 1)) (text_eq (get word item) ">")) (- row 1) earliest
+if (eq marker (length head)) fail (diagnosis file loc "E_SYNTAX" "Missing >")
+if (or (not (> marker offset)) (not (eq (+ marker 2) (length head)))) fail (diagnosis file loc "E_SYNTAX" "Invalid signature")
+let result get word (need (at head (+ marker 1)) "function_result" 0)
+if (not (signature_kind result))
+  (case (data_shape result) (fail (diagnosis file loc "E_SYNTAX" "Invalid signature")) shape (fail "defer_check"))
+let name_site need (at head offset) "definition_name" 0
+let chosen scoped_declaration (get word name_site) space names name_site file
+if (case (entry_at (get names schemas) chosen) false pos true) fail (diagnosis file name_site "E_NAME" (concat "Invalid or duplicate name: " (get word name_site)))
+let start make Signature name chosen file file loc loc params (list t 0) types (list t 0) result result body (get body block) schemas schemas scope empty_symbol_scope
+let fn fold head start acc row item
+  if (or (not (> row (+ offset 1))) (> row marker)) acc
+  let token get word item
+  let colon need (text_find token ":" 0) (diagnosis file item "E_TYPE" "Expected name:type") 0
+  let typ text_slice token (+ colon 1) (text_len token)
+  if (not (or (grant_kind typ) (signature_kind typ)))
+    (if (case (data_shape typ) false shape true) (fail "defer_check")
+     (fail (diagnosis file item "E_TYPE" "Expected name:type")))
+  let key checked_name (text_slice token 0 colon) (get params acc) item file
+  with types (with params acc (append (get params acc) key)) (append (get types acc) typ)
+if (and is_rule (not (eq (length (get params fn)) 1))) fail (diagnosis file loc "E_TYPE" "Rule needs one event and a scalar or pair result")
+if (and is_rule (not (and (scalar_type result) (scalar_type (need (at (get types fn) 0) "event_type" 0))))) fail "defer_check"
+fn
+
+rule_signature fn:{Signature} > b
+text_eq (get word (get loc fn)) "rule"
+
+grant_marker typ:t > t
+if (text_eq typ "d") "!" (if (text_eq typ "n") "@" (if (text_eq typ "w") "+" (if (text_eq typ "p") "~" "")))
+
+grant_kind typ:t > b
+or (text_eq typ "r") (not (text_eq (grant_marker typ) ""))
+
+grant_names fn:{Signature} > *t
+typed_grants fn "r"
+
+typed_grants fn:{Signature} kind:t > *t
+fold (get params fn) (list t 0) names row key
+if (text_eq (need (at (get types fn) (- row 1)) "param_type" 0) kind) (append names key) names
+
+record FunctionNode
+site:{Site} typ:t target:i slot:i value:i literal:t simple:b diagnostic:b children:*i binders:*t dispatch:*i handled:i subtree_start:i root:b start:&ii stop:&ii
+
+record NodeBuffer
+pages:**{FunctionNode} tail:*{FunctionNode}
+
+node_count buf:{NodeBuffer} > i
++ (* 256 (length (get pages buf))) (length (get tail buf))
+
+node_at buf:{NodeBuffer} index:i > {FunctionNode}
+let page div index 256
+let group case (at (get pages buf) page) (get tail buf) earlier earlier
+need (at group (mod index 256)) "function_node" 0
+
+node_push buf:{NodeBuffer} node:{FunctionNode} > {NodeBuffer}
+let tail get tail buf
+if (eq (length tail) 256) (make NodeBuffer pages (append (get pages buf) tail) tail (list {FunctionNode} 1 node))
+with tail buf (append tail node)
+
+record FunctionFrame
+node:{FunctionNode} expects:*t grouped:b binders:*t element:{Site}
+
+record RuleBranch
+guard:i actions:*i
+
+record RulePlan
+fields:*t types:*t starts:*i branches:*{RuleBranch}
+
+empty_rule > {RulePlan}
+make RulePlan fields (list t 0) types (list t 0) starts (list i 0) branches (list {RuleBranch} 0)
+
+record FunctionTree
+nodes:{NodeBuffer} calls:*t errors:i plan:{RulePlan} missing:t
+
+record FunctionReader
+tree:{FunctionTree} frames:*{FunctionFrame} opening:?&ii base:i
+
+empty_tree > {FunctionTree}
+make FunctionTree nodes (make NodeBuffer pages (list *{FunctionNode} 0) tail (list {FunctionNode} 0)) calls (list t 0) errors 0 plan empty_rule missing ""
+
+error_bit code:t > i
+if (text_eq code "E_DATA") 1 (if (text_eq code "E_IO") 2 (if (text_eq code "E_OVERFLOW") 4 (if (text_eq code "E_UTF8") 8 0)))
+
+has_bit mask:i bit:i > b
+eq (mod (div mask bit) 2) 1
+
+visible_errors prior:i incoming:i handled:i > i
+if (or (eq incoming 0) (eq prior incoming)) prior
+if (and (eq prior 0) (eq handled 0)) incoming
+fold (list i 4 1 2 4 8) prior mask row bit
+  if (and (has_bit incoming bit) (not (or (has_bit prior bit) (has_bit handled bit)))) (+ mask bit) mask
+
+extra_fields diagnostic:t details:t > t
+cat3 (text_slice diagnostic 0 (- (text_len diagnostic) 1)) "," (concat details "}")
+
+expected_actual typ:t actual:t > t
+cat3 "\"expected\":" (json_string typ) (concat ",\"actual\":" (json_string actual))
+
+function_type_error file:t site:{Site} typ:t actual:t > t
+extra_fields (diagnosis file site "E_TYPE" "Unexpected type") (expected_actual typ actual)
+
+open_function_frame node:{FunctionNode} expects:*t grouped:b > {FunctionFrame}
+make FunctionFrame node node expects expects grouped grouped binders (list t 0) element (with word (get site node) "")
+
+sql_cell_type kind:t > b
+let typ if (text_eq (text_slice kind 0 1) "?") (text_slice kind 1 (text_len kind)) kind
+or (measurement_type typ) (or (atom_type typ) (text_eq typ "y"))
+
+sql_record_type typ:t schemas:{Declarations} > b
+case (named_schema schemas typ) false decl
+and (not (get tagged decl)) (fold (get types decl) true ok row kind and ok (sql_cell_type kind))
+
+https_op op:t > b
+or (text_eq op "https_get") (text_eq op "https_post")
+
+https_args op:t > *t
+let common list t 5 "n" "t" "%t" "i" "i"
+if (text_eq op "https_post") (append common "y") common
+
+pg_op op:t > b
+or (text_eq op "pg_query") (text_eq op "pg_exec")
+
+database_op op:t > b
+or (text_eq op "fold_rows") (or (text_eq op "transaction") (or (text_eq op "sql_exec") (text_eq op "sql_query")))
+
+data_frame op:t node:{FunctionNode} grouped:b > ?{FunctionFrame}
+if (text_eq op "pg_exec") (some (open_function_frame (with typ node "i") (list t 3 "p" "t" "*?t") grouped))
+if (text_eq op "pg_query") (some (open_function_frame node (list t 1 "type") grouped))
+if (text_eq op "write_bytes") (some (open_function_frame (with typ node "i") (list t 2 "w" "y") grouped))
+if (https_op op) (some (open_function_frame node (list t 1 "type") grouped))
+if (text_eq op "transaction") (some (open_function_frame node (list t 2 "d" "?") grouped))
+if (text_eq op "sql_exec") (some (open_function_frame (with typ node "i") (list t 3 "d" "t" "sql_params") grouped))
+if (or (text_eq op "fold_rows") (text_eq op "sql_query")) (some (open_function_frame node (list t 1 "type") grouped))
+if (text_eq op "utf8_text") (some (open_function_frame (with typ node "t") (list t 1 "y") grouped))
+if (text_eq op "utf8_bytes") (some (open_function_frame (with typ node "y") (list t 1 "t") grouped))
+if (text_eq op "json_encode") (some (open_function_frame (with typ node "y") (list t 1 "encodable") grouped))
+if (text_eq op "q_units") (some (open_function_frame (with typ node "i") (list t 1 "q") grouped))
+if (text_eq op "q_from_units") (some (open_function_frame (with typ node "q") (list t 1 "i") grouped))
+if (text_eq op "unix_seconds") (some (open_function_frame (with typ node "i") (list t 1 "z") grouped))
+if (text_eq op "byte_len") (some (open_function_frame (with typ node "i") (list t 1 "y") grouped))
+if (text_eq op "byte_at") (some (open_function_frame (with typ node "?i") (list t 2 "y" "i") grouped))
+if (or (text_eq op "json_decode") (text_eq op "dict")) (some (open_function_frame node (list t 1 "type") grouped))
+if (or (text_eq op "dict_get") (text_eq op "dict_put")) (some (open_function_frame node (list t 1 "dictionary") grouped))
+if (text_eq op "tag") (some (open_function_frame node (list t 1 "tag") grouped))
+if (text_eq op "match") (some (open_function_frame (with typ node "!") (list t 1 "variant") grouped))
+if (text_eq op "make") (some (open_function_frame node (list t 1 "schema") grouped))
+if (or (text_eq op "get") (text_eq op "with")) (some (open_function_frame node (list t 1 "record") grouped))
+nil {FunctionFrame}
+
+builtin_frame op:t node:{FunctionNode} grouped:b > ?{FunctionFrame}
+case (data_frame op node grouped)
+(basic_frame op node grouped) frame (some frame)
+
+basic_frame op:t node:{FunctionNode} grouped:b > ?{FunctionFrame}
+if (text_eq op "catch") (some (open_function_frame (with diagnostic node true) (list t 2 "?" "?") grouped))
+if (text_eq op "fail") (some (open_function_frame (with typ (with diagnostic node true) "!") (list t 1 "t") grouped))
+if (text_eq op "raise") (some (open_function_frame (with typ (with diagnostic node true) "!") (list t 1 "diagnostic") grouped))
+if (text_eq op "input_line") (some (open_function_frame (with typ (with diagnostic node true) "?i") (list t 1 "diagnostic") grouped))
+if (text_eq op "has_reason") (some (open_function_frame (with typ (with diagnostic node true) "b") (list t 2 "diagnostic" "t") grouped))
+if (text_eq op "pair") (some (open_function_frame node (list t 2 "member" "member") grouped))
+if (or (text_eq op "first") (text_eq op "second")) (some (open_function_frame node (list t 1 "pair") grouped))
+if (or (text_eq op "text_find") (text_eq op "text_rfind")) (some (open_function_frame (with typ node "?i") (list t 3 "t" "t" "i") grouped))
+if (text_eq op "int") (some (open_function_frame (with typ node "?i") (list t 1 "t") grouped))
+if (text_eq op "lines") (some (open_function_frame (with typ node "*t") (list t 1 "t") grouped))
+if (or (text_eq op "read") (text_eq op "read_bytes")) (some (open_function_frame (with typ node (if (text_eq op "read") "t" "y")) (list t 1 "r") grouped))
+if (text_eq op "at") (some (open_function_frame node (list t 2 "seq" "i") grouped))
+if (or (text_eq op "nil") (or (text_eq op "list") (text_eq op "map"))) (some (open_function_frame node (list t 1 "type") grouped))
+if (text_eq op "some") (some (open_function_frame node (list t 1 "?") grouped))
+if (text_eq op "case") (some (open_function_frame node (list t 3 "option" "?" "?") grouped))
+if (text_eq op "need") (some (open_function_frame node (list t 3 "option" "t" "i") grouped))
+if (text_eq op "scan") (some (open_function_frame node (list t 1 "rule") grouped))
+if (text_eq op "fold_lines") (some (open_function_frame node (list t 4 "r" "i" "initial" "step") grouped))
+if (text_eq op "while") (some (open_function_frame node (list t 3 "initial" "b" "step") grouped))
+if (text_eq op "fold") (some (open_function_frame node (list t 3 "seq" "?" "?") grouped))
+if (text_eq op "append") (some (open_function_frame node (list t 2 "seq" "?") grouped))
+if (text_eq op "length") (some (open_function_frame (with typ node "i") (list t 1 "seq") grouped))
+if (text_eq op "let") (some (open_function_frame (with simple node true) (list t 2 "?" "?") grouped))
+let text_sig if (text_eq op "concat") "ttt" (if (text_eq op "text_len") "ti" (if (text_eq op "text_slice") "tiit" (if (text_eq op "text_eq") "ttb" "")))
+let sig if (not (text_eq text_sig "")) text_sig
+  if (text_eq op "if") "b???" (if (text_eq op "not") "bb"
+  (if (or (text_eq op "and") (text_eq op "or")) "bbb"
+   (if (integer_comparison op) "iib"
+    (if (or (or (text_eq op "+") (text_eq op "-")) (or (text_eq op "*") (or (text_eq op "div") (text_eq op "mod")))) "iii" ""))))
+let n text_len sig
+if (eq n 0) (nil {FunctionFrame})
+let types fold (indices (- n 1)) (list t 0) acc pos unused append acc (text_slice sig (- pos 1) pos)
+some (open_function_frame (with typ (with simple node (text_eq text_sig "")) (text_slice sig (- n 1) n)) types grouped)
+
+record FunctionScope
+names:*t types:*t
+
+function_scope fn:{Signature} frames:*{FunctionFrame} > {FunctionScope}
+fold frames (make FunctionScope names (get params fn) types (get types fn)) scope row frame
+  let node get node frame
+  let op get word (get site node)
+  let done length (get children node)
+  if (and (text_eq op "catch") (eq done 1))
+    (case (at (get binders frame) 0) scope key
+     if (text_eq key "_") scope (make FunctionScope names (append (get names scope) key) types (append (get types scope) (concat "#" (get literal node)))))
+  if (and (text_eq op "while") (> done 0))
+    (case (at (get binders frame) 0) scope key (make FunctionScope names (append (get names scope) key) types (append (get types scope) (get typ node))))
+  if (not (or (or (and (text_eq op "fold_rows") (eq done 4)) (and (text_eq op "fold_lines") (eq done 3))) (or (and (or (text_eq op "let") (text_eq op "map")) (eq done 1)) (and (or (text_eq op "case") (text_eq op "fold")) (eq done 2))))) scope
+  fold (get binders frame) scope local pos key
+    let typ if (or (text_eq op "case") (text_eq op "map")) (get word (get element frame)) (if (eq pos 1) (get typ node) (if (eq pos 2) "i" (get word (get element frame))))
+    make FunctionScope names (append (get names local) key) types (append (get types local) typ)
+
+expression_frame site:{Site} fn:{Signature} fns:*{Signature} names:*t frames:*{FunctionFrame} opening:?&ii > {FunctionFrame}
+let grouped case opening false loc true
+let here pair (get line site) (get column site)
+let op get word site
+let parent at frames (- (length frames) 1)
+let handled case parent 0 frame
+  let enclosing get node frame
+  if (and (text_eq (get word (get site enclosing)) "catch") (eq (length (get children enclosing)) 0))
+    (visible_errors (get handled enclosing) (get value enclosing) 0) (get handled enclosing)
+let node make FunctionNode site site typ "" target -1 slot -1 value 0 literal "" simple false diagnostic false children (list i 0) binders (list t 0) dispatch (list i 0) handled handled subtree_start 0 root false start (case opening here loc loc) stop here
+let diagnostic case parent false frame
+  and (eq (length (get children (get node frame))) 0) (case (at (get expects frame) 0) false typ text_eq typ "diagnostic")
+if diagnostic
+  (let scope function_scope fn frames
+   let invalid diagnosis (get file fn) site "E_TYPE" "Handler diagnostic name required"
+   let slot need (entry_at (get names scope) op) invalid 0
+   let typ need (at (get types scope) slot) "diagnostic_slot" 0
+   if (or grouped (not (text_eq (text_slice typ 0 1) "#"))) fail invalid
+   open_function_frame (with simple (with typ (with slot node slot) typ) true) (list t 0) false)
+if (text_eq op "recur")
+  (if (rule_signature fn) fail (diagnosis (get file fn) site "E_TYPE" "Recursive call requires a function")
+   let self need (entry_at names (get name fn)) "self_function" 0
+   open_function_frame (with target (with typ node (get result fn)) self) (get types fn) grouped)
+case (builtin_frame op node grouped)
+  (case (scoped_call fn names op)
+    (let empty open_function_frame node (list t 0) grouped
+     let scope function_scope fn frames
+     let leaf case (entry_at (get names scope) op)
+       (if (text_eq (text_slice op 0 1) "\"")
+          (let invalid diagnosis (get file fn) site "E_SYNTAX" "Invalid UTF-8 text literal"
+           let token decode_json_string op 0 (with fixed (json_origin (get file fn)) invalid)
+           if (not (text_eq (get kind token) "string")) fail invalid
+           with literal (with typ node "t") (get value token))
+        if (or (text_eq op "true") (text_eq op "false")) (with value (with typ node "b") (if (text_eq op "true") 1 0))
+        case (int op)
+          (if (integer_token op) fail (diagnosis (get file fn) site "E_RANGE" "Integer outside i64")
+           if (or (or (case (intrinsic op) false ar true) (case (display_arity op) false ar true))
+                  (or (text_eq op "list") (text_eq op "make"))) fail "defer_check"
+           let syntax or (text_eq op "(") (or (text_eq op ")") (text_eq op ","))
+           fail (diagnosis (get file fn) site (if syntax "E_SYNTAX" "E_NAME") (concat "Unexpected token: " op)))
+          number (with value (with typ node "i") number))
+       idx (let typ need (at (get types scope) idx) "param_type" 0
+            if (text_eq (text_slice typ 0 1) "#") fail (diagnosis (get file fn) site "E_TYPE" "Diagnostic requires a diagnostic operation")
+            with slot (with typ node typ) idx)
+     if grouped fail (diagnosis (get file fn) site "E_SYNTAX" "Only calls may be grouped")
+     with node empty (with simple leaf true))
+    target
+    let callee need (at fns target) "signature" 0
+    if (rule_signature callee) fail (diagnosis (get file fn) site "E_NAME" (concat "Invalid call target: " op))
+    open_function_frame (with target (with typ node (get result callee)) target) (get types callee) grouped)
+  built built
+
+parent_frames frames:*{FunctionFrame} > *{FunctionFrame}
+fold frames (list {FunctionFrame} 0) acc pos frame if (eq pos (length frames)) acc (append acc frame)
+
+accept_child frame:{FunctionFrame} child:{FunctionNode} index:i file:t nodes:{NodeBuffer} schemas:{Declarations} > {FunctionFrame}
+let parent get node frame
+let kids get children parent
+let pos length kids
+let typ get typ child
+let op get word (get site parent)
+let expected need (at (get expects frame) pos) "operand_position" 0
+let bottom text_eq typ "!"
+if (text_eq op "match")
+  (let next with children parent (append kids index)
+   let parsed if (eq pos 0)
+     (if (not (variant_kind schemas typ)) fail (extra_fields (diagnosis file (get site child) "E_TYPE" "Expected a variant value") (concat "\"actual\":" (json_string typ)))
+      with literal next typ)
+     (if (or bottom (text_eq (get typ parent) typ)) next
+      if (text_eq (get typ parent) "!") (with typ next typ) (fail (function_type_error file (get site child) (get typ parent) typ)))
+   with expects (with node frame parsed) (append (get expects frame) "arm"))
+if (text_eq expected "initial")
+  (with element (with node frame (with children (with typ parent typ) (append kids index))) (with word (get site child) (if (text_eq op "fold_rows") (get literal parent) "t")))
+if (text_eq expected "step")
+  (if (or bottom (text_eq typ (get typ parent))) (with node frame (with children parent (append kids index)))
+   fail (function_type_error file (get site child) (get typ parent) typ))
+if (text_eq expected "record")
+  (let field get element frame
+   let key get word field
+   let invalid extra_fields (diagnosis file field "E_FIELD" "Unknown record field") (cat3 "\"field\":" (json_string key) (concat ",\"actual\":" (json_string typ)))
+   let decl need (named_schema schemas typ) invalid 0
+   if (get tagged decl) fail invalid
+   let slot need (entry_at (get fields decl) key) invalid 0
+   let kind need (at (get types decl) slot) "field_type" 0
+   let reading text_eq op "get"
+   let next with children (with value (with typ parent (if reading kind typ)) slot) (append kids index)
+   with expects (with node frame next) (if reading (get expects frame) (list t 2 "record" kind)))
+if (text_eq expected "diagnostic")
+  (with node frame (with children (with value parent (error_bit (text_slice typ 1 (text_len typ)))) (append kids index)))
+if (text_eq op "catch")
+  (let old get typ parent
+   if (and (eq pos 1) (and (not (text_eq old "!")) (and (not bottom) (not (text_eq old typ))))) fail (function_type_error file (get site child) old typ)
+   with node frame (with children (with typ parent (if (or (eq pos 0) (text_eq old "!")) typ old)) (append kids index)))
+if (text_eq expected "member")
+  (if (not (or bottom (signature_kind typ))) fail "defer_check"
+   let kind if (or bottom (text_eq (get typ parent) "!")) "!" (concat (if (eq pos 0) "&" (get typ parent)) typ)
+   if (and (eq pos 1) (and (not (text_eq kind "!")) (not (pair_type kind)))) fail (diagnosis file (get site parent) "E_TYPE" "Pair type exceeds type limits")
+   with node frame (with children (with typ parent kind) (append kids index)))
+if (text_eq expected "pair")
+  (if (not (or bottom (pair_type typ))) fail (diagnosis file (get site child) "E_TYPE" "Pair expected")
+   with node frame (with children (with typ parent (if bottom "!" (pair_component typ (if (text_eq op "first") 0 1)))) (append kids index)))
+if (text_eq expected "option")
+  (if (not (or bottom (text_eq (text_slice typ 0 1) "?"))) fail (diagnosis file (get site child) "E_TYPE" "Option expected")
+   let element if bottom "!" (text_slice typ 1 (text_len typ))
+   with element (with node frame (with children (with typ parent (if (text_eq op "need") element (get typ parent))) (append kids index))) (with word (get site child) element))
+if (text_eq op "some")
+  (if (not (or bottom (constructible_element typ))) fail "defer_check"
+   with node frame (with children (with typ parent (if bottom "!" (wrapped_type "?" typ file (get site parent)))) (append kids index)))
+if (text_eq expected "encodable")
+  (if (not (or bottom (signature_kind typ))) fail (function_type_error file (get site child) "JSON data" typ)
+   with node frame (with literal (with children parent (append kids index)) typ))
+if (text_eq expected "sql_params")
+  (if (not (or bottom (or (and (dict_kind typ) (sql_cell_type (text_slice typ 1 (text_len typ)))) (sql_record_type typ schemas)))) fail (function_type_error file (get site child) "SQL parameter record or dictionary" typ)
+   with node frame (with children parent (append kids index)))
+if (text_eq expected "dictionary")
+  (if (not (dict_kind typ)) fail (function_type_error file (get site child) "%V" typ)
+   let inner text_slice typ 1 (text_len typ)
+   let fetching text_eq op "dict_get"
+   with expects (with node frame (with children (with typ parent (if fetching (wrapped_type "?" inner file (get site parent)) typ)) (append kids index))) (if fetching (list t 2 typ "t") (list t 3 typ "t" inner)))
+if (text_eq expected "seq")
+  (if (and (not bottom) (and (not (text_eq op "fold")) (not (text_eq (text_slice typ 0 1) "*")))) (fail (diagnosis file (get site child) "E_TYPE" "List expected"))
+   let element if bottom "!" (if (text_eq (text_slice typ 0 1) "*") (text_slice typ 1 (text_len typ)) "")
+   let next with element (with node frame (with children parent (append kids index))) (with word (get site child) element)
+   if (text_eq op "at") (with node next (with typ (get node next) (if bottom "!" (concat "?" element))))
+   if (text_eq op "append") (with expects (with node next (with typ (get node next) typ)) (list t 2 "seq" (if bottom "any" element))) next)
+if (and (text_eq op "fold") (and (eq pos 1) (text_eq (get word (get element frame)) "")))
+  (let seq node_at nodes (need (at kids 0) "fold_sequence" 0)
+   fail (diagnosis file (get site seq) "E_TYPE" "List expected"))
+if (and (text_eq expected "?") (eq pos 2))
+  (if (text_eq (get typ parent) "!") (with node frame (with children (with typ parent (if (text_eq op "fold") "!" typ)) (append kids index)))
+   if (or bottom (text_eq typ (get typ parent))) (with node frame (with children parent (append kids index)))
+   (fail (function_type_error file (get site child) (get typ parent) typ)))
+if (and (not bottom) (and (not (text_eq expected "any")) (and (not (text_eq expected "?")) (not (text_eq expected typ)))))
+  (let skip_first or (text_eq op "has_reason") (or (text_eq op "need") (or (text_eq op "at") (text_eq op "append")))
+   let detail cat3 "\"operation\":" (json_string op) (cat3 ",\"argument\":" (decimal (if skip_first pos (+ pos 1))) (concat "," (expected_actual expected typ)))
+   let field if (text_eq op "make") (need (at (get binders frame) pos) "field_name" 0) (if (text_eq op "with") (get literal parent) "")
+   fail (extra_fields (diagnosis file (get site child) "E_TYPE" "Unexpected operand type") (if (text_eq field "") detail (cat3 detail ",\"field\":" (json_string field)))))
+let next if (and (text_eq expected "?") (or (eq pos 1) (text_eq op "let"))) (with typ parent typ) parent
+with node frame (with children next (append kids index))
+
+reduce_function reading:{FunctionReader} fn:{Signature} names:*t stop:&ii > {FunctionReader}
+fold (get frames reading) reading acc row unused
+  let stack get frames acc
+  case (at stack (- (length stack) 1)) acc frame
+  let node get node frame
+  if (or (get grouped frame) (not (eq (length (get expects frame)) (length (get children node))))) acc
+  let tree get tree acc
+  let index node_count (get nodes tree)
+  let op get word (get site node)
+  let label case (at names (get target node)) op value value
+  let called and (and (not (text_eq op "recur")) (not (< (get target node) 0))) (case (entry_at (get calls tree) label) true idx false)
+  let arith or (text_eq op "+") (or (text_eq op "-") (or (text_eq op "*") (text_eq op "div")))
+  let data_error or (text_eq op "fail") (or (text_eq op "need") (or (text_eq op "mod") (text_eq op "div")))
+  let local_errors if (or (or (text_eq op "write_bytes") (https_op op)) (or (pg_op op) (database_op op))) 3 (if (text_eq op "read_bytes") 2 (if (text_eq op "utf8_text") 8 (if (text_eq op "json_decode") 9 (if (text_eq op "raise") (get value node) (if (or (text_eq op "read") (text_eq op "fold_lines")) 10 (+ (if arith 4 0) (if data_error 1 0)))))))
+  let begin case (at (get children node) 0) index child (get subtree_start (node_at (get nodes tree) child))
+  let stored with root (with stop (with subtree_start (with binders node (get binders frame)) begin) stop) (eq (length stack) 1)
+  let next make FunctionTree nodes (node_push (get nodes tree) stored) calls (if called (append (get calls tree) label) (get calls tree)) errors (visible_errors (get errors tree) local_errors (get handled node)) plan (get plan tree) missing (get missing tree)
+  let parents parent_frames stack
+  let frames case (at parents (- (length parents) 1)) parents parent
+    append (parent_frames parents) (accept_child parent node index (get file fn) (get nodes next) (get schemas fn))
+  make FunctionReader tree next frames frames opening (nil &ii) base (get base acc)
+
+function_token reading:{FunctionReader} site:{Site} fn:{Signature} fns:*{Signature} names:*t > {FunctionReader}
+let stack get frames reading
+let depth length stack
+let stop pair (get line site) (+ (get column site) (text_len (get word site)))
+let op get word site
+let file get file fn
+if (and (eq depth 0) (> (node_count (get nodes (get tree reading))) (get base reading))) fail (diagnosis file site "E_SYNTAX" "Extra operand")
+let waiting case (at stack (- depth 1)) false frame eq (length (get expects frame)) (length (get children (get node frame)))
+if waiting
+  (if (not (text_eq op ")")) fail (diagnosis file site "E_SYNTAX" "Expected closing parenthesis")
+   let frame need (at stack (- depth 1)) "group" 0
+   reduce_function (with frames reading (append (parent_frames stack) (with grouped frame false))) fn names stop)
+let special case (at stack (- depth 1)) "" frame
+  let node get node frame
+  let parent_op get word (get site node)
+  let bindings length (get binders frame)
+  if (text_eq parent_op "tag") (if (text_eq (get typ node) "") "variant_name" "tag_name")
+  if (and (text_eq parent_op "match") (eq (+ 1 bindings) (length (get children node)))) "match_label"
+  if (text_eq parent_op "make")
+    (if (text_eq (get typ node) "") "record_name" (if (eq bindings (length (get children node))) "make_field" ""))
+  if (and (or (text_eq parent_op "get") (text_eq parent_op "with")) (text_eq (get literal node) "")) "field_name"
+  if (text_eq parent_op "catch") (if (eq (get value node) 0) "error_code" (if (and (eq bindings 0) (eq (length (get children node)) 1)) "handler_name" ""))
+  if (and (text_eq parent_op "scan") (< (get target node) 0)) "rule"
+  if (and (https_op parent_op) (text_eq (get typ node) "")) "https_type"
+  if (and (or (text_eq parent_op "pg_query") (or (text_eq parent_op "fold_rows") (text_eq parent_op "sql_query"))) (text_eq (get literal node) "")) "sql_row_type"
+  if (and (text_eq (get typ node) "") (or (text_eq parent_op "dict") (text_eq parent_op "json_decode"))) "public_type"
+  if (text_eq parent_op "nil") "optional_type"
+  if (text_eq parent_op "map") (if (text_eq (get typ node) "") "map_type"
+    (if (and (eq bindings 0) (eq (length (get children node)) 1)) "bind" ""))
+  if (and (text_eq parent_op "case") (and (eq bindings 0) (eq (length (get children node)) 2))) "bind"
+  if (and (text_eq parent_op "while") (and (eq (length (get children node)) 1) (eq bindings 0))) "bind"
+  if (and (text_eq parent_op "let") (eq bindings 0)) "bind"
+  if (and (text_eq parent_op "fold_rows") (and (eq (length (get children node)) 4) (< bindings 3))) "bind"
+  if (and (text_eq parent_op "fold_lines") (and (eq (length (get children node)) 3) (< bindings 3))) "bind"
+  if (and (text_eq parent_op "fold") (and (eq (length (get children node)) 2) (< bindings 3))) "bind"
+  if (and (text_eq parent_op "list") (text_eq (get typ node) "")) (if (text_eq (get word (get element frame)) "") "type" "count") ""
+if (not (text_eq special ""))
+  (let frame need (at stack (- depth 1)) "syntax_frame" 0
+   if (and (text_eq special "match_label") (text_eq op "end"))
+     (let node get node frame
+      let decl need (named_schema (get schemas fn) (get literal node)) "checked_variant" 0
+      let labels get binders frame
+      let absent if (eq (length labels) (length (get fields decl))) (list t 0)
+        (fold (get fields decl) (list t 0) keys row key case (entry_at labels key) (append keys key) found keys)
+      let tree get tree reading
+      let checked if (eq (length absent) 0) tree
+        (let details cat3 "\"definition\":" (json_string (get name fn)) (cat3 ",\"variant\":" (json_string (get name decl)) (concat ",\"missing\":" (json_labels absent)))
+         with missing tree (json_item (get missing tree) (extra_fields (diagnosis file (get site node) "E_MATCH" "Missing match branches") details)))
+      let closed with node (with expects frame (append labels "subject")) (with dispatch node (label_order labels))
+      reduce_function (with tree (with frames reading (append (parent_frames stack) closed)) checked) fn names stop)
+   let next if (text_eq special "variant_name")
+     (let typ scoped_type (cat3 "{" op "}") (get scope fn) (get schemas fn) file site
+      if (not (variant_kind (get schemas fn) typ)) fail (diagnosis file site "E_TYPE" "Expected a variant type")
+      with node frame (with typ (get node frame) typ))
+     if (or (text_eq special "tag_name") (text_eq special "match_label"))
+     (let node get node frame
+      let tag_literal text_eq special "tag_name"
+      let decl need (named_schema (get schemas fn) (if tag_literal (get typ node) (get literal node))) "checked_variant" 0
+      let labels get fields decl
+      if (and (not tag_literal) (text_eq op ")")) fail (diagnosis file site "E_SYNTAX" "Expected end of match")
+      let info cat3 "\"variant\":" (json_string (get name decl)) (concat ",\"tag\":" (json_string op))
+      let pos case (entry_at labels op)
+        (fail (extra_fields (diagnosis file site "E_TAG" (if tag_literal "Unknown variant tag" "Unknown match tag")) (if tag_literal (cat3 info ",\"allowed\":" (json_labels labels)) info))) found found
+      if tag_literal (with expects (with node frame (with simple (with value (with literal node op) pos) true)) (list t 0))
+      if (case (entry_at (get binders frame) op) false seen true) fail (extra_fields (diagnosis file site "E_TAG" "Duplicate match tag") info)
+      with binders frame (append (get binders frame) op))
+     if (text_eq special "https_type")
+     (let typ scoped_type op (get scope fn) (get schemas fn) file site
+      let decl record_schema (get schemas fn) (text_slice typ 1 (- (text_len typ) 1)) file site
+      if (not (and (text_eq (json_labels (get fields decl)) "[\"status\",\"headers\",\"body\"]") (text_eq (json_labels (get types decl)) "[\"i\",\"%t\",\"y\"]"))) fail (diagnosis file site "E_TYPE" "HTTPS response record requires status:i headers:%t body:y")
+      with expects (with node frame (with typ (get node frame) typ)) (https_args (get word (get site (get node frame)))))
+     if (text_eq special "sql_row_type")
+     (let typ scoped_type op (get scope fn) (get schemas fn) file site
+      if (not (sql_record_type typ (get schemas fn))) fail (diagnosis file site "E_TYPE" "Expected record with scalar SQL columns")
+      let node with literal (get node frame) typ
+      if (text_eq (get word (get site node)) "pg_query") (with expects (with node frame (with typ node (wrapped_type "*" typ file site))) (list t 3 "p" "t" "*?t"))
+      if (text_eq (get word (get site node)) "fold_rows") (with expects (with node frame node) (list t 5 "d" "t" "sql_params" "initial" "step"))
+      with expects (with node frame (with typ node (wrapped_type "*" typ file site))) (list t 3 "d" "t" "sql_params"))
+     if (text_eq special "public_type")
+     (let typ scoped_type op (get scope fn) (get schemas fn) file site
+      if (not (signature_kind typ)) fail (diagnosis file site "E_TYPE" "Expected a JSON data type")
+      if (not (check_type_names typ (get schemas fn) file site)) fail "type_name"
+      let empty text_eq (get word (get site (get node frame))) "dict"
+      if (and empty (text_eq (text_slice typ 0 1) "?")) fail (diagnosis file site "E_TYPE" "Dictionary lookup requires a non-optional value type")
+      with expects (with node frame (with typ (get node frame) (if empty (wrapped_type "%" typ file site) typ))) (if empty (list t 0) (list t 1 "y")))
+     if (text_eq special "record_name")
+     (let scope get scope fn
+      let name if (eq (length (get types scope)) 0) op (scoped_type_name op scope (get schemas fn) file site)
+      let decl record_schema (get schemas fn) name file site
+      let idx need (entry_at (get names (get schemas fn)) name) "checked_record" 0
+      with expects (with node frame (with value (with typ (get node frame) (cat3 "{" name "}")) idx)) (get types decl))
+     if (text_eq special "make_field")
+     (let decl need (at (get entries (get schemas fn)) (get value (get node frame))) "checked_record" 0
+      let key need (at (get fields decl) (length (get binders frame))) "record_field" 0
+      if (not (text_eq key op)) fail (extra_fields (diagnosis file site "E_FIELD" "Expected named field") (expected_actual key op))
+      with binders frame (append (get binders frame) key))
+     if (text_eq special "field_name")
+     (with element (with node frame (with literal (get node frame) op)) site)
+     if (text_eq special "error_code")
+     (let bit error_bit op
+      if (eq bit 0) fail (diagnosis file site "E_TYPE" "Unsupported catch target")
+      with node frame (with value (with literal (get node frame) op) bit))
+     if (or (text_eq special "optional_type") (text_eq special "map_type"))
+     (let typ scoped_type op (get scope fn) (get schemas fn) file site
+      if (not (constructible_element typ)) (case (data_shape typ) (fail (diagnosis file site "E_TYPE" "Expected data type")) valid (fail "defer_check"))
+      if (not (check_type_names typ (get schemas fn) file site)) fail "type_name"
+      if (text_eq special "map_type")
+        (with expects (with node frame (with typ (get node frame) (wrapped_type "*" typ file site))) (list t 2 "seq" typ))
+      with expects (with node frame (with typ (with simple (get node frame) true) (wrapped_type "?" typ file site))) (list t 0))
+     if (text_eq special "rule")
+     (let invalid diagnosis file site "E_NAME" (concat "Invalid call target: " op)
+      let idx need (scoped_call fn names op) invalid 0
+      let callee need (at fns idx) "scan_signature" 0
+      if (not (rule_signature callee)) fail invalid
+      let node with target (with typ (get node frame) (concat "*" (get result callee))) idx
+      with expects (with node frame node) (list t 1 (concat "*" (need (at (get types callee) 0) "rule_event" 0))))
+     if (or (text_eq special "bind") (text_eq special "handler_name"))
+     (let key if (and (text_eq special "handler_name") (text_eq op "_")) op (checked_name (checked_name op (call_bindings fn names) site file) (get names (function_scope fn stack)) site file)
+      with binders frame (append (get binders frame) key))
+     (if (text_eq special "type")
+       (with element frame site)
+       (let element scoped_type (get word (get element frame)) (get scope fn) (get schemas fn) file (get element frame)
+        if (not (constructible_element element)) (case (data_shape element) (fail (diagnosis file (get element frame) "E_TYPE" "Unsupported element type")) shape (fail "defer_check"))
+        if (not (check_type_names element (get schemas fn) file (get element frame))) fail "type_name"
+        let valid and (not (> (text_len op) 6)) (and (integer_token op) (not (text_eq (text_slice op 0 1) "-")))
+        if (not valid) fail (diagnosis file site "E_SYNTAX" "Invalid list count")
+        let count need (int op) "count" 0
+        if (> count 4096) fail (diagnosis file site "E_LIMIT" "List length limit")
+        with expects (with node frame (with typ (get node frame) (wrapped_type "*" element file site)))
+          (fold (indices count) (list t 0) acc pos unused append acc element)))
+   reduce_function (with frames reading (append (parent_frames stack) next)) fn names stop)
+if (not (< depth 48)) fail (diagnosis file site "E_LIMIT" "Expression nesting limit")
+if (and (text_eq op "(") (case (get opening reading) true loc false)) (with opening reading (some (pair (get line site) (get column site))))
+let new_frame expression_frame site fn fns names stack (get opening reading)
+reduce_function (with opening (with frames reading (append stack new_frame)) (nil &ii)) fn names stop
+
+parsed_body fn:{Signature} fns:*{Signature} names:*t prior_tree:{FunctionTree} > {FunctionTree}
+let file get file fn
+let body get body fn
+if (eq (length (get tail body)) 0) fail (diagnosis file (get loc fn) "E_SYNTAX" "Missing operand")
+let parsed fold (site_pages body) (make FunctionReader tree prior_tree frames (list {FunctionFrame} 0) opening (nil &ii) base (node_count (get nodes prior_tree))) prior batch page
+  fold page prior acc row site function_token acc site fn fns names
+if (or (case (get opening parsed) false loc true) (> (length (get frames parsed)) 0))
+  (let last need (at (get tail body) (- (length (get tail body)) 1)) "last_operand" 0
+   let frames get frames parsed
+   let unfinished case (at frames (- (length frames) 1)) false frame
+     let node get node frame
+     and (text_eq (get word (get site node)) "match") (and (eq (+ 1 (length (get binders frame))) (length (get children node))) (> (length (get expects frame)) (length (get children node))))
+   fail (diagnosis file (with column last (+ (get column last) (text_len (get word last)))) "E_SYNTAX" (if unfinished "Missing end of match" "Missing operand")))
+get tree parsed
+
+typed_body fn:{Signature} fns:*{Signature} names:*t prior_tree:{FunctionTree} > {FunctionTree}
+let tree parsed_body fn fns names prior_tree
+let nodes get nodes tree
+let root node_at nodes (- (node_count nodes) 1)
+let file get file fn
+if (or (text_eq (get typ root) "!") (text_eq (get typ root) (get result fn))) tree
+fail (function_type_error file (get site root) (get result fn) (get typ root))
+
+sorted_labels names:*t > *t
+fold (label_order names) (list t 0) labels row idx append labels (need (at names idx) "name_index" 0)
+
+json_labels names:*t > t
+let items fold names "" acc row key json_item acc (json_string key)
+cat3 "[" items "]"
+
+record FunctionSummary
+height:i work:i errors:i allocates:b read_path:*t database:b network:b writes:b postgres:b
+
+record CallFrame
+index:i edge:i
+
+record CallWalk
+root:i path:*{CallFrame} done:*t summaries:*{FunctionSummary}
+
+finish_function tree:{FunctionTree} walk:{CallWalk} names:*t name:t > {FunctionSummary}
+let scans > (length (get starts (get plan tree))) 0
+let start make FunctionSummary height 1 work (if scans 100001 (node_count (get nodes tree))) errors (get errors tree) allocates scans read_path (list t 0) database false network false writes false postgres false
+let nodes get nodes tree
+fold (append (get pages nodes) (get tail nodes)) start before part group
+  fold group before acc row node
+    if (< (get target node) 0)
+      (let op get word (get site node)
+       if (pg_op op) (with postgres (with allocates acc true) true)
+       if (text_eq op "write_bytes") (with writes (with allocates acc true) true)
+       if (https_op op) (with network (with allocates acc true) true)
+       if (database_op op) (with database (with allocates acc true) true)
+       if (public_data_op op) (with allocates acc true)
+       if (text_eq op "fold_lines") (with read_path (with allocates (with work acc 100001) true) (list t 2 name "fold_lines"))
+       if (or (text_eq op "while") (text_eq op "fold")) (with work acc 100001)
+       if (text_eq op "map") (with allocates (with work acc 100001) true)
+       if (or (text_eq op "read") (text_eq op "read_bytes")) (with read_path (with allocates acc true) (list t 2 name op))
+       if (or (text_eq op "make") (text_eq op "with")) (with allocates acc true)
+       if (or (text_eq op "pair") (or (or (or (text_eq op "some") (text_eq op "lines")) (or (text_eq op "concat") (text_eq op "text_slice"))) (or (text_eq op "list") (text_eq op "append")))) (with allocates acc true) acc)
+    if (text_eq (get word (get site node)) "recur") (with allocates (with work acc 100001) true)
+    let idx need (entry_at (get done walk) (need (at names (get target node)) "callee_name" 0)) "call_order" 0
+    let info need (at (get summaries walk) idx) "call_summary" 0
+    let level + 1 (get height info)
+    let work + (get work acc) (get work info)
+    let prior get read_path acc
+    let child get read_path info
+    let path if (eq (length child) 0) prior
+      if (and (> (length prior) 0) (< (length prior) (+ 1 (length child)))) prior
+      let next fold child (list t 1 name) route pos part append route part
+      if (or (not (eq (length prior) (length next))) (eq (need (at (label_order (list t 2 (json_labels prior) (json_labels next))) 0) "read_path" 0) 1)) next prior
+    make FunctionSummary height (if (> level (get height acc)) level (get height acc)) work (if (> work 100001) 100001 work)
+      errors (visible_errors (get errors acc) (get errors info) (get handled node)) allocates (or (get allocates acc) (get allocates info)) read_path path database (or (get database info) (get database acc)) network (or (get network info) (get network acc)) writes (or (get writes info) (get writes acc)) postgres (or (get postgres info) (get postgres acc))
+
+advance_calls walk:{CallWalk} fns:*{Signature} names:*t trees:*{FunctionTree} > {CallWalk}
+let path get path walk
+let root get root walk
+case (at path (- (length path) 1))
+  (case (at fns root) walk fn
+   let next with root walk (+ root 1)
+   case (entry_at (get done walk) (get name fn))
+     (with path next (list {CallFrame} 1 (make CallFrame index root edge 0)))
+     idx (if (> (get height (need (at (get summaries walk) idx) "known_call" 0)) 48)
+       (fail (diagnosis (get file fn) (get loc fn) "E_LIMIT" "Call depth limit")) next))
+  frame
+  let index get index frame
+  let tree need (at trees index) "call_tree" 0
+  let parents fold path (list {CallFrame} 0) acc row item if (eq row (length path)) acc (append acc item)
+  case (at (get calls tree) (get edge frame))
+    (let fn need (at fns index) "function" 0
+     let info finish_function tree walk names (get name fn)
+     if (and (rule_signature fn) (> (length (get read_path info)) 0))
+       (fail (extra_fields (diagnosis (get file fn) (get loc fn) "E_CAPABILITY" "Rule has external effects")
+          (cat3 "\"effects\":[\"read\"],\"call_chain\":" (json_labels (get read_path info)) (concat ",\"rule\":" (json_string (get name fn))))))
+     if (and (eq (length path) 1) (> (get height info) 48)) fail (diagnosis (get file fn) (get loc fn) "E_LIMIT" "Call depth limit")
+     with summaries (with done (with path walk parents) (append (get done walk) (get name fn))) (append (get summaries walk) info))
+    target
+    let child need (entry_at names target) "call_target" 0
+    let fn need (at fns child) "function" 0
+    let cycle fold path false found row item or found (eq (get index item) child)
+    if cycle
+      (let chain fold path "" acc row item cat3 acc (need (at names (get index item)) "name" 0) " -> "
+       fail (diagnosis (get file fn) (get loc fn) "E_CYCLE" (cat3 "Recursive call: " chain target)))
+    if (not (< (length path) 48)) fail (diagnosis (get file fn) (get loc fn) "E_LIMIT" "Call depth limit")
+    let advanced append parents (with edge frame (+ (get edge frame) 1))
+    with path walk (case (entry_at (get done walk) target) (append advanced (make CallFrame index child edge 0)) idx advanced)
+
+record CheckedFunctions
+names:*t signatures:*{Signature} trees:*{FunctionTree} info:*{FunctionSummary}
+
+function_info checked:{CheckedFunctions} idx:i > t
+let fn need (at (get signatures checked) idx) "signature" 0
+let tree need (at (get trees checked) idx) "function_tree_index" 0
+let info need (at (get info checked) idx) "function_info" 0
+let labels fold (list t 4 "E_DATA" "E_IO" "E_OVERFLOW" "E_UTF8") (list t 0) keys row code
+  if (has_bit (get errors info) (error_bit code)) (append keys code) keys
+let errors json_labels (if (get database info) (append labels "E_TRANSACTION") labels)
+let params fold (get params fn) "" acc pos key
+  json_item acc (cat3 (json_string key) ":" (json_string (need (at (get types fn) (- pos 1)) "param" 0)))
+let kind if (rule_signature fn) "rule" "function"
+let grants typed_grants fn "d"
+let net typed_grants fn "n"
+let sqlnet concat (if (eq (length grants) 0) "" (concat ",\"db_grants\":" (json_labels grants))) (if (eq (length net) 0) "" (concat ",\"https_grants\":" (json_labels net)))
+let extra fold (list t 2 "w" "p") sqlnet fields row typ
+  let names typed_grants fn typ
+  if (eq (length names) 0) fields (cat3 fields (if (text_eq typ "w") ",\"write_grants\":" ",\"pg_grants\":") (json_labels names))
+let reads_only if (eq (length (get read_path info)) 0) (list t 0) (list t 1 "read")
+let local if (get writes info) (append reads_only "write") reads_only
+let reads if (get postgres info) (append local "postgres") local
+let effects json_labels (if (get network info) (append (if (get database info) (append reads "sqlite") reads) "https") (if (get database info) (append reads "sqlite") reads))
+cat3 (cat3 "\"kind\":\"" kind "\",\"params\":{") params
+  (cat3 "},\"returns\":" (json_string (get result fn)) (cat3 ",\"calls\":" (json_labels (get calls tree))
+   (cat3 (cat3 extra ",\"effects\":" (concat effects ",\"read_grants\":"))
+     (json_labels (grant_names fn)) (cat3 ",\"read_path\":" (json_labels (get read_path info)) (concat ",\"may_fail\":" errors)))))
+
+function_fields checked:{CheckedFunctions} > t
+let data fold (get signatures checked) "" defs row fn
+  json_item defs (cat3 (json_string (get name fn)) ":{" (concat (function_info checked (- row 1)) "}"))
+cat3 "{" data "}"
+
+format_unit blocks:*{SchemaBlock} > t
+fold blocks "" output row block
+  let head get head block
+  let heading fold head "" acc pos item cat3 acc (if (eq pos 1) "" " ") (get word item)
+  let example_block text_eq (get word (need (at head 0) "header" 0)) "example"
+  let body get body block
+  let content if example_block
+    (get compact (scalar_json (get word (need (at (get tail body) 0) "example_json" 0))))
+    (let pieces fold (site_pages body) (pair "" (pair -1 "")) prior batch page
+       fold page prior acc pos item
+         let word get word item
+         let newline not (eq (get line item) (first (second acc)))
+         let prev second (second acc)
+         let gap if (eq (first (second acc)) -1) "" (if newline "\n" (if (or (or (text_eq prev "(") (text_eq prev "=")) (or (text_eq word ")") (or (text_eq word ",") (text_eq word "=")))) "" " "))
+         pair (cat3 (first acc) gap word) (pair (get line item) word)
+     first pieces)
+  let text if (eq (length (get tail body)) 0) heading (cat3 heading "\n" content)
+  cat3 output (if (eq row 1) "" "\n") (concat text "\n")

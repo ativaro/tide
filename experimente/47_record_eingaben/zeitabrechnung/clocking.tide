@@ -1,0 +1,5 @@
+record Interval
+begin:i finish:i
+
+elapsed slot:{Interval} > i
+- (get finish slot) (get begin slot)

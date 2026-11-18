@@ -1,0 +1,35 @@
+sqlite_abi_arity op:t > ?i
+let groups list t 3 "|open|step|columns|params|readonly|autocommit|changes|error|" "|prepare|guard|control|name|column_name|column_type|column_i|column_raw|bind_null|" "|bind_i|bind_t|bind_y|"
+fold groups (nil i) prior row group if (white (cat3 "|" op "|") group) (some row) prior
+
+sqlite_abi_expression op:t > t
+if (text_eq op "open")
+  "auto path=encode(p0);sqlite3* raw=nullptr;int rc=sqlite3_open_v2(path.c_str(),&raw,SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_NOFOLLOW,nullptr);R_NativeHandle db(raw,[](void* p){sqlite3_close_v2(static_cast<sqlite3*>(p));});return rc==SQLITE_OK?Opt<R_NativeHandle>{db}:Opt<R_NativeHandle>{};"
+if (text_eq op "prepare")
+  "auto sql=encode(p1);sqlite3_stmt* raw=nullptr;const char* tail=nullptr;int rc=sqlite3_prepare_v2(static_cast<sqlite3*>(p0.get()),sql.data(),int(sql.size()),&raw,&tail);R_NativeHandle stmt(raw,[](void* p){sqlite3_finalize(static_cast<sqlite3_stmt*>(p));});return rc==SQLITE_OK&&raw&&std::all_of(tail,sql.c_str()+sql.size(),[](char c){return c==' '||c=='\\t'||c=='\\n'||c=='\\r';})?Opt<R_NativeHandle>{stmt}:Opt<R_NativeHandle>{};"
+if (text_eq op "guard")
+  "auto policy=+[](void*,int action,const char*,const char*,const char*,const char*){return f_sql_allowed(action)?SQLITE_OK:SQLITE_DENY;};sqlite3_progress_handler(static_cast<sqlite3*>(p0.get()),100000,[](void*){return 1;},nullptr);return I(sqlite3_set_authorizer(static_cast<sqlite3*>(p0.get()),p1?policy:nullptr,nullptr));"
+if (text_eq op "control") "return I(sqlite3_exec(static_cast<sqlite3*>(p0.get()),encode(p1).c_str(),nullptr,nullptr,nullptr));"
+if (text_eq op "changes") "return I(sqlite3_total_changes64(static_cast<sqlite3*>(p0.get())));"
+if (text_eq op "autocommit") "return bool(sqlite3_get_autocommit(static_cast<sqlite3*>(p0.get())));"
+if (text_eq op "error") "return I(sqlite3_errcode(static_cast<sqlite3*>(p0.get())));"
+if (text_eq op "step") "return I(sqlite3_step(static_cast<sqlite3_stmt*>(p0.get())));"
+if (text_eq op "readonly") "return bool(sqlite3_stmt_readonly(static_cast<sqlite3_stmt*>(p0.get())));"
+if (text_eq op "columns") "return I(sqlite3_column_count(static_cast<sqlite3_stmt*>(p0.get())));"
+if (text_eq op "params") "return I(sqlite3_bind_parameter_count(static_cast<sqlite3_stmt*>(p0.get())));"
+if (text_eq op "name") "auto p=sqlite3_bind_parameter_name(static_cast<sqlite3_stmt*>(p0.get()),int(p1));return p?decode(p):Text{};"
+if (text_eq op "column_name") "return decode(sqlite3_column_name(static_cast<sqlite3_stmt*>(p0.get()),int(p1)));"
+if (text_eq op "column_type") "return I(sqlite3_column_type(static_cast<sqlite3_stmt*>(p0.get()),int(p1)));"
+if (text_eq op "column_i") "return I(sqlite3_column_int64(static_cast<sqlite3_stmt*>(p0.get()),int(p1)));"
+if (text_eq op "column_raw") "auto p=static_cast<const unsigned char*>(sqlite3_column_blob(static_cast<sqlite3_stmt*>(p0.get()),int(p1)));int n=sqlite3_column_bytes(static_cast<sqlite3_stmt*>(p0.get()),int(p1));return n&&p?Text(p,p+n):Text{};"
+if (text_eq op "bind_i") "return I(sqlite3_bind_int64(static_cast<sqlite3_stmt*>(p0.get()),int(p1),p2));"
+if (text_eq op "bind_null") "return I(sqlite3_bind_null(static_cast<sqlite3_stmt*>(p0.get()),int(p1)));"
+if (text_eq op "bind_t") "auto s=encode(p2);return I(sqlite3_bind_text(static_cast<sqlite3_stmt*>(p0.get()),int(p1),s.c_str(),int(s.size()),SQLITE_TRANSIENT));"
+if (text_eq op "bind_y") "std::string s(p2.begin(),p2.end());return I(sqlite3_bind_blob(static_cast<sqlite3_stmt*>(p0.get()),int(p1),s.c_str(),int(s.size()),SQLITE_TRANSIENT));"
+fail "unknown_sqlite_abi"
+
+sqlite_abi_call op:t parts:*{Term} > t
+let args fold parts "" code row term
+  if (eq row 1) code
+  cat3 code "const auto& p" (cat3 (decimal (- row 2)) "=" (concat (get cpp term) ";"))
+cat3 "([&](){" args (concat (sqlite_abi_expression op) "}())")

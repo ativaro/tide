@@ -1,0 +1,29 @@
+line_begin body:t pos:i > i
+case (text_rfind body "\n" pos) 0 lf (+ lf 1)
+
+line_limit body:t pos:i > i
+case (text_find body "\n" pos) (text_len body) lf
+if text_eq (text_slice body (- lf 1) lf) "\r" (- lf 1) lf
+
+previous_pos body:t pos:i > i
+if < pos 1 0
+if text_eq (text_slice body (- pos 2) pos) "\r\n" (- pos 2) (- pos 1)
+
+next_pos body:t pos:i > i
+if eq pos (text_len body) pos
+if text_eq (text_slice body pos (+ pos 2)) "\r\n" (+ pos 2) (+ pos 1)
+
+example cross_crlf previous_pos
+{"inputs":{"body":"ab\r\ncd","pos":4},"expect":2}
+
+example after_crlf next_pos
+{"inputs":{"body":"🐈\r\nΩ","pos":1},"expect":3}
+
+example start_of_second_line line_begin
+{"inputs":{"body":"🐈\r\nΩ","pos":4},"expect":3}
+
+example before_line_ending line_limit
+{"inputs":{"body":"🐈\r\nΩ","pos":0},"expect":1}
+
+example last_line line_limit
+{"inputs":{"body":"🐈\r\nΩ","pos":3},"expect":4}

@@ -1,0 +1,18 @@
+bonus_start > i
+3
+
+rule buchung_regel event:i > &ii
+state total:i=4 bonus:i=bonus_start
+when eq event 1 -> total=keep, bonus=set + bonus 2
+when eq event 4 -> total=set + total bonus, bonus=reset
+when eq event 2 -> total=reset, bonus=keep
+when if eq event 3 > bonus total false -> total=keep, bonus=set total
+else -> total=keep, bonus=keep
+out pair total bonus
+
+buchung_funktion total:i bonus:i event:i > &ii
+if eq event 1 pair total + bonus 2
+if eq event 4 pair + total bonus bonus_start
+if eq event 2 pair 4 bonus
+if eq event 3 pair total if > bonus total total bonus
+pair total bonus

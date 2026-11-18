@@ -1,0 +1,142 @@
+digits n:i > t
+utf8_text (json_encode n)
+
+pick values:*t n:i > t
+need (at values (mod n (length values))) "choice" 0
+
+record TimecodeInput
+minutes:i seconds:i fps:i
+
+record TimecodeCase
+inputs:{TimecodeInput} expect:i
+
+timecode_case n:i > {TimecodeCase}
+let minutes mod n 29
+let seconds mod (div n 29) 60
+let fps need (at (list i 6 24 25 30 48 50 60) (mod n 6)) "rate" 0
+let input make TimecodeInput minutes minutes seconds seconds fps fps
+make TimecodeCase inputs input expect (+ (* minutes (* 60 fps)) (* seconds fps))
+
+timecode ids:*i > *{TimecodeCase}
+map {TimecodeCase} ids number (timecode_case number)
+
+record RowgroupInput
+record_no:i width:i base:i
+
+record RowgroupCase
+inputs:{RowgroupInput} expect:i
+
+rowgroup_case n:i > {RowgroupCase}
+let record_no + 1 (mod n 903)
+let width + 1 (mod (div n 3) 17)
+let base mod (div n 7) 101
+let input make RowgroupInput record_no record_no width width base base
+make RowgroupCase inputs input expect (- (+ base (div (+ record_no (- width 1)) width)) 1)
+
+rowgroup ids:*i > *{RowgroupCase}
+map {RowgroupCase} ids number (rowgroup_case number)
+
+record FloodInput
+samples:*i level:i period:i
+
+record FloodCase
+inputs:{FloodInput} expect:i
+
+flood_case n:i > {FloodCase}
+let level mod n 31
+let period + 1 (mod (div n 2) 15)
+let delta - (mod n 7) 3
+let measurements list i 4 level (+ level delta) (- level 2) (+ level (mod (div n 11) 5))
+let samples if (eq (mod n 13) 0) (list i 0) measurements
+let input make FloodInput samples samples level level period period
+make FloodCase inputs input expect (fold samples 0 total idx reading (if (< reading level) total (+ total period)))
+
+flood ids:*i > *{FloodCase}
+map {FloodCase} ids number (flood_case number)
+
+record WireInput
+label:t copies:i
+
+record WireCase
+inputs:{WireInput} expect:i
+
+wire_case n:i > {WireCase}
+let idx mod n 5
+let prefix pick (list t 5 "" "A" "é" "猫" "🌡") idx
+let prefix_bytes need (at (list i 5 0 1 2 3 4) idx) "width" 0
+let serial digits n
+let label concat prefix serial
+let copies + 1 (mod (div n 5) 11)
+let input make WireInput label label copies copies
+make WireCase inputs input expect (* copies (+ (+ 1 (text_len serial)) prefix_bytes))
+
+wire ids:*i > *{WireCase}
+map {WireCase} ids number (wire_case number)
+
+record MosaicInput
+row:i column:i pitch:i
+
+record MosaicCase
+inputs:{MosaicInput} expect:i
+
+mosaic_case n:i > {MosaicCase}
+let pitch + 1 (mod n 53)
+let row mod (div n 7) 30
+let column mod (div n 3) pitch
+let input make MosaicInput row row column column pitch pitch
+make MosaicCase inputs input expect (+ column (* pitch row))
+
+mosaic ids:*i > *{MosaicCase}
+map {MosaicCase} ids number (mosaic_case number)
+
+record ReserveInput
+left:i right:i capacity:i
+
+record ReserveCase
+inputs:{ReserveInput} expect:i
+
+reserve_case n:i > {ReserveCase}
+let left mod n 37
+let right mod (div n 4) 37
+let capacity mod (+ n (div n 11)) 61
+let one - capacity left
+let two - capacity right
+let smaller if (< one two) one two
+let input make ReserveInput left left right right capacity capacity
+make ReserveCase inputs input expect (if (> smaller 0) smaller 0)
+
+reserve ids:*i > *{ReserveCase}
+map {ReserveCase} ids number (reserve_case number)
+
+record SpreadInput
+lows:*i highs:*i
+
+record SpreadCase
+inputs:{SpreadInput} expect:i
+
+spread_case n:i > {SpreadCase}
+let lo mod n 29
+let hi + (+ lo 8) (mod (div n 6) 23)
+let lows if (eq (mod n 2) 0) (list i 3 (+ lo 3) lo (+ lo 2)) (list i 2 lo (+ lo 1))
+let highs if (eq (mod n 3) 0) (list i 2 hi (- hi 4)) (list i 3 (- hi 3) (- hi 2) hi)
+let input make SpreadInput lows lows highs highs
+make SpreadCase inputs input expect (- hi lo)
+
+spread ids:*i > *{SpreadCase}
+map {SpreadCase} ids number (spread_case number)
+
+record SuffixInput
+key:t
+
+record SuffixCase
+inputs:{SuffixInput} expect:i
+
+suffix_case n:i > {SuffixCase}
+let part if (eq (mod n 5) 1) "" (concat "ä" (digits n))
+let head pick (list t 4 "" "archiv/" "geräte/station/" "a//b/") n
+let key concat head part
+let input make SuffixInput key key
+make SuffixCase inputs input expect (text_len part)
+
+suffix ids:*i > *{SuffixCase}
+map {SuffixCase} ids number (suffix_case number)

@@ -1,0 +1,20 @@
+rule heat_ready temperature:i > b
+state streak:i=0
+when > temperature 80 -> streak=set (if < streak 3 + streak 1 3)
+else -> streak=reset
+out eq streak 3
+
+simulate temperatures:*i > *b
+scan heat_ready temperatures
+
+main > *b
+simulate list i 7 81 70 95 82 90 91 80
+
+example interruption heat_ready
+{"events":[81,70,95,82],"expect":[false,false,false,false]}
+
+example active_until_reset heat_ready
+{"events":[81,95,82,99,80,83],"expect":[false,false,true,true,false,false]}
+
+example threshold heat_ready
+{"events":[81,80,95,82],"expect":[false,false,false,false]}

@@ -1,0 +1,193 @@
+--- a/native/bootstrap/explain.tide
++++ b/native/bootstrap/explain.tide
+@@ -119,26 +119,64 @@
+ if (text_eq word op) alternatives (append alternatives word)
+ 
+ record PatchSite
+-owner:i index:i alternatives:*t
++owner:i index:i alternatives:*t replacements:*t extended:b
+ 
+-patch_sites program:{CheckedFunctions} names:*t > *{PatchSite}
++repair_operands source:t offsets:{LineOffsets} nodes:{NodeBuffer} kids:*i > *t
++map t kids index
++  let child node_at nodes index
++  let raw text_slice source (source_offset offsets (get start child)) (source_offset offsets (get stop child))
++  fold (lines raw) "" acc line part if (eq line 1) part (cat3 acc " " part)
++
++call_replacements source:t offsets:{LineOffsets} nodes:{NodeBuffer} node:{FunctionNode} > *t
++let empty list t 0
++let op get word (get site node)
++let kids get children node
++let swap and (>= (get target node) 0) (> (length kids) 1)
++if (not (or swap (or (text_eq op "text_len") (text_eq op "text_find")))) empty
++if (and (text_eq op "text_find") (not (text_eq (get word (get site (node_at nodes (need (at kids 2) "find_start" 0)))) "0"))) empty
++let args repair_operands source offsets nodes kids
++if (fold args false bad pos arg or bad (includes_break arg "\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029")) empty
++let first_arg need (at args 0) "first_operand" 0
++if (text_eq op "text_len") (list t 1 (cat3 "(byte_len (utf8_bytes " first_arg "))"))
++if (text_eq op "text_find")
++  (let needle need (at args 1) "delimiter" 0
++   let haystack node_at nodes (need (at kids 0) "haystack" 0)
++   let stop if (>= (get slot haystack) 0) (cat3 "(text_len " first_arg ")") "9223372036854775807"
++   list t 1 (cat3 "(text_rfind " first_arg (cat3 " " needle (cat3 " " stop ")"))))
++let types map t kids index (get typ (node_at nodes index))
++fold args empty prior left a
++  fold args prior edits right b
++    if (or (<= right left) (or (>= (length edits) 33) (text_eq a b))) edits
++    if (not (text_eq (need (at types (- left 1)) "left_type" 0) (need (at types (- right 1)) "right_type" 0))) edits
++    let swapped fold args (concat "(" op) text pos arg
++      cat3 text " " (if (eq pos left) b (if (eq pos right) a arg))
++    append edits (concat swapped ")")
++
++patch_sites project:{ProjectFiles} program:{CheckedFunctions} names:*t file:t > *{PatchSite}
+ fold names (list {PatchSite} 0) acc row name
+   if (eq (length acc) 32) acc
+   let owner need (entry_at (get names program) name) "patch_definition" 0
+   let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
++  let fn need (at (get signatures program) owner) "patch_owner" 0
++  let unit if (text_eq (get file fn) file) 0 (need (entry_at (get names project) (get file fn)) "patch_unit" 0)
++  let source get source (need (at (get units project) unit) "patch_source" 0)
++  let offsets line_offsets source
+   fold (append (get pages nodes) (get tail nodes)) acc prior page group
+     fold group prior kept pos node
+       if (eq (length kept) 32) kept
+       let alternatives patch_operators (get word (get site node))
+-      if (eq (length alternatives) 0) kept
++      let extra call_replacements source offsets nodes node
++      let extended > (length extra) 0
++      let replacements if extended extra (small_replacements nodes node)
++      if (and (eq (length alternatives) 0) (eq (length replacements) 0)) kept
+       let index + (* 256 (- page 1)) (- pos 1)
+-      append kept (make PatchSite owner owner index index alternatives alternatives)
++      append kept (make PatchSite owner owner index index alternatives alternatives replacements replacements extended extended)
+ 
+ patch_node_id fn:{Signature} node:{FunctionNode} file:t > t
+ node_key (if (text_eq (get file fn) file) "" (concat (get file fn) ":")) node
+ 
+-repair_nodes program:{CheckedFunctions} names:*t file:t > t
+-let items fold (patch_sites program names) "" acc row patch
++repair_nodes project:{ProjectFiles} program:{CheckedFunctions} names:*t file:t > t
++let items fold (patch_sites project program names file) "" acc row patch
+   let owner get owner patch
+   let fn need (at (get signatures program) owner) "patch_signature" 0
+   let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
+@@ -149,7 +187,9 @@
+   let expression if (> (text_len view) 160) op view
+   let info cat3 "{\"node\":" (json_string (patch_node_id fn node file))
+     (cat3 ",\"expr\":" (json_string expression) (cat3 ",\"type\":" (json_string (get typ node)) (cat3 ",\"ops\":" (json_labels (get alternatives patch)) "}")))
+-  json_item acc info
++  let options get replacements patch
++  let entry if (eq (length options) 0) info (cat3 (text_slice info 0 (- (text_len info) 1)) ",\"replacements\":" (concat (json_labels options) "}"))
++  json_item acc entry
+ cat3 ",\"nodes\":[" items "]"
+ 
+ replace_operator nodes:{NodeBuffer} index:i changed:{FunctionNode} > {NodeBuffer}
+@@ -229,28 +269,27 @@
+ let changed with nodes tree (replace_operator nodes index (with site node (with word (get site node) op)))
+ with trees program (fold trees (list {FunctionTree} 0) seen n old append seen (if (eq (- n 1) owner) changed old))
+ 
+-verify_replacements project:{ProjectFiles} program:{CheckedFunctions} sites:*{PatchSite} file:t initial:{CandidateScan} keep_programs:b > {CandidateScan}
++verify_replacements project:{ProjectFiles} program:{CheckedFunctions} sites:*{PatchSite} file:t initial:{CandidateScan} keep_programs:b extended:b > {CandidateScan}
+ fold sites initial acc row patch
++  if (if extended (not (get extended patch)) (get extended patch)) acc
+   let owner get owner patch
+   let fn need (at (get signatures program) owner) "replacement_signature" 0
+   let nodes get nodes (need (at (get trees program) owner) "replacement_tree" 0)
+   let node node_at nodes (get index patch)
+   let id patch_node_id fn node file
+-  fold (small_replacements nodes node) acc kept pos replacement
++  fold (get replacements patch) acc kept pos replacement
+     if (eq (get tested kept) 32) (with truncated kept true)
+     let next with tested kept (+ (get tested kept) 1)
+     let candidate variant_overlay project fn node replacement false file
+     if (> (get total candidate) 131072) next
+-    let root need (at (get units candidate) 0) "replacement_root" 0
+-    let compiled compile_project candidate (schema_blocks (get source root) true)
+-    if (not (public_examples_pass compiled (get program compiled) file)) next
++    case (checked_overlay candidate file) next passed
+     let json cat3 "{\"node\":" (json_string id) (cat3 ",\"replace\":" (json_string replacement) "}")
+-    add_candidate next json (get program compiled) keep_programs
++    add_candidate next json passed keep_programs
+ 
+ scan_repair_candidates project:{ProjectFiles} compiled:{CompiledProject} names:*t file:t keep_programs:b > {CandidateScan}
+ let program get program compiled
+ let trees get trees program
+-let sites patch_sites program names
++let sites patch_sites project program names file
+ let operators fold sites empty_candidate_scan acc row patch
+   let idx get owner patch
+   let tree need (at trees idx) "patch_tree" 0
+@@ -268,7 +307,8 @@
+     if (not (public_examples_pass compiled candidate file)) next
+     let json cat3 "{\"node\":" (json_string id) (cat3 ",\"op\":" (json_string op) "}")
+     add_candidate next json candidate keep_programs
+-let scan verify_replacements project program sites file operators keep_programs
++let classic verify_replacements project program sites file operators keep_programs false
++let scan if (text_eq (get actions classic) "") (verify_replacements project program sites file classic keep_programs true) classic
+ if (eq (length sites) 32) (with truncated scan true) scan
+ 
+ candidate_fields scan:{CandidateScan} > t
+@@ -279,7 +319,7 @@
+ candidate_fields (scan_repair_candidates project compiled names file false)
+ 
+ record PairVariant
+-owner:i index:i unit:t operator:b value:t edit:t delta:i
++owner:i index:i unit:t operator:b extended:b value:t edit:t delta:i
+ 
+ pair_variants program:{CheckedFunctions} sites:*{PatchSite} file:t > *{PairVariant}
+ let kinds list b 2 true false
+@@ -291,10 +331,10 @@
+     let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
+     let node node_at nodes index
+     let id patch_node_id fn node file
+-    let choices if operator (get alternatives patch) (small_replacements nodes node)
++    let choices if operator (get alternatives patch) (get replacements patch)
+     fold choices acc kept pos value
+       let edit cat3 "{\"node\":" (json_string id) (cat3 (if operator ",\"op\":" ",\"replace\":") (json_string value) "}")
+-      append kept (make PairVariant owner owner index index unit (get file fn) operator operator value value edit edit
++      append kept (make PairVariant owner owner index index unit (get file fn) operator operator extended (get extended patch) value value edit edit
+         delta (- (text_len value) (text_len (get word (get site node)))))
+ 
+ overlay_pair_variant project:{ProjectFiles} program:{CheckedFunctions} variant:{PairVariant} file:t > {ProjectFiles}
+@@ -314,17 +354,26 @@
+    if (public_examples_pass compiled both file) (some both) (nil {CheckedFunctions}))
+ let overlay overlay_pair_variant (overlay_pair_variant project program left file) program right file
+ if (> (get total overlay) 131072) (nil {CheckedFunctions})
+-let root need (at (get units overlay) 0) "replacement_root" 0
+-let changed compile_project overlay (schema_blocks (get source root) true)
+-let candidate get program changed
+-if (public_examples_pass changed candidate file) (some candidate) (nil {CheckedFunctions})
++checked_overlay overlay file
++
++checked_overlay project:{ProjectFiles} file:t > ?{CheckedFunctions}
++let root need (at (get units project) 0) "replacement_root" 0
++let changed bootstrap_recover (some (compile_project project (schema_blocks (get source root) true))) (nil {CompiledProject})
++case changed (nil {CheckedFunctions}) compiled
++let candidate get program compiled
++if (public_examples_pass compiled candidate file) (some candidate) (nil {CheckedFunctions})
+ 
+ scan_repair_pairs project:{ProjectFiles} compiled:{CompiledProject} names:*t file:t singles:{CandidateScan} keep_programs:b > {CandidateScan}
+ if (or (get truncated singles) (not (text_eq (get actions singles) ""))) empty_candidate_scan
+-let variants pair_variants (get program compiled) (patch_sites (get program compiled) names) file
+-fold variants empty_candidate_scan acc row left
++let variants pair_variants (get program compiled) (patch_sites project (get program compiled) names file) file
++let classic verify_pair_group project compiled variants file keep_programs empty_candidate_scan false
++if (text_eq (get actions classic) "") (verify_pair_group project compiled variants file keep_programs classic true) classic
++
++verify_pair_group project:{ProjectFiles} compiled:{CompiledProject} variants:*{PairVariant} file:t keep_programs:b initial:{CandidateScan} extended:b > {CandidateScan}
++fold variants initial acc row left
+   fold variants acc kept col right
+     if (or (not (> col row)) (text_eq (get unit left) (get unit right))) kept
++    if (if extended (not (or (get extended left) (get extended right))) (or (get extended left) (get extended right))) kept
+     if (eq (get tested kept) 64) (with truncated kept true)
+     let next with tested kept (+ (get tested kept) 1)
+     case (verify_pair project compiled left right file) next candidate
+@@ -449,7 +498,7 @@
+ let pairing or (text_eq mode "pairs") (>= offset 12)
+ let declared if (or pairing (> offset 0)) (target_domain (get samples compiled) (get target sample)) empty_input_domain
+ let contract_range > (length (get bounds declared)) 0
+-let nodes if (text_eq mode "nodes") (repair_nodes program names file)
++let nodes if (text_eq mode "nodes") (repair_nodes project program names file)
+   if (or pairing (> offset 0))
+     (let probing or (> offset 0) contract_range
+      let singles scan_repair_candidates project compiled names file probing

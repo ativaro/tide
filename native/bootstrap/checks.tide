@@ -1,0 +1,316 @@
+use project
+
+use function_cases
+
+all_bootstrap_checks > b
+if (not test_release_checks) fail "test_release_preflight"
+if (not map_boundaries) fail "map_work_memory_and_order"
+if (not projected_map_boundaries) fail "map_projected_budget"
+if (not input_issue_checks) fail "typed_input_location"
+if (not flat_input_examples) fail "flat_record_inputs"
+if (not fixed_pair_inputs) fail "fixed_pair_inputs"
+if (not nested_allocation_boundary) fail "nested_record_allocation_budget"
+if (not record_allocation_boundary) fail "record_allocation_budget"
+if (not handler_limits) fail "handler_resource_limits"
+if (not pair_matrix) fail "pair_types"
+if (not pair_allocation_boundary) fail "pair_allocation_budget"
+if (not record_pair_allocation_boundary) fail "record_pair_allocation_budget"
+if (not projection_work_boundary) fail "pair_work_budget"
+if (not text_boundaries) fail "text_limits"
+if (not json_batch_boundary) fail "array_chunk_boundary"
+and (and rule_trace_boundary scan_work_boundary) (and module_checks (and work_limit_examples (and list_budget_examples (and full_list_literal fold_work_boundary))))
+
+test_release_checks > b
+let catalog "release.lock\t{\"language\":\"0.6\",\"tool\":\"0.6.2\"}\n"
+and (test_release_matches catalog (nil t))
+  (and (test_release_matches catalog (some "{\"tool\":\"0.6.2\",\"language\":\"0.6\"}"))
+    (and (not (test_release_matches catalog (some "{\"tool\":\"old\"}")))
+      (not (test_release_matches "another.key\t{}\n" (nil t)))))
+
+input_issue_checks > b
+let source "variant Mode\na b\n\nrecord Row\nbalance:i\n\nrecord Book\nrows:*{Row}"
+let schemas validated_schema (schema_blocks source false) "types.tide"
+let cases list &t&tt 22
+  (pair "{Book}" (pair "{\"rows\":[{\"balance\":2},{\"balance\":\"private text\"}]}" (input_issue "/v/rows/1/balance" "i" "string")))
+  (pair "{Book}" (pair "{}" (input_issue "/v/rows" "*{Row}" "missing")))
+  (pair "{Book}" (pair "{\"rows\":[],\"spare\":false}" (input_issue "/v/spare" "absent" "boolean")))
+  (pair "*{Row}" (pair "[{}]" (input_issue "/v/0/balance" "i" "missing")))
+  (pair "*{Row}" (pair "[{\"balance\":0},{\"balance\":{\"n\":1}},{\"balance\":2}]" (input_issue "/v/1/balance" "i" "object")))
+  (pair "*{Row}" (pair "[{\"balance\":1},{}]" (input_issue "/v/1/balance" "i" "missing")))
+  (pair "*{Row}" (pair "[{\"\\ud800\":1}]" (input_issue "/v/0" "{Row}" "undeclared field")))
+  (pair "*{Row}" (pair "[{\"a~/b\":true}]" (input_issue "/v/0/a~0~1b" "absent" "boolean")))
+  (pair "?{Row}" (pair "{\"some\":{\"balance\":null}}" (input_issue "/v/some/balance" "i" "null")))
+  (pair "?i" (pair "{\"none\":false}" (input_issue "/v/none" "true" "false")))
+  (pair "?i" (pair "{}" (input_issue "/v" "?i" "empty object")))
+  (pair "?i" (pair "{\"some\":1,\"none\":true}" (input_issue "/v" "?i" "multiple option keys")))
+  (pair "&it" (pair "[1]" (input_issue "/v/1" "t" "missing")))
+  (pair "&{Row}*i" (pair "[{\"balance\":3}]" (input_issue "/v/1" "*i" "missing")))
+  (pair "?&{Row}{Mode}" (pair "{\"some\":[{\"balance\":3},\"other\"]}" (input_issue "/v/some/1" "{Mode}" "unknown variant tag")))
+  (pair "*&{Row}i" (pair "[[{\"balance\":3},1],[{},2]]" (input_issue "/v/1/0/balance" "i" "missing")))
+  (pair "&it" (pair "[1,\"a\",true]" (input_issue "/v/2" "absent" "boolean")))
+  (pair "*{Mode}" (pair "[\"a\",\"c\"]" (input_issue "/v/1" "{Mode}" "unknown variant tag")))
+  (pair "*i" (pair "[1,9223372036854775808]" (input_issue "/v/1" "i" "integer outside i64")))
+  (pair "*b" (pair "[true,1.5]" (input_issue "/v/1" "b" "number")))
+  (pair "{Row}" (pair "[]" (input_issue "/v" "{Row}" "array")))
+  (pair "t" (pair "\"\\ud800\"" (input_issue "/v" "t" "invalid Unicode string")))
+fold cases true ok row item
+  let kind first item
+  let sample second item
+  let data scalar_json (cat3 "{\"v\":" (first sample) "}")
+  let raw need (json_at data ".v") "fixture" 0
+  let result read_argument data ".v" raw kind schemas
+  let base "{\"code\":\"E_INPUT\"}"
+  and ok (case (get value result)
+    (text_eq (argument_issue result data ".v" raw kind schemas "/v" base) (extra_fields base (second sample))) unexpected false)
+
+flat_input_examples > b
+let schemas validated_schema (schema_blocks "record Row\nn:i ok:b label:t" false) "rows.tide"
+let kind "*{Row}"
+let samples list t 10 "[]" "[{\"n\":0,\"ok\":true,\"label\":\"a\"}]"
+  "[{\"label\":\"🐈,}\\u0000\",\"ok\":false,\"n\":-9223372036854775808},{\"ok\":true,\"n\":9223372036854775807,\"label\":\"\"}]"
+  "[{\"n\":0,\"ok\":true}]" "[{\"n\":0,\"ok\":true,\"other\":\"a\"}]"
+  "[{\"n\":[],\"label\":\"a\"}]" "[{\"n\":null,\"label\":\"a\",\"ok\":true}]"
+  "[{\"n\":9223372036854775808,\"ok\":true,\"label\":\"\"}]" "[[1,true,\"\"]]"
+  "[{\"n\":0,\"ok\":true,\"label\":\"a\"},{\"n\":1,\"ok\":0,\"label\":\"b\"}]"
+fold samples true prior row source
+  let events indexed_json source 0 (text_len source) internal_json
+  let expected decode_nested_events events kind schemas
+  let actual decode_events events kind schemas
+  and prior (case expected (and (> row 3) (case actual true bad false)) reference
+    (and (< row 4) (case actual false result
+      and (eq (get num reference) (get num result)) (text_eq (scalar_wire reference kind) (scalar_wire result kind)))))
+
+fixed_pair_inputs > b
+let source "variant Flag\non off\n\nrecord Row\nn:i label:t"
+let schemas validated_schema (schema_blocks source false) "rows.tide"
+let cases list &tt 10
+  (pair "*&{Row}{Flag}" "[[{\"label\":\"🐈,]\",\"n\":-9223372036854775808},\"on\"]]")
+  (pair "*&{Flag}{Row}" "[[\"off\",{\"n\":0,\"label\":\"\"}]]")
+  (pair "*&{Row}{Row}" "[[{\"n\":1,\"label\":\"Ω\"},{\"label\":\"\\n\",\"n\":2}]]")
+  (pair "*&tb" "[[\"a\",true],[\"\",false]]")
+  (pair "*&{Flag}*i" "[[\"on\",[]],[\"off\",[1,0]]]")
+  (pair "*&i{Flag}" "[[1,\"on\"],[2,\"unknown\"]]")
+  (pair "*&{Flag}{Row}" "[[\"on\",{\"n\":1,\"other\":\"x\"}]]")
+  (pair "*&{Row}{Flag}" "[[{},\"off\"],[{\"n\":0,\"label\":\"\",\"other\":2},\"on\"]]")
+  (pair "*&it" "[[1,\"a\"],[2]]")
+  (pair "*&it" "[1,2,3]")
+fold cases true ok row item
+  let kind first item
+  let json second item
+  let events indexed_json json 0 (text_len json) internal_json
+  let actual decode_events events kind schemas
+  let reference decode_nested_events events kind schemas
+  and ok (case reference (and (> row 5) (case actual true unexpected false)) expected
+    and (< row 6) (case actual false value
+      and (eq (field_bytes expected kind) (field_bytes value kind)) (text_eq (scalar_wire expected kind) (scalar_wire value kind))))
+
+record_allocation_boundary > b
+let source "record Item\nlabel:t count:i\n\nmain rows:*i name:t more:b > i\nlet last fold rows (make Item label name count 0) item row x (with count item x)\nif more (get count (with count last 0)) (get count last)"
+let project project_begin source "" (text_len source) "items.tide" "!items.tide"
+let program get program (compile_project project (schema_blocks source true))
+let rows list_value (fold (indices 4095) (list i 0) xs row unused append xs row)
+let name text_value (fold (indices 248) "" s row unused concat s "Ω")
+fold (list i 2 0 1) true ok row extra
+  let result scalar_eval program 0 (list {EvalValue} 3 rows name (number_value extra))
+  and ok (if (eq extra 0) (and (text_eq (get code result) "") (eq (get num (get value result)) 4095))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "Guest allocation budget exhausted" 0) false hit true)))
+
+nested_allocation_boundary > b
+let source "record Chip\nlabel:t\n\nrecord Box\nrows:*{Chip} n:i\n\nmain seed:{Box} events:*i more:b > i\nlet last (fold events seed acc row x (with n acc x)) (if more (get n (with n last 0)) (get n last))"
+let project project_begin source "" (text_len source) "boundary.tide" "!boundary.tide"
+let program get program (compile_project project (schema_blocks source true))
+let fn need (at (get signatures program) 0) "box_args" 0
+let chips fold (indices 8) "" acc row unused json_item acc "{\"label\":\"abcdefghijklmnopqrstuvw\"}"
+let raw cat3 "{\"seed\":{\"n\":0,\"rows\":[" chips "]},\"events\":[],\"more\":false}"
+let args scalar_inputs (scalar_json raw) "" fn (get file fn) (get loc fn)
+let box need (at args 0) "box" 0
+if (not (eq (get num box) 1024)) fail "nested_logical_bytes"
+let events list_value (fold (indices 4096) (list i 0) acc row unused append acc row)
+fold (list i 2 0 1) true ok row extra
+  let result scalar_eval program 0 (list {EvalValue} 3 box events (number_value extra))
+  and ok (if (eq extra 0) (and (text_eq (get code result) "") (eq (get num (get value result)) 4096))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "Guest allocation budget exhausted" 0) false hit true)))
+
+handler_limits > b
+let work fold (list i 2 99996 99997) true ok row steps
+  let original exact_budget steps
+  let source concat "main > i\ncatch E_DATA (fail \"reject\") _ work\n\nwork" (text_slice original 4 (text_len original))
+  let project project_begin source "" (text_len source) "limit.tide" "!limit.tide"
+  let result scalar_eval (get program (compile_project project (schema_blocks source true))) 0 (list {EvalValue} 0)
+  and ok (if (eq row 1) (and (text_eq (get code result) "") (eq (get num (get value result)) 0)) (text_eq (get code result) "E_LIMIT"))
+if (not work) false
+let source "main rows:*i label:t more:b > i\nlet count fold rows 0 n row item (catch E_DATA (let spent (pair label label) (fail \"\")) _ (+ n 1))\nif more (let extra (pair true false) count) count"
+let project project_begin source "" (text_len source) "limit.tide" "!limit.tide"
+let program get program (compile_project project (schema_blocks source true))
+let rows list_value (fold (indices 4096) (list i 0) items pos unused append items pos)
+let label text_value (fold (indices 123) "" acc pos unused concat acc "x")
+fold (list i 2 0 1) true ok row more
+  let result scalar_eval program 0 (list {EvalValue} 3 rows label (number_value more))
+  and ok (if (eq more 0) (and (text_eq (get code result) "") (eq (get num (get value result)) 4096))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "Guest allocation budget exhausted" 0) false found true)))
+
+pair_matrix > b
+let raw_key "\"a\\uD800\""
+let escaped_key "\"\\u0061\\ud800\""
+if (not (text_eq (surrogate_key raw_key 0 (- (text_len raw_key) 1) internal_json)
+  (surrogate_key escaped_key 0 (- (text_len escaped_key) 1) internal_json))) fail "json_key_identity"
+let complex scalar_json "{\"value\":[1,{\"nested\":[\"[]\",true]}]}"
+let input need (json_at complex ".value") "input_array" 0
+if (case (decode_value complex ".value" input "&it") false item true) fail "nested_value_in_flat_pair"
+let kinds list t 3 "i" "b" "t"
+let literals list t 3 "-9223372036854775808" "true" (json_string "🐈,]{}\"")
+fold kinds true prior ix a
+  fold kinds prior ok iy b
+    let typ cat3 "&" a b
+    let rev cat3 "&" b a
+    let source cat3 "main value:" typ (concat " > ?" (concat rev "\nsome (pair (second value) (first value))"))
+    let project project_begin source "" (text_len source) "pairs.tide" "!pairs.tide"
+    let x need (at literals (- ix 1)) "left" 0
+    let y need (at literals (- iy 1)) "right" 0
+    let args cat3 "{\"value\":[" x (cat3 "," y "]}")
+    let expected cat3 "{\"some\":[" y (cat3 "," x "]}\n")
+    and ok (text_eq (project_finish project "!pairs.tide" "main" args) expected)
+
+pair_allocation_boundary > b
+let source "main rows:*i text:t more:b > i\nlet count fold rows 0 total row x (let tagged (some (pair text text)) (+ total 1))\nif more (let extra (pair true false) count) count"
+let project project_begin source "" (text_len source) "pairs.tide" "!pairs.tide"
+let program get program (compile_project project (schema_blocks source true))
+let rows list_value (fold (indices 4096) (list i 0) acc row unused append acc row)
+let label text_value (fold (indices 58) "" s row unused concat s "Ω")
+fold (list i 2 0 1) true ok pos extra
+  let result scalar_eval program 0 (list {EvalValue} 3 rows label (number_value extra))
+  and ok (if (eq extra 0) (and (text_eq (get code result) "") (eq (get num (get value result)) 4096))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "Guest allocation budget exhausted" 0) false found true)))
+
+record_pair_allocation_boundary > b
+let source "record Cell\nlabel:t\n\nmain rows:*i cell:{Cell} extra:b > i\nlet n fold rows 0 total row x (let entry (pair cell cell) (+ total 1))\nif extra (let entry (pair cell cell) n) n"
+let project project_begin source "" (text_len source) "cells.tide" "!cells.tide"
+let program get program (compile_project project (schema_blocks source true))
+let label text_value (fold (indices 119) "" s row unused concat s "Ω")
+let cell add_member (number_value 16) "label" "t" label (field_bytes label "t")
+let rows list_value (fold (indices 4096) (list i 0) items row unused append items row)
+fold (list i 2 0 1) true ok row extra
+  let result scalar_eval program 0 (list {EvalValue} 3 rows cell (number_value extra))
+  and ok (if (eq extra 0) (and (text_eq (get code result) "") (eq (get num (get value result)) 4096))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "Guest allocation budget exhausted" 0) false found true)))
+
+map_boundaries > b
+let source "main xs:*i > *i\nmap i xs v (+ v 1)"
+let project project_begin source "" (text_len source) "maps.tide" "!maps.tide"
+let program get program (compile_project project (schema_blocks source true))
+let args list {EvalValue} 1 (list_value (list i 2 1 2))
+let start begin_call program 0 args (nil {TraceRequest})
+fold (list &ii 3 (pair 8 40) (pair 7 40) (pair 8 39)) true ok row limit
+  let initial with remaining (with memory start (second limit)) (first limit)
+  let final fold (indices 24) initial machine step unused eval_step machine program false
+  let answer get answer final
+  and ok (if (eq row 1)
+    (and (eq (get memory final) 0) (and (eq (get remaining final) 0) (and (text_eq (get code answer) "") (eq (need (at (get items (get value answer)) 1) "map_last" 0) 3))))
+    (and (text_eq (get code answer) "E_LIMIT") (case (text_find (get detail answer) "\"map_index\":1" 0) false found true)))
+
+projected_map_boundaries > b
+let source "main xs:*&ii > *i\nmap i xs item (second item)"
+let project project_begin source "" (text_len source) "project.tide" "!project.tide"
+let program get program (compile_project project (schema_blocks source true))
+let input pair_value (number_value -1) (number_value 7) "&ii"
+let seq fold (indices 2) (number_value 8) items row skip add_member items "" "&ii" input (pair_bytes input)
+let start begin_call program 0 (list {EvalValue} 1 seq) (nil {TraceRequest})
+fold (list &ii 3 (pair 6 40) (pair 5 40) (pair 6 39)) true ok row limit
+  let base with remaining (with memory start (second limit)) (first limit)
+  let fast fold (indices 16) base m index skip eval_step m program false
+  let traced fold (indices 16) base m index skip eval_step m program true
+  let result get answer fast
+  and ok (and (eq (get remaining fast) (get remaining traced)) (and (eq (get memory fast) (get memory traced))
+    (and (text_eq (get detail result) (get detail (get answer traced))) (if (eq row 1)
+      (and (eq (get remaining fast) 0) (and (eq (get memory fast) 0) (eq (need (at (get items (get value result)) 1) "last" 0) 7)))
+      (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) "\"map_index\":1" 0) false found true))))))
+
+projection_work_boundary > b
+let source "main v:&ii > i\n+ (first v) (second v)"
+let project project_begin source "" (text_len source) "pairs.tide" "!pairs.tide"
+let program get program (compile_project project (schema_blocks source true))
+let tree need (at (get trees program) 0) "function" 0
+let root node_at (get nodes tree) (last_node tree)
+let env list {EvalValue} 1 (pair_value (number_value 2) (number_value 5) "&ii")
+fold (list i 5 4 10 14 21 0) true ok pos column
+  let initial make LeafRun values (list {EvalValue} 0) left (- pos 1) stopped false error (scalar_ok 0)
+  let parsed immediate_operands "+" (get children root) env tree "pairs.tide" initial
+  let error get error parsed
+  and ok (if (eq column 0) (and (text_eq (get code error) "") (and (eq (get left parsed) 0) (eq (length (get values parsed)) 2)))
+    (and (text_eq (get code error) "E_LIMIT") (case (text_find (get detail error) (cat3 "\"column\":" (decimal column) "}") 0) false found true)))
+
+text_boundaries > b
+let source "rows value:t > *t\nlines value\n\njoin entries:*i part:t > t\nfold entries \"\" a row x (concat a part)"
+let project project_begin source "" (text_len source) "text.tide" "?text.tide"
+let program get program (compile_project project (schema_blocks source true))
+let breaks fold (indices 4096) "" acc row unused concat acc "\n"
+let exact scalar_eval program 0 (list {EvalValue} 1 (text_value breaks))
+let beyond scalar_eval program 0 (list {EvalValue} 1 (text_value (concat breaks "x")))
+if (not (and (text_eq (get code exact) "") (eq (length (get texts (get value exact))) 4096))) fail "line_count_at_limit"
+if (not (text_eq (get code beyond) "E_LIMIT")) fail "line_count_above_limit"
+let part fold (indices 100) "" acc row unused concat acc "🐈"
+fold (list i 2 144 145) true ok row size
+  let items fold (indices size) (list i 0) acc pos unused append acc 0
+  let result scalar_eval program 1 (list {EvalValue} 2 (list_value items) (text_value part))
+  and ok (if (eq size 144) (and (text_eq (get code result) "") (eq (text_len (get text (get value result))) 14400))
+    (text_eq (get code result) "E_LIMIT"))
+
+work_limit_examples > b
+fold (list i 2 100000 100001) true ok row steps
+  let expected if (eq row 1) "\"expect\":0" "\"expect_error\":{\"code\":\"E_LIMIT\"}"
+  let source concat (exact_budget steps) (cat3 "\n\nexample boundary main\n{\"inputs\":{}," expected "}")
+  let project project_begin source "" (text_len source) "budget.tide" "?budget.tide"
+  and ok (text_eq (project_finish project "?budget.tide" "" "{}") "{\"passed\":1}\n")
+
+list_budget_examples > b
+let head "main xs:*i > i\nfold xs 0 a r x (length (grow xs))\n\ngrow xs:*i > *i\nappend xs 1\n"
+fold (list i 2 511 512) true ok row size
+  let items fold (indices size) "" xs pos unused json_item xs "0"
+  let expected if (eq size 511) "\"expect\":512" "\"expect_error\":{\"code\":\"E_LIMIT\"}"
+  let source concat head (cat3 "\nexample memory main\n{\"inputs\":{\"xs\":[" items (cat3 "]}," expected "}"))
+  let project project_begin source "" (text_len source) "memory.tide" "?memory.tide"
+  and ok (text_eq (project_finish project "?memory.tide" "" "{}") "{\"passed\":1}\n")
+
+full_list_literal > b
+let items fold (indices 4096) "" acc pos unused concat acc (if (eq (mod pos 256) 0) "\n0 " "0 ")
+let source cat3 "main > i\nlength (list i 4096 " items ")\n"
+let project project_begin source "" (text_len source) "literal.tide" "!literal.tide"
+text_eq (project_finish project "!literal.tide" "main" "{}") "4096\n"
+
+fold_work_boundary > b
+let outer_values fold (indices 52) "" acc pos unused json_item acc "1"
+let inner_values fold (indices 640) "" acc pos unused json_item acc "1"
+let inputs cat3 "{\"outer_values\":[" outer_values (cat3 "],\"inner_values\":[" inner_values "]}")
+fold (list t 2 "not " "not not ") true ok row prefix
+  let expr concat prefix "fold outer_values false a r x (fold inner_values a b q y (eq y x))"
+  let expected if (eq row 1) "\"expect\":false" "\"expect_error\":{\"code\":\"E_LIMIT\"}"
+  let source concat "main outer_values:*i inner_values:*i > b\n" (cat3 expr "\n\nexample boundary main\n" (cat3 "{\"inputs\":" inputs (cat3 "," expected "}")))
+  let project project_begin source "" (text_len source) "boundary.tide" "?boundary.tide"
+  and ok (text_eq (project_finish project "?boundary.tide" "" "{}") "{\"passed\":1}\n")
+
+rule_trace_boundary > b
+let source "rule counter x:i > i\nstate n:i=1\nwhen eq x 0 -> n=reset\nelse -> n=set (div n x)\nout n\n\nexample three counter\n{\"events\":[1,0,-1],\"expect\":[1,1,-1]}"
+let request project_begin source "" (text_len source) "trace.tide" "^trace.tide"
+let got project_finish request "^trace.tide" "three" "2|n,n"
+text_eq got "{\"rule\":\"counter\",\"step\":2,\"event\":0,\"branch\":1,\"fields\":{\"n\":{\"before\":1,\"action\":\"reset\",\"after\":1}},\"output\":1,\"example\":\"three\"}\n"
+
+scan_work_boundary > b
+let body fold (indices 12) "n" expr pos unused concat "+ 0 " expr
+let source cat3 "rule stable x:b > i\nstate n:i=0\nwhen x -> n=keep\nelse -> n=set " body "\nout n\n\nmain xs:*b > *i\nscan stable xs"
+let project project_begin source "" (text_len source) "budget.tide" "!budget.tide"
+let program get program (compile_project project (schema_blocks source true))
+fold (list i 2 3445 3446) true ok row costly
+  let cheap if (eq row 1) 23 16
+  let n + costly cheap
+  let xs fold (indices n) (list i 0) acc pos unused append acc (if (> pos costly) 1 0)
+  let result scalar_eval program 1 (list {EvalValue} 1 (list_value xs))
+  and ok (if (eq row 1) (and (text_eq (get code result) "") (eq (length (get items (get value result))) n))
+    (and (text_eq (get code result) "E_LIMIT") (case (text_find (get detail result) (cat3 "\"event\":" (decimal n) "}") 0) false hit true)))
+
+json_batch_boundary > b
+let prefix fold (indices 64) "" acc pos unused json_item acc "-1"
+let mixed read_flat_array (cat3 "[" prefix ", true, 7]")
+if (not (and (text_eq (get typ mixed) "invalid") (eq (length (get items mixed)) 64))) fail "mixed_array_prefix"
+let nums read_flat_array (cat3 "[ " prefix " ,\t-0\r\n]")
+and (text_eq (get compact nums) (json_item prefix "0"))
+  (and (eq (get count nums) 65) (eq (need (at (get items nums) 64) "last" 0) 0))

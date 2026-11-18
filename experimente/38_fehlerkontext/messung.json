@@ -1,0 +1,1151 @@
+{
+  "date": "2026-11-17",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "tier": "priority",
+  "cli": "codex-cli 0.157.1",
+  "hardware": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "platform": "7.3.4-1-cachyos",
+  "compiler": "16.2.1",
+  "cpython": "Python 3.14.10",
+  "files_sha256": {
+    "Makefile": "c70028c40fecc864ed68a9bb59867e7e0d1cd5ef88790a522e2d13f6b33a3b00",
+    "tide": "fdd3ea384e49dd5b76c9a17ecb76515c4ddbd51b735867c9841f2956c36bc4a4",
+    "native/catalog/help.tsv": "ad36baeec5c87f3a723ae2f45a64c251f53c3cfebc10aa82a1f7ee86d4834f98",
+    "native/bootstrap/function_run.tide": "2cb7073c3b0e483aced741ad65cc0f4eecfdce03777aa7d6d57155bf6863c740",
+    "native/bootstrap/explain.tide": "174c0d47f46345b39369a0449fe5334e5692ee9240fc42b51bae582a3335ee93",
+    "native/bootstrap/inspection.tide": "cddaaeab26e8cb195605cc5c703beddefb59ada4f984994f6e6b067083be4bdf",
+    "native/bootstrap/inspection_checks.tide": "4b1278ae942b854d82878b81696a00fbf8fb3a863a0dd761d2e6deea810eef37",
+    "native/bootstrap/nodes.tide": "e4aa2c0c044c2cb64edb99d7372d5a6071648df03b4a52e14cb4d56a2361d92d",
+    "native/bootstrap/node_edits.tide": "1df4175deb655f2f3c7fd6ad74ad6f1d24e31e36ec4de5488b6d2df12554e802"
+  },
+  "plan_sha256": "5fa43308f0f41c8f12649dfa29e253b3ee248ca2033ebe4aedb459dd79cea447",
+  "clean_build": {
+    "no_python": true,
+    "empty_build": true,
+    "result": "true",
+    "independent_build_binary_sha256": {
+      "tidec": "28434b5c447db866441716c5780a78112510cc4ea313c68039233590201b530b",
+      "checker": "724212daf8c03c0e8531e8f9a969a406c8855b9d101700901cdca3be641e6650",
+      "catalog": "70d00d40cb6498d8da987646e6ac6f32ecfad490a70b773858b0d7733abcf583",
+      "forms": "388a3369ea9679a7bdeac893ad6d9fb90b775e7f039673e7d1a0688a64b324e7",
+      "inspector": "35641183c97124ad3732b85c71094777bf936a7132c135f105c1f9744074bec5",
+      "editor": "49fe276e5845976f27b0b315e04c3e617a1449c4c1e572414b143a4b01ab24f5"
+    },
+    "elf_images_unchanged": 12,
+    "saldo": 97
+  },
+  "checks": {
+    "feature": [
+      "no cases",
+      "all passing",
+      "compile error",
+      "invalid expected",
+      "first executed failure",
+      "literal body",
+      "unexpected data error",
+      "missing expected error",
+      "typed option and string list",
+      "imported rule and first wrong event",
+      "function scanning a rule",
+      "root rule through unusual path",
+      "diamond and inactive branch",
+      "stale revision after import edit",
+      "applied and verified imported edit",
+      "example declared in imported unit",
+      "48-level call chain",
+      "multi-page expression",
+      "option rejected by run",
+      "option rejected by check",
+      "option rejected by edit",
+      "option rejected by context",
+      "option rejected by hole",
+      "option rejected by modules",
+      "option rejected by trace",
+      "option rejected by fmt"
+    ],
+    "text": 553,
+    "resources": 77,
+    "node_edits": 1041,
+    "node_edits_compared_to_independent_ranges": 9
+  },
+  "preflight": [
+    {
+      "fam": "locator",
+      "arm": "T",
+      "baseline_public_passed": 4,
+      "baseline_hidden_passed": 36,
+      "correct_public": 6,
+      "correct_hidden": 72,
+      "first_actual": 13,
+      "first_expected": 7
+    },
+    {
+      "fam": "locator",
+      "arm": "P",
+      "baseline_public_passed": 4,
+      "baseline_hidden_passed": 36,
+      "correct_public": 6,
+      "correct_hidden": 72,
+      "first_actual": 13,
+      "first_expected": 7
+    },
+    {
+      "fam": "dial",
+      "arm": "T",
+      "baseline_public_passed": 3,
+      "baseline_hidden_passed": 63,
+      "correct_public": 6,
+      "correct_hidden": 72,
+      "first_actual": 110,
+      "first_expected": 105
+    },
+    {
+      "fam": "dial",
+      "arm": "P",
+      "baseline_public_passed": 3,
+      "baseline_hidden_passed": 63,
+      "correct_public": 6,
+      "correct_hidden": 72,
+      "first_actual": 110,
+      "first_expected": 105
+    }
+  ],
+  "tool_timings": [
+    {
+      "name": "locator",
+      "median_ms": {
+        "old": 42.381,
+        "explain": 5.961
+      },
+      "samples_ms": {
+        "old": [
+          42.448,
+          42.367,
+          42.435,
+          43.001,
+          42.912,
+          42.224,
+          42.253,
+          42.552,
+          42.467,
+          42.321,
+          42.359,
+          42.32,
+          42.164,
+          42.381,
+          42.275,
+          43.186,
+          42.317,
+          42.408,
+          42.463
+        ],
+        "explain": [
+          6.085,
+          6.091,
+          5.866,
+          5.922,
+          6.103,
+          6.366,
+          5.933,
+          5.954,
+          5.923,
+          5.977,
+          5.961,
+          5.961,
+          6.07,
+          5.845,
+          6.051,
+          5.88,
+          5.851,
+          5.992,
+          5.974
+        ]
+      },
+      "observed": {
+        "explain": {
+          "calls": 1,
+          "tool_bytes": 870,
+          "packet_bytes": 869
+        },
+        "old": {
+          "calls": 7,
+          "tool_bytes": 10832,
+          "packet_bytes": 869
+        }
+      }
+    },
+    {
+      "name": "dial",
+      "median_ms": {
+        "old": 42.31,
+        "explain": 5.846
+      },
+      "samples_ms": {
+        "old": [
+          42.25,
+          42.897,
+          42.216,
+          42.275,
+          42.118,
+          42.313,
+          42.335,
+          42.189,
+          42.714,
+          42.863,
+          42.258,
+          42.345,
+          42.5,
+          42.468,
+          42.165,
+          42.162,
+          42.49,
+          42.31,
+          42.169
+        ],
+        "explain": [
+          5.795,
+          6.148,
+          5.771,
+          5.766,
+          5.768,
+          5.912,
+          5.98,
+          5.826,
+          6.157,
+          6.035,
+          5.768,
+          5.814,
+          5.815,
+          5.851,
+          5.896,
+          5.906,
+          5.846,
+          5.751,
+          5.859
+        ]
+      },
+      "observed": {
+        "explain": {
+          "calls": 1,
+          "tool_bytes": 870,
+          "packet_bytes": 869
+        },
+        "old": {
+          "calls": 7,
+          "tool_bytes": 10878,
+          "packet_bytes": 869
+        }
+      }
+    }
+  ],
+  "passing_timings": [
+    {
+      "f": "balance",
+      "count": 3,
+      "samples_ms": {
+        "before": [
+          7.153,
+          6.87,
+          7.06,
+          6.765,
+          6.357,
+          6.464,
+          6.546,
+          6.517,
+          6.2,
+          5.547,
+          5.249,
+          5.694,
+          5.346,
+          5.277,
+          5.379,
+          5.23,
+          5.758,
+          5.436,
+          5.695
+        ],
+        "now": [
+          6.532,
+          7.128,
+          6.804,
+          6.877,
+          6.599,
+          6.806,
+          6.461,
+          6.367,
+          5.606,
+          5.745,
+          5.39,
+          5.262,
+          5.694,
+          5.356,
+          5.623,
+          5.364,
+          5.6,
+          5.735,
+          5.319
+        ],
+        "explain": [
+          6.701,
+          6.542,
+          6.584,
+          6.587,
+          7.18,
+          7.699,
+          6.861,
+          6.544,
+          6.049,
+          5.286,
+          5.742,
+          5.469,
+          5.286,
+          5.628,
+          5.416,
+          5.677,
+          5.326,
+          5.413,
+          5.639
+        ]
+      },
+      "median_ms": {
+        "before": 5.758,
+        "now": 5.735,
+        "explain": 5.742
+      }
+    },
+    {
+      "f": "report",
+      "count": 6,
+      "samples_ms": {
+        "before": [
+          5.378,
+          5.712,
+          5.34,
+          5.409,
+          5.615,
+          5.394,
+          5.417,
+          5.601,
+          5.638,
+          5.522,
+          5.71,
+          5.325,
+          5.394,
+          5.706,
+          5.303,
+          5.415,
+          5.624,
+          5.451,
+          7.389
+        ],
+        "now": [
+          5.358,
+          5.421,
+          5.738,
+          5.478,
+          5.389,
+          5.628,
+          5.448,
+          5.403,
+          5.971,
+          5.702,
+          5.32,
+          5.714,
+          5.373,
+          5.442,
+          5.718,
+          5.387,
+          5.42,
+          5.601,
+          5.461
+        ],
+        "explain": [
+          5.751,
+          5.383,
+          5.444,
+          5.668,
+          5.481,
+          5.422,
+          5.659,
+          5.485,
+          5.579,
+          5.841,
+          5.467,
+          5.454,
+          5.871,
+          5.368,
+          5.446,
+          5.779,
+          5.479,
+          5.424,
+          6.136
+        ]
+      },
+      "median_ms": {
+        "before": 5.451,
+        "now": 5.448,
+        "explain": 5.481
+      }
+    },
+    {
+      "f": "large",
+      "count": 1,
+      "samples_ms": {
+        "before": [
+          12.812,
+          12.655,
+          12.554,
+          12.412,
+          12.607,
+          12.288,
+          12.368,
+          12.295,
+          12.113,
+          12.287,
+          12.253,
+          12.309,
+          12.234,
+          12.069,
+          12.245,
+          11.999,
+          12.106,
+          12.29,
+          12.11
+        ],
+        "now": [
+          12.648,
+          12.422,
+          12.454,
+          12.649,
+          12.455,
+          12.464,
+          12.282,
+          12.072,
+          12.354,
+          12.428,
+          12.43,
+          12.401,
+          12.079,
+          12.372,
+          12.389,
+          12.407,
+          12.41,
+          12.372,
+          12.379
+        ],
+        "explain": [
+          13.542,
+          13.403,
+          13.412,
+          13.291,
+          13.344,
+          13.598,
+          13.269,
+          13.376,
+          13.199,
+          13.175,
+          13.288,
+          13.004,
+          13.305,
+          13.317,
+          13.342,
+          13.239,
+          13.224,
+          13.308,
+          13.352
+        ]
+      },
+      "median_ms": {
+        "before": 12.288,
+        "now": 12.407,
+        "explain": 13.308
+      }
+    }
+  ],
+  "method": {
+    "model_runs": "Three paired repetitions per family. Fresh ephemeral Codex process per trial; no workspace source in cwd, memories and shell tool disabled, zero observed tool calls. Fixed prompt and first-failure packet in each record. Timer starts before packet preparation and ends after public and independent held-out validation. CLI scheduling, model latency, applying and validating included. Provider-reported total = input_tokens + output_tokens. Cache-read and reasoning counters included already.",
+    "tide": "Native test --explain; apply via native edit --edits --write on the captured base revision. Public examples and 72 independent examples on a new copy per trial.",
+    "python": "CPython -IBS under bwrap with read-only fixture. First public failure plus AST-reachable full function bodies; replacements applied at Python AST body line boundaries; public and held-out outputs verified externally.",
+    "tool_timings": "Installed packages, one logical CPU (2), alternating order; three warm-ups followed by 19 measured processes per variant/workload (seven commands per old sequence). Prepared contexts compared structurally. Output bytes include JSON whitespace and terminating LF.",
+    "controls": "3 warmup rounds, 19 samples per variant on logical CPU 2, rotating order. Identical stdout and successful exit verified.",
+    "pilot": {
+      "included_in_statistics": false,
+      "reason": "Collector stopped before usage persistence on an unexpected additional CLI entry. Fixed collector distinguishes feature notices from actual tools. Fresh full 12-trial series.",
+      "answer": {
+        "edits": [
+          {
+            "function": "choose",
+            "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+          }
+        ]
+      }
+    }
+  },
+  "aggregates": {
+    "locator": {
+      "by_language": {
+        "T": {
+          "accepted": 3,
+          "seconds": 5.291530180000001,
+          "min_s": 4.8779125950000015,
+          "max_s": 6.5189151380000006,
+          "tokens": 18809,
+          "min_tokens": 18800,
+          "max_tokens": 18836,
+          "preparation_ms": 8.858840999999998,
+          "reasoning_tokens": 73
+        },
+        "P": {
+          "accepted": 3,
+          "seconds": 6.594071023,
+          "min_s": 5.800362196000002,
+          "max_s": 6.759466285999995,
+          "tokens": 18834,
+          "min_tokens": 18798,
+          "max_tokens": 18848,
+          "preparation_ms": 27.1823059999997,
+          "reasoning_tokens": 114
+        }
+      },
+      "paired_delta_seconds": -0.5088320160000004,
+      "paired_delta_tokens": 2,
+      "tide_faster": 3,
+      "tide_fewer_tokens": 1
+    },
+    "dial": {
+      "by_language": {
+        "T": {
+          "accepted": 3,
+          "seconds": 6.942881041000001,
+          "min_s": 5.397010551999999,
+          "max_s": 7.716367037,
+          "tokens": 18881,
+          "min_tokens": 18867,
+          "max_tokens": 18933,
+          "preparation_ms": 7.5230459999947925,
+          "reasoning_tokens": 136
+        },
+        "P": {
+          "accepted": 3,
+          "seconds": 6.3819592300000005,
+          "min_s": 5.910308720999994,
+          "max_s": 6.814981217000002,
+          "tokens": 18823,
+          "min_tokens": 18804,
+          "max_tokens": 18871,
+          "preparation_ms": 24.72498999999516,
+          "reasoning_tokens": 120
+        }
+      },
+      "paired_delta_seconds": 0.901385819999998,
+      "paired_delta_tokens": 77,
+      "tide_faster": 1,
+      "tide_fewer_tokens": 1
+    },
+    "all": {
+      "by_language": {
+        "T": {
+          "accepted": 6,
+          "seconds": 5.957962845,
+          "min_s": 4.8779125950000015,
+          "max_s": 7.716367037,
+          "tokens": 18851.5,
+          "min_tokens": 18800,
+          "max_tokens": 18933,
+          "preparation_ms": 8.804009999999273,
+          "reasoning_tokens": 111
+        },
+        "P": {
+          "accepted": 6,
+          "seconds": 6.488015126500001,
+          "min_s": 5.800362196000002,
+          "max_s": 6.814981217000002,
+          "tokens": 18828.5,
+          "min_tokens": 18798,
+          "max_tokens": 18871,
+          "preparation_ms": 24.937797999995382,
+          "reasoning_tokens": 117
+        }
+      },
+      "paired_delta_seconds": -0.29199395049999977,
+      "paired_delta_tokens": 6.5,
+      "tide_faster": 4,
+      "tide_fewer_tokens": 2
+    }
+  },
+  "paired": [
+    {
+      "family": "locator",
+      "repetition": 1,
+      "tide": 1,
+      "python": 2,
+      "seconds": -0.07515588499999915,
+      "total_tokens": 2,
+      "input_tokens": 19,
+      "output_tokens": -17,
+      "reasoning_tokens": -14
+    },
+    {
+      "family": "locator",
+      "repetition": 2,
+      "tide": 6,
+      "python": 5,
+      "seconds": -0.5088320160000004,
+      "total_tokens": 11,
+      "input_tokens": 19,
+      "output_tokens": -8,
+      "reasoning_tokens": -5
+    },
+    {
+      "family": "locator",
+      "repetition": 3,
+      "tide": 9,
+      "python": 10,
+      "seconds": -1.8815536909999935,
+      "total_tokens": -48,
+      "input_tokens": 19,
+      "output_tokens": -67,
+      "reasoning_tokens": -64
+    },
+    {
+      "family": "dial",
+      "repetition": 1,
+      "tide": 4,
+      "python": 3,
+      "seconds": 0.901385819999998,
+      "total_tokens": 77,
+      "input_tokens": 36,
+      "output_tokens": 41,
+      "reasoning_tokens": 35
+    },
+    {
+      "family": "dial",
+      "repetition": 2,
+      "tide": 7,
+      "python": 8,
+      "seconds": -0.9849486780000012,
+      "total_tokens": -4,
+      "input_tokens": 36,
+      "output_tokens": -40,
+      "reasoning_tokens": -46
+    },
+    {
+      "family": "dial",
+      "repetition": 3,
+      "tide": 12,
+      "python": 11,
+      "seconds": 1.032572320000007,
+      "total_tokens": 110,
+      "input_tokens": 36,
+      "output_tokens": 74,
+      "reasoning_tokens": 68
+    }
+  ],
+  "runs": [
+    {
+      "trial": 1,
+      "fam": "locator",
+      "arm": "T",
+      "prep_ms": 8.858840999999998,
+      "seconds": 6.5189151380000006,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18670,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 166,
+        "reasoning_output_tokens": 100
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18670,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 166,
+            "reasoning_output_tokens": 100
+          },
+          "session": "01a1e811-97e1-7323-a83c-4ec4f2bc4f3e",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"4f5af13c4bb144ec2c16755195b161d912f73eb70db335b054d7d5608fbd13f3\",\"entry\":\"panel.tide\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"locate origin:i marks:*i > i\",\"body\":\"(case (at marks 0) origin initial (fold marks initial current row item (choose origin current item)))\"},{\"node\":\"choice.tide:4:1\",\"signature\":\"choose origin:i current:i item:i > i\",\"body\":\"(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (> item current) item current) current))))\"},{\"node\":\"geometry.tide:2:1\",\"signature\":\"distance origin:i mark:i > i\",\"body\":\"(let delta (- mark origin) (if (< delta 0) (- 0 delta) delta))\"}]}}",
+      "total": 18836
+    },
+    {
+      "trial": 2,
+      "fam": "locator",
+      "arm": "P",
+      "prep_ms": 27.1823059999997,
+      "seconds": 6.594071023,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18651,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 114
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "old = distance(origin, current)\nfresh = distance(origin, item)\nif fresh < old:\n    return item\nif fresh == old:\n    return item if item < current else current\nreturn current"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18651,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 183,
+            "reasoning_output_tokens": 114
+          },
+          "session": "01a1e811-aff6-7712-9f0a-f9bca757aac2",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"7d7ada217651a921f835509d5813cee697f12d18eaecd35102fa4b250a429037\",\"entry\":\"panel.py\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def locate(origin, marks):\",\"body\":\"if not marks:\\n    return origin\\ncurrent = marks[0]\\nfor item in marks:\\n    current = choose(origin, current, item)\\nreturn current\"},{\"node\":\"choice.py:4:5\",\"signature\":\"def choose(origin, current, item):\",\"body\":\"old = distance(origin, current)\\nfresh = distance(origin, item)\\nif fresh < old:\\n    return item\\nif fresh == old:\\n    return item if item > current else current\\nreturn current\"},{\"node\":\"geometry.py:2:5\",\"signature\":\"def distance(origin, mark):\",\"body\":\"delta = mark - origin\\nreturn -delta if delta < 0 else delta\"}]}}",
+      "total": 18834
+    },
+    {
+      "trial": 3,
+      "fam": "dial",
+      "arm": "P",
+      "prep_ms": 24.693508000000293,
+      "seconds": 6.814981217000002,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18652,
+        "cached_input_tokens": 17280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 152,
+        "reasoning_output_tokens": 101
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "whole = magnitude // width\nrest = magnitude % width\nreturn whole if 2 * rest < width else whole + 1"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18652,
+            "cached_input_tokens": 17280,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 152,
+            "reasoning_output_tokens": 101
+          },
+          "session": "01a1e811-c85c-74e2-bae6-aa032dd77c18",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"0e916d56d55457ea28b618602cd9c2dee1de239567b8d501a31abcda61c0ad56\",\"entry\":\"panel.py\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def display(reading, reference, spacing):\",\"body\":\"return reference + scale(reading - reference, spacing)\"},{\"node\":\"scale.py:4:5\",\"signature\":\"def scale(delta, width):\",\"body\":\"magnitude = -delta if delta < 0 else delta\\nrounded = width * units(magnitude, width)\\nreturn -rounded if delta < 0 else rounded\"},{\"node\":\"units.py:2:5\",\"signature\":\"def units(magnitude, width):\",\"body\":\"whole = magnitude // width\\nrest = magnitude % width\\nreturn whole if rest < width // 2 else whole + 1\"}]}}",
+      "total": 18804
+    },
+    {
+      "trial": 4,
+      "fam": "dial",
+      "arm": "T",
+      "prep_ms": 9.291479999999865,
+      "seconds": 7.716367037,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18688,
+        "cached_input_tokens": 17280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 193,
+        "reasoning_output_tokens": 136
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* rest 2) width) whole (+ whole 1))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18688,
+            "cached_input_tokens": 17280,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 193,
+            "reasoning_output_tokens": 136
+          },
+          "session": "01a1e811-e2ea-77e2-847a-358f580f9b19",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"1eb8d53d43dd91b165ddf8e5d5b0d37f42aeac8ac123111f3d318fefef909d45\",\"entry\":\"panel.tide\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"display reading:i reference:i spacing:i > i\",\"body\":\"(+ reference (scale (- reading reference) spacing))\"},{\"node\":\"scale.tide:4:1\",\"signature\":\"scale delta:i width:i > i\",\"body\":\"(let magnitude (if (< delta 0) (- 0 delta) delta) (let rounded (* width (units magnitude width)) (if (< delta 0) (- 0 rounded) rounded)))\"},{\"node\":\"units.tide:2:1\",\"signature\":\"units magnitude:i width:i > i\",\"body\":\"(let whole (div magnitude width) (let rest (mod magnitude width) (if (< rest (div width 2)) whole (+ whole 1))))\"}]}}",
+      "total": 18881
+    },
+    {
+      "trial": 5,
+      "fam": "locator",
+      "arm": "P",
+      "prep_ms": 27.55379300000277,
+      "seconds": 5.800362196000002,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18651,
+        "cached_input_tokens": 17280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 147,
+        "reasoning_output_tokens": 78
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "old = distance(origin, current)\nfresh = distance(origin, item)\nif fresh < old:\n    return item\nif fresh == old:\n    return item if item < current else current\nreturn current"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18651,
+            "cached_input_tokens": 17280,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 147,
+            "reasoning_output_tokens": 78
+          },
+          "session": "01a1e812-01fb-7be1-bd35-4f82d5fc204e",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"7d7ada217651a921f835509d5813cee697f12d18eaecd35102fa4b250a429037\",\"entry\":\"panel.py\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def locate(origin, marks):\",\"body\":\"if not marks:\\n    return origin\\ncurrent = marks[0]\\nfor item in marks:\\n    current = choose(origin, current, item)\\nreturn current\"},{\"node\":\"choice.py:4:5\",\"signature\":\"def choose(origin, current, item):\",\"body\":\"old = distance(origin, current)\\nfresh = distance(origin, item)\\nif fresh < old:\\n    return item\\nif fresh == old:\\n    return item if item > current else current\\nreturn current\"},{\"node\":\"geometry.py:2:5\",\"signature\":\"def distance(origin, mark):\",\"body\":\"delta = mark - origin\\nreturn -delta if delta < 0 else delta\"}]}}",
+      "total": 18798
+    },
+    {
+      "trial": 6,
+      "fam": "locator",
+      "arm": "T",
+      "prep_ms": 8.749178999998549,
+      "seconds": 5.291530180000001,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18670,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 139,
+        "reasoning_output_tokens": 73
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18670,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 139,
+            "reasoning_output_tokens": 73
+          },
+          "session": "01a1e812-17b6-7410-856a-af7ef39fa098",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"4f5af13c4bb144ec2c16755195b161d912f73eb70db335b054d7d5608fbd13f3\",\"entry\":\"panel.tide\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"locate origin:i marks:*i > i\",\"body\":\"(case (at marks 0) origin initial (fold marks initial current row item (choose origin current item)))\"},{\"node\":\"choice.tide:4:1\",\"signature\":\"choose origin:i current:i item:i > i\",\"body\":\"(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (> item current) item current) current))))\"},{\"node\":\"geometry.tide:2:1\",\"signature\":\"distance origin:i mark:i > i\",\"body\":\"(let delta (- mark origin) (if (< delta 0) (- 0 delta) delta))\"}]}}",
+      "total": 18809
+    },
+    {
+      "trial": 7,
+      "fam": "dial",
+      "arm": "T",
+      "prep_ms": 7.5230459999947925,
+      "seconds": 5.397010551999999,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18688,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 179,
+        "reasoning_output_tokens": 122
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* rest 2) width) whole (+ whole 1))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18688,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 179,
+            "reasoning_output_tokens": 122
+          },
+          "session": "01a1e812-2c65-79a2-82cd-81f1d825093f",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"1eb8d53d43dd91b165ddf8e5d5b0d37f42aeac8ac123111f3d318fefef909d45\",\"entry\":\"panel.tide\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"display reading:i reference:i spacing:i > i\",\"body\":\"(+ reference (scale (- reading reference) spacing))\"},{\"node\":\"scale.tide:4:1\",\"signature\":\"scale delta:i width:i > i\",\"body\":\"(let magnitude (if (< delta 0) (- 0 delta) delta) (let rounded (* width (units magnitude width)) (if (< delta 0) (- 0 rounded) rounded)))\"},{\"node\":\"units.tide:2:1\",\"signature\":\"units magnitude:i width:i > i\",\"body\":\"(let whole (div magnitude width) (let rest (mod magnitude width) (if (< rest (div width 2)) whole (+ whole 1))))\"}]}}",
+      "total": 18867
+    },
+    {
+      "trial": 8,
+      "fam": "dial",
+      "arm": "P",
+      "prep_ms": 25.150605999995605,
+      "seconds": 6.3819592300000005,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18652,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 219,
+        "reasoning_output_tokens": 168
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "whole = magnitude // width\nrest = magnitude % width\nreturn whole if 2 * rest < width else whole + 1"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18652,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 219,
+            "reasoning_output_tokens": 168
+          },
+          "session": "01a1e812-4187-7621-9ce5-61e26ffe8a74",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"0e916d56d55457ea28b618602cd9c2dee1de239567b8d501a31abcda61c0ad56\",\"entry\":\"panel.py\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def display(reading, reference, spacing):\",\"body\":\"return reference + scale(reading - reference, spacing)\"},{\"node\":\"scale.py:4:5\",\"signature\":\"def scale(delta, width):\",\"body\":\"magnitude = -delta if delta < 0 else delta\\nrounded = width * units(magnitude, width)\\nreturn -rounded if delta < 0 else rounded\"},{\"node\":\"units.py:2:5\",\"signature\":\"def units(magnitude, width):\",\"body\":\"whole = magnitude // width\\nrest = magnitude % width\\nreturn whole if rest < width // 2 else whole + 1\"}]}}",
+      "total": 18871
+    },
+    {
+      "trial": 9,
+      "fam": "locator",
+      "arm": "T",
+      "prep_ms": 9.488317000003008,
+      "seconds": 4.8779125950000015,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18670,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 130,
+        "reasoning_output_tokens": 64
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18670,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 130,
+            "reasoning_output_tokens": 64
+          },
+          "session": "01a1e812-5a67-7161-a932-c4887710e248",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"4f5af13c4bb144ec2c16755195b161d912f73eb70db335b054d7d5608fbd13f3\",\"entry\":\"panel.tide\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"locate origin:i marks:*i > i\",\"body\":\"(case (at marks 0) origin initial (fold marks initial current row item (choose origin current item)))\"},{\"node\":\"choice.tide:4:1\",\"signature\":\"choose origin:i current:i item:i > i\",\"body\":\"(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (> item current) item current) current))))\"},{\"node\":\"geometry.tide:2:1\",\"signature\":\"distance origin:i mark:i > i\",\"body\":\"(let delta (- mark origin) (if (< delta 0) (- 0 delta) delta))\"}]}}",
+      "total": 18800
+    },
+    {
+      "trial": 10,
+      "fam": "locator",
+      "arm": "P",
+      "prep_ms": 21.603971999997157,
+      "seconds": 6.759466285999995,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18651,
+        "cached_input_tokens": 17280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 197,
+        "reasoning_output_tokens": 128
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "choose",
+                "body": "old = distance(origin, current)\nfresh = distance(origin, item)\nif fresh < old:\n    return item\nif fresh == old:\n    return item if item < current else current\nreturn current"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18651,
+            "cached_input_tokens": 17280,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 197,
+            "reasoning_output_tokens": 128
+          },
+          "session": "01a1e812-6e6d-7661-97a9-12e939a226dd",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":7,\"actual\":13,\"repair\":{\"revision\":\"7d7ada217651a921f835509d5813cee697f12d18eaecd35102fa4b250a429037\",\"entry\":\"panel.py\",\"target\":\"locate\",\"inputs\":{\"origin\":10,\"marks\":[13,7]},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def locate(origin, marks):\",\"body\":\"if not marks:\\n    return origin\\ncurrent = marks[0]\\nfor item in marks:\\n    current = choose(origin, current, item)\\nreturn current\"},{\"node\":\"choice.py:4:5\",\"signature\":\"def choose(origin, current, item):\",\"body\":\"old = distance(origin, current)\\nfresh = distance(origin, item)\\nif fresh < old:\\n    return item\\nif fresh == old:\\n    return item if item > current else current\\nreturn current\"},{\"node\":\"geometry.py:2:5\",\"signature\":\"def distance(origin, mark):\",\"body\":\"delta = mark - origin\\nreturn -delta if delta < 0 else delta\"}]}}",
+      "total": 18848
+    },
+    {
+      "trial": 11,
+      "fam": "dial",
+      "arm": "P",
+      "prep_ms": 24.72498999999516,
+      "seconds": 5.910308720999994,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18652,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 171,
+        "reasoning_output_tokens": 120
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "whole = magnitude // width\nrest = magnitude % width\nreturn whole if 2 * rest < width else whole + 1"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18652,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 171,
+            "reasoning_output_tokens": 120
+          },
+          "session": "01a1e812-87f3-7c41-929d-c22ad915243e",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. Python bodies can contain multiple lines.\n\n{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"0e916d56d55457ea28b618602cd9c2dee1de239567b8d501a31abcda61c0ad56\",\"entry\":\"panel.py\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def display(reading, reference, spacing):\",\"body\":\"return reference + scale(reading - reference, spacing)\"},{\"node\":\"scale.py:4:5\",\"signature\":\"def scale(delta, width):\",\"body\":\"magnitude = -delta if delta < 0 else delta\\nrounded = width * units(magnitude, width)\\nreturn -rounded if delta < 0 else rounded\"},{\"node\":\"units.py:2:5\",\"signature\":\"def units(magnitude, width):\",\"body\":\"whole = magnitude // width\\nrest = magnitude % width\\nreturn whole if rest < width // 2 else whole + 1\"}]}}",
+      "total": 18823
+    },
+    {
+      "trial": 12,
+      "fam": "dial",
+      "arm": "T",
+      "prep_ms": 7.205264000003808,
+      "seconds": 6.942881041000001,
+      "ok": true,
+      "usage": {
+        "input_tokens": 18688,
+        "cached_input_tokens": 17280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 245,
+        "reasoning_output_tokens": 188
+      },
+      "attempts": [
+        {
+          "answer": {
+            "edits": [
+              {
+                "function": "units",
+                "body": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* 2 rest) width) whole (+ whole 1))))"
+              }
+            ]
+          },
+          "usage": {
+            "input_tokens": 18688,
+            "cached_input_tokens": 17280,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 245,
+            "reasoning_output_tokens": 188
+          },
+          "session": "01a1e812-9eed-79e2-9e6c-8cade25c6917",
+          "tools": 0,
+          "notices": [
+            "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/ativaro/.codex/config.toml."
+          ],
+          "error": ""
+        }
+      ],
+      "prompt": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].\n\nRepair the program to satisfy the contract for every valid input. The packet contains the first failing public example and all statically reachable definitions from the checked snapshot. Use only this information. Return named replacement function bodies in your language, without signatures. Keep unrelated behavior. No tools. TIDE uses grouped prefix expressions. Supply each replacement as a single-line expression.\n\n{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":6,\"column\":1,\"example\":\"case_0\",\"expected\":105,\"actual\":110,\"repair\":{\"revision\":\"1eb8d53d43dd91b165ddf8e5d5b0d37f42aeac8ac123111f3d318fefef909d45\",\"entry\":\"panel.tide\",\"target\":\"display\",\"inputs\":{\"reading\":107,\"reference\":100,\"spacing\":5},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"display reading:i reference:i spacing:i > i\",\"body\":\"(+ reference (scale (- reading reference) spacing))\"},{\"node\":\"scale.tide:4:1\",\"signature\":\"scale delta:i width:i > i\",\"body\":\"(let magnitude (if (< delta 0) (- 0 delta) delta) (let rounded (* width (units magnitude width)) (if (< delta 0) (- 0 rounded) rounded)))\"},{\"node\":\"units.tide:2:1\",\"signature\":\"units magnitude:i width:i > i\",\"body\":\"(let whole (div magnitude width) (let rest (mod magnitude width) (if (< rest (div width 2)) whole (+ whole 1))))\"}]}}",
+      "total": 18933
+    }
+  ]
+}

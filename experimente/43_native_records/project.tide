@@ -1,0 +1,5 @@
+record Point
+x:i y:i
+
+main p:{Point} rows:*i > i
+fold rows 0 total row x (+ total (+ (get x p) (get y p)))

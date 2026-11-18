@@ -1,0 +1,28 @@
+use route
+
+main begin:i finish:i rate:i > i
+samples begin finish rate
+
+example public_0 main
+{"inputs":{"begin":0,"finish":0,"rate":1},"expect":0}
+
+example public_1 main
+{"inputs":{"begin":1,"finish":1,"rate":2},"expect":0}
+
+example public_2 main
+{"inputs":{"begin":3,"finish":4,"rate":4},"expect":4}
+
+example public_3 main
+{"inputs":{"begin":123,"finish":164,"rate":5},"expect":205}
+
+example public_4 main
+{"inputs":{"begin":178,"finish":219,"rate":6},"expect":246}
+
+example public_5 main
+{"inputs":{"begin":280,"finish":317,"rate":1},"expect":37}
+
+example public_6 main
+{"inputs":{"begin":227,"finish":305,"rate":1},"expect":78}
+
+example public_7 main
+{"inputs":{"begin":215,"finish":219,"rate":13},"expect":52}

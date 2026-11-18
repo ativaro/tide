@@ -1,0 +1,36 @@
+record Snapshot
+size:i first_byte:?i last_byte:?i outside:?i old:?y values:%y
+
+main raw:y initial:%y key:t > {Snapshot}
+let updated dict_put initial key raw
+make Snapshot
+size (byte_len raw)
+first_byte (byte_at raw 0)
+last_byte (byte_at raw (- (byte_len raw) 1))
+outside (byte_at raw (byte_len raw))
+old (dict_get initial key)
+values updated
+
+encode label:t > y
+utf8_bytes label
+
+nested > %%i
+dict_put (dict %i) "limits" (dict_put (dict i) "A" 80)
+
+example replace main
+{"inputs":{"raw":"00FF80","initial":{"A./~":"42","Ω":"80"},"key":"A./~"},"expect":{"size":3,"first_byte":{"some":0},"last_byte":{"some":128},"outside":{"none":true},"old":{"some":"42"},"values":{"Ω":"80","A./~":"00ff80"}}}
+
+example empty_key main
+{"inputs":{"raw":"","initial":{},"key":""},"expect":{"size":0,"first_byte":{"none":true},"last_byte":{"none":true},"outside":{"none":true},"old":{"none":true},"values":{"":""}}}
+
+example utf8 encode
+{"inputs":{"label":"AΩ🐈"},"expect":"41cea9f09f9088"}
+
+example nested_maps nested
+{"inputs":{},"expect":{"limits":{"A":80}}}
+
+shared input:r > i
++ (byte_len (read_bytes input)) (text_len (read input))
+
+example shared_snapshot shared
+{"inputs":{"input":"Ω猫"},"expect":7}

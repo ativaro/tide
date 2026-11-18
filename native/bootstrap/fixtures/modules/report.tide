@@ -1,0 +1,6 @@
+use opening
+
+use closing
+
+record Report
+start:{Opening} finish:{Closing}

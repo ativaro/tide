@@ -1,0 +1,839 @@
+{
+  "system": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "cpu": 2,
+  "warmups": 3,
+  "rounds": 21,
+  "order": "rotating start within each workload; processes run serially",
+  "timing": "wall ms, process creation to exit",
+  "python": "Python 3.14.10",
+  "tokens": "gpt-tokenizer 3.4.0 o200k_base, whole CLI response with newline; no model sessions",
+  "hashes": {
+    "prior": "9c640928592fab2787e40dd4929f47af54d2cf86bf6087409c9474b1143838b5",
+    "linear": "518d65e914a12b64c19db0cfd76cd220a581348fd11264fe8891fa4c798daa1b",
+    "indexed": "9448f725a5d86d6b15a4aba26f4d1f12aa09f280f04eec6198d3c3c0c044a4b3",
+    "inspector": "68ba7df94ff4f5b2d5722bc757fe5ed94299af0ceff4a6de449f6ff7c11cc7de"
+  },
+  "cases": {
+    "gleichstand": {
+      "target": "winner",
+      "public": [
+        {
+          "name": "earlier_id",
+          "inputs": {
+            "data": {
+              "mode": "oldest",
+              "first_id": 19,
+              "next_id": 7
+            }
+          },
+          "expect": 7
+        },
+        {
+          "name": "later_id",
+          "inputs": {
+            "data": {
+              "mode": "newest",
+              "first_id": 19,
+              "next_id": 7
+            }
+          },
+          "expect": 19
+        }
+      ],
+      "bug": {
+        "tide": [
+          "(< left right)",
+          "(> left right)"
+        ],
+        "python": [
+          "return left if left < right else right",
+          "return left if left > right else right"
+        ]
+      },
+      "sources": {
+        "tide": {
+          "panel.tide": "use policies\n\nwinner data:{Ranking} > i\nlet a (get first_id data)\nlet b (get next_id data)\nmatch (get mode data) oldest (smaller a b) newest (larger a b) end\n\nexample earlier_id winner\n{\"inputs\":{\"data\":{\"mode\":\"oldest\",\"first_id\":19,\"next_id\":7}},\"expect\":7}\n\nexample later_id winner\n{\"inputs\":{\"data\":{\"mode\":\"newest\",\"first_id\":19,\"next_id\":7}},\"expect\":19}\n",
+          "policies.tide": "variant Tie\nnewest oldest\n\nrecord Ranking\nmode:{Tie} first_id:i next_id:i\n\nsmaller left:i right:i > i\nif (> left right) left right\n\nlarger left:i right:i > i\nif (> left right) left right\n"
+        },
+        "python": {
+          "panel.py": "from policies import Ranking, smaller, larger\n\ndef winner(data: Ranking) -> int:\n    a, b = data[\"first_id\"], data[\"next_id\"]\n    match data[\"mode\"]:\n        case \"oldest\": return smaller(a, b)\n        case \"newest\": return larger(a, b)\n    raise ValueError(\"unknown mode\")\n",
+          "policies.py": "from typing import Literal, TypedDict\n\nTie = Literal[\"newest\", \"oldest\"]\n\nclass Ranking(TypedDict):\n    mode: Tie\n    first_id: int\n    next_id: int\n\ndef smaller(left: int, right: int) -> int:\n    return left if left > right else right\n\ndef larger(left: int, right: int) -> int:\n    return left if left > right else right\n"
+        }
+      }
+    },
+    "rundung": {
+      "target": "round_tenths",
+      "public": [
+        {
+          "name": "half_at_even",
+          "inputs": {
+            "value": 25,
+            "policy": "even_half"
+          },
+          "expect": 2
+        },
+        {
+          "name": "half_at_odd",
+          "inputs": {
+            "value": 35,
+            "policy": "even_half"
+          },
+          "expect": 4
+        },
+        {
+          "name": "upper_round",
+          "inputs": {
+            "value": 25,
+            "policy": "upper_half"
+          },
+          "expect": 3
+        },
+        {
+          "name": "below_half",
+          "inputs": {
+            "value": 24,
+            "policy": "upper_half"
+          },
+          "expect": 2
+        },
+        {
+          "name": "above_half",
+          "inputs": {
+            "value": 26,
+            "policy": "even_half"
+          },
+          "expect": 3
+        }
+      ],
+      "bug": {
+        "tide": [
+          "(eq (mod whole 2) 0)",
+          "(eq (mod whole 2) 1)"
+        ],
+        "python": [
+          "return whole if whole % 2 == 0 else whole + 1",
+          "return whole if whole % 2 == 1 else whole + 1"
+        ]
+      },
+      "sources": {
+        "tide": {
+          "panel.tide": "use policies\n\nround_tenths value:i policy:{Rounding} > i\nif (< value 0) (fail \"negative\")\nlet whole (div value 10)\nlet rest (mod value 10)\nif (< rest 5) whole (if (> rest 5) (+ whole 1)\n  (match policy upper_half (upper_units whole) even_half (even_units whole) end))\n\nexample half_at_even round_tenths\n{\"inputs\":{\"value\":25,\"policy\":\"even_half\"},\"expect\":2}\n\nexample half_at_odd round_tenths\n{\"inputs\":{\"value\":35,\"policy\":\"even_half\"},\"expect\":4}\n\nexample upper_round round_tenths\n{\"inputs\":{\"value\":25,\"policy\":\"upper_half\"},\"expect\":3}\n\nexample below_half round_tenths\n{\"inputs\":{\"value\":24,\"policy\":\"upper_half\"},\"expect\":2}\n\nexample above_half round_tenths\n{\"inputs\":{\"value\":26,\"policy\":\"even_half\"},\"expect\":3}\n",
+          "policies.tide": "variant Rounding\neven_half upper_half\n\neven_units whole:i > i\nif (eq (mod whole 2) 1) whole (+ whole 1)\n\nupper_units whole:i > i\n+ whole 1\n"
+        },
+        "python": {
+          "panel.py": "from policies import Rounding, even_units, upper_units\n\ndef round_tenths(value: int, policy: Rounding) -> int:\n    if value < 0: raise ValueError(\"negative\")\n    whole, rest = divmod(value, 10)\n    if rest < 5: return whole\n    if rest > 5: return whole + 1\n    match policy:\n        case \"upper_half\": return upper_units(whole)\n        case \"even_half\": return even_units(whole)\n    raise ValueError(\"unknown policy\")\n",
+          "policies.py": "from typing import Literal\n\nRounding = Literal[\"even_half\", \"upper_half\"]\n\ndef even_units(whole: int) -> int:\n    return whole if whole % 2 == 1 else whole + 1\n\ndef upper_units(whole: int) -> int:\n    return whole + 1\n"
+        }
+      }
+    }
+  },
+  "measurements": {
+    "gleichstand": {
+      "static": {
+        "median_ms": 5.857511,
+        "tokens": 277,
+        "bytes": 855,
+        "samples_ms": [
+          5.946432,
+          5.885401,
+          5.84297,
+          5.81201,
+          5.986344,
+          5.78765,
+          5.8129,
+          6.044344,
+          6.056924,
+          6.007754,
+          6.008734,
+          6.011804,
+          5.959904,
+          5.831831,
+          5.8436,
+          5.734719,
+          5.869881,
+          5.857511,
+          5.737498,
+          5.78304,
+          5.77082
+        ],
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":8,\"column\":1,\"example\":\"earlier_id\",\"expected\":7,\"actual\":19,\"repair\":{\"revision\":\"d9888030d259ed2c50bd02c0aec29ed8333ef0f81daaeaab82cfa49b74da5c7f\",\"entry\":\"panel.tide\",\"target\":\"winner\",\"inputs\":{\"data\":{\"mode\":\"oldest\",\"first_id\":19,\"next_id\":7}},\"records\":{\"Ranking\":{\"mode\":\"{Tie}\",\"first_id\":\"i\",\"next_id\":\"i\"}},\"variants\":{\"Tie\":[\"newest\",\"oldest\"]},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"winner data:{Ranking} > i\",\"body\":\"(let a (get first_id data) (let b (get next_id data) (match (get mode data) oldest (smaller a b) newest (larger a b) end)))\"},{\"node\":\"policies.tide:11:1\",\"signature\":\"larger left:i right:i > i\",\"body\":\"(if (> left right) left right)\"},{\"node\":\"policies.tide:8:1\",\"signature\":\"smaller left:i right:i > i\",\"body\":\"(if (> left right) left right)\"}]}}\n"
+      },
+      "executed": {
+        "median_ms": 5.82113,
+        "tokens": 272,
+        "bytes": 834,
+        "samples_ms": [
+          6.114776,
+          5.881451,
+          5.82113,
+          5.77722,
+          5.8184,
+          5.7959,
+          5.897282,
+          5.81195,
+          6.033954,
+          5.990164,
+          6.113326,
+          6.028834,
+          5.791289,
+          5.844051,
+          5.773529,
+          5.7812,
+          5.849821,
+          5.743359,
+          5.76677,
+          5.83942,
+          5.78614
+        ],
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":8,\"column\":1,\"example\":\"earlier_id\",\"expected\":7,\"actual\":19,\"repair\":{\"revision\":\"d9888030d259ed2c50bd02c0aec29ed8333ef0f81daaeaab82cfa49b74da5c7f\",\"entry\":\"panel.tide\",\"target\":\"winner\",\"inputs\":{\"data\":{\"mode\":\"oldest\",\"first_id\":19,\"next_id\":7}},\"records\":{\"Ranking\":{\"mode\":\"{Tie}\",\"first_id\":\"i\",\"next_id\":\"i\"}},\"variants\":{\"Tie\":[\"newest\",\"oldest\"]},\"execution\":{\"complete\":true,\"branches\":{\"6:1\":[\"oldest\"],\"policies.tide:8:1\":[\"then\"]}},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"winner data:{Ranking} > i\",\"body\":\"(let a (get first_id data) (let b (get next_id data) (match (get mode data) oldest (smaller a b) newest (larger a b) end)))\"},{\"node\":\"policies.tide:8:1\",\"signature\":\"smaller left:i right:i > i\",\"body\":\"(if (> left right) left right)\"}]}}\n"
+      },
+      "python": {
+        "median_ms": 16.446402,
+        "tokens": 310,
+        "bytes": 993,
+        "samples_ms": [
+          16.526523,
+          16.351441,
+          16.28434,
+          16.518023,
+          16.285579,
+          16.446402,
+          16.581415,
+          16.521934,
+          16.348991,
+          16.472242,
+          16.499193,
+          16.33841,
+          16.36516,
+          17.818298,
+          16.31618,
+          16.485213,
+          16.288559,
+          16.277509,
+          16.522863,
+          16.368631,
+          16.515293
+        ],
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"earlier_id\",\"expected\":7,\"actual\":19,\"repair\":{\"revision\":\"e284a5f757dd832b1eca19e37aa60228a6adb3cd3ac13c754b2b2b91fc6a426a\",\"entry\":\"panel.py\",\"target\":\"winner\",\"inputs\":{\"data\":{\"mode\":\"oldest\",\"first_id\":19,\"next_id\":7}},\"types\":{\"Ranking\":\"class Ranking(TypedDict):\\n    mode: Tie\\n    first_id: int\\n    next_id: int\",\"Tie\":\"Tie = Literal['newest', 'oldest']\"},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def winner(data: Ranking) -> int:\",\"body\":\"a, b = data[\\\"first_id\\\"], data[\\\"next_id\\\"]\\nmatch data[\\\"mode\\\"]:\\n    case \\\"oldest\\\": return smaller(a, b)\\n    case \\\"newest\\\": return larger(a, b)\\nraise ValueError(\\\"unknown mode\\\")\"},{\"node\":\"policies.py:11:5\",\"signature\":\"def smaller(left: int, right: int) -> int:\",\"body\":\"return left if left > right else right\"},{\"node\":\"policies.py:14:5\",\"signature\":\"def larger(left: int, right: int) -> int:\",\"body\":\"return left if left > right else right\"}]}}\n"
+      }
+    },
+    "rundung": {
+      "static": {
+        "median_ms": 6.006574,
+        "tokens": 293,
+        "bytes": 887,
+        "samples_ms": [
+          6.006574,
+          6.065665,
+          5.955993,
+          5.926752,
+          6.072895,
+          6.016174,
+          5.917812,
+          6.037535,
+          6.000954,
+          5.944813,
+          6.015974,
+          5.967443,
+          5.936012,
+          6.055915,
+          6.286229,
+          5.915812,
+          6.031914,
+          6.764739,
+          5.923262,
+          6.063975,
+          5.957283
+        ],
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":10,\"column\":1,\"example\":\"half_at_even\",\"expected\":2,\"actual\":3,\"repair\":{\"revision\":\"f0e58bd3e5e339c1018008b46d06c76649647eb0db1e329f83ce2411f8b0f1e0\",\"entry\":\"panel.tide\",\"target\":\"round_tenths\",\"inputs\":{\"value\":25,\"policy\":\"even_half\"},\"variants\":{\"Rounding\":[\"even_half\",\"upper_half\"]},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"round_tenths value:i policy:{Rounding} > i\",\"body\":\"(if (< value 0) (fail \\\"negative\\\") (let whole (div value 10) (let rest (mod value 10) (if (< rest 5) whole (if (> rest 5) (+ whole 1) (match policy upper_half (upper_units whole) even_half (even_units whole) end))))))\"},{\"node\":\"policies.tide:5:1\",\"signature\":\"even_units whole:i > i\",\"body\":\"(if (eq (mod whole 2) 1) whole (+ whole 1))\"},{\"node\":\"policies.tide:8:1\",\"signature\":\"upper_units whole:i > i\",\"body\":\"(+ whole 1)\"}]}}\n"
+      },
+      "executed": {
+        "median_ms": 6.022974,
+        "tokens": 315,
+        "bytes": 937,
+        "samples_ms": [
+          5.981294,
+          6.022974,
+          5.994904,
+          6.130677,
+          6.042925,
+          5.962844,
+          6.008724,
+          6.087946,
+          6.025015,
+          6.038994,
+          6.066015,
+          5.983624,
+          5.965844,
+          6.175327,
+          5.966394,
+          6.017784,
+          6.066565,
+          5.966313,
+          6.033005,
+          6.135596,
+          5.995193
+        ],
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"line\":10,\"column\":1,\"example\":\"half_at_even\",\"expected\":2,\"actual\":3,\"repair\":{\"revision\":\"f0e58bd3e5e339c1018008b46d06c76649647eb0db1e329f83ce2411f8b0f1e0\",\"entry\":\"panel.tide\",\"target\":\"round_tenths\",\"inputs\":{\"value\":25,\"policy\":\"even_half\"},\"variants\":{\"Rounding\":[\"even_half\",\"upper_half\"]},\"execution\":{\"complete\":true,\"branches\":{\"4:1\":[\"else\"],\"7:1\":[\"else\"],\"7:22\":[\"else\"],\"8:4\":[\"even_half\"],\"policies.tide:5:1\":[\"else\"]}},\"definitions\":[{\"node\":\"4:1\",\"signature\":\"round_tenths value:i policy:{Rounding} > i\",\"body\":\"(if (< value 0) (fail \\\"negative\\\") (let whole (div value 10) (let rest (mod value 10) (if (< rest 5) whole (if (> rest 5) (+ whole 1) (match policy upper_half (upper_units whole) even_half (even_units whole) end))))))\"},{\"node\":\"policies.tide:5:1\",\"signature\":\"even_units whole:i > i\",\"body\":\"(if (eq (mod whole 2) 1) whole (+ whole 1))\"}]}}\n"
+      },
+      "python": {
+        "median_ms": 15.943573,
+        "tokens": 315,
+        "bytes": 1000,
+        "samples_ms": [
+          16.111336,
+          15.902132,
+          15.962513,
+          15.977383,
+          15.935522,
+          15.898932,
+          16.131626,
+          15.905821,
+          15.877211,
+          16.035615,
+          15.883871,
+          15.935663,
+          15.984713,
+          15.952463,
+          15.911962,
+          16.122996,
+          15.833981,
+          15.893471,
+          16.006884,
+          15.943573,
+          15.996003
+        ],
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_EXAMPLE\",\"message\":\"Wrong output\",\"example\":\"half_at_even\",\"expected\":2,\"actual\":3,\"repair\":{\"revision\":\"d2d1ab84d27f0ad2b2faf2b7bb526e20fe3ebca5be81a2636ab77d1e424563f4\",\"entry\":\"panel.py\",\"target\":\"round_tenths\",\"inputs\":{\"value\":25,\"policy\":\"even_half\"},\"types\":{\"Rounding\":\"Rounding = Literal['even_half', 'upper_half']\"},\"definitions\":[{\"node\":\"panel.py:4:5\",\"signature\":\"def round_tenths(value: int, policy: Rounding) -> int:\",\"body\":\"if value < 0: raise ValueError(\\\"negative\\\")\\nwhole, rest = divmod(value, 10)\\nif rest < 5: return whole\\nif rest > 5: return whole + 1\\nmatch policy:\\n    case \\\"upper_half\\\": return upper_units(whole)\\n    case \\\"even_half\\\": return even_units(whole)\\nraise ValueError(\\\"unknown policy\\\")\"},{\"node\":\"policies.py:9:5\",\"signature\":\"def upper_units(whole: int) -> int:\",\"body\":\"return whole + 1\"},{\"node\":\"policies.py:6:5\",\"signature\":\"def even_units(whole: int) -> int:\",\"body\":\"return whole if whole % 2 == 1 else whole + 1\"}]}}\n"
+      }
+    },
+    "dispatch_1": {
+      "linear": {
+        "median_ms": 5.819501,
+        "tokens": 2,
+        "bytes": 3,
+        "samples_ms": [
+          5.822001,
+          5.82906,
+          5.83127,
+          5.823431,
+          5.79793,
+          5.869171,
+          5.820271,
+          5.715118,
+          5.846361,
+          5.79046,
+          5.79656,
+          5.804361,
+          5.819501,
+          5.893612,
+          5.80625,
+          5.728969,
+          5.848481,
+          5.731819,
+          5.838231,
+          5.744879,
+          5.81549
+        ],
+        "output": "63\n"
+      },
+      "indexed": {
+        "median_ms": 5.81192,
+        "tokens": 2,
+        "bytes": 3,
+        "samples_ms": [
+          5.751639,
+          5.735559,
+          5.818101,
+          5.725769,
+          5.80616,
+          5.76702,
+          5.872881,
+          5.80046,
+          5.838021,
+          6.002304,
+          5.723718,
+          5.723628,
+          5.836351,
+          5.727898,
+          5.816951,
+          5.864551,
+          5.839501,
+          5.849281,
+          5.81192,
+          5.824051,
+          5.80672
+        ],
+        "output": "63\n"
+      }
+    },
+    "dispatch_4096": {
+      "linear": {
+        "median_ms": 24.898662,
+        "tokens": 3,
+        "bytes": 7,
+        "samples_ms": [
+          25.017745,
+          24.947504,
+          24.681918,
+          24.935143,
+          24.957534,
+          24.898662,
+          24.893412,
+          25.009205,
+          24.795991,
+          24.898023,
+          24.746,
+          24.979354,
+          24.874352,
+          24.732729,
+          24.948723,
+          24.948813,
+          24.80205,
+          24.980914,
+          24.837061,
+          24.678128,
+          25.090866
+        ],
+        "output": "258048\n"
+      },
+      "indexed": {
+        "median_ms": 23.71576,
+        "tokens": 3,
+        "bytes": 7,
+        "samples_ms": [
+          23.692469,
+          24.035016,
+          24.144188,
+          23.829392,
+          23.71576,
+          23.639669,
+          23.753761,
+          24.203429,
+          23.684459,
+          23.863012,
+          23.602818,
+          23.668129,
+          23.588618,
+          23.654749,
+          23.620029,
+          23.7417,
+          23.590138,
+          23.75972,
+          23.731501,
+          23.643789,
+          23.835803
+        ],
+        "output": "258048\n"
+      }
+    },
+    "balance_control": {
+      "before": {
+        "median_ms": 7.286719,
+        "tokens": 4,
+        "bytes": 6,
+        "samples_ms": [
+          7.304308,
+          7.307178,
+          7.295649,
+          7.275538,
+          7.339349,
+          7.291228,
+          7.298708,
+          7.278839,
+          7.255768,
+          7.277608,
+          7.586345,
+          7.264947,
+          7.295588,
+          7.286719,
+          7.280138,
+          7.287248,
+          7.308858,
+          7.263248,
+          7.266718,
+          7.179497,
+          7.281578
+        ],
+        "output": "-3996\n"
+      },
+      "after": {
+        "median_ms": 7.286038,
+        "tokens": 4,
+        "bytes": 6,
+        "samples_ms": [
+          7.308339,
+          7.293849,
+          7.205356,
+          7.338829,
+          7.296059,
+          7.287179,
+          7.328079,
+          7.250227,
+          7.188577,
+          7.295358,
+          7.286038,
+          7.34112,
+          7.268128,
+          7.186356,
+          7.290818,
+          7.273398,
+          7.34816,
+          7.280408,
+          7.269878,
+          7.254457,
+          7.247248
+        ],
+        "output": "-3996\n"
+      }
+    },
+    "added_phase": {
+      "after": {
+        "median_ms": 15.449433,
+        "tokens": 110,
+        "bytes": 445,
+        "samples_ms": [
+          15.451453,
+          15.455894,
+          15.432462,
+          15.428863,
+          15.464044,
+          15.585696,
+          15.425792,
+          15.543814,
+          15.425473,
+          15.406093,
+          15.361071,
+          15.475894,
+          15.450253,
+          15.431373,
+          15.433923,
+          15.439783,
+          15.481294,
+          15.442663,
+          15.449433,
+          15.644007,
+          15.462824
+        ],
+        "output": "{\"file\":\"space_invaders.tide\",\"code\":\"E_MATCH\",\"message\":\"Non-exhaustive variant matches\",\"diagnostics\":[{\"file\":\"space_invaders.tide\",\"code\":\"E_MATCH\",\"message\":\"Missing match branches\",\"line\":72,\"column\":1,\"definition\":\"draw\",\"variant\":\"Phase\",\"missing\":[\"intermission\"]},{\"file\":\"invaders_game.tide\",\"code\":\"E_MATCH\",\"message\":\"Missing match branches\",\"line\":140,\"column\":1,\"definition\":\"tick\",\"variant\":\"Phase\",\"missing\":[\"intermission\"]}]}\n"
+      }
+    }
+  },
+  "python_context_builder": "import ast, hashlib, importlib, json, os, resource, sys, textwrap\nresource.setrlimit(resource.RLIMIT_AS,(512*1024*1024,512*1024*1024))\nresource.setrlimit(resource.RLIMIT_CPU,(10,10))\nsys.path.insert(0,os.getcwd())\nop,target=sys.argv[1:]\ntests=json.load(sys.stdin)\nfiles={name:open(name,encoding=\"utf-8\").read() for name in sorted(os.listdir()) if name.endswith(\".py\")}\ndefs={n.name:(f,n) for f,src in files.items() for n in ast.parse(src).body if isinstance(n,ast.FunctionDef)}\nif op==\"apply\":\n    staged=dict(files)\n    pending={}\n    for edit in tests:\n        f,n=defs[edit[\"function\"]]\n        pending.setdefault(f,[]).append((n.body[0].lineno-1,n.end_lineno,textwrap.indent(textwrap.dedent(edit['body']).strip(),'    ')+'\\n'))\n    for f,patches in pending.items():\n        lines=files[f].splitlines(True)\n        for start,end,body in sorted(patches,reverse=True):\n            lines[start:end]=[body]\n        staged[f]=''.join(lines)\n        ast.parse(staged[f])\n    print(json.dumps({f:staged[f] for f in pending}))\nelse:\n    fn=getattr(importlib.import_module(\"panel\"),target)\n    if op==\"run\":\n        print(json.dumps([fn(**item) for item in tests]))\n    elif op==\"packet\":\n        fail=next(((q,got) for q in tests if (got:=fn(**q[\"inputs\"]))!=q[\"expect\"]),None)\n        if not fail: raise RuntimeError(\"expected a failing case\")\n        q,got=fail\n        seen=[target]; definitions=[]\n        for name in seen:\n            f,n=defs[name]\n            for call in ast.walk(n):\n                if isinstance(call,ast.Call) and isinstance(call.func,ast.Name) and call.func.id in defs and call.func.id not in seen: seen.append(call.func.id)\n            lines=files[f].splitlines()\n            definitions.append(dict(node=f+\":\"+str(n.body[0].lineno)+\":\"+str(n.body[0].col_offset+1),signature=lines[n.lineno-1],body=textwrap.dedent('\\n'.join(lines[n.body[0].lineno-1:n.end_lineno]))))\n        types={}\n        trees=[n for src in files.values() for n in ast.parse(src).body]\n        decls={n.name:n for n in trees if isinstance(n,ast.ClassDef)}\n        decls.update({n.targets[0].id:n for n in trees if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)})\n        def used_types(node):\n            for ref in ast.walk(node):\n                if isinstance(ref,ast.Name) and ref.id in decls and ref.id not in types:\n                    decl=decls[ref.id]\n                    types[ref.id]=ast.unparse(decl)\n                    used_types(decl)\n        for name in seen: used_types(defs[name][1])\n        rev=hashlib.sha256(json.dumps(sorted(files.items()),separators=(',',':')).encode()).hexdigest()\n        print(json.dumps(dict(file=\"panel.py\",code=\"E_EXAMPLE\",message=\"Wrong output\",example=q[\"name\"],expected=q[\"expect\"],actual=got,repair=dict(revision=rev,entry=\"panel.py\",target=target,inputs=q[\"inputs\"],types=types,definitions=definitions)),separators=(\",\",\":\")))\n",
+  "matrix_workload": "variant Choice\np00 p01 p02 p03 p04 p05 p06 p07 p08 p09 p10 p11 p12 p13 p14 p15 p16 p17 p18 p19 p20 p21 p22 p23 p24 p25 p26 p27 p28 p29 p30 p31 p32 p33 p34 p35 p36 p37 p38 p39 p40 p41 p42 p43 p44 p45 p46 p47 p48 p49 p50 p51 p52 p53 p54 p55 p56 p57 p58 p59 p60 p61 p62 p63\n\nvalue p:{Choice} > i\nmatch p p63 63 p62 62 p61 61 p60 60 p59 59 p58 58 p57 57 p56 56 p55 55 p54 54 p53 53 p52 52 p51 51 p50 50 p49 49 p48 48 p47 47 p46 46 p45 45 p44 44 p43 43 p42 42 p41 41 p40 40 p39 39 p38 38 p37 37 p36 36 p35 35 p34 34 p33 33 p32 32 p31 31 p30 30 p29 29 p28 28 p27 27 p26 26 p25 25 p24 24 p23 23 p22 22 p21 21 p20 20 p19 19 p18 18 p17 17 p16 16 p15 15 p14 14 p13 13 p12 12 p11 11 p10 10 p09 9 p08 8 p07 7 p06 6 p05 5 p04 4 p03 3 p02 2 p01 1 p00 0 end\n\nmain rows:*i p:{Choice} > i\nfold rows 0 total row x (+ total (value p))\n",
+  "acceptance": {
+    "repairs": {
+      "gleichstand": {
+        "node": "policies.tide:8:1",
+        "preview": true,
+        "written": true,
+        "public": 2,
+        "additional": 50,
+        "failed_before": 20,
+        "equal_before": true,
+        "equal_after": true
+      },
+      "rundung": {
+        "node": "policies.tide:5:1",
+        "preview": true,
+        "written": true,
+        "public": 5,
+        "additional": 100,
+        "failed_before": 5,
+        "equal_before": true,
+        "equal_after": true
+      }
+    },
+    "invalid": {
+      "cross_type": {
+        "file": "panel.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected type",
+        "line": 8,
+        "column": 1,
+        "expected": "{B}",
+        "actual": "{A}"
+      },
+      "branch_types": {
+        "file": "panel.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected type",
+        "line": 8,
+        "column": 15,
+        "expected": "i",
+        "actual": "b"
+      },
+      "duplicate": {
+        "file": "panel.tide",
+        "code": "E_TAG",
+        "message": "Duplicate match tag",
+        "line": 8,
+        "column": 13,
+        "variant": "A",
+        "tag": "p"
+      },
+      "unknown": {
+        "file": "panel.tide",
+        "code": "E_TAG",
+        "message": "Unknown match tag",
+        "line": 8,
+        "column": 9,
+        "variant": "A",
+        "tag": "a"
+      },
+      "constructor": {
+        "file": "panel.tide",
+        "code": "E_TAG",
+        "message": "Unknown variant tag",
+        "line": 8,
+        "column": 7,
+        "variant": "A",
+        "tag": "bad",
+        "allowed": [
+          "p",
+          "q"
+        ]
+      },
+      "wrong_subject": {
+        "file": "panel.tide",
+        "code": "E_TYPE",
+        "message": "Expected a variant value",
+        "line": 8,
+        "column": 7,
+        "actual": "b"
+      },
+      "not_record": {
+        "file": "panel.tide",
+        "code": "E_FIELD",
+        "message": "Unknown record field",
+        "line": 8,
+        "column": 5,
+        "field": "p",
+        "actual": "{A}"
+      },
+      "missing_end": {
+        "file": "panel.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing end of match",
+        "line": 8,
+        "column": 16
+      },
+      "closing": {
+        "file": "panel.tide",
+        "code": "E_SYNTAX",
+        "message": "Expected end of match",
+        "line": 8,
+        "column": 17
+      },
+      "empty_match": {
+        "file": "panel.tide",
+        "code": "E_MATCH",
+        "message": "Non-exhaustive variant matches",
+        "diagnostics": [
+          {
+            "file": "panel.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 8,
+            "column": 1,
+            "definition": "main",
+            "variant": "A",
+            "missing": [
+              "p",
+              "q"
+            ]
+          }
+        ]
+      },
+      "nested": {
+        "file": "panel.tide",
+        "code": "E_MATCH",
+        "message": "Non-exhaustive variant matches",
+        "diagnostics": [
+          {
+            "file": "panel.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 8,
+            "column": 12,
+            "definition": "main",
+            "variant": "A",
+            "missing": [
+              "p"
+            ]
+          },
+          {
+            "file": "panel.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 8,
+            "column": 1,
+            "definition": "main",
+            "variant": "A",
+            "missing": [
+              "q"
+            ]
+          }
+        ]
+      }
+    },
+    "game": [
+      {
+        "file": "invaders_checks.tide",
+        "code": "E_MATCH",
+        "message": "Non-exhaustive variant matches",
+        "diagnostics": [
+          {
+            "file": "invaders_checks.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 15,
+            "column": 1,
+            "definition": "invaders_checks",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          },
+          {
+            "file": "space_invaders.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 72,
+            "column": 1,
+            "definition": "draw",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          },
+          {
+            "file": "invaders_game.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 140,
+            "column": 1,
+            "definition": "tick",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "invaders_checks.tide",
+        "code": "E_MATCH",
+        "message": "Non-exhaustive variant matches",
+        "diagnostics": [
+          {
+            "file": "invaders_checks.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 15,
+            "column": 1,
+            "definition": "invaders_checks",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          },
+          {
+            "file": "space_invaders.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 72,
+            "column": 1,
+            "definition": "draw",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "invaders_checks.tide",
+        "code": "E_MATCH",
+        "message": "Non-exhaustive variant matches",
+        "diagnostics": [
+          {
+            "file": "invaders_checks.tide",
+            "code": "E_MATCH",
+            "message": "Missing match branches",
+            "line": 15,
+            "column": 1,
+            "definition": "invaders_checks",
+            "variant": "Phase",
+            "missing": [
+              "intermission"
+            ]
+          }
+        ]
+      }
+    ],
+    "labels": {
+      "reverse_order": 64,
+      "invalid_json_values": 6
+    },
+    "rule": {
+      "file": "rule.tide",
+      "code": "E_MATCH",
+      "message": "Non-exhaustive variant matches",
+      "diagnostics": [
+        {
+          "file": "rule.tide",
+          "code": "E_MATCH",
+          "message": "Missing match branches",
+          "line": 6,
+          "column": 22,
+          "definition": "total",
+          "variant": "Bit",
+          "missing": [
+            "two"
+          ]
+        }
+      ]
+    },
+    "rejected_edit": {
+      "file": "main.tide",
+      "code": "E_TAG",
+      "message": "Unknown variant tag",
+      "line": 1,
+      "column": 7,
+      "variant": "A",
+      "tag": "z",
+      "allowed": [
+        "a",
+        "b"
+      ]
+    },
+    "original_added_phase": {
+      "code": "E_BACKEND",
+      "message": "This invocation is unavailable in the native TIDE package."
+    },
+    "container": {
+      "command": "make check-no-python",
+      "exit": 0,
+      "environment": "Docker BuildKit, Debian trixie slim, linux/amd64, network=none for build and install checks",
+      "native_tools": 6,
+      "dockerfile_sha256": "0ca916daa5ef65a5909946448560ba8d6b338e3b05e6c6216d3466487be43a63",
+      "build_log_sha256": "9794e7a121156de9250775c4175f0f529be080d1bf7961a4249faddfe9b38816",
+      "suite": "make test install; true",
+      "installed_examples": {
+        "variants": 10,
+        "balance": 3
+      }
+    }
+  },
+  "commands": {
+    "context_tide": [
+      "tide test panel.tide --explain",
+      "tide test panel.tide --explain=executed"
+    ],
+    "context_python": "python3 -IBS /absolute/path/to/prepared.py packet TARGET < public.json",
+    "external_comparison": "Materialize cases.<name>.sources.python in a temporary directory, save python_context_builder outside it as prepared.py, and provide cases.<name>.public as public.json.",
+    "dispatch": "tide run dispatch.tide --inputs JSON; p=p63, rows=array of 1 or 4096 zeroes",
+    "balance": "tide run apps/balance.tide --call balance --inputs JSON; opening=100, entries=4096 times -1",
+    "phase": "Copy apps/space_invaders.tide and apps/invaders_game.tide to one directory, append intermission to the declared tags of Phase, then tide check space_invaders.tide."
+  }
+}

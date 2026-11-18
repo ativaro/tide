@@ -1,0 +1,67 @@
+use editor
+
+use node_edits
+
+edit_fixture body:t > {ProjectFiles}
+project_begin body (json_string body) (text_len body) "root.tide" ":root.tide"
+
+node_edit_checks > b
+let source "use math\r\n\r\nmain > i\r\nadd 2 3\r\n"
+let helper "one > i\r\n1\r\n\r\nadd a:i b:i > i\r\n(+\u00a0a\r\n  (+ b (one)))\r\n"
+let project project_supply (edit_fixture source) helper (json_string helper) (text_len helper)
+let before edit_compiled project
+let batch "[{\"node\":\"math.tide:6:9\",\"replace\":\"1\"},{\"op\":\"+\",\"node\":\"math.tide:5:\\u0032\"},{\"node\":\"math.tide:6:6\",\"replace\":\"b\"}]"
+let payload read_edit_json batch "root.tide"
+let target edit_target project payload "root.tide"
+let text edited_source project before target (get edits payload) "root.tide"
+if (not (text_eq text "one > i\r\n1\r\n\r\nadd a:i b:i > i\r\n(+\u00a0a\r\n  (+ b 1))\r\n")) fail "node_grouped_ranges"
+let splice read_edit_json "[{\"node\":\"math.tide:5:2\",\"replace\":\"+ b a\"}]" "root.tide"
+if (not (text_eq (edited_source project before target (get edits splice) "root.tide") "one > i\r\n1\r\n\r\nadd a:i b:i > i\r\n+ b a\r\n")) fail "node_multiline"
+let escaped concat (fold (indices 62) "" acc row unused concat acc "x") "\\ud83d\\udc08\\n"
+let input cat3 "\"" escaped "\""
+let parsed stream_step (stream_start 0) input (text_len input) (json_origin "root.tide") true
+let token get token parsed
+text_eq (text_slice (get value token) 62 64) "🐈\n"
+
+edit_many_contracts prefix:t > {SourceDeclarations}
+let body fold (indices 33) "main > i\n1\n" text page unused
+  let batch fold (indices 64) "" part row unused_row
+    let n + (* (- page 1) 64) row
+    cat3 part (cat3 "\nexample " prefix (decimal n)) " main\n{\"inputs\":{},\"expect\":1}\n"
+  concat text batch
+get declarations (edit_compiled (edit_fixture body))
+
+editor_checks > b
+if (not node_edit_checks) fail "node_edit_checks"
+if (not mixed_preview_checks) fail "multi_file_preview"
+if (not (text_eq (sha256_utf8 "Grüezi 🐈\r\n") "fc0bea7e300df753f380ca0dd9fd705e4aa97071b66c60c95855fb12724c1132")) fail "revision_utf8"
+let source "ident x:i > i\nx\n\nexample known ident\n{\"inputs\":{\"x\":2},\"expect\":2}\n"
+let original edit_fixture source
+let base sha256_utf8 source
+let old get declarations (edit_base original base)
+let new_source "ident x:i > i\n+ 0 x\n\nexample known ident\n{\"expect\":2,\"inputs\":{\"x\":2}}\n"
+let preview edit_candidate old (edit_fixture new_source) "root.tide" base false false
+let expected cat3 "{\"base\":" (json_string base) (cat3 ",\"revision\":" (json_string (sha256_utf8 new_source)) ",\"target\":\"root.tide\",\"examples\":{\"passed\":1},\"contract_changes\":[],\"written\":false,\"source\":")
+if (not (text_eq preview (cat3 expected (json_string new_source) "}\n"))) fail "edit_preview"
+let renamed edit_fixture "ident x:i > i\nx\n\nexample added ident\n{\"expect\":3,\"inputs\":{\"x\":3}}\n"
+let changes contract_changes old (get declarations (edit_compiled renamed))
+let added "{\"example\":\"added\",\"before\":null,\"after\":{\"target\":\"ident\",\"expect\":3,\"inputs\":{\"x\":3}}}"
+let removed "{\"example\":\"known\",\"before\":{\"target\":\"ident\",\"expect\":2,\"inputs\":{\"x\":2}},\"after\":null}"
+if (not (and (first changes) (text_eq (second changes) (cat3 "[" (json_item added removed) "]")))) fail "renamed_contract"
+let many contract_changes (edit_many_contracts "a") (edit_many_contracts "b")
+and (first many) (case (text_find (second many) "\"example\":\"b2112\"" 0) false pos true)
+
+mixed_preview_checks > b
+let root "use calc\n\nmain a:i b:i > i\n+ (scale a b) (- b 1)\n\nexample labeled main\n{\"inputs\":{\"a\":3,\"b\":5},\"expect\":27}"
+let helper "scale a:i b:i > i\n+ (* a b) 2"
+let original project_supply (edit_fixture root) helper (ascii_string helper) (text_len helper)
+let before edit_compiled original
+let payload read_edit_json "[{\"node\":\"4:16\",\"op\":\"+\"},{\"node\":\"calc.tide:2:1\",\"replace\":\"* a (+ b 2)\"}]" "root.tide"
+let preview multi_edit_preview original before payload "root.tide"
+let updated get project preview
+let new_root "+ (scale a b) (+ b 1)"
+let root_unit need (at (get units updated) 0) "preview_root" 0
+let helper_unit need (at (get units updated) 1) "preview_helper" 0
+let found case (text_find (get source root_unit) new_root 0) false offset true
+let compiled edit_compiled updated
+and found (and (text_eq (get source helper_unit) "scale a:i b:i > i\n* a (+ b 2)") (eq (passed_examples compiled "root.tide") 1))

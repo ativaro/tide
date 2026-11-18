@@ -1,0 +1,9 @@
+{
+  "prior": "../57_inklusive_vergleiche/messung.json",
+  "protocol": "../56_gepruefte_operatoren/versuchsplan.json",
+  "operator_policy": "Unchanged. Consider up to 32 sites in entered definitions. Try single operator changes first.",
+  "expression_policy": "At a single-line sum of one product and a single integer atom, where both factors are single integer atoms, try a*(b+c) and (a+c)*b. Accept either original operand order. Atoms are names or signed integer literals. Do not move function calls or arbitrary expressions.",
+  "budget": "32 trials total per project and language, operators followed by small expression replacements. Every reported result passes all public tests before selection.",
+  "controls": "Unchanged five task snapshots, three public and 72 hidden inputs per task, seeds 83/137/269 and Qwen3 4B. Re-enumerate both languages, verify reported TIDE candidates with source edits, and keep hidden outcomes out of prompts.",
+  "selection": "No passing candidate abstains. One candidate proceeds without model. For multiple green candidates use the same local model, prior request if the labelled choices are identical, and one selection only. Record total model tokens and correct hidden outcomes."
+}

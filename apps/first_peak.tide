@@ -1,0 +1,13 @@
+use peak_lines
+
+main input:r > ?&ii
+peak_lines (lines (read input))
+
+example first_tie main
+{"inputs":{"input":"-8\r\n-2\r\n-2\r\n"},"expect":{"some":[-2,2]}}
+
+example empty main
+{"inputs":{"input":""},"expect":{"none":true}}
+
+example bad_row main
+{"inputs":{"input":"4\n\n7"},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}

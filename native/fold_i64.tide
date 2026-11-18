@@ -1,0 +1,139 @@
+use rule_scan
+
+integer_value token:t > i
+need (int token) "expected_i64_literal" 5
+
+reject_line reason:t line:i > t
+need (nil t) reason line
+
+fold_bindings header:*t expr:*t > {FoldNames}
+if not eq length header 5 fail "expected_fold_parameters"
+if (< (length expr) 7) fail "expected_i64_fold"
+if not and (text_eq (word header 3) ">") (text_eq (word header 4) "i") fail "expected_i64_result"
+if not and (text_eq (word header 1) (concat (word expr 2) ":i"))
+           (text_eq (word header 2) (concat (word expr 1) ":*i")) fail "expected_fold_parameters"
+if not (text_eq (word expr 0) "fold") fail "expected_fold_body"
+make FoldNames seed (word expr 2) acc (word expr 3) row_name (word expr 4) item (word expr 5)
+
+direct_opcode expr:*t > ?t
+if not (eq (length expr) 9) (nil t)
+if not (and (text_eq (word expr 7) (word expr 3)) (text_eq (word expr 8) (word expr 5))) (nil t)
+let op word expr 6
+if text_eq op "+" (some "480306") if text_eq op "-" (some "482b06") if text_eq op "*" (some "480faf06") (nil t)
+
+fold_opcode header:*t expr:*t > t
+let bindings fold_bindings header expr
+need (direct_opcode expr) "unsupported_fold_operator" 2
+
+emit_fold opcode:t initial:i count:i data:t > t
+let output print_integer
+let advance "4883c608ffc9"
+let overflow_jump + (bytes_in advance) (+ 2 bytes_in output)
+if > overflow_jump 127 fail "short_branch_range"
+let checked_op concat opcode (concat "70" (byte_hex overflow_jump))
+let loop_code back_if "75" (concat checked_op advance)
+let tail concat "85c9" (concat (skip_if "74" loop_code) (concat output overflow_error))
+let setup concat "48b8" (concat (le64 initial) (concat "b9" (le32 count)))
+elf_image (concat setup (concat "488d35" (concat (le32 bytes_in tail) (concat tail data))))
+
+record Literals
+initial:i count:i data:t
+
+literal_inputs name:t args:*t line:i > {Literals}
+if (< (length args) 5) (need (nil {Literals}) "expected_literal_list_call" line)
+let grouped text_eq (word args 2) "("
+let pos if grouped 3 2
+let stop - (length args) (if grouped 1 0)
+if (and grouped (not (text_eq (word args stop) ")"))) fail "invalid_list_group"
+if not (and (text_eq (word args 0) name) (and (text_eq (word args pos) "list") (text_eq (word args (+ pos 1)) "i")))
+  (need (nil {Literals}) "expected_literal_list_call" line)
+let count need (int (word args (+ pos 2))) "expected_i64_literal" line
+let start + pos 3
+if (not (eq count (- stop start))) (need (nil {Literals}) "wrong_list_length" line)
+let data fold args "" acc row token
+  if (and (> row start) (not (> row stop))) (concat acc (le64 (need (int token) "expected_i64_literal" line))) acc
+make Literals initial (need (int (word args 1)) "expected_i64_literal" line) count count data data
+
+literal_call name:t opcode:t args:*t > t
+let values literal_inputs name args 5
+emit_fold opcode (get initial values) (get count values) (get data values)
+
+example_block decl:{Declaration} > b
+and (text_eq (word (words (get header decl)) 0) "example")
+  (and (eq (length (get body decl)) 1) (text_eq (text_slice (word (get body decl) 0) 0 1) "{"))
+
+step_nodes expr:*t > i
+fold expr 0 n pos token
+  + n (if (and (> pos 6) (not (or (text_eq token "(") (text_eq token ")")))) 1 0)
+
+bounded_work expr:*t count:i > b
+not (> (+ 6 (+ count (* count (step_nodes expr)))) 100000)
+
+closed_program blocks:*{Declaration} repetitions:i > t
+let func need (at blocks 0) "expected_fold_and_main" 1
+let entry need (at blocks 1) "expected_fold_and_main" 1
+let header words (get header func)
+let expr body_words func
+let names fold_bindings header expr
+let sig words (get header entry)
+if (not (and (eq (length sig) 3) (and (text_eq (word sig 0) "main") (and (text_eq (word sig 1) ">") (text_eq (word sig 2) "i"))))) fail "expected_main"
+if not (fold blocks true ok row decl and ok (if (< row 3) true (example_block decl))) fail "unsupported_declaration"
+let values literal_inputs (word header 0) (body_words entry) (+ (get line entry) 1)
+if not (bounded_work expr (get count values)) fail "native_work_bound"
+case (if (eq repetitions 1) (direct_opcode expr) (nil t))
+  (scalar_image (scalar_step expr 6 names) (get initial values) (get count values) (get data values) repetitions)
+  opcode (emit_fold opcode (get initial values) (get count values) (get data values))
+
+argument_program blocks:*{Declaration} entry:{Declaration} > t
+let sig words (get header entry)
+if (not (eq (length sig) 5)) fail "expected_i64_list_entry"
+if (not (and (text_eq (word sig 3) ">") (text_eq (word sig 4) "i"))) fail "expected_i64_list_entry"
+let body body_words entry
+let direct text_eq (word body 0) "fold"
+if (and (not direct) (not (and (eq (length body) 3)
+     (and (text_eq (word sig 1) (concat (word body 1) ":i"))
+          (text_eq (word sig 2) (concat (word body 2) ":*i")))))) fail "expected_forwarded_parameters"
+let target if direct entry (find_declaration blocks (word body 0))
+let expr if direct body (body_words target)
+let names fold_bindings (words (get header target)) expr
+let setup_cost if direct 3 6
+let metered > (+ setup_cost (* 4096 (step_nodes expr))) 100000
+argv_image (scalar_step_mode expr 6 names metered) metered setup_cost
+
+build_entry blocks:*{Declaration} entry:t > t
+let target find_declaration blocks entry
+let sig words (get header target)
+let result word sig (- (length sig) 1)
+if (or (text_eq result "*b") (text_eq result "*i")) (scan_program blocks target)
+if (and (text_eq entry "main") (eq (length sig) 3))
+  (closed_program blocks 1) (argument_program blocks target)
+
+compile_repeated source:t repetitions:i > t
+closed_program (declarations source) repetitions
+
+compile source:t > t
+build_entry (declarations source) "main"
+
+compile_entry source:r entry:t > t
+build_entry (declarations (read source)) entry
+
+main source:r > t
+compile read source
+
+example subtraction fold_opcode
+{"inputs":{"header":["apply","seed:i","nums:*i",">","i"],"expr":["fold","nums","seed","a","row","v","-","a","v"]},"expect":"482b06"}
+
+example invalid_list compile
+{"inputs":{"source":"score seed:i xs:*i > i\nfold xs seed a row x + a x\n\nmain > i\nscore 0 list i 2 9"},"expect_error":{"code":"E_DATA","reason":"wrong_list_length","input_line":5}}
+
+example unsupported_main compile
+{"inputs":{"source":"score seed:i xs:*i > i\nfold xs seed a row x + a x\n\nmain > i\n99"},"expect_error":{"code":"E_DATA","reason":"expected_literal_list_call","input_line":5}}
+
+example unknown_export compile_entry
+{"inputs":{"source":"main start:i values:*i > i\nfold values start a row x + a x","entry":"missing"},"expect_error":{"code":"E_DATA","reason":"unknown_native_entry"}}
+
+example transformed_call compile
+{"inputs":{"source":"sum_values s:i v:*i > i\nfold v s a row x + a x\n\nmain start:i values:*i > i\nsum_values (+ start 1) values"},"expect_error":{"code":"E_DATA","reason":"expected_forwarded_parameters"}}
+
+example unsupported_parameter compile
+{"inputs":{"source":"main start:i values:*b > i\nfold values start a row x if x a 0"},"expect_error":{"code":"E_DATA","reason":"expected_fold_parameters"}}

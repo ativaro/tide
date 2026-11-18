@@ -1,0 +1,5238 @@
+{
+  "timecode": {
+    "public": [
+      {
+        "inputs": {
+          "minutes": 0,
+          "seconds": 0,
+          "fps": 24
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "minutes": 1,
+          "seconds": 0,
+          "fps": 25
+        },
+        "expect": 1500
+      },
+      {
+        "inputs": {
+          "minutes": 4,
+          "seconds": 1,
+          "fps": 48
+        },
+        "expect": 11568
+      },
+      {
+        "inputs": {
+          "minutes": 19,
+          "seconds": 17,
+          "fps": 30
+        },
+        "expect": 34710
+      },
+      {
+        "inputs": {
+          "minutes": 10,
+          "seconds": 41,
+          "fps": 60
+        },
+        "expect": 38460
+      },
+      {
+        "inputs": {
+          "minutes": 28,
+          "seconds": 11,
+          "fps": 60
+        },
+        "expect": 101460
+      },
+      {
+        "inputs": {
+          "minutes": 5,
+          "seconds": 31,
+          "fps": 50
+        },
+        "expect": 16550
+      },
+      {
+        "inputs": {
+          "minutes": 21,
+          "seconds": 28,
+          "fps": 60
+        },
+        "expect": 77280
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "minutes": 25,
+          "seconds": 56,
+          "fps": 60
+        },
+        "expect": 93360
+      },
+      {
+        "inputs": {
+          "minutes": 14,
+          "seconds": 40,
+          "fps": 50
+        },
+        "expect": 44000
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 28,
+          "fps": 30
+        },
+        "expect": 33240
+      },
+      {
+        "inputs": {
+          "minutes": 2,
+          "seconds": 39,
+          "fps": 60
+        },
+        "expect": 9540
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 45,
+          "fps": 48
+        },
+        "expect": 54000
+      },
+      {
+        "inputs": {
+          "minutes": 1,
+          "seconds": 16,
+          "fps": 48
+        },
+        "expect": 3648
+      },
+      {
+        "inputs": {
+          "minutes": 2,
+          "seconds": 41,
+          "fps": 48
+        },
+        "expect": 7728
+      },
+      {
+        "inputs": {
+          "minutes": 12,
+          "seconds": 7,
+          "fps": 60
+        },
+        "expect": 43620
+      },
+      {
+        "inputs": {
+          "minutes": 19,
+          "seconds": 34,
+          "fps": 48
+        },
+        "expect": 56352
+      },
+      {
+        "inputs": {
+          "minutes": 6,
+          "seconds": 18,
+          "fps": 24
+        },
+        "expect": 9072
+      },
+      {
+        "inputs": {
+          "minutes": 6,
+          "seconds": 53,
+          "fps": 25
+        },
+        "expect": 10325
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 6,
+          "fps": 48
+        },
+        "expect": 8928
+      },
+      {
+        "inputs": {
+          "minutes": 21,
+          "seconds": 14,
+          "fps": 25
+        },
+        "expect": 31850
+      },
+      {
+        "inputs": {
+          "minutes": 4,
+          "seconds": 5,
+          "fps": 60
+        },
+        "expect": 14700
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 44,
+          "fps": 25
+        },
+        "expect": 5600
+      },
+      {
+        "inputs": {
+          "minutes": 23,
+          "seconds": 3,
+          "fps": 30
+        },
+        "expect": 41490
+      },
+      {
+        "inputs": {
+          "minutes": 23,
+          "seconds": 0,
+          "fps": 60
+        },
+        "expect": 82800
+      },
+      {
+        "inputs": {
+          "minutes": 25,
+          "seconds": 29,
+          "fps": 30
+        },
+        "expect": 45870
+      },
+      {
+        "inputs": {
+          "minutes": 10,
+          "seconds": 16,
+          "fps": 24
+        },
+        "expect": 14784
+      },
+      {
+        "inputs": {
+          "minutes": 19,
+          "seconds": 11,
+          "fps": 30
+        },
+        "expect": 34530
+      },
+      {
+        "inputs": {
+          "minutes": 7,
+          "seconds": 12,
+          "fps": 25
+        },
+        "expect": 10800
+      },
+      {
+        "inputs": {
+          "minutes": 15,
+          "seconds": 45,
+          "fps": 24
+        },
+        "expect": 22680
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 35,
+          "fps": 50
+        },
+        "expect": 10750
+      },
+      {
+        "inputs": {
+          "minutes": 21,
+          "seconds": 25,
+          "fps": 30
+        },
+        "expect": 38550
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 55,
+          "fps": 30
+        },
+        "expect": 7050
+      },
+      {
+        "inputs": {
+          "minutes": 23,
+          "seconds": 32,
+          "fps": 48
+        },
+        "expect": 67776
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 0,
+          "fps": 48
+        },
+        "expect": 8640
+      },
+      {
+        "inputs": {
+          "minutes": 13,
+          "seconds": 13,
+          "fps": 24
+        },
+        "expect": 19032
+      },
+      {
+        "inputs": {
+          "minutes": 6,
+          "seconds": 27,
+          "fps": 48
+        },
+        "expect": 18576
+      },
+      {
+        "inputs": {
+          "minutes": 28,
+          "seconds": 22,
+          "fps": 24
+        },
+        "expect": 40848
+      },
+      {
+        "inputs": {
+          "minutes": 25,
+          "seconds": 46,
+          "fps": 48
+        },
+        "expect": 74208
+      },
+      {
+        "inputs": {
+          "minutes": 0,
+          "seconds": 8,
+          "fps": 50
+        },
+        "expect": 400
+      },
+      {
+        "inputs": {
+          "minutes": 22,
+          "seconds": 5,
+          "fps": 60
+        },
+        "expect": 79500
+      },
+      {
+        "inputs": {
+          "minutes": 12,
+          "seconds": 10,
+          "fps": 30
+        },
+        "expect": 21900
+      },
+      {
+        "inputs": {
+          "minutes": 9,
+          "seconds": 26,
+          "fps": 25
+        },
+        "expect": 14150
+      },
+      {
+        "inputs": {
+          "minutes": 13,
+          "seconds": 14,
+          "fps": 60
+        },
+        "expect": 47640
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 13,
+          "fps": 30
+        },
+        "expect": 5790
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 57,
+          "fps": 48
+        },
+        "expect": 54576
+      },
+      {
+        "inputs": {
+          "minutes": 28,
+          "seconds": 55,
+          "fps": 48
+        },
+        "expect": 83280
+      },
+      {
+        "inputs": {
+          "minutes": 10,
+          "seconds": 3,
+          "fps": 25
+        },
+        "expect": 15075
+      },
+      {
+        "inputs": {
+          "minutes": 11,
+          "seconds": 21,
+          "fps": 30
+        },
+        "expect": 20430
+      },
+      {
+        "inputs": {
+          "minutes": 6,
+          "seconds": 12,
+          "fps": 24
+        },
+        "expect": 8928
+      },
+      {
+        "inputs": {
+          "minutes": 0,
+          "seconds": 1,
+          "fps": 60
+        },
+        "expect": 60
+      },
+      {
+        "inputs": {
+          "minutes": 3,
+          "seconds": 8,
+          "fps": 25
+        },
+        "expect": 4700
+      },
+      {
+        "inputs": {
+          "minutes": 27,
+          "seconds": 5,
+          "fps": 50
+        },
+        "expect": 81250
+      },
+      {
+        "inputs": {
+          "minutes": 16,
+          "seconds": 7,
+          "fps": 48
+        },
+        "expect": 46416
+      },
+      {
+        "inputs": {
+          "minutes": 8,
+          "seconds": 10,
+          "fps": 50
+        },
+        "expect": 24500
+      },
+      {
+        "inputs": {
+          "minutes": 24,
+          "seconds": 17,
+          "fps": 25
+        },
+        "expect": 36425
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 10,
+          "fps": 30
+        },
+        "expect": 32700
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 51,
+          "fps": 48
+        },
+        "expect": 54288
+      },
+      {
+        "inputs": {
+          "minutes": 22,
+          "seconds": 45,
+          "fps": 25
+        },
+        "expect": 34125
+      },
+      {
+        "inputs": {
+          "minutes": 1,
+          "seconds": 34,
+          "fps": 48
+        },
+        "expect": 4512
+      },
+      {
+        "inputs": {
+          "minutes": 11,
+          "seconds": 47,
+          "fps": 24
+        },
+        "expect": 16968
+      },
+      {
+        "inputs": {
+          "minutes": 7,
+          "seconds": 9,
+          "fps": 50
+        },
+        "expect": 21450
+      },
+      {
+        "inputs": {
+          "minutes": 19,
+          "seconds": 52,
+          "fps": 48
+        },
+        "expect": 57216
+      },
+      {
+        "inputs": {
+          "minutes": 8,
+          "seconds": 12,
+          "fps": 30
+        },
+        "expect": 14760
+      },
+      {
+        "inputs": {
+          "minutes": 1,
+          "seconds": 32,
+          "fps": 60
+        },
+        "expect": 5520
+      },
+      {
+        "inputs": {
+          "minutes": 6,
+          "seconds": 0,
+          "fps": 24
+        },
+        "expect": 8640
+      },
+      {
+        "inputs": {
+          "minutes": 25,
+          "seconds": 3,
+          "fps": 50
+        },
+        "expect": 75150
+      },
+      {
+        "inputs": {
+          "minutes": 28,
+          "seconds": 3,
+          "fps": 25
+        },
+        "expect": 42075
+      },
+      {
+        "inputs": {
+          "minutes": 26,
+          "seconds": 22,
+          "fps": 50
+        },
+        "expect": 79100
+      },
+      {
+        "inputs": {
+          "minutes": 11,
+          "seconds": 37,
+          "fps": 50
+        },
+        "expect": 34850
+      },
+      {
+        "inputs": {
+          "minutes": 21,
+          "seconds": 43,
+          "fps": 30
+        },
+        "expect": 39090
+      },
+      {
+        "inputs": {
+          "minutes": 18,
+          "seconds": 35,
+          "fps": 25
+        },
+        "expect": 27875
+      }
+    ]
+  },
+  "rowgroup": {
+    "public": [
+      {
+        "inputs": {
+          "record_no": 1,
+          "width": 1,
+          "base": 0
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "record_no": 2,
+          "width": 1,
+          "base": 0
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "record_no": 34,
+          "width": 12,
+          "base": 4
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "record_no": 513,
+          "width": 1,
+          "base": 73
+        },
+        "expect": 585
+      },
+      {
+        "inputs": {
+          "record_no": 33,
+          "width": 17,
+          "base": 54
+        },
+        "expect": 55
+      },
+      {
+        "inputs": {
+          "record_no": 657,
+          "width": 15,
+          "base": 64
+        },
+        "expect": 107
+      },
+      {
+        "inputs": {
+          "record_no": 179,
+          "width": 1,
+          "base": 35
+        },
+        "expect": 213
+      },
+      {
+        "inputs": {
+          "record_no": 792,
+          "width": 11,
+          "base": 9
+        },
+        "expect": 80
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "record_no": 808,
+          "width": 10,
+          "base": 42
+        },
+        "expect": 122
+      },
+      {
+        "inputs": {
+          "record_no": 752,
+          "width": 12,
+          "base": 14
+        },
+        "expect": 76
+      },
+      {
+        "inputs": {
+          "record_no": 832,
+          "width": 13,
+          "base": 44
+        },
+        "expect": 107
+      },
+      {
+        "inputs": {
+          "record_no": 209,
+          "width": 2,
+          "base": 43
+        },
+        "expect": 147
+      },
+      {
+        "inputs": {
+          "record_no": 484,
+          "width": 1,
+          "base": 7
+        },
+        "expect": 490
+      },
+      {
+        "inputs": {
+          "record_no": 113,
+          "width": 10,
+          "base": 37
+        },
+        "expect": 48
+      },
+      {
+        "inputs": {
+          "record_no": 194,
+          "width": 11,
+          "base": 23
+        },
+        "expect": 40
+      },
+      {
+        "inputs": {
+          "record_no": 636,
+          "width": 14,
+          "base": 53
+        },
+        "expect": 98
+      },
+      {
+        "inputs": {
+          "record_no": 143,
+          "width": 15,
+          "base": 11
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "record_no": 704,
+          "width": 1,
+          "base": 37
+        },
+        "expect": 740
+      },
+      {
+        "inputs": {
+          "record_no": 44,
+          "width": 13,
+          "base": 95
+        },
+        "expect": 98
+      },
+      {
+        "inputs": {
+          "record_no": 646,
+          "width": 5,
+          "base": 79
+        },
+        "expect": 208
+      },
+      {
+        "inputs": {
+          "record_no": 232,
+          "width": 6,
+          "base": 9
+        },
+        "expect": 47
+      },
+      {
+        "inputs": {
+          "record_no": 902,
+          "width": 6,
+          "base": 20
+        },
+        "expect": 170
+      },
+      {
+        "inputs": {
+          "record_no": 338,
+          "width": 1,
+          "base": 75
+        },
+        "expect": 412
+      },
+      {
+        "inputs": {
+          "record_no": 308,
+          "width": 9,
+          "base": 47
+        },
+        "expect": 81
+      },
+      {
+        "inputs": {
+          "record_no": 194,
+          "width": 2,
+          "base": 71
+        },
+        "expect": 167
+      },
+      {
+        "inputs": {
+          "record_no": 113,
+          "width": 2,
+          "base": 18
+        },
+        "expect": 74
+      },
+      {
+        "inputs": {
+          "record_no": 807,
+          "width": 13,
+          "base": 22
+        },
+        "expect": 84
+      },
+      {
+        "inputs": {
+          "record_no": 410,
+          "width": 14,
+          "base": 5
+        },
+        "expect": 34
+      },
+      {
+        "inputs": {
+          "record_no": 765,
+          "width": 16,
+          "base": 16
+        },
+        "expect": 63
+      },
+      {
+        "inputs": {
+          "record_no": 553,
+          "width": 10,
+          "base": 77
+        },
+        "expect": 132
+      },
+      {
+        "inputs": {
+          "record_no": 667,
+          "width": 5,
+          "base": 69
+        },
+        "expect": 202
+      },
+      {
+        "inputs": {
+          "record_no": 166,
+          "width": 10,
+          "base": 81
+        },
+        "expect": 97
+      },
+      {
+        "inputs": {
+          "record_no": 433,
+          "width": 12,
+          "base": 35
+        },
+        "expect": 71
+      },
+      {
+        "inputs": {
+          "record_no": 15,
+          "width": 17,
+          "base": 15
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "record_no": 291,
+          "width": 7,
+          "base": 83
+        },
+        "expect": 124
+      },
+      {
+        "inputs": {
+          "record_no": 302,
+          "width": 15,
+          "base": 8
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "record_no": 323,
+          "width": 14,
+          "base": 93
+        },
+        "expect": 116
+      },
+      {
+        "inputs": {
+          "record_no": 699,
+          "width": 14,
+          "base": 96
+        },
+        "expect": 145
+      },
+      {
+        "inputs": {
+          "record_no": 715,
+          "width": 11,
+          "base": 89
+        },
+        "expect": 153
+      },
+      {
+        "inputs": {
+          "record_no": 581,
+          "width": 11,
+          "base": 91
+        },
+        "expect": 143
+      },
+      {
+        "inputs": {
+          "record_no": 801,
+          "width": 7,
+          "base": 12
+        },
+        "expect": 126
+      },
+      {
+        "inputs": {
+          "record_no": 500,
+          "width": 13,
+          "base": 7
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "record_no": 732,
+          "width": 15,
+          "base": 56
+        },
+        "expect": 104
+      },
+      {
+        "inputs": {
+          "record_no": 22,
+          "width": 9,
+          "base": 95
+        },
+        "expect": 97
+      },
+      {
+        "inputs": {
+          "record_no": 391,
+          "width": 13,
+          "base": 3
+        },
+        "expect": 33
+      },
+      {
+        "inputs": {
+          "record_no": 715,
+          "width": 7,
+          "base": 65
+        },
+        "expect": 167
+      },
+      {
+        "inputs": {
+          "record_no": 391,
+          "width": 9,
+          "base": 51
+        },
+        "expect": 94
+      },
+      {
+        "inputs": {
+          "record_no": 733,
+          "width": 2,
+          "base": 74
+        },
+        "expect": 440
+      },
+      {
+        "inputs": {
+          "record_no": 346,
+          "width": 13,
+          "base": 86
+        },
+        "expect": 112
+      },
+      {
+        "inputs": {
+          "record_no": 98,
+          "width": 16,
+          "base": 13
+        },
+        "expect": 19
+      },
+      {
+        "inputs": {
+          "record_no": 336,
+          "width": 6,
+          "base": 66
+        },
+        "expect": 121
+      },
+      {
+        "inputs": {
+          "record_no": 429,
+          "width": 7,
+          "base": 61
+        },
+        "expect": 122
+      },
+      {
+        "inputs": {
+          "record_no": 352,
+          "width": 12,
+          "base": 69
+        },
+        "expect": 98
+      },
+      {
+        "inputs": {
+          "record_no": 274,
+          "width": 5,
+          "base": 70
+        },
+        "expect": 124
+      },
+      {
+        "inputs": {
+          "record_no": 595,
+          "width": 8,
+          "base": 89
+        },
+        "expect": 163
+      },
+      {
+        "inputs": {
+          "record_no": 879,
+          "width": 10,
+          "base": 16
+        },
+        "expect": 103
+      },
+      {
+        "inputs": {
+          "record_no": 105,
+          "width": 8,
+          "base": 41
+        },
+        "expect": 54
+      },
+      {
+        "inputs": {
+          "record_no": 327,
+          "width": 10,
+          "base": 20
+        },
+        "expect": 52
+      },
+      {
+        "inputs": {
+          "record_no": 287,
+          "width": 6,
+          "base": 68
+        },
+        "expect": 115
+      },
+      {
+        "inputs": {
+          "record_no": 846,
+          "width": 12,
+          "base": 45
+        },
+        "expect": 115
+      },
+      {
+        "inputs": {
+          "record_no": 591,
+          "width": 4,
+          "base": 77
+        },
+        "expect": 224
+      },
+      {
+        "inputs": {
+          "record_no": 644,
+          "width": 13,
+          "base": 74
+        },
+        "expect": 123
+      },
+      {
+        "inputs": {
+          "record_no": 681,
+          "width": 10,
+          "base": 63
+        },
+        "expect": 131
+      },
+      {
+        "inputs": {
+          "record_no": 276,
+          "width": 1,
+          "base": 3
+        },
+        "expect": 278
+      },
+      {
+        "inputs": {
+          "record_no": 230,
+          "width": 13,
+          "base": 70
+        },
+        "expect": 87
+      },
+      {
+        "inputs": {
+          "record_no": 766,
+          "width": 9,
+          "base": 41
+        },
+        "expect": 126
+      },
+      {
+        "inputs": {
+          "record_no": 233,
+          "width": 9,
+          "base": 27
+        },
+        "expect": 52
+      },
+      {
+        "inputs": {
+          "record_no": 522,
+          "width": 17,
+          "base": 93
+        },
+        "expect": 123
+      },
+      {
+        "inputs": {
+          "record_no": 217,
+          "width": 13,
+          "base": 5
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "record_no": 89,
+          "width": 12,
+          "base": 78
+        },
+        "expect": 85
+      },
+      {
+        "inputs": {
+          "record_no": 106,
+          "width": 9,
+          "base": 56
+        },
+        "expect": 67
+      },
+      {
+        "inputs": {
+          "record_no": 828,
+          "width": 16,
+          "base": 16
+        },
+        "expect": 67
+      }
+    ]
+  },
+  "flood": {
+    "public": [
+      {
+        "inputs": {
+          "samples": [],
+          "level": 0,
+          "period": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "samples": [
+            1,
+            -1,
+            -1,
+            1
+          ],
+          "level": 1,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [
+            2,
+            4,
+            0,
+            5
+          ],
+          "level": 2,
+          "period": 2
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            16,
+            14,
+            14,
+            17
+          ],
+          "level": 16,
+          "period": 2
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "samples": [
+            6,
+            7,
+            4,
+            7
+          ],
+          "level": 6,
+          "period": 15
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "samples": [
+            11,
+            13,
+            9,
+            11
+          ],
+          "level": 11,
+          "period": 9
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "samples": [
+            18,
+            18,
+            16,
+            20
+          ],
+          "level": 18,
+          "period": 3
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "samples": [
+            15,
+            12,
+            13,
+            19
+          ],
+          "level": 15,
+          "period": 12
+        },
+        "expect": 24
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "samples": [
+            27,
+            28,
+            25,
+            31
+          ],
+          "level": 27,
+          "period": 13
+        },
+        "expect": 39
+      },
+      {
+        "inputs": {
+          "samples": [
+            17,
+            14,
+            15,
+            17
+          ],
+          "level": 17,
+          "period": 10
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "samples": [
+            7,
+            5,
+            5,
+            9
+          ],
+          "level": 7,
+          "period": 2
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "samples": [
+            1,
+            -1,
+            -1,
+            5
+          ],
+          "level": 1,
+          "period": 3
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            25,
+            22,
+            23,
+            25
+          ],
+          "level": 25,
+          "period": 7
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "samples": [
+            18,
+            17,
+            16,
+            20
+          ],
+          "level": 18,
+          "period": 7
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "samples": [
+            5,
+            5,
+            3,
+            7
+          ],
+          "level": 5,
+          "period": 5
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "samples": [
+            13,
+            16,
+            11,
+            17
+          ],
+          "level": 13,
+          "period": 2
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            29,
+            31,
+            27,
+            31
+          ],
+          "level": 29,
+          "period": 2
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            23,
+            20,
+            21,
+            24
+          ],
+          "level": 23,
+          "period": 2
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "samples": [
+            6,
+            3,
+            4,
+            10
+          ],
+          "level": 6,
+          "period": 14
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "samples": [
+            6,
+            6,
+            4,
+            10
+          ],
+          "level": 6,
+          "period": 15
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "samples": [
+            25,
+            22,
+            23,
+            28
+          ],
+          "level": 25,
+          "period": 2
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "samples": [
+            8,
+            9,
+            6,
+            10
+          ],
+          "level": 8,
+          "period": 10
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "samples": [
+            5,
+            3,
+            3,
+            5
+          ],
+          "level": 5,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [
+            9,
+            9,
+            7,
+            12
+          ],
+          "level": 9,
+          "period": 15
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "samples": [
+            21,
+            22,
+            19,
+            21
+          ],
+          "level": 21,
+          "period": 3
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "samples": [
+            19,
+            22,
+            17,
+            19
+          ],
+          "level": 19,
+          "period": 8
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            14,
+            17,
+            12,
+            16
+          ],
+          "level": 14,
+          "period": 8
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            30,
+            29,
+            28,
+            33
+          ],
+          "level": 30,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [
+            4,
+            2,
+            2,
+            8
+          ],
+          "level": 4,
+          "period": 3
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            24,
+            21,
+            22,
+            25
+          ],
+          "level": 24,
+          "period": 13
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "samples": [
+            17,
+            14,
+            15,
+            20
+          ],
+          "level": 17,
+          "period": 13
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "samples": [
+            11,
+            14,
+            9,
+            15
+          ],
+          "level": 11,
+          "period": 13
+        },
+        "expect": 39
+      },
+      {
+        "inputs": {
+          "samples": [
+            14,
+            15,
+            12,
+            18
+          ],
+          "level": 14,
+          "period": 10
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "samples": [
+            13,
+            11,
+            11,
+            14
+          ],
+          "level": 13,
+          "period": 9
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "samples": [
+            10,
+            7,
+            8,
+            13
+          ],
+          "level": 10,
+          "period": 12
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            27,
+            27,
+            25,
+            28
+          ],
+          "level": 27,
+          "period": 8
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            22,
+            24,
+            20,
+            25
+          ],
+          "level": 22,
+          "period": 13
+        },
+        "expect": 39
+      },
+      {
+        "inputs": {
+          "samples": [
+            26,
+            26,
+            24,
+            27
+          ],
+          "level": 26,
+          "period": 3
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "samples": [],
+          "level": 24,
+          "period": 4
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "samples": [
+            18,
+            19,
+            16,
+            20
+          ],
+          "level": 18,
+          "period": 1
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "samples": [
+            22,
+            21,
+            20,
+            24
+          ],
+          "level": 22,
+          "period": 11
+        },
+        "expect": 22
+      },
+      {
+        "inputs": {
+          "samples": [
+            27,
+            29,
+            25,
+            31
+          ],
+          "level": 27,
+          "period": 15
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "samples": [
+            10,
+            8,
+            8,
+            11
+          ],
+          "level": 10,
+          "period": 7
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "samples": [
+            24,
+            22,
+            22,
+            26
+          ],
+          "level": 24,
+          "period": 4
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "samples": [
+            10,
+            13,
+            8,
+            12
+          ],
+          "level": 10,
+          "period": 1
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "samples": [
+            26,
+            27,
+            24,
+            28
+          ],
+          "level": 26,
+          "period": 15
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "samples": [
+            3,
+            3,
+            1,
+            4
+          ],
+          "level": 3,
+          "period": 8
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            25,
+            23,
+            23,
+            29
+          ],
+          "level": 25,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [
+            9,
+            7,
+            7,
+            12
+          ],
+          "level": 9,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [],
+          "level": 29,
+          "period": 11
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "samples": [
+            5,
+            5,
+            3,
+            9
+          ],
+          "level": 5,
+          "period": 6
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "samples": [
+            7,
+            10,
+            5,
+            7
+          ],
+          "level": 7,
+          "period": 5
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "samples": [
+            6,
+            7,
+            4,
+            10
+          ],
+          "level": 6,
+          "period": 8
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            2,
+            2,
+            0,
+            3
+          ],
+          "level": 2,
+          "period": 2
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            11,
+            8,
+            9,
+            14
+          ],
+          "level": 11,
+          "period": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "samples": [
+            24,
+            22,
+            22,
+            24
+          ],
+          "level": 24,
+          "period": 2
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "samples": [
+            23,
+            21,
+            21,
+            25
+          ],
+          "level": 23,
+          "period": 12
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "samples": [
+            29,
+            30,
+            27,
+            31
+          ],
+          "level": 29,
+          "period": 12
+        },
+        "expect": 36
+      },
+      {
+        "inputs": {
+          "samples": [
+            4,
+            6,
+            2,
+            8
+          ],
+          "level": 4,
+          "period": 3
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "samples": [
+            9,
+            10,
+            7,
+            13
+          ],
+          "level": 9,
+          "period": 3
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "samples": [
+            7,
+            6,
+            5,
+            10
+          ],
+          "level": 7,
+          "period": 15
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "samples": [
+            23,
+            22,
+            21,
+            24
+          ],
+          "level": 23,
+          "period": 8
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "samples": [
+            16,
+            15,
+            14,
+            16
+          ],
+          "level": 16,
+          "period": 8
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "samples": [
+            29,
+            28,
+            27,
+            33
+          ],
+          "level": 29,
+          "period": 7
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "samples": [
+            4,
+            6,
+            2,
+            7
+          ],
+          "level": 4,
+          "period": 2
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "samples": [
+            29,
+            31,
+            27,
+            31
+          ],
+          "level": 29,
+          "period": 10
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "samples": [
+            8,
+            11,
+            6,
+            8
+          ],
+          "level": 8,
+          "period": 11
+        },
+        "expect": 33
+      },
+      {
+        "inputs": {
+          "samples": [
+            17,
+            16,
+            15,
+            19
+          ],
+          "level": 17,
+          "period": 10
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "samples": [
+            16,
+            13,
+            14,
+            18
+          ],
+          "level": 16,
+          "period": 5
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "samples": [
+            24,
+            24,
+            22,
+            25
+          ],
+          "level": 24,
+          "period": 5
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "samples": [
+            27,
+            29,
+            25,
+            31
+          ],
+          "level": 27,
+          "period": 10
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "samples": [
+            12,
+            10,
+            10,
+            14
+          ],
+          "level": 12,
+          "period": 12
+        },
+        "expect": 24
+      }
+    ]
+  },
+  "wire": {
+    "public": [
+      {
+        "inputs": {
+          "label": "0",
+          "copies": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "label": "A1",
+          "copies": 1
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "label": "猫33",
+          "copies": 7
+        },
+        "expect": 42
+      },
+      {
+        "inputs": {
+          "label": "é512",
+          "copies": 4
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "label": "🌡8159",
+          "copies": 4
+        },
+        "expect": 36
+      },
+      {
+        "inputs": {
+          "label": "é16007",
+          "copies": 1
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "label": "🌡20044",
+          "copies": 5
+        },
+        "expect": 50
+      },
+      {
+        "inputs": {
+          "label": "猫49553",
+          "copies": 11
+        },
+        "expect": 99
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "label": "🌡56684",
+          "copies": 7
+        },
+        "expect": 70
+      },
+      {
+        "inputs": {
+          "label": "猫7503",
+          "copies": 5
+        },
+        "expect": 40
+      },
+      {
+        "inputs": {
+          "label": "é54127",
+          "copies": 2
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "label": "🌡26099",
+          "copies": 6
+        },
+        "expect": 60
+      },
+      {
+        "inputs": {
+          "label": "36695",
+          "copies": 3
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "label": "猫47913",
+          "copies": 2
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "label": "🌡314",
+          "copies": 8
+        },
+        "expect": 64
+      },
+      {
+        "inputs": {
+          "label": "🌡6539",
+          "copies": 10
+        },
+        "expect": 90
+      },
+      {
+        "inputs": {
+          "label": "A50686",
+          "copies": 7
+        },
+        "expect": 49
+      },
+      {
+        "inputs": {
+          "label": "64745",
+          "copies": 3
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "label": "32705",
+          "copies": 8
+        },
+        "expect": 48
+      },
+      {
+        "inputs": {
+          "label": "A58641",
+          "copies": 3
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "label": "é2552",
+          "copies": 5
+        },
+        "expect": 35
+      },
+      {
+        "inputs": {
+          "label": "é53372",
+          "copies": 5
+        },
+        "expect": 40
+      },
+      {
+        "inputs": {
+          "label": "猫31128",
+          "copies": 11
+        },
+        "expect": 99
+      },
+      {
+        "inputs": {
+          "label": "猫4743",
+          "copies": 3
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "label": "🌡29354",
+          "copies": 8
+        },
+        "expect": 80
+      },
+      {
+        "inputs": {
+          "label": "é16717",
+          "copies": 11
+        },
+        "expect": 88
+      },
+      {
+        "inputs": {
+          "label": "16090",
+          "copies": 7
+        },
+        "expect": 42
+      },
+      {
+        "inputs": {
+          "label": "猫64223",
+          "copies": 8
+        },
+        "expect": 72
+      },
+      {
+        "inputs": {
+          "label": "A29056",
+          "copies": 4
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "label": "A43046",
+          "copies": 8
+        },
+        "expect": 56
+      },
+      {
+        "inputs": {
+          "label": "A5821",
+          "copies": 10
+        },
+        "expect": 60
+      },
+      {
+        "inputs": {
+          "label": "A14431",
+          "copies": 5
+        },
+        "expect": 35
+      },
+      {
+        "inputs": {
+          "label": "猫43208",
+          "copies": 7
+        },
+        "expect": 63
+      },
+      {
+        "inputs": {
+          "label": "🌡59684",
+          "copies": 2
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "label": "A7026",
+          "copies": 9
+        },
+        "expect": 54
+      },
+      {
+        "inputs": {
+          "label": "41475",
+          "copies": 2
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "label": "A61471",
+          "copies": 8
+        },
+        "expect": 56
+      },
+      {
+        "inputs": {
+          "label": "🌡29294",
+          "copies": 7
+        },
+        "expect": 70
+      },
+      {
+        "inputs": {
+          "label": "A7841",
+          "copies": 7
+        },
+        "expect": 42
+      },
+      {
+        "inputs": {
+          "label": "🌡62294",
+          "copies": 7
+        },
+        "expect": 70
+      },
+      {
+        "inputs": {
+          "label": "🌡14359",
+          "copies": 1
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "label": "🌡7659",
+          "copies": 3
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "label": "🌡21724",
+          "copies": 11
+        },
+        "expect": 110
+      },
+      {
+        "inputs": {
+          "label": "🌡18164",
+          "copies": 3
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "label": "猫2158",
+          "copies": 3
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "label": "1730",
+          "copies": 6
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "label": "é26002",
+          "copies": 9
+        },
+        "expect": 72
+      },
+      {
+        "inputs": {
+          "label": "猫63758",
+          "copies": 3
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "label": "37650",
+          "copies": 7
+        },
+        "expect": 42
+      },
+      {
+        "inputs": {
+          "label": "猫21443",
+          "copies": 10
+        },
+        "expect": 90
+      },
+      {
+        "inputs": {
+          "label": "🌡27954",
+          "copies": 3
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "label": "64695",
+          "copies": 4
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "label": "🌡53674",
+          "copies": 10
+        },
+        "expect": 100
+      },
+      {
+        "inputs": {
+          "label": "猫64043",
+          "copies": 5
+        },
+        "expect": 45
+      },
+      {
+        "inputs": {
+          "label": "33105",
+          "copies": 11
+        },
+        "expect": 66
+      },
+      {
+        "inputs": {
+          "label": "猫10458",
+          "copies": 2
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "label": "🌡54264",
+          "copies": 7
+        },
+        "expect": 70
+      },
+      {
+        "inputs": {
+          "label": "猫24543",
+          "copies": 3
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "label": "🌡54349",
+          "copies": 2
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "label": "A40946",
+          "copies": 6
+        },
+        "expect": 42
+      },
+      {
+        "inputs": {
+          "label": "🌡30859",
+          "copies": 1
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "label": "猫10063",
+          "copies": 11
+        },
+        "expect": 99
+      },
+      {
+        "inputs": {
+          "label": "A55771",
+          "copies": 1
+        },
+        "expect": 7
+      },
+      {
+        "inputs": {
+          "label": "A21271",
+          "copies": 9
+        },
+        "expect": 63
+      },
+      {
+        "inputs": {
+          "label": "45280",
+          "copies": 4
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "label": "A41306",
+          "copies": 1
+        },
+        "expect": 7
+      },
+      {
+        "inputs": {
+          "label": "40240",
+          "copies": 8
+        },
+        "expect": 48
+      },
+      {
+        "inputs": {
+          "label": "é63552",
+          "copies": 6
+        },
+        "expect": 48
+      },
+      {
+        "inputs": {
+          "label": "猫43158",
+          "copies": 8
+        },
+        "expect": 72
+      },
+      {
+        "inputs": {
+          "label": "é51132",
+          "copies": 8
+        },
+        "expect": 64
+      },
+      {
+        "inputs": {
+          "label": "🌡38864",
+          "copies": 7
+        },
+        "expect": 70
+      },
+      {
+        "inputs": {
+          "label": "é31527",
+          "copies": 3
+        },
+        "expect": 24
+      }
+    ]
+  },
+  "mosaic": {
+    "public": [
+      {
+        "inputs": {
+          "row": 0,
+          "column": 0,
+          "pitch": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "row": 0,
+          "column": 0,
+          "pitch": 2
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "row": 4,
+          "column": 11,
+          "pitch": 34
+        },
+        "expect": 147
+      },
+      {
+        "inputs": {
+          "row": 13,
+          "column": 26,
+          "pitch": 36
+        },
+        "expect": 494
+      },
+      {
+        "inputs": {
+          "row": 25,
+          "column": 16,
+          "pitch": 51
+        },
+        "expect": 1291
+      },
+      {
+        "inputs": {
+          "row": 6,
+          "column": 1,
+          "pitch": 2
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "row": 13,
+          "column": 4,
+          "pitch": 11
+        },
+        "expect": 147
+      },
+      {
+        "inputs": {
+          "row": 29,
+          "column": 33,
+          "pitch": 52
+        },
+        "expect": 1541
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "row": 5,
+          "column": 47,
+          "pitch": 48
+        },
+        "expect": 287
+      },
+      {
+        "inputs": {
+          "row": 23,
+          "column": 19,
+          "pitch": 25
+        },
+        "expect": 594
+      },
+      {
+        "inputs": {
+          "row": 14,
+          "column": 18,
+          "pitch": 33
+        },
+        "expect": 480
+      },
+      {
+        "inputs": {
+          "row": 14,
+          "column": 3,
+          "pitch": 15
+        },
+        "expect": 213
+      },
+      {
+        "inputs": {
+          "row": 7,
+          "column": 6,
+          "pitch": 12
+        },
+        "expect": 90
+      },
+      {
+        "inputs": {
+          "row": 7,
+          "column": 17,
+          "pitch": 29
+        },
+        "expect": 220
+      },
+      {
+        "inputs": {
+          "row": 19,
+          "column": 10,
+          "pitch": 15
+        },
+        "expect": 295
+      },
+      {
+        "inputs": {
+          "row": 15,
+          "column": 15,
+          "pitch": 20
+        },
+        "expect": 315
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 5,
+          "pitch": 44
+        },
+        "expect": 929
+      },
+      {
+        "inputs": {
+          "row": 0,
+          "column": 5,
+          "pitch": 32
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "row": 16,
+          "column": 16,
+          "pitch": 22
+        },
+        "expect": 368
+      },
+      {
+        "inputs": {
+          "row": 4,
+          "column": 5,
+          "pitch": 33
+        },
+        "expect": 137
+      },
+      {
+        "inputs": {
+          "row": 28,
+          "column": 37,
+          "pitch": 51
+        },
+        "expect": 1465
+      },
+      {
+        "inputs": {
+          "row": 24,
+          "column": 13,
+          "pitch": 26
+        },
+        "expect": 637
+      },
+      {
+        "inputs": {
+          "row": 16,
+          "column": 15,
+          "pitch": 47
+        },
+        "expect": 767
+      },
+      {
+        "inputs": {
+          "row": 25,
+          "column": 6,
+          "pitch": 24
+        },
+        "expect": 606
+      },
+      {
+        "inputs": {
+          "row": 11,
+          "column": 8,
+          "pitch": 9
+        },
+        "expect": 107
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 0,
+          "pitch": 41
+        },
+        "expect": 861
+      },
+      {
+        "inputs": {
+          "row": 28,
+          "column": 11,
+          "pitch": 14
+        },
+        "expect": 403
+      },
+      {
+        "inputs": {
+          "row": 11,
+          "column": 0,
+          "pitch": 3
+        },
+        "expect": 33
+      },
+      {
+        "inputs": {
+          "row": 20,
+          "column": 17,
+          "pitch": 33
+        },
+        "expect": 677
+      },
+      {
+        "inputs": {
+          "row": 19,
+          "column": 10,
+          "pitch": 19
+        },
+        "expect": 371
+      },
+      {
+        "inputs": {
+          "row": 28,
+          "column": 2,
+          "pitch": 4
+        },
+        "expect": 114
+      },
+      {
+        "inputs": {
+          "row": 9,
+          "column": 19,
+          "pitch": 39
+        },
+        "expect": 370
+      },
+      {
+        "inputs": {
+          "row": 15,
+          "column": 4,
+          "pitch": 52
+        },
+        "expect": 784
+      },
+      {
+        "inputs": {
+          "row": 29,
+          "column": 31,
+          "pitch": 47
+        },
+        "expect": 1394
+      },
+      {
+        "inputs": {
+          "row": 18,
+          "column": 2,
+          "pitch": 28
+        },
+        "expect": 506
+      },
+      {
+        "inputs": {
+          "row": 29,
+          "column": 8,
+          "pitch": 20
+        },
+        "expect": 588
+      },
+      {
+        "inputs": {
+          "row": 17,
+          "column": 11,
+          "pitch": 40
+        },
+        "expect": 691
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 1,
+          "pitch": 7
+        },
+        "expect": 148
+      },
+      {
+        "inputs": {
+          "row": 15,
+          "column": 10,
+          "pitch": 17
+        },
+        "expect": 265
+      },
+      {
+        "inputs": {
+          "row": 9,
+          "column": 6,
+          "pitch": 9
+        },
+        "expect": 87
+      },
+      {
+        "inputs": {
+          "row": 2,
+          "column": 11,
+          "pitch": 52
+        },
+        "expect": 115
+      },
+      {
+        "inputs": {
+          "row": 16,
+          "column": 45,
+          "pitch": 52
+        },
+        "expect": 877
+      },
+      {
+        "inputs": {
+          "row": 12,
+          "column": 0,
+          "pitch": 6
+        },
+        "expect": 72
+      },
+      {
+        "inputs": {
+          "row": 18,
+          "column": 2,
+          "pitch": 4
+        },
+        "expect": 74
+      },
+      {
+        "inputs": {
+          "row": 18,
+          "column": 9,
+          "pitch": 11
+        },
+        "expect": 207
+      },
+      {
+        "inputs": {
+          "row": 22,
+          "column": 17,
+          "pitch": 35
+        },
+        "expect": 787
+      },
+      {
+        "inputs": {
+          "row": 12,
+          "column": 28,
+          "pitch": 36
+        },
+        "expect": 460
+      },
+      {
+        "inputs": {
+          "row": 6,
+          "column": 42,
+          "pitch": 44
+        },
+        "expect": 306
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 26,
+          "pitch": 33
+        },
+        "expect": 719
+      },
+      {
+        "inputs": {
+          "row": 0,
+          "column": 0,
+          "pitch": 7
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "row": 1,
+          "column": 16,
+          "pitch": 31
+        },
+        "expect": 47
+      },
+      {
+        "inputs": {
+          "row": 11,
+          "column": 13,
+          "pitch": 21
+        },
+        "expect": 244
+      },
+      {
+        "inputs": {
+          "row": 23,
+          "column": 27,
+          "pitch": 28
+        },
+        "expect": 671
+      },
+      {
+        "inputs": {
+          "row": 17,
+          "column": 39,
+          "pitch": 42
+        },
+        "expect": 753
+      },
+      {
+        "inputs": {
+          "row": 17,
+          "column": 47,
+          "pitch": 51
+        },
+        "expect": 914
+      },
+      {
+        "inputs": {
+          "row": 25,
+          "column": 23,
+          "pitch": 35
+        },
+        "expect": 898
+      },
+      {
+        "inputs": {
+          "row": 26,
+          "column": 52,
+          "pitch": 53
+        },
+        "expect": 1430
+      },
+      {
+        "inputs": {
+          "row": 3,
+          "column": 43,
+          "pitch": 51
+        },
+        "expect": 196
+      },
+      {
+        "inputs": {
+          "row": 27,
+          "column": 0,
+          "pitch": 37
+        },
+        "expect": 999
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 1,
+          "pitch": 34
+        },
+        "expect": 715
+      },
+      {
+        "inputs": {
+          "row": 17,
+          "column": 17,
+          "pitch": 53
+        },
+        "expect": 918
+      },
+      {
+        "inputs": {
+          "row": 15,
+          "column": 1,
+          "pitch": 7
+        },
+        "expect": 106
+      },
+      {
+        "inputs": {
+          "row": 8,
+          "column": 11,
+          "pitch": 24
+        },
+        "expect": 203
+      },
+      {
+        "inputs": {
+          "row": 23,
+          "column": 5,
+          "pitch": 9
+        },
+        "expect": 212
+      },
+      {
+        "inputs": {
+          "row": 7,
+          "column": 2,
+          "pitch": 14
+        },
+        "expect": 100
+      },
+      {
+        "inputs": {
+          "row": 28,
+          "column": 6,
+          "pitch": 39
+        },
+        "expect": 1098
+      },
+      {
+        "inputs": {
+          "row": 8,
+          "column": 10,
+          "pitch": 15
+        },
+        "expect": 130
+      },
+      {
+        "inputs": {
+          "row": 27,
+          "column": 2,
+          "pitch": 8
+        },
+        "expect": 218
+      },
+      {
+        "inputs": {
+          "row": 18,
+          "column": 24,
+          "pitch": 26
+        },
+        "expect": 492
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 7,
+          "pitch": 28
+        },
+        "expect": 595
+      },
+      {
+        "inputs": {
+          "row": 21,
+          "column": 10,
+          "pitch": 37
+        },
+        "expect": 787
+      },
+      {
+        "inputs": {
+          "row": 20,
+          "column": 8,
+          "pitch": 30
+        },
+        "expect": 608
+      }
+    ]
+  },
+  "reserve": {
+    "public": [
+      {
+        "inputs": {
+          "left": 0,
+          "right": 0,
+          "capacity": 0
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 1,
+          "right": 0,
+          "capacity": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 33,
+          "right": 8,
+          "capacity": 36
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "left": 31,
+          "right": 17,
+          "capacity": 9
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 19,
+          "right": 4,
+          "capacity": 55
+        },
+        "expect": 36
+      },
+      {
+        "inputs": {
+          "left": 23,
+          "right": 5,
+          "capacity": 16
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 16,
+          "capacity": 28
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "left": 10,
+          "right": 30,
+          "capacity": 11
+        },
+        "expect": 0
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "left": 21,
+          "right": 5,
+          "capacity": 3
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 15,
+          "right": 22,
+          "capacity": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 16,
+          "right": 22,
+          "capacity": 4
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 20,
+          "right": 32,
+          "capacity": 29
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 28,
+          "right": 25,
+          "capacity": 47
+        },
+        "expect": 19
+      },
+      {
+        "inputs": {
+          "left": 17,
+          "right": 22,
+          "capacity": 48
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 34,
+          "capacity": 38
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "left": 21,
+          "right": 33,
+          "capacity": 26
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 18,
+          "right": 4,
+          "capacity": 6
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 10,
+          "right": 11,
+          "capacity": 25
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "left": 29,
+          "right": 16,
+          "capacity": 42
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "left": 1,
+          "right": 18,
+          "capacity": 10
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 7,
+          "right": 29,
+          "capacity": 30
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "left": 21,
+          "right": 14,
+          "capacity": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 34,
+          "capacity": 14
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 24,
+          "right": 6,
+          "capacity": 50
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "left": 34,
+          "right": 36,
+          "capacity": 11
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 30,
+          "right": 26,
+          "capacity": 42
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 25,
+          "capacity": 60
+        },
+        "expect": 33
+      },
+      {
+        "inputs": {
+          "left": 33,
+          "right": 8,
+          "capacity": 8
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 32,
+          "right": 26,
+          "capacity": 11
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 26,
+          "right": 25,
+          "capacity": 29
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "left": 28,
+          "right": 25,
+          "capacity": 43
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "left": 11,
+          "right": 30,
+          "capacity": 50
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "left": 19,
+          "right": 14,
+          "capacity": 36
+        },
+        "expect": 17
+      },
+      {
+        "inputs": {
+          "left": 36,
+          "right": 18,
+          "capacity": 27
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 31,
+          "right": 7,
+          "capacity": 39
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "left": 35,
+          "right": 27,
+          "capacity": 58
+        },
+        "expect": 23
+      },
+      {
+        "inputs": {
+          "left": 23,
+          "right": 15,
+          "capacity": 51
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "left": 35,
+          "right": 8,
+          "capacity": 5
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 33,
+          "right": 36,
+          "capacity": 29
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 25,
+          "right": 24,
+          "capacity": 20
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 5,
+          "right": 19,
+          "capacity": 6
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 15,
+          "right": 3,
+          "capacity": 22
+        },
+        "expect": 7
+      },
+      {
+        "inputs": {
+          "left": 20,
+          "right": 23,
+          "capacity": 0
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 13,
+          "right": 3,
+          "capacity": 17
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "left": 0,
+          "right": 0,
+          "capacity": 17
+        },
+        "expect": 17
+      },
+      {
+        "inputs": {
+          "left": 19,
+          "right": 4,
+          "capacity": 43
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "left": 20,
+          "right": 5,
+          "capacity": 25
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "left": 5,
+          "right": 19,
+          "capacity": 56
+        },
+        "expect": 37
+      },
+      {
+        "inputs": {
+          "left": 3,
+          "right": 19,
+          "capacity": 52
+        },
+        "expect": 33
+      },
+      {
+        "inputs": {
+          "left": 23,
+          "right": 5,
+          "capacity": 24
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "left": 19,
+          "right": 4,
+          "capacity": 37
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "left": 2,
+          "right": 28,
+          "capacity": 40
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "left": 4,
+          "right": 1,
+          "capacity": 36
+        },
+        "expect": 32
+      },
+      {
+        "inputs": {
+          "left": 36,
+          "right": 27,
+          "capacity": 6
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 33,
+          "right": 36,
+          "capacity": 14
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 19,
+          "right": 23,
+          "capacity": 40
+        },
+        "expect": 17
+      },
+      {
+        "inputs": {
+          "left": 30,
+          "right": 35,
+          "capacity": 38
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "left": 3,
+          "right": 10,
+          "capacity": 25
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "left": 26,
+          "right": 34,
+          "capacity": 28
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 2,
+          "right": 28,
+          "capacity": 54
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "left": 13,
+          "right": 3,
+          "capacity": 13
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 14,
+          "right": 31,
+          "capacity": 22
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 16,
+          "capacity": 35
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "left": 0,
+          "right": 9,
+          "capacity": 55
+        },
+        "expect": 46
+      },
+      {
+        "inputs": {
+          "left": 18,
+          "right": 23,
+          "capacity": 40
+        },
+        "expect": 17
+      },
+      {
+        "inputs": {
+          "left": 21,
+          "right": 5,
+          "capacity": 14
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 6,
+          "right": 20,
+          "capacity": 39
+        },
+        "expect": 19
+      },
+      {
+        "inputs": {
+          "left": 26,
+          "right": 25,
+          "capacity": 40
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "left": 27,
+          "right": 16,
+          "capacity": 22
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 25,
+          "right": 6,
+          "capacity": 14
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 23,
+          "right": 24,
+          "capacity": 20
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "left": 14,
+          "right": 12,
+          "capacity": 36
+        },
+        "expect": 22
+      }
+    ]
+  },
+  "spread": {
+    "public": [
+      {
+        "inputs": {
+          "lows": [
+            3,
+            0,
+            2
+          ],
+          "highs": [
+            8,
+            4
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            1,
+            2
+          ],
+          "highs": [
+            6,
+            7,
+            9
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            4,
+            5
+          ],
+          "highs": [
+            17,
+            13
+          ]
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "lows": [
+            22,
+            19,
+            21
+          ],
+          "highs": [
+            40,
+            41,
+            43
+          ]
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "lows": [
+            10,
+            11
+          ],
+          "highs": [
+            17,
+            18,
+            20
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "lows": [
+            28,
+            29
+          ],
+          "highs": [
+            55,
+            56,
+            58
+          ]
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "lows": [
+            8,
+            5,
+            7
+          ],
+          "highs": [
+            15,
+            16,
+            18
+          ]
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "lows": [
+            21,
+            22
+          ],
+          "highs": [
+            27,
+            28,
+            30
+          ]
+        },
+        "expect": 9
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "lows": [
+            11,
+            8,
+            10
+          ],
+          "highs": [
+            15,
+            16,
+            18
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "lows": [
+            5,
+            2,
+            4
+          ],
+          "highs": [
+            10,
+            11,
+            13
+          ]
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "lows": [
+            24,
+            21,
+            23
+          ],
+          "highs": [
+            45,
+            41
+          ]
+        },
+        "expect": 24
+      },
+      {
+        "inputs": {
+          "lows": [
+            7,
+            4,
+            6
+          ],
+          "highs": [
+            11,
+            12,
+            14
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "lows": [
+            8,
+            5,
+            7
+          ],
+          "highs": [
+            22,
+            23,
+            25
+          ]
+        },
+        "expect": 20
+      },
+      {
+        "inputs": {
+          "lows": [
+            7,
+            4,
+            6
+          ],
+          "highs": [
+            15,
+            16,
+            18
+          ]
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "lows": [
+            27,
+            24,
+            26
+          ],
+          "highs": [
+            37,
+            33
+          ]
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "lows": [
+            2,
+            3
+          ],
+          "highs": [
+            7,
+            8,
+            10
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            9,
+            6,
+            8
+          ],
+          "highs": [
+            27,
+            23
+          ]
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "lows": [
+            20,
+            17,
+            19
+          ],
+          "highs": [
+            36,
+            37,
+            39
+          ]
+        },
+        "expect": 22
+      },
+      {
+        "inputs": {
+          "lows": [
+            14,
+            11,
+            13
+          ],
+          "highs": [
+            35,
+            36,
+            38
+          ]
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "lows": [
+            16,
+            13,
+            15
+          ],
+          "highs": [
+            31,
+            27
+          ]
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "lows": [
+            24,
+            25
+          ],
+          "highs": [
+            29,
+            30,
+            32
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            16,
+            17
+          ],
+          "highs": [
+            38,
+            34
+          ]
+        },
+        "expect": 22
+      },
+      {
+        "inputs": {
+          "lows": [
+            18,
+            15,
+            17
+          ],
+          "highs": [
+            24,
+            20
+          ]
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "lows": [
+            10,
+            7,
+            9
+          ],
+          "highs": [
+            26,
+            27,
+            29
+          ]
+        },
+        "expect": 22
+      },
+      {
+        "inputs": {
+          "lows": [
+            12,
+            13
+          ],
+          "highs": [
+            36,
+            37,
+            39
+          ]
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "lows": [
+            20,
+            17,
+            19
+          ],
+          "highs": [
+            39,
+            40,
+            42
+          ]
+        },
+        "expect": 25
+      },
+      {
+        "inputs": {
+          "lows": [
+            8,
+            5,
+            7
+          ],
+          "highs": [
+            30,
+            26
+          ]
+        },
+        "expect": 25
+      },
+      {
+        "inputs": {
+          "lows": [
+            4,
+            1,
+            3
+          ],
+          "highs": [
+            16,
+            17,
+            19
+          ]
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "lows": [
+            26,
+            27
+          ],
+          "highs": [
+            34,
+            30
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            28,
+            29
+          ],
+          "highs": [
+            48,
+            49,
+            51
+          ]
+        },
+        "expect": 23
+      },
+      {
+        "inputs": {
+          "lows": [
+            27,
+            24,
+            26
+          ],
+          "highs": [
+            32,
+            33,
+            35
+          ]
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "lows": [
+            11,
+            12
+          ],
+          "highs": [
+            18,
+            19,
+            21
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "lows": [
+            20,
+            21
+          ],
+          "highs": [
+            41,
+            37
+          ]
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "lows": [
+            4,
+            1,
+            3
+          ],
+          "highs": [
+            7,
+            8,
+            10
+          ]
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "lows": [
+            16,
+            17
+          ],
+          "highs": [
+            25,
+            26,
+            28
+          ]
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "lows": [
+            22,
+            19,
+            21
+          ],
+          "highs": [
+            32,
+            33,
+            35
+          ]
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "lows": [
+            25,
+            26
+          ],
+          "highs": [
+            32,
+            33,
+            35
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "lows": [
+            5,
+            2,
+            4
+          ],
+          "highs": [
+            29,
+            30,
+            32
+          ]
+        },
+        "expect": 30
+      },
+      {
+        "inputs": {
+          "lows": [
+            16,
+            17
+          ],
+          "highs": [
+            28,
+            29,
+            31
+          ]
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "lows": [
+            25,
+            22,
+            24
+          ],
+          "highs": [
+            49,
+            45
+          ]
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "lows": [
+            25,
+            26
+          ],
+          "highs": [
+            37,
+            33
+          ]
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "lows": [
+            6,
+            3,
+            5
+          ],
+          "highs": [
+            13,
+            14,
+            16
+          ]
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "lows": [
+            12,
+            13
+          ],
+          "highs": [
+            30,
+            31,
+            33
+          ]
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "lows": [
+            4,
+            1,
+            3
+          ],
+          "highs": [
+            21,
+            22,
+            24
+          ]
+        },
+        "expect": 23
+      },
+      {
+        "inputs": {
+          "lows": [
+            15,
+            16
+          ],
+          "highs": [
+            20,
+            21,
+            23
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            7,
+            8
+          ],
+          "highs": [
+            26,
+            22
+          ]
+        },
+        "expect": 19
+      },
+      {
+        "inputs": {
+          "lows": [
+            21,
+            18,
+            20
+          ],
+          "highs": [
+            28,
+            29,
+            31
+          ]
+        },
+        "expect": 13
+      },
+      {
+        "inputs": {
+          "lows": [
+            28,
+            29
+          ],
+          "highs": [
+            37,
+            38,
+            40
+          ]
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "lows": [
+            7,
+            8
+          ],
+          "highs": [
+            33,
+            34,
+            36
+          ]
+        },
+        "expect": 29
+      },
+      {
+        "inputs": {
+          "lows": [
+            23,
+            24
+          ],
+          "highs": [
+            36,
+            37,
+            39
+          ]
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "lows": [
+            2,
+            3
+          ],
+          "highs": [
+            10,
+            6
+          ]
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "lows": [
+            12,
+            13
+          ],
+          "highs": [
+            20,
+            21,
+            23
+          ]
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "lows": [
+            3,
+            0,
+            2
+          ],
+          "highs": [
+            12,
+            8
+          ]
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "lows": [
+            24,
+            21,
+            23
+          ],
+          "highs": [
+            46,
+            47,
+            49
+          ]
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "lows": [
+            15,
+            12,
+            14
+          ],
+          "highs": [
+            35,
+            36,
+            38
+          ]
+        },
+        "expect": 26
+      },
+      {
+        "inputs": {
+          "lows": [
+            18,
+            19
+          ],
+          "highs": [
+            31,
+            32,
+            34
+          ]
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "lows": [
+            19,
+            20
+          ],
+          "highs": [
+            43,
+            44,
+            46
+          ]
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "lows": [
+            12,
+            13
+          ],
+          "highs": [
+            23,
+            19
+          ]
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "lows": [
+            13,
+            10,
+            12
+          ],
+          "highs": [
+            29,
+            25
+          ]
+        },
+        "expect": 19
+      },
+      {
+        "inputs": {
+          "lows": [
+            27,
+            28
+          ],
+          "highs": [
+            45,
+            46,
+            48
+          ]
+        },
+        "expect": 21
+      },
+      {
+        "inputs": {
+          "lows": [
+            18,
+            15,
+            17
+          ],
+          "highs": [
+            35,
+            36,
+            38
+          ]
+        },
+        "expect": 23
+      },
+      {
+        "inputs": {
+          "lows": [
+            6,
+            7
+          ],
+          "highs": [
+            31,
+            32,
+            34
+          ]
+        },
+        "expect": 28
+      },
+      {
+        "inputs": {
+          "lows": [
+            16,
+            13,
+            15
+          ],
+          "highs": [
+            19,
+            20,
+            22
+          ]
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "lows": [
+            26,
+            27
+          ],
+          "highs": [
+            39,
+            40,
+            42
+          ]
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "lows": [
+            26,
+            23,
+            25
+          ],
+          "highs": [
+            38,
+            39,
+            41
+          ]
+        },
+        "expect": 18
+      },
+      {
+        "inputs": {
+          "lows": [
+            25,
+            22,
+            24
+          ],
+          "highs": [
+            28,
+            29,
+            31
+          ]
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "lows": [
+            13,
+            14
+          ],
+          "highs": [
+            26,
+            27,
+            29
+          ]
+        },
+        "expect": 16
+      },
+      {
+        "inputs": {
+          "lows": [
+            27,
+            24,
+            26
+          ],
+          "highs": [
+            38,
+            34
+          ]
+        },
+        "expect": 14
+      },
+      {
+        "inputs": {
+          "lows": [
+            31,
+            28,
+            30
+          ],
+          "highs": [
+            47,
+            48,
+            50
+          ]
+        },
+        "expect": 22
+      },
+      {
+        "inputs": {
+          "lows": [
+            30,
+            27,
+            29
+          ],
+          "highs": [
+            51,
+            52,
+            54
+          ]
+        },
+        "expect": 27
+      },
+      {
+        "inputs": {
+          "lows": [
+            7,
+            4,
+            6
+          ],
+          "highs": [
+            16,
+            17,
+            19
+          ]
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "lows": [
+            5,
+            6
+          ],
+          "highs": [
+            20,
+            16
+          ]
+        },
+        "expect": 15
+      }
+    ]
+  },
+  "suffix": {
+    "public": [
+      {
+        "inputs": {
+          "key": "ä0"
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "key": "archiv/"
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä33"
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "key": "ä512"
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä8159"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä16007"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä20044"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä49553"
+        },
+        "expect": 6
+      }
+    ],
+    "hidden": [
+      {
+        "inputs": {
+          "key": "a//b/ä16547"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä3363"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä2782"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä15227"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä59007"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä36095"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/"
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä13363"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä52412"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä52350"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä41648"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä17893"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä36995"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä54618"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä25532"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä37707"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä12590"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": ""
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä37170"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä33780"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä23709"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä2010"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä25429"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä20959"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä7173"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "ä46512"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/"
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä43109"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä51218"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä13289"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä51927"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä58688"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä24753"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä36052"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä7315"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "ä6080"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä17118"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä9895"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä1998"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä6123"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä14698"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä64637"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä39572"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä30037"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä27538"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä64385"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä50537"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä45922"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä42459"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä21230"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä1892"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä47870"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä30990"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä64684"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä45045"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä25814"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä21828"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä33253"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä43694"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "a//b/ä47703"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä24658"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "geräte/station/ä11374"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "ä59092"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "key": "archiv/ä63853"
+        },
+        "expect": 6
+      }
+    ]
+  }
+}

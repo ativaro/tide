@@ -1,0 +1,49 @@
+use policies
+
+winner data:{Ranking} > i
+let a (get first_id data)
+let b (get next_id data)
+match (get mode data) oldest (smaller a b) newest (larger a b) end
+
+round_tenths value:i policy:{Rounding} > i
+if (< value 0) (fail "negative")
+let whole (div value 10)
+let rest (mod value 10)
+if (< rest 5) whole (if (> rest 5) (+ whole 1)
+  (match policy upper_half (upper_units whole) even_half (even_units whole) end))
+
+flip data:{Ranking} > {Ranking}
+with mode data (match (get mode data) oldest (tag Tie newest) newest (tag Tie oldest) end)
+
+selected pick:{Tie} > {Tie}
+match pick newest (fail "unavailable") oldest (tag Tie oldest) end
+
+example earlier_id winner
+{"inputs":{"data":{"mode":"oldest","first_id":19,"next_id":7}},"expect":7}
+
+example later_id winner
+{"inputs":{"data":{"mode":"newest","first_id":19,"next_id":7}},"expect":19}
+
+example half_at_even round_tenths
+{"inputs":{"value":25,"policy":"even_half"},"expect":2}
+
+example half_at_odd round_tenths
+{"inputs":{"value":35,"policy":"even_half"},"expect":4}
+
+example upper_round round_tenths
+{"inputs":{"value":25,"policy":"upper_half"},"expect":3}
+
+example below_half round_tenths
+{"inputs":{"value":24,"policy":"upper_half"},"expect":2}
+
+example above_half round_tenths
+{"inputs":{"value":26,"policy":"even_half"},"expect":3}
+
+example switched flip
+{"inputs":{"data":{"mode":"oldest","first_id":19,"next_id":7}},"expect":{"first_id":19,"next_id":7,"mode":"newest"}}
+
+example lazy_tag selected
+{"inputs":{"pick":"\u006fldest"},"expect":"oldest"}
+
+example rejected_tag selected
+{"inputs":{"pick":"newest"},"expect_error":{"code":"E_DATA","reason":"unavailable"}}

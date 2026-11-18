@@ -1,0 +1,496 @@
+{
+  "date": "2026-11-17",
+  "platform": "Linux x86_64",
+  "cxx": "GCC 16.2.1",
+  "reference": "archived TIDE CLI on CPython 3.14.10",
+  "build": {
+    "python_present": false,
+    "make_targets": [
+      "check-native",
+      "install"
+    ],
+    "application_image_hashes_verified": 12,
+    "tools": {
+      "catalog": "1f03b39c114052c397c55603afcf4c45a177a78e5d2edf642c8f364eace2a58a",
+      "checker": "c59f7aef33a28ae9f6b46955bad701339ca5b1020d7711f343d70acb2d88e9c1",
+      "forms": "968f1aaa4ff765580a459c94eb5644853359435462e0cac21812ff15ac65e04f",
+      "inspector": "7c4068fd2464ecd96f634d315514a67dc2cc8c94034d1ad402e8d06dd7a6d8ba",
+      "tidec": "57329464a3db533a25423116574c22eec19c59cfa7be4f28fe642b5f3ee59c07"
+    }
+  },
+  "inspection": {
+    "count": 595,
+    "nodes": 236,
+    "success": 508,
+    "diagnostics": 87,
+    "projects": [
+      "apps/balance.tide",
+      "apps/light.tide",
+      "apps/heat.tide",
+      "apps/pump.tide",
+      "native/bootstrap/fixtures/functions/report.tide",
+      "native/bootstrap/fixtures/functions/lists.tide",
+      "native/bootstrap/fixtures/rules/control.tide",
+      "edges.tide",
+      "lib/ordering.tide"
+    ],
+    "edge_source": "use ordering\n\nseed_value > i\n0007\n\nchoose_value value:i > i\nlet layer (seed_value) (if (prefer_min value layer true) value layer)\n\ncombine_value value:i > i\nchoose_value (choose_value value)\n\nthird value:i > i\ncombine_value (choose_value value)\n\nempty > *b\nlist b 0\n\nexample chain third\n{\"expect\":7,\"inputs\":{\"value\":10}}\n\nexample ordered prefer_min\n{\"expect\":true,\"inputs\":{\"on_equal\":false,\"current\":2,\"candidate\":1}}\n",
+    "oracle": "Every definition in each project, every returned node in context and hole, invalid and empty selections, missing definitions, failed source and import reads, and type errors."
+  },
+  "boundaries": [
+    {
+      "fixture": "wide.tide",
+      "args": [
+        "--function",
+        "main"
+      ],
+      "bytes": 12310
+    },
+    {
+      "fixture": "wide.tide",
+      "args": [
+        "--function",
+        "main",
+        "--node",
+        "2:1"
+      ],
+      "bytes": 12310
+    },
+    {
+      "fixture": "wide.tide",
+      "args": [
+        "--function",
+        "main",
+        "--node",
+        "2:13"
+      ],
+      "bytes": 12310
+    },
+    {
+      "fixture": "hash.tide",
+      "args": [
+        "--function",
+        "main"
+      ],
+      "bytes": 86094
+    },
+    {
+      "fixture": "hash.tide",
+      "args": [
+        "--function",
+        "main",
+        "--node",
+        "2:1"
+      ],
+      "bytes": 86094
+    },
+    {
+      "fixture": "depth.tide",
+      "args": [
+        "--function",
+        "level0"
+      ],
+      "bytes": 1322
+    },
+    {
+      "fixture": "depth.tide",
+      "args": [
+        "--function",
+        "level1"
+      ],
+      "bytes": 1322
+    },
+    {
+      "fixture": "depth.tide",
+      "args": [
+        "--function",
+        "level47"
+      ],
+      "bytes": 1322
+    }
+  ],
+  "regressions": {
+    "rules": 333,
+    "lists": 176,
+    "functions": 466,
+    "differences": 0
+  },
+  "archived_integration_tests": 35,
+  "measurements": {
+    "unit": "ms",
+    "metric": "process start through captured stdout, paired same source/arguments, four warmups then fifteen alternating-order pairs, no CPU pinning",
+    "results": [
+      {
+        "name": "Saldo, Aufrufer",
+        "args": [
+          "context",
+          "balance.tide",
+          "--function",
+          "balance"
+        ],
+        "native_ms": 7.790073000000007,
+        "reference_ms": 31.019667000000027,
+        "pairs": [
+          {
+            "reference": 31.39704599999999,
+            "native": 8.168450000000007
+          },
+          {
+            "native": 8.18635999999998,
+            "reference": 30.782533
+          },
+          {
+            "reference": 31.005617,
+            "native": 8.224632000000042
+          },
+          {
+            "native": 7.402474999999981,
+            "reference": 30.65826100000004
+          },
+          {
+            "reference": 31.41994500000004,
+            "native": 9.641448999999966
+          },
+          {
+            "native": 7.179541000000029,
+            "reference": 34.84788199999997
+          },
+          {
+            "reference": 31.28358300000002,
+            "native": 8.019596999999976
+          },
+          {
+            "native": 6.445386999999982,
+            "reference": 31.185271
+          },
+          {
+            "reference": 31.79201299999994,
+            "native": 8.07948799999997
+          },
+          {
+            "native": 6.833634000000075,
+            "reference": 30.743761999999947
+          },
+          {
+            "reference": 30.538917999999967,
+            "native": 7.738451999999938
+          },
+          {
+            "native": 7.173960000000079,
+            "reference": 31.019667000000027
+          },
+          {
+            "reference": 30.697271999999998,
+            "native": 7.790073000000007
+          },
+          {
+            "native": 7.8805039999999735,
+            "reference": 30.206831999999963
+          },
+          {
+            "reference": 31.730781999999977,
+            "native": 7.691539999999918
+          }
+        ]
+      },
+      {
+        "name": "Licht, Zweig",
+        "args": [
+          "context",
+          "light.tide",
+          "--function",
+          "light",
+          "--node",
+          "4:6"
+        ],
+        "native_ms": 7.265942999999879,
+        "reference_ms": 31.175521000000117,
+        "pairs": [
+          {
+            "reference": 31.956286999999975,
+            "native": 7.597729000000072
+          },
+          {
+            "native": 5.865045000000009,
+            "reference": 31.236181999999985
+          },
+          {
+            "reference": 31.44059600000014,
+            "native": 8.660599999999931
+          },
+          {
+            "native": 6.204580999999962,
+            "reference": 30.96869700000002
+          },
+          {
+            "reference": 31.175521000000117,
+            "native": 7.714541999999938
+          },
+          {
+            "native": 6.097779000000173,
+            "reference": 31.082398999999896
+          },
+          {
+            "reference": 32.20368099999996,
+            "native": 7.379324999999881
+          },
+          {
+            "native": 6.406484999999975,
+            "reference": 32.321772999999894
+          },
+          {
+            "reference": 32.07898900000009,
+            "native": 7.265942999999879
+          },
+          {
+            "native": 5.898394999999937,
+            "reference": 30.06260899999984
+          },
+          {
+            "reference": 31.131590000000188,
+            "native": 7.328713999999991
+          },
+          {
+            "native": 6.268921999999975,
+            "reference": 30.598028999999997
+          },
+          {
+            "reference": 29.874145999999882,
+            "native": 7.9362760000001344
+          },
+          {
+            "native": 6.092529000000013,
+            "reference": 29.511027999999897
+          },
+          {
+            "reference": 31.35617400000001,
+            "native": 7.634340000000066
+          }
+        ]
+      },
+      {
+        "name": "Import, Bindungen",
+        "args": [
+          "hole",
+          "functions/lists.tide",
+          "--function",
+          "weighted",
+          "--node",
+          "list_ops.tide:2:28"
+        ],
+        "native_ms": 7.171931000000086,
+        "reference_ms": 30.522797999999966,
+        "pairs": [
+          {
+            "reference": 32.884364000000005,
+            "native": 6.450745999999981
+          },
+          {
+            "native": 6.567538000000013,
+            "reference": 30.354725000000144
+          },
+          {
+            "reference": 30.670170999999982,
+            "native": 7.556287999999995
+          },
+          {
+            "native": 6.98227699999984,
+            "reference": 30.835234000000128
+          },
+          {
+            "reference": 31.76324199999999,
+            "native": 7.375613999999814
+          },
+          {
+            "native": 6.397985000000062,
+            "reference": 30.522797999999966
+          },
+          {
+            "reference": 30.48129700000004,
+            "native": 7.171931000000086
+          },
+          {
+            "native": 6.397756000000072,
+            "reference": 30.11790000000019
+          },
+          {
+            "reference": 29.46134700000016,
+            "native": 7.508867000000009
+          },
+          {
+            "native": 6.535787999999911,
+            "reference": 29.961626999999908
+          },
+          {
+            "reference": 32.39810499999999,
+            "native": 7.583899000000201
+          },
+          {
+            "native": 7.673951000000216,
+            "reference": 30.215672000000268
+          },
+          {
+            "reference": 32.423435000000154,
+            "native": 7.959355999999843
+          },
+          {
+            "native": 5.901205000000118,
+            "reference": 31.312752999999702
+          },
+          {
+            "reference": 30.236923000000388,
+            "native": 8.511196999999811
+          }
+        ]
+      },
+      {
+        "name": "Großer Beispielvertrag",
+        "args": [
+          "context",
+          "hash.tide",
+          "--function",
+          "main"
+        ],
+        "native_ms": 94.00062199999957,
+        "reference_ms": 32.72725100000025,
+        "pairs": [
+          {
+            "reference": 32.69248999999991,
+            "native": 95.31849800000009
+          },
+          {
+            "native": 92.81512800000019,
+            "reference": 33.09824900000012
+          },
+          {
+            "reference": 32.67186999999967,
+            "native": 95.52530200000001
+          },
+          {
+            "native": 93.77606699999978,
+            "reference": 31.858394000000317
+          },
+          {
+            "reference": 31.738432000000103,
+            "native": 95.42121999999972
+          },
+          {
+            "native": 92.16056600000002,
+            "reference": 32.87852399999974
+          },
+          {
+            "reference": 31.223481999999876,
+            "native": 94.2135760000001
+          },
+          {
+            "native": 93.1005339999997,
+            "reference": 32.92028600000003
+          },
+          {
+            "reference": 32.10301900000013,
+            "native": 93.91052000000036
+          },
+          {
+            "native": 93.5156219999999,
+            "reference": 33.671420000000126
+          },
+          {
+            "reference": 32.72725100000025,
+            "native": 94.00062199999957
+          },
+          {
+            "native": 93.49666199999956,
+            "reference": 33.21754099999998
+          },
+          {
+            "reference": 33.67175999999927,
+            "native": 95.13947399999961
+          },
+          {
+            "native": 94.93238999999994,
+            "reference": 32.78134200000022
+          },
+          {
+            "reference": 31.07217800000035,
+            "native": 94.88794899999994
+          }
+        ]
+      },
+      {
+        "name": "4.096 Operanden",
+        "args": [
+          "context",
+          "wide.tide",
+          "--function",
+          "main",
+          "--node",
+          "2:1"
+        ],
+        "native_ms": 29.883405999999923,
+        "reference_ms": 45.117983999999524,
+        "pairs": [
+          {
+            "reference": 45.89502899999934,
+            "native": 30.64766099999997
+          },
+          {
+            "native": 29.14484100000027,
+            "reference": 44.38909999999942
+          },
+          {
+            "reference": 44.77611699999943,
+            "native": 31.074469000000136
+          },
+          {
+            "native": 29.239872999999534,
+            "reference": 45.954311000000416
+          },
+          {
+            "reference": 45.885199000000284,
+            "native": 30.66848100000061
+          },
+          {
+            "native": 29.108299999999872,
+            "reference": 46.74233599999934
+          },
+          {
+            "reference": 45.95769999999993,
+            "native": 30.49790699999994
+          },
+          {
+            "native": 28.973477999999886,
+            "reference": 43.7897580000008
+          },
+          {
+            "reference": 45.889610000000175,
+            "native": 31.302012999999533
+          },
+          {
+            "native": 29.88055600000007,
+            "reference": 44.41541000000052
+          },
+          {
+            "reference": 44.30363699999998,
+            "native": 30.49681799999962
+          },
+          {
+            "native": 29.766632999999274,
+            "reference": 44.96889100000044
+          },
+          {
+            "reference": 45.72672599999987,
+            "native": 29.883405999999923
+          },
+          {
+            "native": 29.61236000000008,
+            "reference": 44.82943900000009
+          },
+          {
+            "reference": 45.117983999999524,
+            "native": 31.134679999999207
+          }
+        ]
+      }
+    ]
+  }
+}

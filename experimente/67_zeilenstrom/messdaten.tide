@@ -1,0 +1,13 @@
+record Dataset
+block:t above:i peak:i bad_row:i
+
+main bytes:i > {Dataset}
+let groups div bytes 64
+make Dataset
+block "80\r\n81\n98\n-9\n-9223372036854775808\n9223372036854775807\r\n0\n123456\n"
+above (* groups 4)
+peak 9223372036854775807
+bad_row (- (* groups 8) 1)
+
+example block main
+{"inputs":{"bytes":64},"expect":{"block":"80\r\n81\n98\n-9\n-9223372036854775808\n9223372036854775807\r\n0\n123456\n","above":4,"peak":9223372036854775807,"bad_row":7}}

@@ -1,0 +1,84 @@
+{
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "requested_service_tier": "priority",
+  "cli": "0.157.1",
+  "protocol": "two isolated read-only one-answer Codex runs, repair then write; wall time from snapshot through successful checked write",
+  "measured_tool_sha256": "f27128732b81f4342d86c1848d72d9a396fb0b77b751b52f3b9e69f4e851d14b",
+  "trials": [
+    {
+      "trial": "repair",
+      "base": "balance opening:i entries:*i > i\nfold entries opening total row entry - total entry",
+      "prompt": "Repair this function. The visible case currently gives 103.\nInput contract: opening and each booking are signed 64-bit integers. Apply bookings from left to right. Reject overflow or underflow at EACH step, even if later bookings would cancel it. An empty list returns opening. One visible case: opening=100, entries=[-20,15,-8,10] must give 97.\nTIDE 0.5. Define balance opening:i entries:*i > i. A declaration has its signature on one line and a prefix expression below. fold takes a list, initial value, accumulator name, row name, element name, then body. Integer + is checked and raises E_OVERFLOW.\nDo not use tools or Markdown.\nbalance opening:i entries:*i > i\nfold entries opening total row entry - total entry\nReturn only the new TIDE body as one prefix expression on one line.\n",
+      "answer": "fold entries opening total row entry + total entry",
+      "usage": {
+        "input_tokens": 19061,
+        "cached_input_tokens": 11904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 56,
+        "reasoning_output_tokens": 41
+      },
+      "total_tokens": 19117,
+      "model_tool_calls": [],
+      "utc_unix_start_ns": "1794862510491607607",
+      "utc_unix_answer_ns": "1794862515491942347",
+      "utc_unix_green_ns": "1794862515592375389",
+      "seconds_to_green": 5.100767782,
+      "acceptance": {
+        "base": "7ea263b90694739bad1dcc51cc13d59c53bf8a8d0aff94a53d1459b5c7d7456b",
+        "revision": "e6e3ea74eb3b4b89c2c68c8a1b9881e307a6df689dbf732fe439cba2fc8bfeb7",
+        "target": "solution.tide",
+        "examples": {
+          "passed": 10
+        },
+        "contract_changes": [],
+        "written": true
+      },
+      "previous": {
+        "total_tokens": 77955,
+        "seconds_to_green": 9.278058397
+      },
+      "reduction": {
+        "token_percent": 75.4768776858444,
+        "time_percent": 45.02332747065593
+      }
+    },
+    {
+      "trial": "write",
+      "base": "balance opening:i entries:*i > i\nfail \"offen\"",
+      "prompt": "Implement the following function.\nInput contract: opening and each booking are signed 64-bit integers. Apply bookings from left to right. Reject overflow or underflow at EACH step, even if later bookings would cancel it. An empty list returns opening. One visible case: opening=100, entries=[-20,15,-8,10] must give 97.\nTIDE 0.5. Define balance opening:i entries:*i > i. A declaration has its signature on one line and a prefix expression below. fold takes a list, initial value, accumulator name, row name, element name, then body. Integer + is checked and raises E_OVERFLOW.\nDo not use tools or Markdown.\nbalance opening:i entries:*i > i\nfail \"offen\"\nReturn only the new TIDE body as one prefix expression on one line.\n",
+      "answer": "fold entries opening acc row entry + acc entry",
+      "usage": {
+        "input_tokens": 19047,
+        "cached_input_tokens": 11904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 156,
+        "reasoning_output_tokens": 141
+      },
+      "total_tokens": 19203,
+      "model_tool_calls": [],
+      "utc_unix_start_ns": "1794862515595292946",
+      "utc_unix_answer_ns": "1794862522239368261",
+      "utc_unix_green_ns": "1794862522412522368",
+      "seconds_to_green": 6.817229422,
+      "acceptance": {
+        "base": "466e481e9d6deaf0d0cb5cc818b8f3a1c0f92d64d2f22427bca3f17165cda56d",
+        "revision": "9fed4f928240f89fbaf51a97fa7b4c6eb7eb023e2e4303ff63b0f1b79acb6cdd",
+        "target": "solution.tide",
+        "examples": {
+          "passed": 10
+        },
+        "contract_changes": [],
+        "written": true
+      },
+      "previous": {
+        "total_tokens": 78662,
+        "seconds_to_green": 13.224782966
+      },
+      "reduction": {
+        "token_percent": 75.58795860771401,
+        "time_percent": 48.45110547729499
+      }
+    }
+  ]
+}

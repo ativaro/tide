@@ -1,0 +1,206 @@
+{
+  "design": "Prospektiver Zusatz nach Abschluss der Replay-Rohmessung, vor erster neuer Sitzung. Neue Doppelregression im bestehenden Journalprojekt. Vergleich der aktuellen TIDE-Werkbank gegen CPython mit vorbereiteten Quellen und benannten Edits. Vier gepaarte Blöcke, max. drei Versuche. Für eine TIDE-Antwort genau ein lokaler Korrekturversuch bei Compilerdiagnose vor weiterer Modellantwort. Dauer, Bruttotokens und lokale Eingriffe inkl. Gegenprüfung der angenommenen Änderungen. Ergebnis getrennt vom historischen Replay.",
+  "reference": "17_prioritaeten, kanonisch korrigierte Journalprojekte (plain/python), zuvor feststehende 40+40 Fälle; zusätzliche Fälle unten.",
+  "model": "gpt-6-astra",
+  "reasoning": "xhigh",
+  "service_tier": "priority",
+  "changes": [
+    [
+      "tide-plain/sequence.tide",
+      "(< (get serial incoming) (get serial prior))",
+      "(not (> (get serial incoming) (get serial prior)))"
+    ],
+    [
+      "python-native/sequence.py",
+      ") < (",
+      ") <= ("
+    ],
+    [
+      "tide-plain/summary.tide",
+      "longest (get longest state_value)",
+      "longest (get current state_value)"
+    ],
+    [
+      "python-native/summary.py",
+      "_, breaks, _, longest = state_value",
+      "_, breaks, longest, _ = state_value"
+    ]
+  ],
+  "additional_cases": {
+    "control": [
+      {
+        "input": [
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 31
+          },
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 31
+          },
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 31
+          }
+        ],
+        "expect": {
+          "breaks": 0,
+          "longest": 3
+        }
+      },
+      {
+        "input": [
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 31
+          },
+          {
+            "minute": 2,
+            "priority": -3,
+            "serial": 31
+          },
+          {
+            "minute": 3,
+            "priority": -3,
+            "serial": 31
+          },
+          {
+            "minute": 0,
+            "priority": -3,
+            "serial": 31
+          }
+        ],
+        "expect": {
+          "breaks": 1,
+          "longest": 3
+        }
+      }
+    ],
+    "holdout": [
+      {
+        "input": [
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 0,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 2,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 3,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 3,
+            "priority": -3,
+            "serial": 32
+          }
+        ],
+        "expect": {
+          "breaks": 1,
+          "longest": 4
+        }
+      },
+      {
+        "input": [
+          {
+            "minute": -2,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": -1,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 0,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": 1,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": -3,
+            "priority": -3,
+            "serial": 32
+          },
+          {
+            "minute": -4,
+            "priority": -3,
+            "serial": 32
+          }
+        ],
+        "expect": {
+          "breaks": 2,
+          "longest": 4
+        }
+      }
+    ]
+  },
+  "schedule": [
+    {
+      "family": "journal_again",
+      "repetition": 1,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 1,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 2,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 2,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 3,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 3,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 4,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal_again",
+      "repetition": 4,
+      "arm": "python-native"
+    }
+  ],
+  "task": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.",
+  "runner": "#!/usr/bin/env bash\nset -euo pipefail\ncontrol=$(dirname \"$(realpath \"$0\")\")\nroot=$(dirname \"$control\")\nrepo=/home/ativaro/Documents/tide\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\ncd \"$root/project\"\nwhile read -r bug rep arm; do\n ctl=\"$control/$bug\"\n lang=${arm%-*}\n mode=name\n run=\"$root/results/$bug-$rep-$arm\"\n mkdir \"$run\"\n find . -mindepth 1 -maxdepth 1 -delete\n cp \"$root/seeds/$bug/$arm\"/* .\n ln -s \"$ctl/verify\" verify\n date -u +%FT%T.%NZ > \"$run/utc\"\n stamp > \"$run/start\"\n if ./verify > \"$run/before\"; then exit 10; else [[ $? == 1 ]]; fi\n jq -e '.failed > 0' \"$run/before\" >/dev/null\n obs=$(cat \"$run/before\")\n if [[ $lang == tide ]]; then\n    args=$(\"$control/tide-args\" summary.tide \"$obs\" \"$run/checked\")\n    printf '%s\\n' \"$args\" > \"$run/input\"\n    \"$repo/tide\" run \"$repo/workbench/project_context.tide\" --inputs \"$args\" > \"$run/packet\"\n else\n    for file in *.py; do jq -n --arg file \"$file\" --rawfile source \"$file\" '{file:$file,source:$source}'; done |\n       jq -cs --arg observation \"$obs\" '{observation:$observation,files:.}' > \"$run/packet\"\n fi\n protocol=\"$control/instructions\"\n schema=\"$control/schema\"\n if [[ $mode == name ]]; then\n   protocol=\"$control/instructions-name\"; schema=\"$control/schema-name\"\n   if [[ $lang == tide ]]; then\n     \"$control/forms\" summary.tide \"$run/input\" > \"$run/forms\"\n     view=$(jq -c --slurpfile forms \"$run/forms\" '.+{forms:$forms[0]}' \"$run/packet\")\n     \"$repo/tide\" run \"$repo/workbench/function_body.tide\" --call repair_view --inputs \"$view\" > \"$run/grouped\"\n     mv \"$run/grouped\" \"$run/packet\"\n     jq -r .instruction \"$run/packet\" > \"$run/guide\"\n     catalog=$(jq -nc --slurpfile forms \"$run/forms\" --slurpfile checked \"$run/checked\" '{reachable_names:[$forms[0][].name],signatures:($checked[0].definitions|to_entries|map({name:.key,kind:.value.kind,signature:([.key]+[.value.params|to_entries[]|.key+\":\"+.value]+[\">\",.value.returns]|join(\" \"))}))}')\n     \"$repo/tide\" run \"$repo/workbench/project_context.tide\" --call unused_signatures --inputs \"$catalog\" |\n       jq -r 'if length>0 then \"Other checked functions:\",.[] else empty end' >> \"$run/guide\"\n   else\n     cp \"$control/python-guide\" \"$run/guide\"\n   fi\n fi\n { cat \"$ctl/task\"; echo; cat \"$protocol\"; if [[ $mode == name ]]; then cat \"$run/guide\"; fi; echo; jq -r '.observation, (.files|sort_by(.file)[]| \"\\n--- \"+.file+\" ---\\n\"+.source)' \"$run/packet\"; } > \"$run/prompt\"\n stamp > \"$run/ready\"\n for attempt in 1 2 3; do\n   a=\"$run/$attempt\"\n   mkdir \"$a\"\n   cp \"$run/prompt\" \"$a/prompt\"\n   if (( attempt>1 )); then\n     echo 'The last proposal did not pass. Below are your previous proposal and the acceptance diagnostic. Start from the original sources above, and give the full corrected edit set.' >> \"$a/prompt\"\n     cat \"$run/$((attempt-1))/feedback\" >> \"$a/prompt\"\n   fi\n   rc=0\n   timeout 180s codex exec --ignore-user-config --disable memories --disable hooks --disable plugins --enable skip_host_skill_discovery --ephemeral --skip-git-repo-check -s read-only -m gpt-6-astra -c 'model_reasoning_effort=\"xhigh\"' -c 'service_tier=\"priority\"' -C \"$PWD\" --output-schema \"$schema\" --output-last-message \"$a/answer\" --json - < \"$a/prompt\" > \"$a/events\" 2> \"$a/stderr\" || rc=$?\n   stamp > \"$a/answered\"\n   echo \"$rc\" > \"$a/process_status\"\n   mkdir \"$a/candidate\"\n   cp \"$root/seeds/$bug/$arm\"/* \"$a/candidate/\"\n   if [[ $rc == 0 ]] && (cd \"$a/candidate\" && \"$control/apply\" \"$a/answer\" \"$arm\" \"$run\" && { if \"$ctl/verify\" 2> \"$a/first-diagnostic\"; then true; elif [[ \"$lang\" == tide && -s \"$a/first-diagnostic\" ]]; then\n        payload=$(for f in *.tide; do jq -n --arg file \"$f\" --rawfile source \"$f\" '{file:$file,source:$source}'; done | jq -sc --slurpfile ans \"$a/answer\" --slurpfile d \"$a/first-diagnostic\" '{files:.,edits:$ans[0].edits,diagnostic:($d[0]|{file:(.file//\"\"),code:(.code//\"\"),message:(.message//\"\"),line:(.line//0),column:(.column//0)})}')\n        \"$repo/tide\" run \"$repo/workbench/function_body.tide\" --call closing_retry --inputs \"$payload\" > \"$a/local-proposal\" &&\n        jq -ec 'select(has(\"some\"))|{edits:.some}' \"$a/local-proposal\" > \"$a/local-answer\" &&\n        \"$control/apply\" \"$a/local-answer\" \"$arm\" \"$run\" && \"$ctl/verify\" || { cat \"$a/first-diagnostic\" >&2; false; }\n      else cat \"$a/first-diagnostic\" >&2; false; fi; }) > \"$a/acceptance\" 2> \"$a/diagnostic\"; then\n     stamp > \"$run/end\"\n     echo passed > \"$run/status\"\n     break\n   fi\n   { test ! -f \"$a/answer\" || cat \"$a/answer\"; echo; test ! -f \"$a/acceptance\" || cat \"$a/acceptance\"; test ! -f \"$a/diagnostic\" || cut -c1-1000 \"$a/diagnostic\" | head -20; if [[ $rc != 0 ]]; then echo \"CLI exit $rc\"; fi; } > \"$a/feedback\"\n done\n if [[ ! -f \"$run/status\" ]]; then stamp > \"$run/end\"; echo unresolved > \"$run/status\"; fi\n printf '%s %s\\n' \"$(basename \"$run\")\" \"$(cat \"$run/status\")\"\ndone < \"$control/order\"\n"
+}

@@ -1,0 +1,15 @@
+use readings
+
+first_invalid rows:*t > ?i
+catch E_DATA
+  (fold rows (nil i) ok row line (let value (reading line row) ok))
+  problem (if (has_reason problem "invalid_integer") (input_line problem) (raise problem))
+
+example all_valid first_invalid
+{"inputs":{"rows":["-9","0","9223372036854775807"]},"expect":{"none":true}}
+
+example first_bad first_invalid
+{"inputs":{"rows":["4","x","-","9"]},"expect":{"some":2}}
+
+example empty first_invalid
+{"inputs":{"rows":[]},"expect":{"none":true}}

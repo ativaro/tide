@@ -1,0 +1,1766 @@
+{
+  "date": "2026-11-17",
+  "host": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "arch": "x64",
+    "kernel": "7.3.4-1-cachyos",
+    "logical_cpu": 2,
+    "compiler": "16.2.1",
+    "cpython": "Python 3.14.10",
+    "flags": "-std=c++20 -O1 -static"
+  },
+  "source_sha256": {
+    "native/bootstrap/seed.tide": "32f0a5e8ce7ab783eee81721a9b54a490a34ffe011a4fbabdfab29041b84cfb7",
+    "native/bootstrap/sha256.tide": "8fbe4bf53315ecc7afbc145f8a30add97c8af621969e938fa265440d852fe95c",
+    "native/bootstrap/inspection.tide": "7136ec3f9aaa0470285f9739f2eafaa2d473de3253b9d6d131cdb804d5edc5bf",
+    "native/bootstrap/json_text.tide": "80a64c01e8ea62280c67208b9b8d856b2a62422867d549dddc6bdf88e11de84e",
+    "native/bootstrap/scalar_json.tide": "8ebe371947c3f8e97b543afe2a25f05a940ff02da9fde90ffe2bcc2f233901df",
+    "native/bootstrap/samples.tide": "d103f5e191029e4a23b3a39b834368a77bf0dc47a9859ef1c5077b6f6d82801a",
+    "native/bootstrap/inspection_checks.tide": "13948c23472d2cc0f7d4b860259dedc6aa3c871c5ef4e0f7df695974256be4fd",
+    "native/bootstrap/compiler_checks.tide": "13ec1884b0367b131ed5d299ead40a54fc8b97f0aa01ef938bc6ce0a5ded700b"
+  },
+  "before_source_sha256": {
+    "native/bootstrap/seed.tide": "7c59a50c671b605aed4aee5bbe54580cf35b0a12e41961659ef67c2ca2643b96",
+    "native/bootstrap/sha256.tide": "21db3d1a8767e6e3a1bc2c3fa73a269356c0a9ed08454e4f18fb0392daa2b09f",
+    "native/bootstrap/inspection.tide": "ec4bb7309d822425f8462df431f0cd381d6e07aebc982e95bc8580f1e62736c7",
+    "native/bootstrap/json_text.tide": "834ac85d06fb213a4b3eecdb64c30aaede0804f669fdc2e9710101de019f3282",
+    "native/bootstrap/scalar_json.tide": "11f2b6585a448a49ddc63b4f21267a7f79cd4b5c6e8e93bd4df68dff70b8fa65",
+    "native/bootstrap/samples.tide": "1b4b72abf568e65bc253723817592645fd3a3a75df4c50ad198ba8e814731e93"
+  },
+  "installed_binary_sha256": {
+    "tidec": {
+      "before": "28434b5c447db866441716c5780a78112510cc4ea313c68039233590201b530b",
+      "after": "28434b5c447db866441716c5780a78112510cc4ea313c68039233590201b530b"
+    },
+    "catalog": {
+      "before": "70d00d40cb6498d8da987646e6ac6f32ecfad490a70b773858b0d7733abcf583",
+      "after": "70d00d40cb6498d8da987646e6ac6f32ecfad490a70b773858b0d7733abcf583"
+    },
+    "forms": {
+      "before": "327debd121e772572a1f23ea59a569b5b7985fb630a3b67ebcba7926cbf1c361",
+      "after": "388a3369ea9679a7bdeac893ad6d9fb90b775e7f039673e7d1a0688a64b324e7"
+    },
+    "checker": {
+      "before": "fbcb46f52a54fa6a51d8c8101469b60c145bcd6182adc607d644d8b8f0f1d17e",
+      "after": "69b182e7b22c1d612d108641d71d2a63457a93f44f36ced8d110dec530438ec0"
+    },
+    "inspector": {
+      "before": "5f3e8347c07d516b7af950137124ea4b814d830aa1471d11f2e2972d716f2d4b",
+      "after": "27f31658d610bab877bc9788dac8121be5c24cd249aa568c862c0238a2f48f4a"
+    },
+    "editor": {
+      "before": "5f3e5010ade0b4e7761107924f1fb596603fae1f323562e243bb4f45ef7a2337",
+      "after": "df6d0daca2d43587c868ae962246d995b59ed630a7ea4880474a4c66688c7ed2"
+    }
+  },
+  "clean_build": {
+    "platform": "Linux x86-64",
+    "targets": [
+      "check-native",
+      "install"
+    ],
+    "empty_build": true,
+    "environment": "bwrap, no Python executables, library, standard library or experiment archive available",
+    "static_and_byte_identical_on_second_build": 6,
+    "verified_images": 12,
+    "checkout_test": "true",
+    "example_saldo": 97
+  },
+  "validation": {
+    "raw_utf8": 147,
+    "public_contexts_and_tests": 100,
+    "equivalent_spelling_pairs": 25,
+    "editor_transactions": 2,
+    "raw_sizes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      15,
+      16,
+      17,
+      31,
+      32,
+      33,
+      54,
+      55,
+      56,
+      57,
+      62,
+      63,
+      64,
+      65,
+      119,
+      120,
+      121,
+      127,
+      128,
+      129,
+      255,
+      256,
+      257,
+      511,
+      512,
+      513,
+      1023,
+      2047,
+      2048,
+      2049,
+      4095,
+      4096,
+      4097,
+      8191,
+      8192,
+      8193,
+      16374,
+      16375,
+      16376,
+      16377,
+      32759,
+      32760,
+      65527,
+      65528,
+      131071,
+      131072
+    ],
+    "random_seed": 3621023,
+    "text_differentials": 553,
+    "resource_differentials": 77,
+    "node_edits": {
+      "counts": {
+        "replace": 473,
+        "op": 473,
+        "emptyArray": 2,
+        "emptyString": 2,
+        "scalar": 2,
+        "bool": 2,
+        "object": 2,
+        "nonStringId": 2,
+        "nested": 2,
+        "extra": 2,
+        "extra2": 2,
+        "missingOp": 2,
+        "unknownId": 2,
+        "unknownFile": 2,
+        "unknownOp": 2,
+        "badType": 2,
+        "badArity": 2,
+        "unknownName": 2,
+        "wrongScope": 2,
+        "overlap": 2,
+        "duplicate": 2,
+        "two": 2,
+        "operatorAndChild": 2,
+        "wrongExample": 2,
+        "badReplace": 2,
+        "blankReplace": 2,
+        "newline": 2,
+        "escaped": 2,
+        "over256": 2,
+        "JSON": 18,
+        "staleJSON": 18,
+        "imported write": 4,
+        "256 disjoint": 1
+      },
+      "outcomes": {
+        "ok": 652,
+        "E_EDIT": 340,
+        "E_NODE": 5,
+        "E_TYPE": 2,
+        "E_SYNTAX": 2,
+        "E_NAME": 4,
+        "E_EXAMPLE": 3,
+        "E_JSON": 30,
+        "E_REVISION": 3
+      },
+      "differences": [],
+      "oracleGaps": [
+        {
+          "target": "balance.tide",
+          "node": "2:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "4:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "11:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "12:3"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "list_ops.tide:2:1"
+        },
+        {
+          "target": "text.tide",
+          "node": "8:1"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "5:11"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "13:1"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "17:1"
+        }
+      ]
+    },
+    "public_private_name_probe": "Same bytes for run and forms with user definitions named bootstrap_bit_xor and bootstrap_rotr32; result 12.",
+    "differences": []
+  },
+  "public_runs": {
+    "fixture_construction": {
+      "full-text.tide": "main txt:t > t; body txt. Example large has inputs.txt and expect both equal to 7000 copies of 🐈a. Compact JSON with raw UTF-8.",
+      "next.tide": "full-text.tide + LF",
+      "many.tide": "64 examples e0..e63: inputs.txt and expect both 🟠 followed by the decimal index",
+      "mixed.tide": "14000 Unicode codepoints; for zero-based i choose [0x20+i%90,0x301+i%30,0x4e00+i%450,0x1f600+i%60][i%4]",
+      "ascii.tide": "14000 lowercase x characters repeated as input and expectation",
+      "balance.tide": "copy of apps/balance.tide",
+      "fields.tide": "main x0:t ... x23:t > t returns x23. Values are 𐐷 followed by (1 + i * 32) copies of x."
+    },
+    "fixtures": {
+      "full-text.tide": {
+        "bytes": 70073,
+        "sha256": "c69a7efa047644b1b83bf81aa663853ea80341d5a66365280098e86212d85021"
+      },
+      "balance.tide": {
+        "bytes": 418,
+        "sha256": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25"
+      },
+      "many.tide": {
+        "bytes": 4085,
+        "sha256": "f796db47309ec2c5715b6f225e392dab5f1d24e9d92664b629d50dc61b2c137c"
+      },
+      "mixed.tide": {
+        "bytes": 70385,
+        "sha256": "e30ba93363f4cc2169017089cc36201f97af30fe21140c15b3bbf2302d9facb9"
+      },
+      "ascii.tide": {
+        "bytes": 28073,
+        "sha256": "7e37f1233bc39a26630bee7adc325fa6fa70bedbf662169fc53bce1b7cdeaa44"
+      },
+      "next.tide": {
+        "bytes": 70074,
+        "sha256": "75a9379c64cecc423d24b5117bcd527ecbd1123181f1e77ea1d663733b7b089f"
+      },
+      "fields.tide": {
+        "bytes": 147,
+        "sha256": "c72bdd249951a2c8df732225573be6d8b1ad3409cbf9ff1f0c0e863ee15c8b06"
+      }
+    },
+    "versions": {
+      "before": "Native package experiment 36",
+      "bit": "Bitwise AND and XOR; original arithmetic rotations and original text processing",
+      "after": "Bitwise rotation, shared round schedule indices, parsed text reuse, shorter encoding chunks",
+      "reference": "Archived TIDE interpreter on CPython; compared where it supports the same CLI flags"
+    },
+    "method": "Linux CLOCK_MONOTONIC via performance.now, elapsed time from spawn to exit. 3 warm-ups, then 19 samples per variant. Variant order rotated. All native stdout checked byte-for-byte, reference JSON compared structurally.",
+    "observations": [
+      {
+        "id": "large",
+        "args": [
+          "context",
+          "full-text.tide",
+          "--function",
+          "main"
+        ],
+        "bytes": {
+          "before": 182642,
+          "bit": 182642,
+          "after": 182642,
+          "reference": 182691
+        },
+        "stdout_sha256": "26261227a80f704efe7a22752b2bea0a66887e552f3beaa8a408ab1466258c68",
+        "median_ms": {
+          "before": 69.046,
+          "bit": 48.72,
+          "after": 21.314,
+          "reference": 29.437
+        },
+        "samples_ms": {
+          "before": [
+            69.055,
+            68.686,
+            68.705,
+            68.982,
+            69.071,
+            68.99,
+            69.201,
+            69.354,
+            69.138,
+            69.205,
+            69.22,
+            68.873,
+            68.836,
+            68.951,
+            69.046,
+            68.997,
+            68.814,
+            69.326,
+            69.195
+          ],
+          "bit": [
+            48.38,
+            48.323,
+            48.791,
+            48.511,
+            48.294,
+            48.92,
+            48.898,
+            48.615,
+            48.741,
+            48.48,
+            48.72,
+            48.783,
+            48.282,
+            49.036,
+            48.547,
+            48.872,
+            48.38,
+            48.894,
+            48.997
+          ],
+          "after": [
+            21.298,
+            21.314,
+            21.301,
+            21.15,
+            21.237,
+            21.391,
+            21.556,
+            21.324,
+            21.241,
+            21.216,
+            21.291,
+            21.45,
+            21.342,
+            21.529,
+            21.322,
+            21.27,
+            21.325,
+            21.293,
+            21.461
+          ],
+          "reference": [
+            29.451,
+            29.588,
+            29.38,
+            29.339,
+            29.3,
+            29.776,
+            32.39,
+            29.476,
+            29.401,
+            29.613,
+            29.437,
+            29.403,
+            29.277,
+            29.469,
+            29.377,
+            29.25,
+            29.323,
+            29.672,
+            29.55
+          ]
+        }
+      },
+      {
+        "id": "large_index",
+        "args": [
+          "context",
+          "full-text.tide",
+          "--function",
+          "main",
+          "--example-index"
+        ],
+        "bytes": {
+          "before": 634,
+          "bit": 634,
+          "after": 634
+        },
+        "stdout_sha256": "89ea349cffca51e65733087a5fc9a3b7d5ed88e12e3a8f0627b3a78545a95007",
+        "median_ms": {
+          "before": 66.313,
+          "bit": 45.92,
+          "after": 18.729
+        },
+        "samples_ms": {
+          "before": [
+            66.462,
+            66.609,
+            67.196,
+            66.015,
+            66.59,
+            66.712,
+            66.268,
+            66.24,
+            67.31,
+            66.313,
+            66.538,
+            66.233,
+            67.056,
+            65.83,
+            66.2,
+            66.894,
+            66.096,
+            66.13,
+            66.155
+          ],
+          "bit": [
+            45.867,
+            45.592,
+            46.048,
+            45.771,
+            45.857,
+            46.199,
+            46.445,
+            46.073,
+            45.673,
+            46.605,
+            45.812,
+            45.908,
+            45.951,
+            45.976,
+            45.747,
+            45.989,
+            45.92,
+            46.316,
+            45.684
+          ],
+          "after": [
+            19.008,
+            18.822,
+            18.754,
+            18.707,
+            18.687,
+            18.789,
+            18.823,
+            18.731,
+            18.886,
+            18.723,
+            18.729,
+            18.63,
+            18.85,
+            18.666,
+            18.679,
+            18.687,
+            18.704,
+            18.783,
+            18.725
+          ]
+        }
+      },
+      {
+        "id": "large_selected",
+        "args": [
+          "context",
+          "full-text.tide",
+          "--function",
+          "main",
+          "--example",
+          "large"
+        ],
+        "bytes": {
+          "before": 182669,
+          "bit": 182669,
+          "after": 182669
+        },
+        "stdout_sha256": "e33bb0d95f8aae272a71355e0f8e955463a86321f79873382861e94b651d9bef",
+        "median_ms": {
+          "before": 69.026,
+          "bit": 48.692,
+          "after": 21.485
+        },
+        "samples_ms": {
+          "before": [
+            68.687,
+            69.12,
+            69.198,
+            68.879,
+            68.983,
+            69.139,
+            68.754,
+            68.871,
+            68.928,
+            68.791,
+            69.495,
+            69.674,
+            69.319,
+            69.026,
+            69.265,
+            68.819,
+            69.352,
+            68.844,
+            69.081
+          ],
+          "bit": [
+            48.683,
+            48.86,
+            48.692,
+            48.606,
+            48.513,
+            48.771,
+            48.762,
+            49.073,
+            48.52,
+            48.78,
+            49.01,
+            48.747,
+            48.719,
+            48.832,
+            48.6,
+            48.641,
+            48.683,
+            48.527,
+            48.535
+          ],
+          "after": [
+            21.463,
+            21.422,
+            21.554,
+            21.359,
+            21.402,
+            21.602,
+            21.367,
+            21.367,
+            21.398,
+            21.59,
+            21.491,
+            21.548,
+            21.485,
+            21.649,
+            21.625,
+            21.503,
+            21.448,
+            21.391,
+            21.518
+          ]
+        }
+      },
+      {
+        "id": "large_edit",
+        "args": [
+          "edit",
+          "full-text.tide",
+          "--base",
+          "c69a7efa047644b1b83bf81aa663853ea80341d5a66365280098e86212d85021",
+          "--source",
+          "next.tide"
+        ],
+        "bytes": {
+          "before": 182344,
+          "bit": 182344,
+          "after": 182344,
+          "reference": 182358
+        },
+        "stdout_sha256": "4acadd3d75daa88b9c33303b7a61fca8e95088ea8fce5aa8557713d59f9100ef",
+        "median_ms": {
+          "before": 85.553,
+          "bit": 69.375,
+          "after": 25.455,
+          "reference": 29.932
+        },
+        "samples_ms": {
+          "before": [
+            85.902,
+            85.362,
+            85.303,
+            85.532,
+            85.143,
+            85.707,
+            85.719,
+            85.246,
+            85.639,
+            85.562,
+            85.767,
+            85.553,
+            85.448,
+            85.762,
+            85.938,
+            85.334,
+            85.205,
+            85.864,
+            85.469
+          ],
+          "bit": [
+            69.234,
+            69.24,
+            69.079,
+            69.473,
+            69.315,
+            69.171,
+            69.181,
+            69.066,
+            69.634,
+            69.415,
+            69.714,
+            69.772,
+            69.468,
+            70.552,
+            69.19,
+            68.976,
+            69.439,
+            69.404,
+            69.375
+          ],
+          "after": [
+            25.455,
+            25.436,
+            25.387,
+            25.355,
+            25.423,
+            25.453,
+            25.506,
+            25.414,
+            25.493,
+            25.521,
+            25.508,
+            25.444,
+            25.49,
+            25.46,
+            25.454,
+            25.342,
+            25.788,
+            25.595,
+            25.581
+          ],
+          "reference": [
+            29.775,
+            29.925,
+            29.83,
+            29.91,
+            30.059,
+            30.032,
+            29.88,
+            29.782,
+            29.91,
+            30.059,
+            29.932,
+            30.034,
+            30.118,
+            29.986,
+            29.875,
+            29.772,
+            30.012,
+            30.118,
+            30.134
+          ]
+        }
+      },
+      {
+        "id": "small",
+        "args": [
+          "context",
+          "balance.tide",
+          "--function",
+          "balance"
+        ],
+        "bytes": {
+          "before": 1352,
+          "bit": 1352,
+          "after": 1352,
+          "reference": 1465
+        },
+        "stdout_sha256": "c90935e797c62b854c1dc15cdb4f05e1a36e48698fca8d568bd97d7ae24dfa1b",
+        "median_ms": {
+          "before": 5.995,
+          "bit": 5.851,
+          "after": 5.812,
+          "reference": 29.065
+        },
+        "samples_ms": {
+          "before": [
+            6.009,
+            5.908,
+            6.002,
+            5.968,
+            5.975,
+            5.998,
+            5.983,
+            6.105,
+            6.04,
+            5.936,
+            6.007,
+            5.976,
+            5.995,
+            5.987,
+            6.025,
+            6.012,
+            5.996,
+            5.993,
+            5.984
+          ],
+          "bit": [
+            5.851,
+            5.935,
+            5.862,
+            5.766,
+            5.816,
+            5.947,
+            5.844,
+            6.007,
+            5.815,
+            5.864,
+            5.878,
+            5.813,
+            5.825,
+            5.922,
+            5.943,
+            5.786,
+            5.807,
+            5.909,
+            5.831
+          ],
+          "after": [
+            5.964,
+            5.913,
+            5.795,
+            5.785,
+            5.817,
+            5.838,
+            5.784,
+            5.769,
+            5.794,
+            5.95,
+            5.799,
+            5.812,
+            5.816,
+            5.877,
+            5.825,
+            5.804,
+            5.858,
+            5.79,
+            5.794
+          ],
+          "reference": [
+            29.189,
+            29.321,
+            29.093,
+            28.929,
+            29.047,
+            29.181,
+            29.024,
+            29.065,
+            29.08,
+            29.084,
+            28.962,
+            29.009,
+            29.032,
+            29.219,
+            29.046,
+            29.014,
+            29.057,
+            29.184,
+            29.072
+          ]
+        }
+      },
+      {
+        "id": "many",
+        "args": [
+          "context",
+          "many.tide",
+          "--function",
+          "main",
+          "--example-index"
+        ],
+        "bytes": {
+          "before": 7930,
+          "bit": 7930,
+          "after": 7930
+        },
+        "stdout_sha256": "b5525a2bea3129af9716b3a40b0d93c5999a342b7de0a29f1f8adf8e06c4f23c",
+        "median_ms": {
+          "before": 9.13,
+          "bit": 8.155,
+          "after": 7.747
+        },
+        "samples_ms": {
+          "before": [
+            9.128,
+            9.348,
+            9.182,
+            9.972,
+            9.216,
+            9.212,
+            9.135,
+            9.133,
+            9.159,
+            9.13,
+            9.116,
+            9.13,
+            9.11,
+            9.12,
+            9.129,
+            9.093,
+            9.117,
+            9.123,
+            9.111
+          ],
+          "bit": [
+            8.251,
+            8.096,
+            8.156,
+            8.235,
+            8.162,
+            8.215,
+            8.213,
+            8.16,
+            8.155,
+            8.143,
+            8.142,
+            8.119,
+            8.13,
+            8.115,
+            8.138,
+            8.181,
+            8.088,
+            8.161,
+            8.127
+          ],
+          "after": [
+            7.741,
+            7.772,
+            7.819,
+            7.866,
+            7.792,
+            7.793,
+            7.834,
+            7.737,
+            7.747,
+            7.744,
+            7.761,
+            7.766,
+            7.747,
+            7.741,
+            7.713,
+            7.724,
+            7.748,
+            7.723,
+            7.729
+          ]
+        }
+      },
+      {
+        "id": "many_selected",
+        "args": [
+          "context",
+          "many.tide",
+          "--function",
+          "main",
+          "--example",
+          "e63"
+        ],
+        "bytes": {
+          "before": 695,
+          "bit": 695,
+          "after": 695
+        },
+        "stdout_sha256": "61fa5fa8282a23e0a7266f5c640bc5476f9abe6c3902b2f8c112f4ae0c152e95",
+        "median_ms": {
+          "before": 7.034,
+          "bit": 6.944,
+          "after": 6.829
+        },
+        "samples_ms": {
+          "before": [
+            6.986,
+            7.14,
+            6.955,
+            7.03,
+            6.944,
+            7.038,
+            7.061,
+            6.92,
+            7.034,
+            7.034,
+            6.966,
+            7.241,
+            7.109,
+            7.008,
+            7.593,
+            7.034,
+            7.174,
+            7.027,
+            7.061
+          ],
+          "bit": [
+            6.869,
+            7.946,
+            6.95,
+            6.954,
+            6.947,
+            6.944,
+            6.9,
+            6.959,
+            6.932,
+            6.918,
+            6.883,
+            6.942,
+            7,
+            7.315,
+            6.891,
+            7.07,
+            6.864,
+            6.87,
+            7.307
+          ],
+          "after": [
+            6.79,
+            6.844,
+            6.829,
+            6.795,
+            6.792,
+            6.79,
+            6.799,
+            6.805,
+            6.793,
+            6.799,
+            6.842,
+            6.872,
+            6.852,
+            6.807,
+            7.013,
+            6.904,
+            6.856,
+            6.872,
+            7.137
+          ]
+        }
+      },
+      {
+        "id": "hole",
+        "args": [
+          "hole",
+          "full-text.tide",
+          "--function",
+          "main",
+          "--node",
+          "2:1"
+        ],
+        "bytes": {
+          "before": 236,
+          "bit": 236,
+          "after": 236,
+          "reference": 255
+        },
+        "stdout_sha256": "02edac2003d7fe91b02c92337bd4b7dd69371bd74df39bf33bede3d4c9e6ebcc",
+        "median_ms": {
+          "before": 32.293,
+          "bit": 32.789,
+          "after": 12.76,
+          "reference": 29.453
+        },
+        "samples_ms": {
+          "before": [
+            32.013,
+            32.546,
+            32.295,
+            32.141,
+            32.473,
+            32.244,
+            32.397,
+            32.183,
+            32.234,
+            32.293,
+            32.346,
+            32.293,
+            32.4,
+            32.227,
+            32.065,
+            32.166,
+            32.307,
+            32.677,
+            32.813
+          ],
+          "bit": [
+            32.892,
+            32.971,
+            32.559,
+            32.857,
+            32.777,
+            32.59,
+            32.909,
+            32.806,
+            32.689,
+            32.756,
+            32.742,
+            32.706,
+            32.712,
+            32.759,
+            32.803,
+            32.789,
+            32.903,
+            32.942,
+            33.144
+          ],
+          "after": [
+            12.771,
+            12.79,
+            12.76,
+            12.689,
+            12.775,
+            12.831,
+            12.685,
+            12.854,
+            12.724,
+            12.78,
+            12.733,
+            12.689,
+            12.752,
+            12.71,
+            12.712,
+            12.691,
+            12.82,
+            12.856,
+            13.171
+          ],
+          "reference": [
+            29.538,
+            29.4,
+            29.532,
+            29.532,
+            29.42,
+            29.457,
+            29.35,
+            29.524,
+            29.459,
+            29.435,
+            29.318,
+            29.375,
+            29.479,
+            29.453,
+            29.353,
+            29.314,
+            29.324,
+            29.803,
+            29.495
+          ]
+        }
+      },
+      {
+        "id": "ascii",
+        "args": [
+          "context",
+          "ascii.tide",
+          "--function",
+          "main"
+        ],
+        "bytes": {
+          "before": 28642,
+          "bit": 28642,
+          "after": 28642,
+          "reference": 28691
+        },
+        "stdout_sha256": "aea46dc654e18c0cbd89d8b231fe315f064acddac73991d2822ca952d5b70398",
+        "median_ms": {
+          "before": 13.539,
+          "bit": 10.296,
+          "after": 8.796,
+          "reference": 28.951
+        },
+        "samples_ms": {
+          "before": [
+            13.582,
+            13.803,
+            13.494,
+            13.505,
+            13.498,
+            13.689,
+            13.547,
+            13.623,
+            13.505,
+            13.662,
+            13.505,
+            13.49,
+            13.503,
+            13.539,
+            13.53,
+            13.606,
+            13.581,
+            13.567,
+            13.509
+          ],
+          "bit": [
+            10.359,
+            10.385,
+            10.306,
+            10.305,
+            10.312,
+            10.318,
+            10.277,
+            10.296,
+            10.3,
+            10.284,
+            10.281,
+            10.279,
+            10.238,
+            10.288,
+            10.269,
+            10.337,
+            10.27,
+            10.327,
+            10.274
+          ],
+          "after": [
+            8.872,
+            8.86,
+            8.796,
+            8.801,
+            8.759,
+            8.796,
+            8.728,
+            8.759,
+            8.767,
+            8.731,
+            8.765,
+            8.816,
+            8.801,
+            8.877,
+            8.805,
+            8.95,
+            8.855,
+            8.734,
+            8.766
+          ],
+          "reference": [
+            29.008,
+            29.182,
+            28.92,
+            28.978,
+            28.844,
+            28.979,
+            28.943,
+            28.92,
+            28.893,
+            28.951,
+            28.949,
+            28.905,
+            28.839,
+            28.989,
+            29.016,
+            29.182,
+            28.94,
+            29.062,
+            28.962
+          ]
+        }
+      },
+      {
+        "id": "ascii_test",
+        "args": [
+          "test",
+          "ascii.tide"
+        ],
+        "bytes": {
+          "before": 13,
+          "bit": 13,
+          "after": 13,
+          "reference": 14
+        },
+        "stdout_sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "median_ms": {
+          "before": 8.214,
+          "bit": 8.202,
+          "after": 7.898,
+          "reference": 28.824
+        },
+        "samples_ms": {
+          "before": [
+            8.233,
+            8.301,
+            8.277,
+            8.181,
+            8.377,
+            8.253,
+            8.207,
+            8.206,
+            8.22,
+            8.314,
+            8.209,
+            8.18,
+            8.214,
+            8.215,
+            8.18,
+            8.162,
+            8.147,
+            8.188,
+            8.243
+          ],
+          "bit": [
+            8.211,
+            8.271,
+            8.202,
+            8.221,
+            8.485,
+            8.309,
+            8.16,
+            8.175,
+            8.2,
+            8.219,
+            8.179,
+            8.139,
+            8.189,
+            8.238,
+            8.136,
+            8.167,
+            8.166,
+            8.271,
+            8.284
+          ],
+          "after": [
+            7.957,
+            7.953,
+            7.861,
+            7.889,
+            8.046,
+            7.906,
+            7.898,
+            7.894,
+            7.889,
+            7.917,
+            7.888,
+            7.843,
+            7.899,
+            7.894,
+            7.829,
+            7.902,
+            7.907,
+            7.861,
+            7.974
+          ],
+          "reference": [
+            28.906,
+            28.909,
+            28.769,
+            28.768,
+            28.943,
+            28.767,
+            28.861,
+            28.919,
+            28.718,
+            28.882,
+            28.818,
+            28.831,
+            28.824,
+            28.854,
+            28.761,
+            28.619,
+            28.68,
+            28.756,
+            29.035
+          ]
+        }
+      },
+      {
+        "id": "mixed",
+        "args": [
+          "context",
+          "mixed.tide",
+          "--function",
+          "main"
+        ],
+        "bytes": {
+          "before": 175954,
+          "bit": 175954,
+          "after": 175954,
+          "reference": 176003
+        },
+        "stdout_sha256": "fab55a701bd96119937e764e40cc54205904a1ac1b8429b86f76dd79f6c839dc",
+        "median_ms": {
+          "before": 70.065,
+          "bit": 50.274,
+          "after": 22.282,
+          "reference": 29.614
+        },
+        "samples_ms": {
+          "before": [
+            69.919,
+            69.635,
+            69.846,
+            69.869,
+            70.004,
+            69.99,
+            70.185,
+            70.217,
+            69.805,
+            70.576,
+            69.806,
+            70.477,
+            70.319,
+            70.065,
+            70.14,
+            69.694,
+            70.248,
+            70.233,
+            70.672
+          ],
+          "bit": [
+            50.041,
+            50.088,
+            49.868,
+            50.274,
+            50.057,
+            50.421,
+            49.874,
+            50.034,
+            49.938,
+            50.166,
+            50.083,
+            50.597,
+            50.312,
+            50.368,
+            50.645,
+            50.288,
+            50.394,
+            50.336,
+            50.349
+          ],
+          "after": [
+            22.261,
+            22.282,
+            22.19,
+            22.247,
+            22.187,
+            22.268,
+            22.232,
+            22.263,
+            22.239,
+            22.359,
+            22.343,
+            22.277,
+            22.497,
+            22.323,
+            22.415,
+            22.487,
+            22.483,
+            22.504,
+            22.414
+          ],
+          "reference": [
+            29.6,
+            29.558,
+            29.681,
+            29.614,
+            29.614,
+            29.574,
+            29.828,
+            29.544,
+            29.567,
+            29.664,
+            29.586,
+            29.579,
+            29.748,
+            30.005,
+            29.808,
+            29.675,
+            29.579,
+            29.94,
+            29.9
+          ]
+        }
+      },
+      {
+        "id": "mixed_test",
+        "args": [
+          "test",
+          "mixed.tide"
+        ],
+        "bytes": {
+          "before": 13,
+          "bit": 13,
+          "after": 13,
+          "reference": 14
+        },
+        "stdout_sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "median_ms": {
+          "before": 34.171,
+          "bit": 34.156,
+          "after": 13.562,
+          "reference": 29.296
+        },
+        "samples_ms": {
+          "before": [
+            34.11,
+            34.363,
+            34.29,
+            34.156,
+            34.186,
+            34.306,
+            34.24,
+            34.482,
+            34.093,
+            34.087,
+            34.247,
+            34.033,
+            33.963,
+            34.271,
+            34.171,
+            34.187,
+            34.166,
+            34.154,
+            34.104
+          ],
+          "bit": [
+            34.167,
+            34.232,
+            34.096,
+            34.5,
+            34.153,
+            34.287,
+            34.088,
+            34.156,
+            34.23,
+            33.987,
+            34.22,
+            34.199,
+            34.002,
+            33.963,
+            34.054,
+            34.401,
+            33.983,
+            34.042,
+            34.171
+          ],
+          "after": [
+            13.562,
+            13.545,
+            13.566,
+            13.548,
+            13.806,
+            13.612,
+            13.56,
+            13.619,
+            13.746,
+            13.564,
+            13.594,
+            13.486,
+            13.562,
+            13.61,
+            13.593,
+            13.522,
+            13.532,
+            13.506,
+            13.527
+          ],
+          "reference": [
+            29.263,
+            29.296,
+            29.254,
+            29.339,
+            29.418,
+            29.398,
+            29.27,
+            29.345,
+            29.228,
+            29.414,
+            29.221,
+            29.271,
+            29.307,
+            29.214,
+            29.147,
+            29.221,
+            29.345,
+            29.346,
+            29.32
+          ]
+        }
+      }
+    ],
+    "controls": {
+      "method": "3 warm-ups, 21 alternating runs per package; stdout bytes and expected values compared",
+      "observations": [
+        {
+          "id": "saldo",
+          "median_ms": {
+            "before": 6.485,
+            "after": 6.535
+          },
+          "samples_ms": {
+            "before": [
+              8.081,
+              7.802,
+              7.805,
+              7.808,
+              7.69,
+              7.818,
+              7.852,
+              7.223,
+              6.974,
+              6.448,
+              6.4,
+              6.472,
+              6.485,
+              6.461,
+              6.459,
+              6.437,
+              6.506,
+              6.485,
+              6.431,
+              6.45,
+              6.438
+            ],
+            "after": [
+              7.878,
+              7.935,
+              7.686,
+              7.838,
+              7.706,
+              7.768,
+              7.751,
+              7.961,
+              6.652,
+              6.4,
+              6.442,
+              6.552,
+              6.434,
+              6.387,
+              6.377,
+              6.473,
+              6.375,
+              6.535,
+              6.434,
+              6.436,
+              6.439
+            ]
+          }
+        },
+        {
+          "id": "short_run",
+          "median_ms": {
+            "before": 30.763,
+            "after": 11.196
+          },
+          "samples_ms": {
+            "before": [
+              30.582,
+              30.726,
+              30.519,
+              30.492,
+              30.693,
+              30.872,
+              30.935,
+              30.763,
+              31.11,
+              31.063,
+              31.023,
+              30.859,
+              30.89,
+              30.566,
+              30.643,
+              30.711,
+              30.783,
+              30.567,
+              30.495,
+              30.868,
+              31.028
+            ],
+            "after": [
+              11.487,
+              11.119,
+              11.112,
+              11.134,
+              11.447,
+              11.462,
+              11.147,
+              11.182,
+              11.452,
+              11.33,
+              11.249,
+              11.475,
+              11.117,
+              11.114,
+              11.196,
+              11.175,
+              11.151,
+              11.223,
+              11.188,
+              11.567,
+              11.365
+            ]
+          }
+        },
+        {
+          "id": "fields",
+          "median_ms": {
+            "before": 5.924,
+            "after": 5.854
+          },
+          "samples_ms": {
+            "before": [
+              5.958,
+              6.141,
+              6.098,
+              6.004,
+              6.055,
+              5.878,
+              5.91,
+              5.994,
+              5.903,
+              5.837,
+              5.917,
+              6.007,
+              5.878,
+              5.87,
+              5.776,
+              6.742,
+              5.924,
+              5.911,
+              5.934,
+              5.915,
+              6.464
+            ],
+            "after": [
+              5.747,
+              5.908,
+              5.901,
+              5.867,
+              6.155,
+              5.797,
+              6.435,
+              6.407,
+              5.875,
+              6.198,
+              6.162,
+              5.854,
+              5.749,
+              5.839,
+              5.84,
+              5.724,
+              5.716,
+              5.815,
+              5.714,
+              5.782,
+              5.864
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "raw_hash": {
+    "python_source": "import hashlib, sys\ns = sys.stdin.buffer.read().decode(\"utf-8\")\nh = \"\"\nfor _ in range(int(sys.argv[1])):\n    h = hashlib.sha256((h + s).encode(\"utf-8\")).hexdigest()\nprint(h)",
+    "tide_source": "hash_once data:r > t\nsha256_utf8 (read data)\n\nhash_batch data:r > t\nlet body read data\nfold (indices 64) \"\" previous row unused sha256_utf8 (concat previous body)\n",
+    "input": "🐈a repeated 13000 times (UTF-8)",
+    "series": [
+      {
+        "digests": 1,
+        "source_bytes": 65000,
+        "expected_digest": "8a376d785cb78b758bfe3465a17a43c2f9cdda6509769f12ca2377b067e7eeb6",
+        "median_ms": {
+          "before": 12.332,
+          "after": 2.505,
+          "cpython": 5.488
+        },
+        "samples_ms": {
+          "before": [
+            12.349,
+            12.474,
+            12.295,
+            12.332,
+            12.322,
+            12.27,
+            12.311,
+            12.337,
+            12.302,
+            12.738,
+            12.413
+          ],
+          "after": [
+            2.502,
+            2.522,
+            2.512,
+            2.474,
+            2.505,
+            2.494,
+            2.49,
+            2.517,
+            2.498,
+            2.54,
+            2.512
+          ],
+          "cpython": [
+            5.488,
+            5.499,
+            5.435,
+            5.478,
+            5.508,
+            5.441,
+            5.503,
+            5.515,
+            5.482,
+            5.492,
+            5.48
+          ]
+        }
+      },
+      {
+        "digests": 64,
+        "source_bytes": 65000,
+        "expected_digest": "258bb84742802692672d00266b6f9a5aaab7c6580692b61a6ed9c908990b5ceb",
+        "median_ms": {
+          "before": 746.208,
+          "after": 123.785,
+          "cpython": 8.704
+        },
+        "samples_ms": {
+          "before": [
+            745.414,
+            746.504,
+            746.208,
+            746.696,
+            746.878,
+            742.683,
+            744.865,
+            745.533,
+            745.277,
+            746.959,
+            748.905
+          ],
+          "after": [
+            122.763,
+            122.92,
+            123.429,
+            124.508,
+            124.34,
+            123.434,
+            123.813,
+            122.955,
+            124.774,
+            124.135,
+            123.785
+          ],
+          "cpython": [
+            8.988,
+            8.735,
+            8.644,
+            8.888,
+            8.631,
+            8.602,
+            8.815,
+            8.647,
+            8.704,
+            8.799,
+            8.637
+          ]
+        }
+      }
+    ],
+    "method": "3 warm-ups, 11 timed runs per variant, rotating order. Each call reads UTF-8 on stdin. CPU 2. All digests verified using an independent SHA-256."
+  },
+  "profile_after_and_xor": {
+    "method": "-O1 -pg, 18 separate inspector processes; large fixture; 0.15 CPU seconds sampled",
+    "sha_rotate_calls": 29496960,
+    "json_hex_calls": 504000,
+    "ascii_string_calls": 36
+  }
+}

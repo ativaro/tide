@@ -1,0 +1,14 @@
+rule endpoints high:b > i
+state n:i=-9223372036854775808
+when high -> n=set 9223372036854775807
+else -> n=reset
+out n
+
+series xs:*b > *i
+scan endpoints xs
+
+main flags:*b > *i
+series flags
+
+example signed endpoints
+{"events":[false,true,true,false],"expect":[-9223372036854775808,9223372036854775807,9223372036854775807,-9223372036854775808]}

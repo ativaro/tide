@@ -1,0 +1,36 @@
+use seed
+
+group_forms_text source:t > t
+let gaps " \t\r\u001f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"
+let decls declarations source gaps
+let env symbols decls gaps
+fold decls "" result row decl
+  let sig line_tokens (get head decl) true gaps
+  let name need (at sig 0) "expected_definition" row
+  if (or (text_eq name "use") (or (text_eq name "example") (or (text_eq name "rule") (or (text_eq name "record") (text_eq name "variant"))))) result
+  let body parse_expression (get body decl) env true gaps
+  concat result (cat3 (identifier name) "\t" (concat body "\n"))
+
+group_forms source:r > t
+group_forms_text (read source)
+
+example record_width group_forms_text
+{"inputs":{"source":"record Box\na:i\nb:i\n \t\npack n:i > {Box}\nmake Box a n b (+ n 1)"},"expect":"pack\t(make Box a n b (+ n 1))\n"}
+
+example nested_arms group_forms_text
+{"inputs":{"source":"variant Phase\na b\n\npick p:{Phase} > i\nmatch p a (match p a 3 b 4 end) b 5 end"},"expect":"pick\t(match p a (match p a 3 b 4 end) b 5 end)\n"}
+
+example diagnostic_binding group_forms_text
+{"inputs":{"source":"f > b\ncatch E_DATA (fail \"a\\tb\") why has_reason why \"a\\tb\""},"expect":"f\t(catch E_DATA (fail \"a\\tb\") why (has_reason why \"a\\tb\"))\n"}
+
+example canonical_count group_forms_text
+{"inputs":{"source":"f > *i\nlist i 000002 01 -02"},"expect":"f\t(list i 2 01 -02)\n"}
+
+example quoted_syntax group_forms_text
+{"inputs":{"source":"f > t\nconcat \"(a)\\u00e9\" \"\\/\""},"expect":"f\t(concat \"(a)\\u00e9\" \"\\/\")\n"}
+
+example adjacent_literals group_forms_text
+{"inputs":{"source":"f > t\nconcat\"ab\"\"cd\""},"expect":"f\t(concat \"ab\" \"cd\")\n"}
+
+example unicode_source group_forms_text
+{"inputs":{"source":"f\u00a0s:t > t\nconcat\u3000s \"Grüße 🐈　x\""},"expect":"f\t(concat s \"Grüße 🐈　x\")\n"}

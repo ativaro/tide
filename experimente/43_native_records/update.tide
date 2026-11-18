@@ -1,0 +1,5 @@
+record Batch
+labels:*t tick:i
+
+main start:{Batch} rows:*i > i
+get tick (fold rows start batch row x (with tick batch x))

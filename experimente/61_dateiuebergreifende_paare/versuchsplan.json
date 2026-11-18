@@ -1,0 +1,12 @@
+{
+  "prior": "../60_reparaturzeit/messung.json",
+  "fixtures": "../60_reparaturzeit/paarungen.json",
+  "oracle": "../60_reparaturzeit/vertrag.tide",
+  "families": ["kisten", "guthaben", "ladegrenze", "etiketten", "foerderband", "trommeln", "farbrollen", "doppelzaehler"],
+  "policy": "Preserve the initial single-edit and counterexample policies from experiment 60. Only if the single-edit sweep is complete and has no passing candidate, enumerate up to 64 unordered pairs of distinct edits from distinct source files. Both edits come from the same operator and expression rules and are evaluated together on the same public tests, stopping at the first mismatch. Reuse the probe phase for pairs if needed. Abstain if enumeration is truncated or the resulting shortlist is not a singleton.",
+  "control": "The first seven families keep their single-edit path. The two counter changes in doppelzaehler are tested in the same three-file project as before, along with its three public and 72 held-out cases. Verify candidate counts, search budgets, witnesses, probe results, and the names of changed files on both sides.",
+  "application": "For single edits, retain the existing apply commands. For pairs, verify the full two-file preview in one CLI invocation on both arms, materialize both validated files in the isolated scratch copy using the same measurement driver, then start final acceptance. End-to-end time includes both preview and materialization.",
+  "timer": "Same monotonic interval as experiment 60, from the start of probe-pool generation to acceptance or abstention, including both search stages, all subprocess launches, counterexample confirmation, application and public plus held-out acceptance. Builds and fixture preparation are excluded.",
+  "repetitions": "Eight families, 12 timed pairs per family after a dry pair, alternate language precedence, rotate task order, fresh scratch copy and processes per run, one pinned CPU, warm filesystem caches.",
+  "accounting": "Report successful paired median speed ratio and the median/P95 for all successful repairs, repairs with counterexamples, and the double-counter pair separately. Count all attempts and all model tokens. No model is invoked."
+}

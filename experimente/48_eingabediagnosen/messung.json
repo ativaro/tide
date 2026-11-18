@@ -1,0 +1,3512 @@
+{
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "os": "Linux 7.3.4-1-cachyos x86_64 GNU/Linux",
+  "logical_cpu": 2,
+  "rounds": 21,
+  "warmups": 3,
+  "benchmarks": {
+    "1_valid": {
+      "before": {
+        "samples_ms": [
+          6.0417,
+          5.9856,
+          5.9961,
+          6.119,
+          5.9978,
+          5.9942,
+          6.0333,
+          6.4905,
+          6.1896,
+          6.1139,
+          6.3274,
+          6.0071,
+          5.9702,
+          5.9781,
+          5.9287,
+          5.9594,
+          6.2,
+          5.99,
+          5.9487,
+          5.8611,
+          6.0088
+        ],
+        "output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "tokens": 2,
+        "output": "1\n",
+        "median_ms": 5.9978,
+        "q1_ms": 5.9781,
+        "q3_ms": 6.1139
+      },
+      "replay": {
+        "samples_ms": [
+          5.986,
+          5.9654,
+          5.8118,
+          5.9048,
+          6.2114,
+          5.8663,
+          5.9607,
+          6.2527,
+          6.2774,
+          6.0135,
+          5.9473,
+          5.816,
+          6.0977,
+          5.891,
+          6.0314,
+          5.8764,
+          6.0549,
+          5.9379,
+          5.822,
+          6.1004,
+          5.8243
+        ],
+        "output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "tokens": 2,
+        "output": "1\n",
+        "median_ms": 5.9607,
+        "q1_ms": 5.8764,
+        "q3_ms": 6.0549
+      },
+      "after": {
+        "samples_ms": [
+          6.2354,
+          6.0546,
+          5.858,
+          6.0354,
+          6.0376,
+          6.1608,
+          5.9763,
+          7.4641,
+          6.2471,
+          6.033,
+          6.1845,
+          5.8585,
+          5.873,
+          6.0006,
+          5.9017,
+          5.9519,
+          6.2076,
+          5.9983,
+          6.0788,
+          5.9635,
+          5.8402
+        ],
+        "output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "tokens": 2,
+        "output": "1\n",
+        "median_ms": 6.033,
+        "q1_ms": 5.9519,
+        "q3_ms": 6.1608
+      },
+      "python": {
+        "samples_ms": [
+          11.1749,
+          10.727,
+          10.6642,
+          10.6983,
+          10.7074,
+          10.7168,
+          10.8137,
+          11.2217,
+          10.945,
+          10.7979,
+          10.7408,
+          10.7372,
+          10.7774,
+          10.7958,
+          10.6791,
+          10.7742,
+          11.0014,
+          11.0849,
+          10.7832,
+          10.7192,
+          10.6719
+        ],
+        "output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "tokens": 2,
+        "output": "1\n",
+        "median_ms": 10.7742,
+        "q1_ms": 10.7168,
+        "q3_ms": 10.8137
+      }
+    },
+    "1_late": {
+      "before": {
+        "samples_ms": [
+          6.4926,
+          6.289,
+          5.9838,
+          6.1947,
+          6.1727,
+          6.1908,
+          6.2533,
+          6.512,
+          6.335,
+          6.1098,
+          6.0331,
+          6.2846,
+          6.144,
+          6.0638,
+          5.9495,
+          6.0113,
+          6.7984,
+          6.0426,
+          6.1418,
+          6.1884,
+          6.1308
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 6.1727,
+        "q1_ms": 6.0638,
+        "q3_ms": 6.2846
+      },
+      "replay": {
+        "samples_ms": [
+          5.9753,
+          6.1619,
+          6.0017,
+          5.9606,
+          6.384,
+          6.1967,
+          6.215,
+          6.2715,
+          6.0272,
+          6.0474,
+          6.2289,
+          6.1938,
+          6.0614,
+          6.065,
+          6.052,
+          5.9497,
+          6.2764,
+          6.0672,
+          6.0512,
+          6.0104,
+          6.1236
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 6.065,
+        "q1_ms": 6.0272,
+        "q3_ms": 6.1967
+      },
+      "after": {
+        "samples_ms": [
+          6.1958,
+          5.9912,
+          5.9828,
+          6.2631,
+          6.5469,
+          6.4241,
+          6.504,
+          6.4562,
+          6.0022,
+          6.2443,
+          6.3012,
+          5.9528,
+          5.9886,
+          6.2405,
+          6.0945,
+          6.1312,
+          6.3499,
+          5.9961,
+          6.1864,
+          6.0439,
+          6.1343
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 6.1864,
+        "q1_ms": 6.0022,
+        "q3_ms": 6.3012,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          11.11,
+          10.8069,
+          10.9695,
+          10.8059,
+          10.8679,
+          10.8786,
+          10.9064,
+          11.0813,
+          11.1665,
+          10.999,
+          10.9493,
+          10.8604,
+          11.0043,
+          10.7733,
+          10.674,
+          10.6814,
+          10.7528,
+          10.7931,
+          10.9121,
+          10.7186,
+          10.76
+        ],
+        "output_sha256": "4fcd9bcc81d886cd42874d90672f3dc5e4838995a707947a3bb04bef76f698db",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 10.8679,
+        "q1_ms": 10.7733,
+        "q3_ms": 10.9695
+      }
+    },
+    "1_missing": {
+      "before": {
+        "samples_ms": [
+          6.0001,
+          6.327,
+          6.1007,
+          6.2206,
+          5.9353,
+          6.1295,
+          6.0735,
+          6.4245,
+          5.9543,
+          6.491,
+          6.1384,
+          6.1376,
+          6.1886,
+          6.241,
+          5.9474,
+          5.9624,
+          6.311,
+          6.0973,
+          6.3484,
+          6.1217,
+          6.3431
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 6.1376,
+        "q1_ms": 6.0735,
+        "q3_ms": 6.311
+      },
+      "replay": {
+        "samples_ms": [
+          5.8978,
+          5.948,
+          6.0441,
+          6.0818,
+          6.004,
+          5.9641,
+          6.2023,
+          6.2653,
+          6.0475,
+          6.1271,
+          6.3267,
+          6.2134,
+          6.0557,
+          5.9511,
+          6.1648,
+          5.8819,
+          6.3219,
+          6.0736,
+          6.3278,
+          5.9925,
+          6.2846
+        ],
+        "output_sha256": "9fc2863ccf9ab4e83f6d6dc099c1662f5d6c4c60b54da0ed5a05f3c842187aa1",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 6.0736,
+        "q1_ms": 5.9925,
+        "q3_ms": 6.2134
+      },
+      "after": {
+        "samples_ms": [
+          6.2056,
+          6.0301,
+          5.8215,
+          6.0019,
+          6.0824,
+          6.4007,
+          5.9302,
+          6.2283,
+          6.2194,
+          5.9184,
+          6.3003,
+          6.1633,
+          5.9756,
+          5.8655,
+          6.0247,
+          5.9232,
+          5.9013,
+          6.161,
+          6.1191,
+          6.182,
+          5.9053
+        ],
+        "output_sha256": "9fc2863ccf9ab4e83f6d6dc099c1662f5d6c4c60b54da0ed5a05f3c842187aa1",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 6.0301,
+        "q1_ms": 5.9232,
+        "q3_ms": 6.182,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          10.7342,
+          10.827,
+          10.6316,
+          10.956,
+          10.8997,
+          10.8611,
+          10.6896,
+          11.032,
+          10.7125,
+          10.7251,
+          10.8851,
+          11.0108,
+          10.8952,
+          10.961,
+          10.7778,
+          10.6995,
+          10.999,
+          10.76,
+          10.8203,
+          10.8399,
+          10.7684
+        ],
+        "output_sha256": "b000f5e0ea1691a4a49ea99cb5b781451fa630f3e88d8bcecd138d611c84227f",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 10.827,
+        "q1_ms": 10.7342,
+        "q3_ms": 10.8997
+      }
+    },
+    "384_valid": {
+      "before": {
+        "samples_ms": [
+          11.087,
+          9.7749,
+          9.5998,
+          9.7245,
+          9.7767,
+          10.2371,
+          9.7234,
+          9.8021,
+          10.2141,
+          9.9786,
+          9.7441,
+          9.8179,
+          9.806,
+          10.2571,
+          10.0761,
+          9.7712,
+          10.0171,
+          10.1359,
+          10.1546,
+          9.7365,
+          9.8554
+        ],
+        "output_sha256": "579c81f568f7c29e169413de59514e21afa79aa0787df62272e11a71fd42dabc",
+        "tokens": 2,
+        "output": "384\n",
+        "median_ms": 9.8179,
+        "q1_ms": 9.7712,
+        "q3_ms": 10.1359
+      },
+      "replay": {
+        "samples_ms": [
+          9.7607,
+          9.5654,
+          9.871,
+          9.73,
+          9.7802,
+          9.8391,
+          9.5548,
+          10.3056,
+          9.6493,
+          9.9765,
+          9.6246,
+          9.6974,
+          9.6299,
+          9.891,
+          9.5577,
+          9.7805,
+          10.0311,
+          9.7353,
+          9.7129,
+          9.6446,
+          9.6751
+        ],
+        "output_sha256": "579c81f568f7c29e169413de59514e21afa79aa0787df62272e11a71fd42dabc",
+        "tokens": 2,
+        "output": "384\n",
+        "median_ms": 9.73,
+        "q1_ms": 9.6446,
+        "q3_ms": 9.8391
+      },
+      "after": {
+        "samples_ms": [
+          9.8402,
+          9.7131,
+          9.4851,
+          9.8508,
+          9.8275,
+          9.8563,
+          9.9396,
+          9.797,
+          10.8427,
+          9.6926,
+          9.6796,
+          10.0296,
+          9.5885,
+          10.1639,
+          9.8373,
+          9.6299,
+          9.81,
+          9.5949,
+          9.9411,
+          9.6846,
+          9.6702
+        ],
+        "output_sha256": "579c81f568f7c29e169413de59514e21afa79aa0787df62272e11a71fd42dabc",
+        "tokens": 2,
+        "output": "384\n",
+        "median_ms": 9.81,
+        "q1_ms": 9.6796,
+        "q3_ms": 9.8563
+      },
+      "python": {
+        "samples_ms": [
+          11.1966,
+          10.9629,
+          10.9937,
+          11.1323,
+          11.3428,
+          10.9299,
+          11.1138,
+          11.0699,
+          11.3054,
+          11.0875,
+          11.0127,
+          11.0857,
+          10.9796,
+          11.0741,
+          11.1355,
+          10.9841,
+          11.3489,
+          10.9691,
+          11.1324,
+          10.9951,
+          10.99
+        ],
+        "output_sha256": "579c81f568f7c29e169413de59514e21afa79aa0787df62272e11a71fd42dabc",
+        "tokens": 2,
+        "output": "384\n",
+        "median_ms": 11.0741,
+        "q1_ms": 10.99,
+        "q3_ms": 11.1324
+      }
+    },
+    "384_first": {
+      "before": {
+        "samples_ms": [
+          8.5863,
+          8.5277,
+          8.7021,
+          9.1912,
+          8.5611,
+          8.617,
+          8.5064,
+          8.4623,
+          8.7173,
+          8.4269,
+          8.6374,
+          8.4929,
+          8.8543,
+          8.6277,
+          8.5386,
+          8.768,
+          8.627,
+          8.6289,
+          8.5618,
+          8.6533,
+          8.5428
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 8.617,
+        "q1_ms": 8.5386,
+        "q3_ms": 8.6533
+      },
+      "replay": {
+        "samples_ms": [
+          11.1423,
+          10.2775,
+          10.1856,
+          10.3257,
+          11.0771,
+          10.3444,
+          10.3422,
+          10.3905,
+          10.7821,
+          10.8269,
+          10.3205,
+          10.3225,
+          10.1901,
+          10.449,
+          10.2778,
+          10.6054,
+          10.3809,
+          10.4218,
+          10.3922,
+          10.3461,
+          10.3773
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 10.3773,
+        "q1_ms": 10.3225,
+        "q3_ms": 10.449
+      },
+      "after": {
+        "samples_ms": [
+          8.5573,
+          8.8643,
+          8.3687,
+          8.9237,
+          8.345,
+          8.8411,
+          8.5282,
+          8.6116,
+          8.9206,
+          8.4728,
+          8.5439,
+          8.3948,
+          8.7218,
+          8.5612,
+          8.5303,
+          8.448,
+          8.5126,
+          8.418,
+          8.9877,
+          8.5493,
+          8.5574
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 8.5493,
+        "q1_ms": 8.4728,
+        "q3_ms": 8.7218,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          11.1307,
+          11.0117,
+          10.9426,
+          10.9859,
+          10.962,
+          10.9648,
+          11.0034,
+          11.0381,
+          11.1632,
+          10.945,
+          10.9811,
+          10.9081,
+          11.0513,
+          10.9842,
+          11.1296,
+          11.0336,
+          10.9939,
+          10.8911,
+          10.9896,
+          10.8876,
+          10.9077
+        ],
+        "output_sha256": "4fcd9bcc81d886cd42874d90672f3dc5e4838995a707947a3bb04bef76f698db",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 10.9859,
+        "q1_ms": 10.945,
+        "q3_ms": 11.0336
+      }
+    },
+    "384_late": {
+      "before": {
+        "samples_ms": [
+          9.8357,
+          9.2626,
+          9.3673,
+          9.2899,
+          9.2353,
+          9.3933,
+          9.5094,
+          9.4103,
+          10.4989,
+          9.3431,
+          9.5852,
+          9.35,
+          9.3103,
+          9.6043,
+          9.4458,
+          9.4516,
+          9.7087,
+          9.6821,
+          9.4068,
+          9.253,
+          9.404
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 9.4068,
+        "q1_ms": 9.3431,
+        "q3_ms": 9.5852
+      },
+      "replay": {
+        "samples_ms": [
+          12.6651,
+          12.1407,
+          12.0395,
+          11.9575,
+          12.0367,
+          12.1638,
+          12.207,
+          12.4039,
+          12.7962,
+          12.0568,
+          12.287,
+          11.9589,
+          12.0023,
+          12.5151,
+          12.0406,
+          12.2432,
+          12.5247,
+          12.4626,
+          12.053,
+          12.2427,
+          12.1603
+        ],
+        "output_sha256": "930e1ee9e82c23b18066fd6db8704d7bc40565ae05fd685f932351f088487d10",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 12.1638,
+        "q1_ms": 12.0406,
+        "q3_ms": 12.4039
+      },
+      "after": {
+        "samples_ms": [
+          9.9239,
+          9.6166,
+          9.5965,
+          9.2734,
+          9.2616,
+          9.4959,
+          9.3458,
+          9.9306,
+          9.3862,
+          9.4237,
+          9.6358,
+          9.3217,
+          9.2037,
+          9.3028,
+          9.3698,
+          9.3975,
+          9.3919,
+          9.938,
+          9.4596,
+          9.4316,
+          10.0972
+        ],
+        "output_sha256": "930e1ee9e82c23b18066fd6db8704d7bc40565ae05fd685f932351f088487d10",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 9.4237,
+        "q1_ms": 9.3458,
+        "q3_ms": 9.6166,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          11.1435,
+          10.9531,
+          11.0044,
+          10.9386,
+          11.1602,
+          10.9493,
+          10.9161,
+          11.4192,
+          11.3507,
+          10.9287,
+          11.152,
+          11.1335,
+          11.0312,
+          10.9199,
+          11.0722,
+          11.099,
+          11.0557,
+          11.1817,
+          11.0818,
+          10.9732,
+          10.9978
+        ],
+        "output_sha256": "dfeb00639ce4dcb4647e5ed8ce55bd69d9e3364551b8b5b7ca273b69c3e426c9",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 11.0557,
+        "q1_ms": 10.9531,
+        "q3_ms": 11.1435
+      }
+    },
+    "384_missing": {
+      "before": {
+        "samples_ms": [
+          8.9473,
+          8.6295,
+          8.6274,
+          8.3688,
+          8.4171,
+          8.9508,
+          8.3914,
+          8.9043,
+          8.7049,
+          8.492,
+          8.5292,
+          8.4908,
+          8.3458,
+          8.4711,
+          8.8109,
+          8.4101,
+          8.5823,
+          9.8644,
+          8.5768,
+          8.399,
+          8.3874
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 8.5292,
+        "q1_ms": 8.4101,
+        "q3_ms": 8.7049
+      },
+      "replay": {
+        "samples_ms": [
+          11.2778,
+          11.3558,
+          11.3144,
+          12.0757,
+          11.6663,
+          11.2544,
+          11.6453,
+          11.4575,
+          11.6157,
+          11.2444,
+          11.4651,
+          11.3059,
+          11.2168,
+          11.3195,
+          11.3197,
+          11.5978,
+          11.8666,
+          11.7594,
+          11.323,
+          11.294,
+          11.2744
+        ],
+        "output_sha256": "1b13ed008813669cb141cfc53a9ba2c49a77f1d9badbb1242cb1693d01f6a3ba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 11.323,
+        "q1_ms": 11.294,
+        "q3_ms": 11.6157
+      },
+      "after": {
+        "samples_ms": [
+          8.6047,
+          8.4346,
+          8.5319,
+          8.4741,
+          8.6977,
+          8.7163,
+          8.4632,
+          8.9436,
+          9.6621,
+          8.5235,
+          9.1186,
+          8.5082,
+          8.3941,
+          8.8892,
+          8.5018,
+          9.2051,
+          8.3075,
+          8.5262,
+          8.6445,
+          8.7286,
+          8.5887
+        ],
+        "output_sha256": "1b13ed008813669cb141cfc53a9ba2c49a77f1d9badbb1242cb1693d01f6a3ba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 8.5887,
+        "q1_ms": 8.5018,
+        "q3_ms": 8.7286,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          10.9716,
+          10.909,
+          10.9033,
+          11.0062,
+          10.9477,
+          11.065,
+          11.233,
+          11.15,
+          11.1542,
+          11.0946,
+          11.1085,
+          10.9149,
+          10.9652,
+          10.9058,
+          11.0017,
+          10.9472,
+          11.0291,
+          11.2126,
+          11.0538,
+          11.008,
+          10.9888
+        ],
+        "output_sha256": "52f10f915324c318c087197e12389f428b557df5f98853d3a39935312a9dfd42",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/383/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 11.0062,
+        "q1_ms": 10.9477,
+        "q3_ms": 11.0946
+      }
+    },
+    "4096_valid": {
+      "before": {
+        "samples_ms": [
+          48.0561,
+          47.9422,
+          47.9501,
+          50.1252,
+          47.4258,
+          49.4108,
+          48.4479,
+          47.7591,
+          48.2149,
+          49.0392,
+          48.0946,
+          47.5048,
+          47.8416,
+          48.354,
+          47.2979,
+          47.9569,
+          48.0247,
+          48.6147,
+          47.5639,
+          47.4746,
+          47.5791
+        ],
+        "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+        "tokens": 3,
+        "output": "4096\n",
+        "median_ms": 47.9569,
+        "q1_ms": 47.5791,
+        "q3_ms": 48.354
+      },
+      "replay": {
+        "samples_ms": [
+          46.9189,
+          48.382,
+          46.9136,
+          46.6712,
+          46.8574,
+          46.6068,
+          47.6947,
+          47.0324,
+          46.8251,
+          46.8206,
+          48.9466,
+          47.5261,
+          47.222,
+          46.6618,
+          47.279,
+          49.3073,
+          46.4401,
+          46.9387,
+          47.5831,
+          46.8892,
+          46.5066
+        ],
+        "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+        "tokens": 3,
+        "output": "4096\n",
+        "median_ms": 46.9189,
+        "q1_ms": 46.8206,
+        "q3_ms": 47.5261
+      },
+      "after": {
+        "samples_ms": [
+          47.0771,
+          47.1066,
+          47.6719,
+          49.1338,
+          53.2781,
+          46.7487,
+          47.2379,
+          47.7517,
+          47.0989,
+          47.2578,
+          48.43,
+          47.4525,
+          47.838,
+          46.8588,
+          47.0226,
+          46.9773,
+          46.761,
+          46.9808,
+          47.7973,
+          47.3545,
+          46.8426
+        ],
+        "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+        "tokens": 3,
+        "output": "4096\n",
+        "median_ms": 47.2379,
+        "q1_ms": 46.9808,
+        "q3_ms": 47.7517
+      },
+      "python": {
+        "samples_ms": [
+          13.4702,
+          13.5574,
+          13.6454,
+          14.2832,
+          13.2882,
+          13.1324,
+          14.2782,
+          13.3775,
+          13.4014,
+          13.2868,
+          13.5787,
+          13.2278,
+          13.5107,
+          13.3817,
+          13.3361,
+          14.1482,
+          13.3322,
+          13.2545,
+          13.2291,
+          13.6524,
+          13.3062
+        ],
+        "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+        "tokens": 3,
+        "output": "4096\n",
+        "median_ms": 13.3817,
+        "q1_ms": 13.2882,
+        "q3_ms": 13.5787
+      }
+    },
+    "4096_first": {
+      "before": {
+        "samples_ms": [
+          32.8502,
+          32.8794,
+          32.4315,
+          33.3912,
+          32.488,
+          32.9592,
+          32.6258,
+          32.7076,
+          32.7829,
+          32.8105,
+          33.0487,
+          32.484,
+          32.7398,
+          32.6257,
+          32.649,
+          32.4958,
+          32.4849,
+          35.0463,
+          33.4271,
+          32.5603,
+          32.4176
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 32.7076,
+        "q1_ms": 32.4958,
+        "q3_ms": 32.8794
+      },
+      "replay": {
+        "samples_ms": [
+          53.2334,
+          53.26,
+          53.6457,
+          52.4666,
+          52.6199,
+          52.9434,
+          54.5064,
+          53.0401,
+          53.0761,
+          56.7524,
+          53.3343,
+          52.7307,
+          52.9693,
+          53.0621,
+          52.8184,
+          52.9089,
+          52.7907,
+          52.7932,
+          52.9855,
+          52.907,
+          52.7057
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 52.9693,
+        "q1_ms": 52.7932,
+        "q3_ms": 53.2334
+      },
+      "after": {
+        "samples_ms": [
+          32.518,
+          32.682,
+          32.3601,
+          32.2744,
+          32.3042,
+          32.0977,
+          32.3858,
+          32.7491,
+          32.4964,
+          33.3113,
+          32.9901,
+          32.4072,
+          32.4912,
+          33.3116,
+          32.3411,
+          32.5126,
+          32.3103,
+          32.5909,
+          32.4086,
+          32.3727,
+          32.4771
+        ],
+        "output_sha256": "e7b821372efd347d32995b78dc8c6f1f1a2439d2052a37706417eb5137bcdfba",
+        "tokens": 54,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 32.4771,
+        "q1_ms": 32.3601,
+        "q3_ms": 32.5909,
+        "issue_object_tokens": 20
+      },
+      "python": {
+        "samples_ms": [
+          12.8836,
+          12.881,
+          12.7141,
+          12.6537,
+          12.6411,
+          12.6193,
+          12.702,
+          12.7381,
+          12.8134,
+          13.1742,
+          12.958,
+          12.6193,
+          12.9254,
+          12.5808,
+          12.6212,
+          12.5726,
+          13.4675,
+          12.7078,
+          13.6551,
+          12.6543,
+          12.5739
+        ],
+        "output_sha256": "4fcd9bcc81d886cd42874d90672f3dc5e4838995a707947a3bb04bef76f698db",
+        "tokens": 45,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/0/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 12.7078,
+        "q1_ms": 12.6212,
+        "q3_ms": 12.8836
+      }
+    },
+    "4096_late": {
+      "before": {
+        "samples_ms": [
+          42.9185,
+          42.8041,
+          42.696,
+          42.8505,
+          42.4758,
+          42.829,
+          42.9168,
+          43.4209,
+          42.8338,
+          43.212,
+          43.019,
+          42.8482,
+          42.8885,
+          42.7866,
+          42.9163,
+          42.7508,
+          42.9857,
+          43.2323,
+          42.7025,
+          43.1586,
+          42.9504
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 42.8885,
+        "q1_ms": 42.8041,
+        "q3_ms": 42.9857
+      },
+      "replay": {
+        "samples_ms": [
+          73.3226,
+          72.4528,
+          72.3439,
+          72.525,
+          72.1544,
+          72.6231,
+          72.1676,
+          72.5297,
+          72.3764,
+          73.74,
+          72.861,
+          72.3141,
+          72.2972,
+          72.9897,
+          71.9907,
+          72.242,
+          72.394,
+          73.6943,
+          72.5186,
+          72.615,
+          72.2557
+        ],
+        "output_sha256": "b4f355a1e667f234f41780f46df220cd9f22740583169a1eaf0b50e4b452c00b",
+        "tokens": 55,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 72.4528,
+        "q1_ms": 72.2972,
+        "q3_ms": 72.6231
+      },
+      "after": {
+        "samples_ms": [
+          42.4345,
+          42.4074,
+          42.336,
+          42.1758,
+          42.7075,
+          42.2232,
+          42.3013,
+          42.4795,
+          42.3859,
+          43.1343,
+          42.8647,
+          42.1977,
+          43.6614,
+          42.3499,
+          42.6424,
+          42.161,
+          42.054,
+          42.5125,
+          42.3203,
+          42.3521,
+          42.3681
+        ],
+        "output_sha256": "b4f355a1e667f234f41780f46df220cd9f22740583169a1eaf0b50e4b452c00b",
+        "tokens": 55,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 42.3681,
+        "q1_ms": 42.3013,
+        "q3_ms": 42.5125,
+        "issue_object_tokens": 21
+      },
+      "python": {
+        "samples_ms": [
+          13.3007,
+          13.2507,
+          13.2932,
+          14.0458,
+          13.1068,
+          13.2446,
+          13.6116,
+          13.2655,
+          13.3503,
+          13.6296,
+          13.3721,
+          13.2087,
+          13.2619,
+          13.4689,
+          13.3747,
+          13.2589,
+          13.2326,
+          14.2428,
+          13.1867,
+          13.3456,
+          13.1201
+        ],
+        "output_sha256": "601d7c23a3008fb9c8baad5fff2979999c81e6c24bf062b3263862dc5d361c57",
+        "tokens": 46,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"string\"}}\n",
+        "median_ms": 13.2932,
+        "q1_ms": 13.2446,
+        "q3_ms": 13.3747
+      }
+    },
+    "4096_missing": {
+      "before": {
+        "samples_ms": [
+          33.3294,
+          32.3876,
+          32.2941,
+          32.5306,
+          32.8162,
+          32.3255,
+          32.6905,
+          32.7691,
+          32.6257,
+          32.7883,
+          32.6717,
+          32.4115,
+          32.7561,
+          32.5635,
+          32.4213,
+          32.3221,
+          32.6447,
+          34.5059,
+          32.603,
+          32.6802,
+          32.4854
+        ],
+        "output_sha256": "430cd7cfa1195dd4740bd375095b0eb281574bf1eecbfd891fbfbc27e16b0b00",
+        "tokens": 32,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\"}\n",
+        "median_ms": 32.6257,
+        "q1_ms": 32.4213,
+        "q3_ms": 32.7561
+      },
+      "replay": {
+        "samples_ms": [
+          65.1559,
+          63.4873,
+          63.1102,
+          63.3246,
+          63.3018,
+          63.4599,
+          63.5917,
+          63.4069,
+          63.4581,
+          63.8271,
+          63.8274,
+          63.518,
+          63.9398,
+          63.3095,
+          63.8184,
+          63.0062,
+          63.7327,
+          63.5833,
+          63.3389,
+          63.5347,
+          63.4146
+        ],
+        "output_sha256": "a5034dee253445af417019c69cf8c8bdddb8b81298b21d8f62d4c493bca7fb37",
+        "tokens": 55,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 63.4873,
+        "q1_ms": 63.3389,
+        "q3_ms": 63.7327
+      },
+      "after": {
+        "samples_ms": [
+          33.7996,
+          32.7621,
+          32.7502,
+          33.126,
+          32.8405,
+          32.7978,
+          32.954,
+          32.8022,
+          33.0487,
+          33.1307,
+          33.0968,
+          36.2829,
+          33.1287,
+          32.9873,
+          32.769,
+          35.2595,
+          33.0777,
+          32.8448,
+          34.642,
+          33.5303,
+          32.8609
+        ],
+        "output_sha256": "a5034dee253445af417019c69cf8c8bdddb8b81298b21d8f62d4c493bca7fb37",
+        "tokens": 55,
+        "output": "{\"file\":\"panel.tide\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"line\":3,\"column\":1,\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 33.0487,
+        "q1_ms": 32.8405,
+        "q3_ms": 33.1307,
+        "issue_object_tokens": 21
+      },
+      "python": {
+        "samples_ms": [
+          13.4418,
+          13.1676,
+          13.1293,
+          13.3894,
+          14.1078,
+          13.3281,
+          13.3189,
+          13.1079,
+          13.2809,
+          13.3797,
+          13.2544,
+          13.2513,
+          13.3299,
+          13.9333,
+          13.1697,
+          13.2416,
+          13.2424,
+          13.2789,
+          13.1945,
+          13.4106,
+          13.2527
+        ],
+        "output_sha256": "2028887ce0aeff876fbf9d7569c1f4d5c82ee23168c64556d3f3376f102e83eb",
+        "tokens": 46,
+        "output": "{\"file\":\"panel.py\",\"code\":\"E_INPUT\",\"message\":\"Invalid argument opening\",\"expected\":\"{Ledger}\",\"issue\":{\"path\":\"/opening/rows/4095/balance\",\"expected\":\"i\",\"actual\":\"missing\"}}\n",
+        "median_ms": 13.2789,
+        "q1_ms": 13.2416,
+        "q3_ms": 13.3797
+      }
+    }
+  },
+  "queries": {
+    "1_valid": {
+      "schema": "panel.tide",
+      "rows": 1,
+      "shape": "valid",
+      "bytes": 49,
+      "sha256": "aa92339a49d4c35339a14e93372c964e8e65f229c06bb35d2b856f7af2d9d958"
+    },
+    "1_late": {
+      "schema": "panel.tide",
+      "rows": 1,
+      "shape": "late",
+      "bytes": 57,
+      "sha256": "5229a664d0ffc3f179d634018fa03ab64f8975e22aeb71c2a5095ead62c8298b"
+    },
+    "1_missing": {
+      "schema": "panel.tide",
+      "rows": 1,
+      "shape": "missing",
+      "bytes": 37,
+      "sha256": "2af5b355ee899928913384a15624525d9ffaa53461c153a33ff9c6dcebc67a18"
+    },
+    "384_valid": {
+      "schema": "panel.tide",
+      "rows": 384,
+      "shape": "valid",
+      "bytes": 11135,
+      "sha256": "5da1cb6a53cda124c4d54f21ec6cebc27c6782107f202c00783c4fc450ba8a88"
+    },
+    "384_first": {
+      "schema": "panel.tide",
+      "rows": 384,
+      "shape": "first",
+      "bytes": 11143,
+      "sha256": "1dd89416cfb072c2d36b6f9f314de2654cfa403d09513082ccd410f378c09996"
+    },
+    "384_late": {
+      "schema": "panel.tide",
+      "rows": 384,
+      "shape": "late",
+      "bytes": 11143,
+      "sha256": "8779a9e958bb6aeda3594532f03f9f0533ef2f7d7a893ad74ac67c9eb66b6ee3"
+    },
+    "384_missing": {
+      "schema": "panel.tide",
+      "rows": 384,
+      "shape": "missing",
+      "bytes": 11123,
+      "sha256": "b44da046f0c30dd616a5d35b39aea4122b74194781bee8d2df77c57092e1253d"
+    },
+    "4096_valid": {
+      "schema": "panel.tide",
+      "rows": 4096,
+      "shape": "valid",
+      "bytes": 122737,
+      "sha256": "08013e0dfc2cef0f8eefdbc3f6238226183dc0d2c07554a1ab500ae8280f4386"
+    },
+    "4096_first": {
+      "schema": "panel.tide",
+      "rows": 4096,
+      "shape": "first",
+      "bytes": 122745,
+      "sha256": "d89e2ba31ca3814b9450abd47bce5437a52f3d92241228eb0a5f043c0a127de8"
+    },
+    "4096_late": {
+      "schema": "panel.tide",
+      "rows": 4096,
+      "shape": "late",
+      "bytes": 122745,
+      "sha256": "f51d5bcdb6d7ff96b10da10cee287f09e7313902046f8ec876eb8cfcbc36737a"
+    },
+    "4096_missing": {
+      "schema": "panel.tide",
+      "rows": 4096,
+      "shape": "missing",
+      "bytes": 122725,
+      "sha256": "355f18d8f18d19df4d2d6eb41eee39fded57c85b3343142dfa77243808a0b7c1"
+    }
+  },
+  "method": {
+    "timing": "Fresh CLI, elapsed wall time using monotonic clock, through exit with pipes drained. Workloads and first runner rotated each round. All commands serial, pinned to logical CPU 2. Warmup rounds excluded. Quartiles are order statistics 6 and 16.",
+    "tokens": "gpt-tokenizer (o200k_base), stdout for valid cases, stderr for invalid cases, includes final newline. issue_object_tokens counts compact JSON for that object alone.",
+    "commands": {
+      "tide": [
+        "tide",
+        "run",
+        "panel.tide",
+        "--inputs",
+        "JSON"
+      ],
+      "python": [
+        "python3",
+        "-IBS",
+        "external/panel.py",
+        "JSON"
+      ]
+    },
+    "rows": "Compact JSON {opening:{rows:[...]}} with sequence=i and balance=i%13 for zero-based i. In first/late replace balance in first/last row with \"invalid\". In missing delete balance from last row. Same argv data passed to each condition.",
+    "arms": {
+      "before": "Installed cycle 47 baseline",
+      "replay": "Prototype decoding the rejected parameter again from the beginning",
+      "after": "Current native checks, including per-row location",
+      "python": "External CPython implementation for the benchmark schemas, no general-purpose type loading or TIDE source positions"
+    },
+    "isolated_model_sessions": 0
+  },
+  "tools": {
+    "before": {
+      "checker": "4fc526010202ce29f5088401af7a40217a493660e99c6aee2efbc814734b4cc0",
+      "editor": "19b2bccbe51a3a49272e2fdea6aa46f702f69b3972331e24c5bfcfdc6b7a8951",
+      "inspector": "04bd4b89eadafb8ae56c2b11eec92813fb2bdfbc25b9729f497f1377e6a5bd71"
+    },
+    "replay": {
+      "checker": "c73ad285c99eedf617ae8dd716bc4730e1c585de42c52ec4c0881952a549fe64",
+      "editor": "19dc187e16e7bbfa8f85b3ce220d8d08441bf47e1727671bef6dee71edfebdb1",
+      "inspector": "5bb8949f2e09fa62ffa1e45013daca00d2f3b8ad615fd9b745d3d9ac7e995af6"
+    },
+    "after": {
+      "checker": "fca19ec91e831e6610c8252d90633e420c314c425822758f99e8485693a11cc8",
+      "editor": "ebe1df0fd39edf5b32f5187be0d26e03cc0284f0947d6480c40374be4953de39",
+      "inspector": "3f9689bb7307c4658d0698e496cbc7deb5a3764cc3d427be538fd447fccae374"
+    }
+  },
+  "external_python": {
+    "version": "Python 3.14.10",
+    "sources": {
+      "panel.py": "import json\nimport os\nimport sys\nsys.path.insert(0, os.path.dirname(__file__))\nfrom records import read_rows\n\ndef main(opening):\n    return len(read_rows(opening))\n\ndata = json.loads(sys.argv[1])\ntry:\n    print(main(**data))\nexcept ValueError as error:\n    path, expected, actual = error.args\n    print(json.dumps(dict(file=\"panel.py\", code=\"E_INPUT\", message=\"Invalid argument opening\",\n                          expected=\"{Ledger}\", issue=dict(path=path, expected=expected, actual=actual)),\n                     separators=(\",\", \":\")), file=sys.stderr)\n    sys.exit(1)\n",
+      "records.py": "def read_rows(opening):\n    rows = opening[\"rows\"]\n    if type(rows) is not list:\n        raise ValueError(\"/opening/rows\", \"*{Row}\", \"other\")\n    for i, row in enumerate(rows):\n        if i == 4096:\n            raise ValueError(\"/opening/rows/4096\", \"at most 4096 items\", \"extra item\")\n        if type(row) is not dict:\n            raise ValueError(f\"/opening/rows/{i}\", \"{Row}\", \"other\")\n        for field in (\"sequence\", \"balance\"):\n            if field not in row:\n                raise ValueError(f\"/opening/rows/{i}/{field}\", \"i\", \"missing\")\n            value = row[field]\n            if type(value) is not int or not -(1 << 63) <= value < (1 << 63):\n                actual = \"string\" if type(value) is str else \"other\"\n                raise ValueError(f\"/opening/rows/{i}/{field}\", \"i\", actual)\n        if len(row) != 2:\n            raise ValueError(f\"/opening/rows/{i}\", \"{Row}\", \"extra field\")\n    return rows\n"
+    }
+  },
+  "sources": {
+    "Makefile": "7a93b1c8e2edf5c09e7aa3cf30f34387ccf27f4aba4a3994b74134cb49f9ff72",
+    "native/bootstrap/compound_json.tide": "cac2e9d8929aaaa98bf3ef231432667984b5d7a52c77d3b99d3d7a5e80f0a8fc",
+    "native/bootstrap/input_issue.tide": "2a161641e0ea6367dea95dc5adf1c95281064ce9b1f0975607bb5f733a66bcb8",
+    "native/bootstrap/samples.tide": "96a198dfe554bdc65e683a4a661676155e6bca054cffd37019dd391c71032840",
+    "native/bootstrap/json_stream.tide": "7ce474e87f3c187957e1a027d888cca317da0ddf5746264a83aea64238893c7e",
+    "native/bootstrap/checks.tide": "d33b66e2b1f3ba0b1cf3c0f14bd2f78b476e6c1341a68b135aed4fca5f688690",
+    "experimente/48_eingabediagnosen/types.tide": "c023be47a1d1170946493fcecc84c9afc7aa0c438d24058c8d5b746a36f07ae3",
+    "experimente/48_eingabediagnosen/panel.tide": "3775a2d10c1d792ff0627aee65d72ea8ede6c6ecbb96bb4c915b281d37c8163b"
+  },
+  "validation": {
+    "commands": {
+      "make test": "passed",
+      "make check-no-python": "passed; fresh build and installed image test stages; no network during build and installed checks"
+    },
+    "typed_issue_unit_cases": 19,
+    "public_checks": [
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/rows",
+          "expected": "*{Row}",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/extra",
+          "expected": "absent",
+          "actual": "object"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/flag",
+          "expected": "b",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "{Row}",
+          "actual": "undeclared field"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/alt/some/flag",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/mode",
+          "expected": "{Mode}",
+          "actual": "unknown variant tag"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/1",
+          "expected": "i",
+          "actual": "boolean"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/0",
+          "expected": "t",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/1",
+          "expected": "{Mode}",
+          "actual": "unknown variant tag"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/1/a~1~0",
+          "expected": "absent",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/1/flag",
+          "expected": "b",
+          "actual": "object"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/0",
+          "expected": "{Row}",
+          "actual": "null"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/some/1",
+          "expected": "t",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/none",
+          "expected": "true",
+          "actual": "false"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "?i",
+          "actual": "empty object"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "?i",
+          "actual": "multiple option keys"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/value",
+          "expected": "absent",
+          "actual": "boolean"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/1",
+          "expected": "i",
+          "actual": "boolean"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x/2",
+          "expected": "absent",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "t",
+          "actual": "array"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "*b",
+          "actual": "string"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "{Row}",
+          "actual": "boolean"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "i",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/y",
+          "expected": "absent",
+          "actual": "extra parameter"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "i",
+          "actual": "integer outside i64"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "case.tide"
+        ],
+        "issue": {
+          "path": "/x",
+          "expected": "i",
+          "actual": "number"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x/0/n",
+          "expected": "i",
+          "actual": "string"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x/0/n",
+          "expected": "i",
+          "actual": "string"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x/0/n",
+          "expected": "i",
+          "actual": "string"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0/n",
+          "expected": "i",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0/n",
+          "expected": "i",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0/n",
+          "expected": "i",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs",
+          "expected": "object",
+          "actual": "array"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs",
+          "expected": "object",
+          "actual": "array"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs",
+          "expected": "object",
+          "actual": "array"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x",
+          "expected": "*{Row}",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x",
+          "expected": "*{Row}",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x",
+          "expected": "*{Row}",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/events/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/events/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/events/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "check",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "test",
+          "sample.tide"
+        ],
+        "issue": {
+          "path": "/expect/0",
+          "expected": "b",
+          "actual": "integer"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "edit",
+          "clean.tide"
+        ],
+        "issue": {
+          "path": "/inputs/x/0/n",
+          "expected": "i",
+          "actual": "missing"
+        },
+        "original_diagnostic_preserved": true
+      },
+      {
+        "command": [
+          "run",
+          "syntax.tide"
+        ],
+        "malformed_json": true,
+        "code": "E_JSON",
+        "unchanged": true
+      },
+      {
+        "command": [
+          "run",
+          "syntax.tide"
+        ],
+        "malformed_json": true,
+        "code": "E_JSON",
+        "unchanged": true
+      },
+      {
+        "command": [
+          "run",
+          "syntax.tide"
+        ],
+        "malformed_json": true,
+        "code": "E_BACKEND",
+        "unchanged": true
+      },
+      {
+        "command": [
+          "run",
+          "syntax.tide"
+        ],
+        "malformed_json": true,
+        "code": "E_JSON",
+        "unchanged": true
+      }
+    ],
+    "row_checks_and_repairs": {
+      "cases": [
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 1,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/3/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/3/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/3/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/3/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/3",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 3,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/3",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/6/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/6/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/6/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/6/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/6",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 7,
+          "pos": 6,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/6",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/16/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/16",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 16,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/16",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/31/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/31/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/31/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/31/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/31",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 32,
+          "pos": 31,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/31",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/16/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/16/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/16",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 16,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/16",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/32/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/32/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/32/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/32/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/32",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 33,
+          "pos": 32,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/32",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/64/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/64",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 64,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/64",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/127/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/127/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/127/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/127/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/127",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 128,
+          "pos": 127,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/127",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/64/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/64/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/64",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 64,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/64",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/128/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/128/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/128/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/128/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/128",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 129,
+          "pos": 128,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/128",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/192/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/192/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/192/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/192/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/192",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 192,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/192",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/383/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/383/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/383/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/383/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/383",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 384,
+          "pos": 383,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/383",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/0/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 0,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/0",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/2048/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/2048/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/2048/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/2048/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/2048",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 2048,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/2048",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "text",
+          "issue": {
+            "path": "/opening/rows/4095/balance",
+            "expected": "i",
+            "actual": "string"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "short",
+          "issue": {
+            "path": "/opening/rows/4095/balance",
+            "expected": "i",
+            "actual": "missing"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "object",
+          "issue": {
+            "path": "/opening/rows/4095/balance",
+            "expected": "i",
+            "actual": "object"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "extra",
+          "issue": {
+            "path": "/opening/rows/4095/z",
+            "expected": "absent",
+            "actual": "integer"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "null",
+          "issue": {
+            "path": "/opening/rows/4095",
+            "expected": "{Row}",
+            "actual": "null"
+          }
+        },
+        {
+          "n": 4096,
+          "pos": 4095,
+          "fault": "list",
+          "issue": {
+            "path": "/opening/rows/4095",
+            "expected": "{Row}",
+            "actual": "array"
+          }
+        }
+      ],
+      "repair": [
+        {
+          "n": 1,
+          "index": 0,
+          "issue": {
+            "path": "/opening/rows/0/balance",
+            "expected": "i",
+            "actual": "string"
+          },
+          "cli_calls": 2,
+          "after": 1,
+          "every_input_matches_clean_copy": true
+        },
+        {
+          "n": 384,
+          "index": 188,
+          "issue": {
+            "path": "/opening/rows/188/balance",
+            "expected": "i",
+            "actual": "string"
+          },
+          "cli_calls": 2,
+          "after": 384,
+          "every_input_matches_clean_copy": true
+        },
+        {
+          "n": 4096,
+          "index": 4021,
+          "issue": {
+            "path": "/opening/rows/4021/balance",
+            "expected": "i",
+            "actual": "string"
+          },
+          "cli_calls": 2,
+          "after": 4096,
+          "every_input_matches_clean_copy": true
+        }
+      ]
+    },
+    "earlier_projects": [
+      {
+        "name": "ledger",
+        "preserved": true,
+        "sha256": "d68157962b576cb4900e590f191939eac59191e0eb50528862b6086a84f00508"
+      },
+      {
+        "name": "tail",
+        "preserved": true,
+        "sha256": "6c80db7c88ffedc0312de1f7f93b0e5eeb898fbd6bbde12bb365248555bc6e33"
+      },
+      {
+        "name": "game",
+        "preserved": true,
+        "sha256": "a9c2373274457e437c88c78f984f0fbffa6971efacb4611396e11f43e4a9509f"
+      },
+      {
+        "name": "saldo",
+        "preserved": true,
+        "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877"
+      }
+    ]
+  }
+}

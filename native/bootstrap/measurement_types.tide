@@ -1,0 +1,74 @@
+use json_stream
+
+measurement_type typ:t > b
+or (text_eq typ "q") (text_eq typ "z")
+
+fixed_units token:t > ?i
+let n text_len token
+if (or (eq n 0) (> n 128)) (nil i)
+if (not (eq (json_number_end token 0) n)) (nil i)
+let sign if (text_eq (text_slice token 0 1) "-") 1 0
+let stop case (text_find token "e" 0) (case (text_find token "E" 0) n p p) p p
+let point case (text_find token "." 0) stop p p
+let whole text_slice token sign point
+let frac text_slice token (+ point 1) stop
+let digits concat whole frac
+let nonzero fold (indices (text_len digits)) false used row unused or used (not (text_eq (text_slice digits (- row 1) row) "0"))
+if (not nonzero) (some 0)
+let start + stop (if (text_eq (text_slice token (+ stop 1) (+ stop 2)) "+") 2 1)
+let exponent if (eq stop n) (some 0) (int (text_slice token start n))
+case exponent (nil i) power
+if (or (< power -140) (> power 140)) (nil i)
+let shift - (+ 6 power) (text_len frac)
+let end + (text_len digits) shift
+if (< end 1) (nil i)
+if (and (< shift 0) (fold (indices (- 0 shift)) false loss row unused or loss (not (text_eq (text_slice digits (+ end (- row 1)) (+ end row)) "0")))) (nil i)
+let magnitude if (> shift 0) (fold (indices shift) digits s row unused concat s "0") (text_slice digits 0 end)
+int (concat (if (eq sign 1) "-" "") magnitude)
+
+fixed_text units:i > t
+let raw signed_text units
+let sign if (< units 0) "-" ""
+let mag text_slice raw (text_len sign) (text_len raw)
+let padded concat (text_slice "0000000" 0 (- 7 (text_len mag))) mag
+let cut - (text_len padded) 6
+let stop fold (indices 6) cut end row unused if (text_eq (text_slice padded (+ cut (- row 1)) (+ cut row)) "0") end (+ cut row)
+cat3 sign (text_slice padded 0 cut) (if (eq stop cut) "" (concat "." (text_slice padded cut stop)))
+
+stamp_number s:t pos:i width:i > i
+let field text_slice s pos (+ pos width)
+if (not (eq (text_len field) width)) -1
+if (not (fold (indices width) true ok row unused and ok (white (text_slice field (- row 1) row) "0123456789"))) -1
+case (int field) -1 v v
+
+stamp_seconds s:t > ?i
+let n text_len s
+if (or (< n 20) (> n 35)) (nil i)
+if (not (text_eq (cat3 (text_slice s 4 5) (text_slice s 7 8) (cat3 (text_slice s 10 11) (text_slice s 13 14) (text_slice s 16 17))) "--T::")) (nil i)
+let year stamp_number s 0 4
+let month stamp_number s 5 2
+let day stamp_number s 8 2
+let hour stamp_number s 11 2
+let minute stamp_number s 14 2
+let sec stamp_number s 17 2
+if (or (< year 1) (or (< month 1) (> month 12))) (nil i)
+let leap and (eq (mod year 4) 0) (or (not (eq (mod year 100) 0)) (eq (mod year 400) 0))
+let days need (at (list i 12 31 (if leap 29 28) 31 30 31 30 31 31 30 31 30 31) (- month 1)) "month" 0
+if (or (< day 1) (or (> day days) (or (< hour 0) (or (> hour 23) (or (< minute 0) (or (> minute 59) (or (< sec 0) (> sec 59)))))))) (nil i)
+let zulu text_eq (text_slice s (- n 1) n) "Z"
+let zone - n (if zulu 1 6)
+if (< zone 19) (nil i)
+if (and (> zone 19) (or (< zone 21) (or (> zone 29) (or (not (text_eq (text_slice s 19 20) ".")) (< (stamp_number s 20 (- zone 20)) 0))))) (nil i)
+let offset_hour if zulu 0 (stamp_number s (+ zone 1) 2)
+let offset_min if zulu 0 (stamp_number s (+ zone 4) 2)
+let mark text_slice s zone (+ zone 1)
+if (and (not zulu) (or (not (white mark "+-")) (not (text_eq (text_slice s (+ zone 3) (+ zone 4)) ":")))) (nil i)
+if (or (< offset_hour 0) (or (> offset_hour 23) (or (< offset_min 0) (> offset_min 59)))) (nil i)
+let y - year (if (< month 3) 1 0)
+let era div y 400
+let yo mod y 400
+let m + month (if (> month 2) -3 9)
+let doy + (div (+ (* 153 m) 2) 5) (- day 1)
+let total_days - (+ (* era 146097) (+ (* yo 365) (+ (- (div yo 4) (div yo 100)) doy))) 719468
+let offset * (if (text_eq mark "-") -1 1) (+ (* offset_hour 3600) (* offset_min 60))
+some (- (+ (* total_days 86400) (+ (* hour 3600) (+ (* minute 60) sec))) offset)

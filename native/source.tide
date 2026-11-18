@@ -1,0 +1,58 @@
+positions count:i > *t
+if or (< count 0) (> count 512) fail "native_line_limit"
+let marks fold (list i 10 512 256 128 64 32 16 8 4 2 1) "" acc row bit
+concat (concat acc acc) (if eq (mod (div count bit) 2) 1 "x\n" "")
+lines marks
+
+words line:t > *t
+let separated fold (positions text_len line) "" acc pos unused
+let ch text_slice line (- pos 1) pos
+let separator if (text_eq ch "=")
+  (let prior text_slice line (- pos 2) (- pos 1)
+   not (or (text_eq prior "<") (text_eq prior ">"))) false
+concat acc (if or (text_eq ch " ") (text_eq ch "\t") "\n"
+  (if (or (text_eq ch "(") (or (text_eq ch ")") (or (text_eq ch ",") separator))) (concat "\n" (concat ch "\n")) ch))
+fold (lines separated) (list t 0) items row token
+if text_eq token "" items (append items token)
+
+word tokens:*t pos:i > t
+need (at tokens pos) "missing_token" 0
+
+record Declaration
+line:i header:t body:*t
+
+record ProgramRows
+complete:*{Declaration} current:?{Declaration}
+
+finish_rows builder:{ProgramRows} > {ProgramRows}
+case (get current builder) builder decl
+make ProgramRows complete (append (get complete builder) decl) current (nil {Declaration})
+
+blank_line line:t > b
+if (eq (text_len line) 0) true
+let first_char text_slice line 0 1
+if (not (or (text_eq first_char " ") (text_eq first_char "\t"))) false
+eq (length (words line)) 0
+
+declarations source:t > *{Declaration}
+let start make ProgramRows complete (list {Declaration} 0) current (nil {Declaration})
+let end_rows fold (lines source) start builder row line
+  if (blank_line line) (finish_rows builder)
+  let decl case (get current builder) (make Declaration line row header line body (list t 0)) cur
+    (with body cur (append (get body cur) line))
+  with current builder (some decl)
+get complete (finish_rows end_rows)
+
+body_words decl:{Declaration} > *t
+let tokens fold (get body decl) (list t 0) all row line
+  fold (words line) all result pos token append result token
+if (not (text_eq (word tokens 0) "(")) tokens
+let size length tokens
+if (not (text_eq (word tokens (- size 1)) ")")) fail "open_expression_group"
+fold tokens (list t 0) inner pos token if (and (> pos 1) (< pos size)) (append inner token) inner
+
+find_declaration blocks:*{Declaration} name:t > {Declaration}
+let found fold blocks (nil {Declaration}) previous row decl
+  if (text_eq (word (words (get header decl)) 0) name)
+    (case previous (some decl) duplicate (fail "ambiguous_native_entry")) previous
+need found "unknown_native_entry" 0

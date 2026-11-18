@@ -1,0 +1,13 @@
+quotient opening:i values:*i > i
+fold values opening acc row x
+  if (and true (eq x 9)) acc (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (div acc x))))))))))
+
+remainder opening:i values:*i > i
+fold values opening acc row x
+  if (and true (eq x 9)) acc (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (mod opening x))))))))))
+
+example selected_error quotient
+{"inputs":{"opening":-9223372036854775808,"values":[9,-1]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example representable_remainder remainder
+{"inputs":{"opening":-9223372036854775808,"values":[9,-1]},"expect":0}

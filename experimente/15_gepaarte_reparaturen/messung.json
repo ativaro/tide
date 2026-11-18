@@ -1,0 +1,4793 @@
+{
+  "protocol_sha256": "018a79717a04b9dcff632559e53c657d8732fe37b000e229189aaac661cfc638",
+  "packages": [
+    {
+      "family": "range",
+      "language": "tide",
+      "sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+      "prompt": "A ranking report for tickets 9 and 2, both scoring 7, reports high=9 and low=9; the customer expects high=2 and low=2. Report the ticket with the highest and lowest score in each batch. For equal scores at either extreme the smallest ticket number wins, independent of input order. An empty batch must yield zeros. Tickets are positive and scores are signed small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":12,\"failed\":26,\"first_failure\":{\"input\":[{\"ticket\":9,\"score\":7},{\"ticket\":2,\"score\":7}],\"expected\":{\"high\":2,\"low\":2},\"actual\":{\"high\":9,\"low\":9}}}\n\n--- lower.tide ---\nlower rows:*{Row} > i\nlet chosen fold rows (initial rows) best row candidate\n  if (< (get score candidate) (get score best)) candidate best\nget ticket chosen\n\n\n--- rows.tide ---\nrecord Row\nticket:i score:i\n\ninitial rows:*{Row} > {Row}\ncase (at rows 0) (make Row ticket 0 score 0) first_row first_row\n\n\n--- summary.tide ---\nrecord Ranking\nhigh:i low:i\n\nranking rows:*{Row} > {Ranking}\nmake Ranking high (upper rows) low (lower rows)\n\nmain batches:**{Row} > *{Ranking}\nfold batches (list {Ranking} 0) reports row batch append reports (ranking batch)\n\n\n--- upper.tide ---\nupper rows:*{Row} > i\nlet chosen fold rows (initial rows) best row candidate\n  if (> (get score candidate) (get score best)) candidate best\nget ticket chosen\n\n",
+      "before": {
+        "passed": 12,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 9,
+            "low": 9
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 22,
+        "failed": 16,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 2,
+            "low": 9
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 22,
+        "failed": 16,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 9,
+            "low": 2
+          }
+        }
+      },
+      "canonical": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "language": "python",
+      "sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+      "prompt": "A ranking report for tickets 9 and 2, both scoring 7, reports high=9 and low=9; the customer expects high=2 and low=2. Report the ticket with the highest and lowest score in each batch. For equal scores at either extreme the smallest ticket number wins, independent of input order. An empty batch must yield zeros. Tickets are positive and scores are signed small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":12,\"failed\":26,\"first_failure\":{\"input\":[{\"ticket\":9,\"score\":7},{\"ticket\":2,\"score\":7}],\"expected\":{\"high\":2,\"low\":2},\"actual\":{\"high\":9,\"low\":9}}}\n\n--- lower.py ---\nfrom rows import initial\n\n\ndef lower(rows):\n    best = initial(rows)\n    for candidate in rows:\n        if candidate[\"score\"] < best[\"score\"]:\n            best = candidate\n    return best[\"ticket\"]\n\n\n--- rows.py ---\ndef initial(rows):\n    return rows[0] if rows else {\"ticket\": 0, \"score\": 0}\n\n\n--- summary.py ---\nfrom upper import upper\nfrom lower import lower\n\n\ndef ranking(rows):\n    return {\"high\": upper(rows), \"low\": lower(rows)}\n\n\ndef main(batches):\n    return [ranking(batch) for batch in batches]\n\n\n--- upper.py ---\nfrom rows import initial\n\n\ndef upper(rows):\n    best = initial(rows)\n    for candidate in rows:\n        if candidate[\"score\"] > best[\"score\"]:\n            best = candidate\n    return best[\"ticket\"]\n\n",
+      "before": {
+        "passed": 12,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 9,
+            "low": 9
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 22,
+        "failed": 16,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 2,
+            "low": 9
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 22,
+        "failed": 16,
+        "first_failure": {
+          "input": [
+            {
+              "ticket": 9,
+              "score": 7
+            },
+            {
+              "ticket": 2,
+              "score": 7
+            }
+          ],
+          "expected": {
+            "high": 2,
+            "low": 2
+          },
+          "actual": {
+            "high": 9,
+            "low": 2
+          }
+        }
+      },
+      "canonical": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "language": "tide",
+      "sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+      "prompt": "A settlement for two readings, both bought=400 and sold=600, shows debit_cents=0 and credit_cents=2. The customer expects one cent on each side. Readings are nonnegative thousandths of a cent. Within each batch, round the total on each side to the nearest whole cent, with exact halves rounded up. An empty batch settles to zero on both sides.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":20,\"failed\":11,\"first_failure\":{\"input\":[{\"bought\":400,\"sold\":600},{\"bought\":400,\"sold\":600}],\"expected\":{\"debit_cents\":1,\"credit_cents\":1},\"actual\":{\"debit_cents\":0,\"credit_cents\":2}}}\n\n--- amounts.tide ---\nrecord Reading\nbought:i sold:i\n\ncents mills:i > i\ndiv (+ mills 500) 1000\n\n\n--- credit.tide ---\ncredit readings:*{Reading} > i\nfold readings 0 total row item + total (cents get sold item)\n\n\n--- debit.tide ---\ndebit readings:*{Reading} > i\nfold readings 0 total row item + total (cents get bought item)\n\n\n--- summary.tide ---\nrecord Bill\ndebit_cents:i credit_cents:i\n\nbilling readings:*{Reading} > {Bill}\nmake Bill debit_cents (debit readings) credit_cents (credit readings)\n\nmain batches:**{Reading} > *{Bill}\nfold batches (list {Bill} 0) reports row batch append reports (billing batch)\n\n",
+      "before": {
+        "passed": 20,
+        "failed": 11,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 0,
+            "credit_cents": 2
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 22,
+        "failed": 9,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 1,
+            "credit_cents": 2
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 21,
+        "failed": 10,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 0,
+            "credit_cents": 1
+          }
+        }
+      },
+      "canonical": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "language": "python",
+      "sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+      "prompt": "A settlement for two readings, both bought=400 and sold=600, shows debit_cents=0 and credit_cents=2. The customer expects one cent on each side. Readings are nonnegative thousandths of a cent. Within each batch, round the total on each side to the nearest whole cent, with exact halves rounded up. An empty batch settles to zero on both sides.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":20,\"failed\":11,\"first_failure\":{\"input\":[{\"bought\":400,\"sold\":600},{\"bought\":400,\"sold\":600}],\"expected\":{\"debit_cents\":1,\"credit_cents\":1},\"actual\":{\"debit_cents\":0,\"credit_cents\":2}}}\n\n--- amounts.py ---\ndef cents(mills):\n    return (mills + 500) // 1000\n\n\n--- credit.py ---\nfrom amounts import cents\n\n\ndef credit(readings):\n    return sum(cents(item[\"sold\"]) for item in readings)\n\n\n--- debit.py ---\nfrom amounts import cents\n\n\ndef debit(readings):\n    return sum(cents(item[\"bought\"]) for item in readings)\n\n\n--- summary.py ---\nfrom debit import debit\nfrom credit import credit\n\n\ndef billing(readings):\n    return {\"debit_cents\": debit(readings), \"credit_cents\": credit(readings)}\n\n\ndef main(batches):\n    return [billing(batch) for batch in batches]\n\n",
+      "before": {
+        "passed": 20,
+        "failed": 11,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 0,
+            "credit_cents": 2
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 22,
+        "failed": 9,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 1,
+            "credit_cents": 2
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 21,
+        "failed": 10,
+        "first_failure": {
+          "input": [
+            {
+              "bought": 400,
+              "sold": 600
+            },
+            {
+              "bought": 400,
+              "sold": 600
+            }
+          ],
+          "expected": {
+            "debit_cents": 1,
+            "credit_cents": 1
+          },
+          "actual": {
+            "debit_cents": 0,
+            "credit_cents": 1
+          }
+        }
+      },
+      "canonical": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "language": "tide",
+      "sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+      "prompt": "A trip contains heights 100, 105, 80, 76, 90, 93 in that order. The samples at 80 and 90 mark restarts. The customer expects ascent=8 and descent=4. A restart sample is the first observation of its new segment. Sum the positive gains and the absolute losses between consecutive heights within each segment. The first sample of a batch also starts a segment. Empty batches yield zero totals.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":17,\"failed\":19,\"first_failure\":{\"input\":[{\"height\":100,\"restart\":false},{\"height\":105,\"restart\":false},{\"height\":80,\"restart\":true},{\"height\":76,\"restart\":false},{\"height\":90,\"restart\":true},{\"height\":93,\"restart\":false}],\"expected\":{\"ascent\":8,\"descent\":4},\"actual\":{\"ascent\":19,\"descent\":29}}}\n\n--- history.tide ---\nrecord Track\nprevious:?i restarted:b edges:*{Edge}\n\nadvance track:{Track} sample:{Sample} > {Track}\nlet height get height sample\nlet edges case (get previous track) (get edges track) last\n  append (get edges track) (make Edge change (- height last) valid (not get restarted track))\nmake Track previous (some height) restarted (get restart sample) edges edges\n\nhistory samples:*{Sample} > *{Edge}\nlet initial make Track previous (nil i) restarted false edges (list {Edge} 0)\nget edges (fold samples initial track row sample advance track sample)\n\n\n--- profile.tide ---\nrecord Profile\nascent:i descent:i\n\nprofile edges:*{Edge} > {Profile}\nfold edges (make Profile ascent 0 descent 0) totals row edge\n  let change get change edge\n  make Profile ascent (+ (get ascent totals) (if (and (get valid edge) (> change 0)) change 0))\n    descent (+ (get descent totals) (if (< change 0) (- 0 change) 0))\n\n\n--- samples.tide ---\nrecord Sample\nheight:i restart:b\n\nrecord Edge\nchange:i valid:b\n\n\n--- summary.tide ---\nmain batches:**{Sample} > *{Profile}\nfold batches (list {Profile} 0) reports row batch append reports (profile (history batch))\n\n",
+      "before": {
+        "passed": 17,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 19,
+            "descent": 29
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 25,
+        "failed": 11,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 8,
+            "descent": 29
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 16,
+        "failed": 20,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 19,
+            "descent": 25
+          }
+        }
+      },
+      "canonical": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "language": "python",
+      "sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+      "prompt": "A trip contains heights 100, 105, 80, 76, 90, 93 in that order. The samples at 80 and 90 mark restarts. The customer expects ascent=8 and descent=4. A restart sample is the first observation of its new segment. Sum the positive gains and the absolute losses between consecutive heights within each segment. The first sample of a batch also starts a segment. Empty batches yield zero totals.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":17,\"failed\":19,\"first_failure\":{\"input\":[{\"height\":100,\"restart\":false},{\"height\":105,\"restart\":false},{\"height\":80,\"restart\":true},{\"height\":76,\"restart\":false},{\"height\":90,\"restart\":true},{\"height\":93,\"restart\":false}],\"expected\":{\"ascent\":8,\"descent\":4},\"actual\":{\"ascent\":19,\"descent\":29}}}\n\n--- history.py ---\nfrom samples import Edge\n\n\ndef history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges\n\n\n--- profile.py ---\nfrom samples import Edge\n\n\ndef profile(edges: list[Edge]):\n    ascent = descent = 0\n    for edge in edges:\n        if edge.valid and edge.change > 0:\n            ascent += edge.change\n        if edge.change < 0:\n            descent -= edge.change\n    return {\"ascent\": ascent, \"descent\": descent}\n\n\n--- samples.py ---\nfrom typing import NamedTuple\n\n\nclass Edge(NamedTuple):\n    change: int\n    valid: bool\n\n\n--- summary.py ---\nfrom history import history\nfrom profile import profile\n\n\ndef main(batches):\n    return [profile(history(batch)) for batch in batches]\n\n",
+      "before": {
+        "passed": 17,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 19,
+            "descent": 29
+          }
+        }
+      },
+      "partial_a": {
+        "passed": 25,
+        "failed": 11,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 8,
+            "descent": 29
+          }
+        }
+      },
+      "partial_b": {
+        "passed": 16,
+        "failed": 20,
+        "first_failure": {
+          "input": [
+            {
+              "height": 100,
+              "restart": false
+            },
+            {
+              "height": 105,
+              "restart": false
+            },
+            {
+              "height": 80,
+              "restart": true
+            },
+            {
+              "height": 76,
+              "restart": false
+            },
+            {
+              "height": 90,
+              "restart": true
+            },
+            {
+              "height": 93,
+              "restart": false
+            }
+          ],
+          "expected": {
+            "ascent": 8,
+            "descent": 4
+          },
+          "actual": {
+            "ascent": 19,
+            "descent": 25
+          }
+        }
+      },
+      "canonical": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ],
+  "holdout_cases": {
+    "range": [
+      {
+        "input": [
+          {
+            "ticket": 34,
+            "score": 2
+          },
+          {
+            "ticket": 37,
+            "score": 0
+          },
+          {
+            "ticket": 35,
+            "score": 0
+          },
+          {
+            "ticket": 38,
+            "score": -3
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          },
+          {
+            "ticket": 31,
+            "score": 3
+          },
+          {
+            "ticket": 39,
+            "score": 1
+          },
+          {
+            "ticket": 36,
+            "score": -2
+          },
+          {
+            "ticket": 33,
+            "score": 1
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 38
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 35,
+            "score": -3
+          },
+          {
+            "ticket": 33,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": 1
+          },
+          {
+            "ticket": 36,
+            "score": -1
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 35
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": 1
+          },
+          {
+            "ticket": 36,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": -1
+          },
+          {
+            "ticket": 32,
+            "score": -3
+          },
+          {
+            "ticket": 34,
+            "score": 1
+          },
+          {
+            "ticket": 35,
+            "score": 3
+          }
+        ],
+        "expect": {
+          "high": 35,
+          "low": 32
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 34,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          },
+          {
+            "ticket": 33,
+            "score": 2
+          },
+          {
+            "ticket": 35,
+            "score": 2
+          },
+          {
+            "ticket": 32,
+            "score": 3
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 3
+          },
+          {
+            "ticket": 33,
+            "score": -1
+          },
+          {
+            "ticket": 36,
+            "score": 1
+          },
+          {
+            "ticket": 35,
+            "score": 3
+          },
+          {
+            "ticket": 38,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": -1
+          },
+          {
+            "ticket": 37,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": 3
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 3
+          },
+          {
+            "ticket": 31,
+            "score": -1
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": 0
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          },
+          {
+            "ticket": 35,
+            "score": 2
+          },
+          {
+            "ticket": 34,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": -1
+          },
+          {
+            "ticket": 36,
+            "score": 2
+          }
+        ],
+        "expect": {
+          "high": 35,
+          "low": 32
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 37,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": 2
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          },
+          {
+            "ticket": 35,
+            "score": 1
+          },
+          {
+            "ticket": 38,
+            "score": -3
+          },
+          {
+            "ticket": 33,
+            "score": 0
+          },
+          {
+            "ticket": 36,
+            "score": 0
+          },
+          {
+            "ticket": 39,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 34,
+          "low": 38
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 31,
+            "score": -3
+          },
+          {
+            "ticket": 33,
+            "score": -1
+          },
+          {
+            "ticket": 34,
+            "score": -3
+          },
+          {
+            "ticket": 35,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 35,
+            "score": 0
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": -1
+          },
+          {
+            "ticket": 34,
+            "score": 2
+          },
+          {
+            "ticket": 36,
+            "score": 2
+          },
+          {
+            "ticket": 33,
+            "score": -2
+          }
+        ],
+        "expect": {
+          "high": 34,
+          "low": 33
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 1
+          },
+          {
+            "ticket": 37,
+            "score": 2
+          },
+          {
+            "ticket": 35,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": -3
+          },
+          {
+            "ticket": 36,
+            "score": 2
+          },
+          {
+            "ticket": 33,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": -1
+          }
+        ],
+        "expect": {
+          "high": 36,
+          "low": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 36,
+            "score": 0
+          },
+          {
+            "ticket": 37,
+            "score": 2
+          },
+          {
+            "ticket": 31,
+            "score": -2
+          },
+          {
+            "ticket": 32,
+            "score": -1
+          },
+          {
+            "ticket": 34,
+            "score": -3
+          },
+          {
+            "ticket": 35,
+            "score": 1
+          },
+          {
+            "ticket": 33,
+            "score": 1
+          }
+        ],
+        "expect": {
+          "high": 37,
+          "low": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": -3
+          },
+          {
+            "ticket": 36,
+            "score": -3
+          },
+          {
+            "ticket": 38,
+            "score": -3
+          },
+          {
+            "ticket": 35,
+            "score": -3
+          },
+          {
+            "ticket": 37,
+            "score": 1
+          },
+          {
+            "ticket": 32,
+            "score": -1
+          },
+          {
+            "ticket": 31,
+            "score": 3
+          },
+          {
+            "ticket": 39,
+            "score": 2
+          },
+          {
+            "ticket": 34,
+            "score": -2
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 33
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 31,
+            "score": 1
+          },
+          {
+            "ticket": 33,
+            "score": 2
+          },
+          {
+            "ticket": 34,
+            "score": -1
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          },
+          {
+            "ticket": 35,
+            "score": 1
+          }
+        ],
+        "expect": {
+          "high": 33,
+          "low": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 36,
+            "score": -2
+          },
+          {
+            "ticket": 35,
+            "score": -2
+          },
+          {
+            "ticket": 33,
+            "score": -2
+          },
+          {
+            "ticket": 32,
+            "score": 2
+          },
+          {
+            "ticket": 34,
+            "score": 2
+          },
+          {
+            "ticket": 31,
+            "score": 1
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 33
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 0
+          },
+          {
+            "ticket": 33,
+            "score": 3
+          },
+          {
+            "ticket": 31,
+            "score": -2
+          }
+        ],
+        "expect": {
+          "high": 33,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 35,
+            "score": 3
+          },
+          {
+            "ticket": 33,
+            "score": 0
+          },
+          {
+            "ticket": 31,
+            "score": -3
+          },
+          {
+            "ticket": 37,
+            "score": -3
+          },
+          {
+            "ticket": 38,
+            "score": 1
+          },
+          {
+            "ticket": 36,
+            "score": -1
+          },
+          {
+            "ticket": 34,
+            "score": 1
+          },
+          {
+            "ticket": 32,
+            "score": 2
+          }
+        ],
+        "expect": {
+          "high": 35,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 31,
+            "score": -1
+          },
+          {
+            "ticket": 32,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 32
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": -3
+          },
+          {
+            "ticket": 33,
+            "score": 3
+          },
+          {
+            "ticket": 31,
+            "score": 3
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 32
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": 3
+          },
+          {
+            "ticket": 37,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": 1
+          },
+          {
+            "ticket": 35,
+            "score": 1
+          },
+          {
+            "ticket": 36,
+            "score": 3
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": 0
+          },
+          {
+            "ticket": 38,
+            "score": 3
+          }
+        ],
+        "expect": {
+          "high": 33,
+          "low": 32
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": -2
+          },
+          {
+            "ticket": 32,
+            "score": 1
+          },
+          {
+            "ticket": 34,
+            "score": 1
+          },
+          {
+            "ticket": 31,
+            "score": -3
+          },
+          {
+            "ticket": 35,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 3
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 33,
+            "score": 3
+          },
+          {
+            "ticket": 36,
+            "score": -2
+          },
+          {
+            "ticket": 31,
+            "score": 3
+          },
+          {
+            "ticket": 35,
+            "score": 3
+          },
+          {
+            "ticket": 34,
+            "score": -3
+          },
+          {
+            "ticket": 32,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 3
+          },
+          {
+            "ticket": 33,
+            "score": -3
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 33
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 2
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": 3
+          },
+          {
+            "ticket": 31,
+            "score": 3
+          },
+          {
+            "ticket": 33,
+            "score": 0
+          },
+          {
+            "ticket": 34,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 31,
+          "low": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 34,
+            "score": 0
+          },
+          {
+            "ticket": 35,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": -2
+          },
+          {
+            "ticket": 33,
+            "score": 2
+          },
+          {
+            "ticket": 31,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 33,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": -2
+          },
+          {
+            "ticket": 31,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 34,
+            "score": 3
+          },
+          {
+            "ticket": 38,
+            "score": 0
+          },
+          {
+            "ticket": 32,
+            "score": -2
+          },
+          {
+            "ticket": 35,
+            "score": -3
+          },
+          {
+            "ticket": 33,
+            "score": 2
+          },
+          {
+            "ticket": 31,
+            "score": 0
+          },
+          {
+            "ticket": 37,
+            "score": 0
+          },
+          {
+            "ticket": 36,
+            "score": -1
+          }
+        ],
+        "expect": {
+          "high": 34,
+          "low": 35
+        }
+      },
+      {
+        "input": [
+          {
+            "ticket": 32,
+            "score": -1
+          },
+          {
+            "ticket": 31,
+            "score": -3
+          }
+        ],
+        "expect": {
+          "high": 32,
+          "low": 31
+        }
+      }
+    ],
+    "bills": [
+      {
+        "input": [
+          {
+            "bought": 2545,
+            "sold": 2838
+          },
+          {
+            "bought": 908,
+            "sold": 2144
+          },
+          {
+            "bought": 927,
+            "sold": 916
+          }
+        ],
+        "expect": {
+          "debit_cents": 4,
+          "credit_cents": 6
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 911,
+            "sold": 5293
+          },
+          {
+            "bought": 1697,
+            "sold": 3647
+          },
+          {
+            "bought": 731,
+            "sold": 943
+          },
+          {
+            "bought": 4421,
+            "sold": 6515
+          },
+          {
+            "bought": 3032,
+            "sold": 3456
+          },
+          {
+            "bought": 7165,
+            "sold": 6006
+          },
+          {
+            "bought": 3422,
+            "sold": 5972
+          },
+          {
+            "bought": 408,
+            "sold": 2144
+          },
+          {
+            "bought": 1663,
+            "sold": 2626
+          }
+        ],
+        "expect": {
+          "debit_cents": 23,
+          "credit_cents": 37
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 3360,
+            "sold": 7436
+          },
+          {
+            "bought": 1229,
+            "sold": 6447
+          },
+          {
+            "bought": 1593,
+            "sold": 1518
+          },
+          {
+            "bought": 4335,
+            "sold": 2231
+          }
+        ],
+        "expect": {
+          "debit_cents": 11,
+          "credit_cents": 18
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 6001,
+            "sold": 3814
+          },
+          {
+            "bought": 7339,
+            "sold": 4101
+          },
+          {
+            "bought": 3173,
+            "sold": 4064
+          },
+          {
+            "bought": 4050,
+            "sold": 6300
+          },
+          {
+            "bought": 4686,
+            "sold": 2973
+          },
+          {
+            "bought": 2574,
+            "sold": 1575
+          }
+        ],
+        "expect": {
+          "debit_cents": 28,
+          "credit_cents": 23
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 5767,
+            "sold": 7821
+          },
+          {
+            "bought": 2798,
+            "sold": 224
+          },
+          {
+            "bought": 4868,
+            "sold": 4280
+          },
+          {
+            "bought": 7985,
+            "sold": 1466
+          },
+          {
+            "bought": 4881,
+            "sold": 3627
+          },
+          {
+            "bought": 6902,
+            "sold": 1846
+          },
+          {
+            "bought": 5842,
+            "sold": 1677
+          },
+          {
+            "bought": 5243,
+            "sold": 7270
+          }
+        ],
+        "expect": {
+          "debit_cents": 44,
+          "credit_cents": 28
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 5314,
+            "sold": 2492
+          },
+          {
+            "bought": 7103,
+            "sold": 6182
+          },
+          {
+            "bought": 4030,
+            "sold": 5611
+          },
+          {
+            "bought": 4860,
+            "sold": 4111
+          },
+          {
+            "bought": 2682,
+            "sold": 2674
+          }
+        ],
+        "expect": {
+          "debit_cents": 24,
+          "credit_cents": 21
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 386,
+            "sold": 2104
+          },
+          {
+            "bought": 6574,
+            "sold": 5792
+          },
+          {
+            "bought": 6667,
+            "sold": 196
+          },
+          {
+            "bought": 916,
+            "sold": 805
+          },
+          {
+            "bought": 7934,
+            "sold": 114
+          },
+          {
+            "bought": 6244,
+            "sold": 4456
+          }
+        ],
+        "expect": {
+          "debit_cents": 29,
+          "credit_cents": 13
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 6187,
+            "sold": 6694
+          },
+          {
+            "bought": 7423,
+            "sold": 541
+          },
+          {
+            "bought": 6182,
+            "sold": 7241
+          },
+          {
+            "bought": 4647,
+            "sold": 2841
+          },
+          {
+            "bought": 4553,
+            "sold": 5623
+          },
+          {
+            "bought": 7171,
+            "sold": 5938
+          },
+          {
+            "bought": 5285,
+            "sold": 1090
+          }
+        ],
+        "expect": {
+          "debit_cents": 41,
+          "credit_cents": 30
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 7732,
+            "sold": 4966
+          },
+          {
+            "bought": 4108,
+            "sold": 136
+          }
+        ],
+        "expect": {
+          "debit_cents": 12,
+          "credit_cents": 5
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 2712,
+            "sold": 5112
+          },
+          {
+            "bought": 808,
+            "sold": 1984
+          },
+          {
+            "bought": 3571,
+            "sold": 6480
+          },
+          {
+            "bought": 2199,
+            "sold": 138
+          },
+          {
+            "bought": 2019,
+            "sold": 7806
+          },
+          {
+            "bought": 5620,
+            "sold": 1477
+          }
+        ],
+        "expect": {
+          "debit_cents": 17,
+          "credit_cents": 23
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 4634,
+            "sold": 6357
+          },
+          {
+            "bought": 1330,
+            "sold": 5475
+          },
+          {
+            "bought": 6751,
+            "sold": 4293
+          },
+          {
+            "bought": 3217,
+            "sold": 2039
+          },
+          {
+            "bought": 4178,
+            "sold": 2556
+          },
+          {
+            "bought": 3114,
+            "sold": 5021
+          },
+          {
+            "bought": 2988,
+            "sold": 5841
+          },
+          {
+            "bought": 5348,
+            "sold": 7898
+          }
+        ],
+        "expect": {
+          "debit_cents": 32,
+          "credit_cents": 39
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 17,
+            "sold": 7246
+          },
+          {
+            "bought": 3724,
+            "sold": 7917
+          },
+          {
+            "bought": 652,
+            "sold": 3672
+          },
+          {
+            "bought": 6848,
+            "sold": 6729
+          },
+          {
+            "bought": 4069,
+            "sold": 577
+          },
+          {
+            "bought": 3724,
+            "sold": 6681
+          },
+          {
+            "bought": 4573,
+            "sold": 4665
+          },
+          {
+            "bought": 5457,
+            "sold": 3749
+          },
+          {
+            "bought": 3467,
+            "sold": 6333
+          }
+        ],
+        "expect": {
+          "debit_cents": 33,
+          "credit_cents": 48
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 6064,
+            "sold": 1479
+          },
+          {
+            "bought": 6988,
+            "sold": 1488
+          }
+        ],
+        "expect": {
+          "debit_cents": 13,
+          "credit_cents": 3
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 230,
+            "sold": 7870
+          },
+          {
+            "bought": 783,
+            "sold": 6874
+          },
+          {
+            "bought": 364,
+            "sold": 7509
+          }
+        ],
+        "expect": {
+          "debit_cents": 1,
+          "credit_cents": 22
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 1124,
+            "sold": 1967
+          },
+          {
+            "bought": 941,
+            "sold": 4088
+          },
+          {
+            "bought": 4841,
+            "sold": 6906
+          },
+          {
+            "bought": 7811,
+            "sold": 553
+          },
+          {
+            "bought": 2033,
+            "sold": 699
+          },
+          {
+            "bought": 6469,
+            "sold": 2586
+          },
+          {
+            "bought": 4002,
+            "sold": 5554
+          },
+          {
+            "bought": 5217,
+            "sold": 3411
+          }
+        ],
+        "expect": {
+          "debit_cents": 32,
+          "credit_cents": 26
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 2194,
+            "sold": 3801
+          },
+          {
+            "bought": 597,
+            "sold": 2594
+          }
+        ],
+        "expect": {
+          "debit_cents": 3,
+          "credit_cents": 6
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 295,
+            "sold": 240
+          },
+          {
+            "bought": 7911,
+            "sold": 1794
+          }
+        ],
+        "expect": {
+          "debit_cents": 8,
+          "credit_cents": 2
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 1741,
+            "sold": 7445
+          },
+          {
+            "bought": 769,
+            "sold": 4886
+          }
+        ],
+        "expect": {
+          "debit_cents": 3,
+          "credit_cents": 12
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 1006,
+            "sold": 2740
+          },
+          {
+            "bought": 6526,
+            "sold": 2381
+          },
+          {
+            "bought": 4862,
+            "sold": 5778
+          },
+          {
+            "bought": 2604,
+            "sold": 843
+          },
+          {
+            "bought": 5887,
+            "sold": 5002
+          },
+          {
+            "bought": 1159,
+            "sold": 7587
+          },
+          {
+            "bought": 27,
+            "sold": 1427
+          },
+          {
+            "bought": 5869,
+            "sold": 5115
+          },
+          {
+            "bought": 7222,
+            "sold": 4608
+          }
+        ],
+        "expect": {
+          "debit_cents": 35,
+          "credit_cents": 35
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 5578,
+            "sold": 4882
+          },
+          {
+            "bought": 4681,
+            "sold": 1407
+          },
+          {
+            "bought": 5262,
+            "sold": 4075
+          },
+          {
+            "bought": 3470,
+            "sold": 3367
+          },
+          {
+            "bought": 4687,
+            "sold": 6521
+          },
+          {
+            "bought": 4234,
+            "sold": 277
+          }
+        ],
+        "expect": {
+          "debit_cents": 28,
+          "credit_cents": 21
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 6545,
+            "sold": 5716
+          },
+          {
+            "bought": 3436,
+            "sold": 4803
+          },
+          {
+            "bought": 4084,
+            "sold": 100
+          },
+          {
+            "bought": 381,
+            "sold": 1495
+          }
+        ],
+        "expect": {
+          "debit_cents": 14,
+          "credit_cents": 12
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 512,
+            "sold": 2117
+          },
+          {
+            "bought": 7333,
+            "sold": 2141
+          },
+          {
+            "bought": 5684,
+            "sold": 5481
+          },
+          {
+            "bought": 5255,
+            "sold": 7254
+          },
+          {
+            "bought": 3398,
+            "sold": 7764
+          },
+          {
+            "bought": 7648,
+            "sold": 593
+          }
+        ],
+        "expect": {
+          "debit_cents": 30,
+          "credit_cents": 25
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 4713,
+            "sold": 1143
+          },
+          {
+            "bought": 1636,
+            "sold": 4107
+          },
+          {
+            "bought": 1049,
+            "sold": 2040
+          },
+          {
+            "bought": 5050,
+            "sold": 4560
+          },
+          {
+            "bought": 606,
+            "sold": 2927
+          },
+          {
+            "bought": 2701,
+            "sold": 4900
+          }
+        ],
+        "expect": {
+          "debit_cents": 16,
+          "credit_cents": 20
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 1178,
+            "sold": 1732
+          },
+          {
+            "bought": 1331,
+            "sold": 5596
+          },
+          {
+            "bought": 5911,
+            "sold": 6836
+          }
+        ],
+        "expect": {
+          "debit_cents": 8,
+          "credit_cents": 14
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 4938,
+            "sold": 2054
+          },
+          {
+            "bought": 853,
+            "sold": 4436
+          },
+          {
+            "bought": 7039,
+            "sold": 4140
+          },
+          {
+            "bought": 7808,
+            "sold": 5884
+          },
+          {
+            "bought": 5384,
+            "sold": 6442
+          },
+          {
+            "bought": 4517,
+            "sold": 4915
+          },
+          {
+            "bought": 4731,
+            "sold": 6102
+          }
+        ],
+        "expect": {
+          "debit_cents": 35,
+          "credit_cents": 34
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 5178,
+            "sold": 4189
+          },
+          {
+            "bought": 5846,
+            "sold": 3103
+          }
+        ],
+        "expect": {
+          "debit_cents": 11,
+          "credit_cents": 7
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 921,
+            "sold": 933
+          },
+          {
+            "bought": 7564,
+            "sold": 922
+          }
+        ],
+        "expect": {
+          "debit_cents": 8,
+          "credit_cents": 2
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 4958,
+            "sold": 159
+          },
+          {
+            "bought": 5555,
+            "sold": 6828
+          },
+          {
+            "bought": 3121,
+            "sold": 543
+          },
+          {
+            "bought": 429,
+            "sold": 7341
+          },
+          {
+            "bought": 3610,
+            "sold": 1796
+          },
+          {
+            "bought": 4423,
+            "sold": 1653
+          },
+          {
+            "bought": 7704,
+            "sold": 1531
+          },
+          {
+            "bought": 2006,
+            "sold": 1724
+          },
+          {
+            "bought": 1225,
+            "sold": 2568
+          }
+        ],
+        "expect": {
+          "debit_cents": 33,
+          "credit_cents": 24
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 4102,
+            "sold": 7977
+          },
+          {
+            "bought": 7300,
+            "sold": 2782
+          },
+          {
+            "bought": 1567,
+            "sold": 7772
+          },
+          {
+            "bought": 7876,
+            "sold": 2125
+          },
+          {
+            "bought": 394,
+            "sold": 3695
+          },
+          {
+            "bought": 342,
+            "sold": 1037
+          }
+        ],
+        "expect": {
+          "debit_cents": 22,
+          "credit_cents": 25
+        }
+      },
+      {
+        "input": [
+          {
+            "bought": 5217,
+            "sold": 4845
+          },
+          {
+            "bought": 1478,
+            "sold": 780
+          },
+          {
+            "bought": 7778,
+            "sold": 4022
+          },
+          {
+            "bought": 1032,
+            "sold": 1171
+          },
+          {
+            "bought": 3480,
+            "sold": 1728
+          },
+          {
+            "bought": 1010,
+            "sold": 559
+          }
+        ],
+        "expect": {
+          "debit_cents": 20,
+          "credit_cents": 13
+        }
+      }
+    ],
+    "tracks": [
+      {
+        "input": [
+          {
+            "height": 14,
+            "restart": false
+          },
+          {
+            "height": 23,
+            "restart": false
+          },
+          {
+            "height": 24,
+            "restart": false
+          },
+          {
+            "height": 10,
+            "restart": false
+          },
+          {
+            "height": 22,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 22,
+          "descent": 14
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -6,
+            "restart": true
+          },
+          {
+            "height": -12,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 0,
+          "descent": 6
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -17,
+            "restart": false
+          },
+          {
+            "height": -3,
+            "restart": false
+          },
+          {
+            "height": -23,
+            "restart": false
+          },
+          {
+            "height": -24,
+            "restart": false
+          },
+          {
+            "height": -23,
+            "restart": true
+          },
+          {
+            "height": 3,
+            "restart": false
+          },
+          {
+            "height": 3,
+            "restart": false
+          },
+          {
+            "height": -6,
+            "restart": true
+          },
+          {
+            "height": -21,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 40,
+          "descent": 21
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 12,
+            "restart": false
+          },
+          {
+            "height": 18,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 6,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -20,
+            "restart": true
+          },
+          {
+            "height": -20,
+            "restart": false
+          },
+          {
+            "height": 13,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 33,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 17,
+            "restart": true
+          },
+          {
+            "height": -2,
+            "restart": false
+          },
+          {
+            "height": 10,
+            "restart": false
+          },
+          {
+            "height": 15,
+            "restart": false
+          },
+          {
+            "height": -12,
+            "restart": true
+          },
+          {
+            "height": 11,
+            "restart": false
+          },
+          {
+            "height": 14,
+            "restart": false
+          },
+          {
+            "height": 4,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 43,
+          "descent": 29
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 7,
+            "restart": false
+          },
+          {
+            "height": -10,
+            "restart": false
+          },
+          {
+            "height": -3,
+            "restart": true
+          },
+          {
+            "height": -9,
+            "restart": true
+          },
+          {
+            "height": -22,
+            "restart": false
+          },
+          {
+            "height": 18,
+            "restart": false
+          },
+          {
+            "height": -17,
+            "restart": true
+          },
+          {
+            "height": 21,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 40,
+          "descent": 30
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 12,
+            "restart": false
+          },
+          {
+            "height": 13,
+            "restart": false
+          },
+          {
+            "height": -1,
+            "restart": false
+          },
+          {
+            "height": 9,
+            "restart": true
+          },
+          {
+            "height": 11,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 1,
+          "descent": 14
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 12,
+            "restart": true
+          },
+          {
+            "height": 8,
+            "restart": true
+          },
+          {
+            "height": -22,
+            "restart": true
+          },
+          {
+            "height": -2,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 0,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -10,
+            "restart": false
+          },
+          {
+            "height": 15,
+            "restart": true
+          },
+          {
+            "height": 2,
+            "restart": false
+          },
+          {
+            "height": 6,
+            "restart": false
+          },
+          {
+            "height": -24,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 4,
+          "descent": 43
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -11,
+            "restart": false
+          },
+          {
+            "height": -13,
+            "restart": false
+          },
+          {
+            "height": -19,
+            "restart": false
+          },
+          {
+            "height": -11,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 8,
+          "descent": 8
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -5,
+            "restart": false
+          },
+          {
+            "height": 17,
+            "restart": false
+          },
+          {
+            "height": 16,
+            "restart": true
+          },
+          {
+            "height": -18,
+            "restart": true
+          },
+          {
+            "height": 19,
+            "restart": false
+          },
+          {
+            "height": 19,
+            "restart": false
+          },
+          {
+            "height": 3,
+            "restart": false
+          },
+          {
+            "height": -5,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 59,
+          "descent": 24
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -12,
+            "restart": false
+          },
+          {
+            "height": -5,
+            "restart": true
+          },
+          {
+            "height": 6,
+            "restart": false
+          },
+          {
+            "height": 14,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 19,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -19,
+            "restart": false
+          },
+          {
+            "height": -18,
+            "restart": false
+          },
+          {
+            "height": -17,
+            "restart": false
+          },
+          {
+            "height": -8,
+            "restart": true
+          },
+          {
+            "height": 7,
+            "restart": false
+          },
+          {
+            "height": 16,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 26,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 16,
+            "restart": false
+          },
+          {
+            "height": 17,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 1,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -18,
+            "restart": false
+          },
+          {
+            "height": 15,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 0,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -23,
+            "restart": false
+          },
+          {
+            "height": 15,
+            "restart": false
+          },
+          {
+            "height": 6,
+            "restart": false
+          },
+          {
+            "height": -20,
+            "restart": true
+          },
+          {
+            "height": -22,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 38,
+          "descent": 9
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -18,
+            "restart": false
+          },
+          {
+            "height": -16,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 2,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -5,
+            "restart": false
+          },
+          {
+            "height": -23,
+            "restart": true
+          },
+          {
+            "height": -19,
+            "restart": false
+          },
+          {
+            "height": -18,
+            "restart": false
+          },
+          {
+            "height": -15,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 8,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -3,
+            "restart": false
+          },
+          {
+            "height": 17,
+            "restart": true
+          },
+          {
+            "height": -22,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 0,
+          "descent": 39
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -12,
+            "restart": false
+          },
+          {
+            "height": -13,
+            "restart": true
+          },
+          {
+            "height": 10,
+            "restart": false
+          },
+          {
+            "height": 21,
+            "restart": true
+          },
+          {
+            "height": -18,
+            "restart": false
+          },
+          {
+            "height": -25,
+            "restart": false
+          },
+          {
+            "height": -15,
+            "restart": false
+          },
+          {
+            "height": 20,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 33,
+          "descent": 46
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 24,
+            "restart": false
+          },
+          {
+            "height": 7,
+            "restart": false
+          },
+          {
+            "height": -17,
+            "restart": false
+          },
+          {
+            "height": -7,
+            "restart": false
+          },
+          {
+            "height": 17,
+            "restart": false
+          },
+          {
+            "height": 7,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 34,
+          "descent": 51
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -23,
+            "restart": true
+          },
+          {
+            "height": 18,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 41,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 18,
+            "restart": true
+          },
+          {
+            "height": 14,
+            "restart": false
+          },
+          {
+            "height": 12,
+            "restart": false
+          },
+          {
+            "height": -17,
+            "restart": true
+          },
+          {
+            "height": 24,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 41,
+          "descent": 6
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 12,
+            "restart": false
+          },
+          {
+            "height": 20,
+            "restart": false
+          },
+          {
+            "height": 24,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 12,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 4,
+            "restart": false
+          },
+          {
+            "height": -10,
+            "restart": false
+          },
+          {
+            "height": 18,
+            "restart": false
+          },
+          {
+            "height": 1,
+            "restart": false
+          },
+          {
+            "height": -20,
+            "restart": false
+          },
+          {
+            "height": -24,
+            "restart": false
+          },
+          {
+            "height": -13,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 39,
+          "descent": 56
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 16,
+            "restart": false
+          },
+          {
+            "height": 13,
+            "restart": false
+          },
+          {
+            "height": -5,
+            "restart": false
+          },
+          {
+            "height": -20,
+            "restart": false
+          },
+          {
+            "height": 5,
+            "restart": false
+          },
+          {
+            "height": -12,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 25,
+          "descent": 53
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 11,
+            "restart": false
+          },
+          {
+            "height": 1,
+            "restart": false
+          },
+          {
+            "height": -16,
+            "restart": false
+          },
+          {
+            "height": -12,
+            "restart": false
+          },
+          {
+            "height": -22,
+            "restart": true
+          }
+        ],
+        "expect": {
+          "ascent": 4,
+          "descent": 27
+        }
+      },
+      {
+        "input": [
+          {
+            "height": -8,
+            "restart": false
+          },
+          {
+            "height": 13,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 21,
+          "descent": 0
+        }
+      },
+      {
+        "input": [
+          {
+            "height": 4,
+            "restart": false
+          },
+          {
+            "height": 20,
+            "restart": false
+          },
+          {
+            "height": -24,
+            "restart": false
+          },
+          {
+            "height": 16,
+            "restart": false
+          },
+          {
+            "height": -7,
+            "restart": true
+          },
+          {
+            "height": -16,
+            "restart": false
+          },
+          {
+            "height": 4,
+            "restart": true
+          },
+          {
+            "height": -5,
+            "restart": false
+          }
+        ],
+        "expect": {
+          "ascent": 56,
+          "descent": 62
+        }
+      }
+    ]
+  },
+  "trials": [
+    {
+      "family": "range",
+      "repetition": 1,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:21:15.788868488Z",
+      "monotonic_s": {
+        "start": "50199.771087215",
+        "packet_ready": "50199.925878991",
+        "end": "50213.505408763"
+      },
+      "seconds": 13.73432154799957,
+      "prepare_seconds": 0.15479177600354888,
+      "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+      "tokens": {
+        "total": 19900,
+        "uncached": 1980,
+        "output": 548,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63c-5653-77d3-b6ca-df33bac8f37d",
+          "answered_monotonic_s": "50213.425891123",
+          "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+          "usage": {
+            "input_tokens": 19352,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 548,
+            "reasoning_output_tokens": 360
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.tide",
+                "old": "  if (> (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (> (get score candidate) (get score best)) candidate (if (< (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              },
+              {
+                "file": "lower.tide",
+                "old": "  if (< (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (< (get score candidate) (get score best)) candidate (if (> (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 1,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:21:29.541417248Z",
+      "monotonic_s": {
+        "start": "50213.514881206",
+        "packet_ready": "50213.551458882",
+        "end": "50224.206106749"
+      },
+      "seconds": 10.691225542999746,
+      "prepare_seconds": 0.03657767600088846,
+      "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+      "tokens": {
+        "total": 19781,
+        "uncached": 19781,
+        "output": 458,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63c-8bc4-7973-892f-60fffd5ff72a",
+          "answered_monotonic_s": "50224.169873311",
+          "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+          "usage": {
+            "input_tokens": 19323,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 458,
+            "reasoning_output_tokens": 274
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.py",
+                "old": "        if candidate[\"score\"] > best[\"score\"]:",
+                "replacement": "        if (\n            candidate[\"score\"] > best[\"score\"]\n            or (\n                candidate[\"score\"] == best[\"score\"]\n                and candidate[\"ticket\"] < best[\"ticket\"]\n            )\n        ):"
+              },
+              {
+                "file": "lower.py",
+                "old": "        if candidate[\"score\"] < best[\"score\"]:",
+                "replacement": "        if (\n            candidate[\"score\"] < best[\"score\"]\n            or (\n                candidate[\"score\"] == best[\"score\"]\n                and candidate[\"ticket\"] < best[\"ticket\"]\n            )\n        ):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 1,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:21:40.238834416Z",
+      "monotonic_s": {
+        "start": "50224.211791054",
+        "packet_ready": "50224.352615333",
+        "end": "50233.201597682"
+      },
+      "seconds": 8.989806628000224,
+      "prepare_seconds": 0.14082427900575567,
+      "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+      "tokens": {
+        "total": 19846,
+        "uncached": 19846,
+        "output": 361,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63c-b5bc-7652-9ae6-ddd249a3c138",
+          "answered_monotonic_s": "50233.140452077",
+          "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+          "usage": {
+            "input_tokens": 19485,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 361,
+            "reasoning_output_tokens": 252
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.tide",
+                "old": "valid (not get restarted track)",
+                "replacement": "valid (not get restart sample)"
+              },
+              {
+                "file": "profile.tide",
+                "old": "descent (+ (get descent totals) (if (< change 0) (- 0 change) 0))",
+                "replacement": "descent (+ (get descent totals) (if (and (get valid edge) (< change 0)) (- 0 change) 0))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 1,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:21:49.233798160Z",
+      "monotonic_s": {
+        "start": "50233.207097684",
+        "packet_ready": "50233.242615568",
+        "end": "50246.426694100"
+      },
+      "seconds": 13.219596416005515,
+      "prepare_seconds": 0.035517884003638756,
+      "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+      "tokens": {
+        "total": 19925,
+        "uncached": 2005,
+        "output": 522,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63c-d70d-7823-9dda-546436b77e9c",
+          "answered_monotonic_s": "50246.267825455",
+          "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+          "usage": {
+            "input_tokens": 19403,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 522,
+            "reasoning_output_tokens": 316
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.py",
+                "old": "def history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges",
+                "replacement": "def history(samples):\n    edges = []\n    previous = None\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not sample[\"restart\"]))\n        previous = height\n    return edges"
+              },
+              {
+                "file": "profile.py",
+                "old": "        if edge.change < 0:",
+                "replacement": "        if edge.valid and edge.change < 0:"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 1,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:02.483723533Z",
+      "monotonic_s": {
+        "start": "50246.473437522",
+        "packet_ready": "50247.186170234",
+        "end": "50257.087686416"
+      },
+      "seconds": 10.61424889400223,
+      "prepare_seconds": 0.7127327120033442,
+      "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+      "tokens": {
+        "total": 19566,
+        "uncached": 1646,
+        "output": 271,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-10f2-7b73-9c79-45f9fbd6020e",
+          "answered_monotonic_s": "50256.927338222",
+          "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+          "usage": {
+            "input_tokens": 19295,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 271,
+            "reasoning_output_tokens": 168
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "debit.py",
+                "old": "    return sum(cents(item[\"bought\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"bought\"] for item in readings))"
+              },
+              {
+                "file": "credit.py",
+                "old": "    return sum(cents(item[\"sold\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"sold\"] for item in readings))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 1,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:13.149389354Z",
+      "monotonic_s": {
+        "start": "50257.126414895",
+        "packet_ready": "50258.086064699",
+        "end": "50267.632641565"
+      },
+      "seconds": 10.506226669996977,
+      "prepare_seconds": 0.9596498039973085,
+      "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+      "tokens": {
+        "total": 19677,
+        "uncached": 1757,
+        "output": 351,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-3af4-7011-b883-60660075e2e7",
+          "answered_monotonic_s": "50267.533294383",
+          "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+          "usage": {
+            "input_tokens": 19326,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 351,
+            "reasoning_output_tokens": 242
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "credit.tide",
+                "old": "fold readings 0 total row item + total (cents get sold item)",
+                "replacement": "cents (fold readings 0 total row item + total (get sold item))"
+              },
+              {
+                "file": "debit.tide",
+                "old": "fold readings 0 total row item + total (cents get bought item)",
+                "replacement": "cents (fold readings 0 total row item + total (get bought item))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 2,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:23.668129709Z",
+      "monotonic_s": {
+        "start": "50267.641903443",
+        "packet_ready": "50267.803915610",
+        "end": "50282.655211277"
+      },
+      "seconds": 15.013307834000443,
+      "prepare_seconds": 0.16201216699846555,
+      "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+      "tokens": {
+        "total": 39537,
+        "uncached": 20081,
+        "output": 565,
+        "cached": 19456
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-5e4a-7572-9d73-383d3177917f",
+          "answered_monotonic_s": "50282.580942476",
+          "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+          "usage": {
+            "input_tokens": 38972,
+            "cached_input_tokens": 19456,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 565,
+            "reasoning_output_tokens": 372
+          },
+          "tools": [
+            {
+              "command": "/usr/bin/bash -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+              "status": 0,
+              "output": "amounts.tide\ncredit.tide\ndebit.tide\nsummary.tide\n"
+            }
+          ],
+          "answer": {
+            "edits": [
+              {
+                "file": "credit.tide",
+                "old": "fold readings 0 total row item + total (cents get sold item)",
+                "replacement": "cents (fold readings 0 total row item + total (get sold item))"
+              },
+              {
+                "file": "debit.tide",
+                "old": "fold readings 0 total row item + total (cents get bought item)",
+                "replacement": "cents (fold readings 0 total row item + total (get bought item))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 2,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:38.690402485Z",
+      "monotonic_s": {
+        "start": "50282.663842882",
+        "packet_ready": "50282.698952917",
+        "end": "50290.446915567"
+      },
+      "seconds": 7.783072685000661,
+      "prepare_seconds": 0.03511003500170773,
+      "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+      "tokens": {
+        "total": 19514,
+        "uncached": 442,
+        "output": 219,
+        "cached": 19072
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-99d7-7143-87d0-473bfad214b1",
+          "answered_monotonic_s": "50290.410337383",
+          "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+          "usage": {
+            "input_tokens": 19295,
+            "cached_input_tokens": 19072,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 219,
+            "reasoning_output_tokens": 116
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "debit.py",
+                "old": "    return sum(cents(item[\"bought\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"bought\"] for item in readings))"
+              },
+              {
+                "file": "credit.py",
+                "old": "    return sum(cents(item[\"sold\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"sold\"] for item in readings))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 2,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:46.478825138Z",
+      "monotonic_s": {
+        "start": "50290.452232725",
+        "packet_ready": "50290.486384939",
+        "end": "50299.995059008"
+      },
+      "seconds": 9.54282628299552,
+      "prepare_seconds": 0.034152214000641834,
+      "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+      "tokens": {
+        "total": 19752,
+        "uncached": 1832,
+        "output": 429,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-b783-74e0-bded-582343104db3",
+          "answered_monotonic_s": "50299.952913951",
+          "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+          "usage": {
+            "input_tokens": 19323,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 429,
+            "reasoning_output_tokens": 265
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.py",
+                "old": "        if candidate[\"score\"] > best[\"score\"]:",
+                "replacement": "        if candidate[\"score\"] > best[\"score\"] or (\n            candidate[\"score\"] == best[\"score\"]\n            and candidate[\"ticket\"] < best[\"ticket\"]\n        ):"
+              },
+              {
+                "file": "lower.py",
+                "old": "        if candidate[\"score\"] < best[\"score\"]:",
+                "replacement": "        if candidate[\"score\"] < best[\"score\"] or (\n            candidate[\"score\"] == best[\"score\"]\n            and candidate[\"ticket\"] < best[\"ticket\"]\n        ):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 2,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:22:56.028955490Z",
+      "monotonic_s": {
+        "start": "50300.002167623",
+        "packet_ready": "50300.139955045",
+        "end": "50315.423767032"
+      },
+      "seconds": 15.421599408997281,
+      "prepare_seconds": 0.1377874219979276,
+      "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+      "tokens": {
+        "total": 20026,
+        "uncached": 2106,
+        "output": 674,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63d-dd54-7770-8c50-c9549cdb79ce",
+          "answered_monotonic_s": "50315.364129700",
+          "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+          "usage": {
+            "input_tokens": 19352,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 674,
+            "reasoning_output_tokens": 514
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.tide",
+                "old": "  if (> (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (> (get score candidate) (get score best)) candidate (if (< (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              },
+              {
+                "file": "lower.tide",
+                "old": "  if (< (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (< (get score candidate) (get score best)) candidate (if (> (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 2,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:23:11.456341117Z",
+      "monotonic_s": {
+        "start": "50315.429832546",
+        "packet_ready": "50315.463731095",
+        "end": "50328.611662882"
+      },
+      "seconds": 13.181830336005078,
+      "prepare_seconds": 0.033898549001605716,
+      "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+      "tokens": {
+        "total": 19918,
+        "uncached": 1998,
+        "output": 515,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-1931-7bb0-8dd7-f1acf1eb0f19",
+          "answered_monotonic_s": "50328.573975956",
+          "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+          "usage": {
+            "input_tokens": 19403,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 515,
+            "reasoning_output_tokens": 274
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.py",
+                "old": "def history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges",
+                "replacement": "def history(samples):\n    edges = []\n    previous = None\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not sample[\"restart\"]))\n        previous = height\n    return edges"
+              },
+              {
+                "file": "profile.py",
+                "old": "        if edge.change < 0:",
+                "replacement": "        if edge.valid and edge.change < 0:"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 2,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:23:24.643352029Z",
+      "monotonic_s": {
+        "start": "50328.616781036",
+        "packet_ready": "50328.743987832",
+        "end": "50338.204003341"
+      },
+      "seconds": 9.587222305002797,
+      "prepare_seconds": 0.12720679600170115,
+      "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+      "tokens": {
+        "total": 19899,
+        "uncached": 1979,
+        "output": 414,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-4c1d-7601-9bca-46fab36dd95d",
+          "answered_monotonic_s": "50338.135572271",
+          "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+          "usage": {
+            "input_tokens": 19485,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 414,
+            "reasoning_output_tokens": 262
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.tide",
+                "old": "valid (not get restarted track)",
+                "replacement": "valid (not get restart sample)"
+              },
+              {
+                "file": "profile.tide",
+                "old": "descent (+ (get descent totals) (if (< change 0) (- 0 change) 0))",
+                "replacement": "descent (+ (get descent totals) (if (and (get valid edge) (< change 0)) (- 0 change) 0))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 3,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:23:34.236312460Z",
+      "monotonic_s": {
+        "start": "50338.210172207",
+        "packet_ready": "50338.359080592",
+        "end": "50353.875450473"
+      },
+      "seconds": 15.665278266002133,
+      "prepare_seconds": 0.14890838500286918,
+      "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+      "tokens": {
+        "total": 19892,
+        "uncached": 1972,
+        "output": 407,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-7718-7f30-a8e6-45b2ab236e93",
+          "answered_monotonic_s": "50353.813379752",
+          "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+          "usage": {
+            "input_tokens": 19485,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 407,
+            "reasoning_output_tokens": 282
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.tide",
+                "old": "valid (not get restarted track)",
+                "replacement": "valid (not get restart sample)"
+              },
+              {
+                "file": "profile.tide",
+                "old": "(if (< change 0) (- 0 change) 0)",
+                "replacement": "(if (and (get valid edge) (< change 0)) (- 0 change) 0)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 3,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:23:49.907759702Z",
+      "monotonic_s": {
+        "start": "50353.880859503",
+        "packet_ready": "50353.916201431",
+        "end": "50366.467870658"
+      },
+      "seconds": 12.587011155002983,
+      "prepare_seconds": 0.035341927999979816,
+      "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+      "tokens": {
+        "total": 19967,
+        "uncached": 2047,
+        "output": 564,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-ae76-7613-9863-3d717f0b778e",
+          "answered_monotonic_s": "50366.424495807",
+          "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+          "usage": {
+            "input_tokens": 19403,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 564,
+            "reasoning_output_tokens": 320
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.py",
+                "old": "def history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges",
+                "replacement": "def history(samples):\n    edges = []\n    previous = None\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not sample[\"restart\"]))\n        previous = height\n    return edges"
+              },
+              {
+                "file": "profile.py",
+                "old": "if edge.change < 0:",
+                "replacement": "if edge.valid and edge.change < 0:"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 3,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:24:02.500753099Z",
+      "monotonic_s": {
+        "start": "50366.474213597",
+        "packet_ready": "50366.507339019",
+        "end": "50373.395530263"
+      },
+      "seconds": 6.921316665997438,
+      "prepare_seconds": 0.033125422000011895,
+      "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+      "tokens": {
+        "total": 19502,
+        "uncached": 1582,
+        "output": 207,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-e09a-7fe0-95dc-aadf8bf66991",
+          "answered_monotonic_s": "50373.358022962",
+          "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+          "usage": {
+            "input_tokens": 19295,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 207,
+            "reasoning_output_tokens": 108
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "debit.py",
+                "old": "return sum(cents(item[\"bought\"]) for item in readings)",
+                "replacement": "return cents(sum(item[\"bought\"] for item in readings))"
+              },
+              {
+                "file": "credit.py",
+                "old": "return sum(cents(item[\"sold\"]) for item in readings)",
+                "replacement": "return cents(sum(item[\"sold\"] for item in readings))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 3,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:24:09.427547957Z",
+      "monotonic_s": {
+        "start": "50373.401236679",
+        "packet_ready": "50373.540935256",
+        "end": "50383.847078681"
+      },
+      "seconds": 10.445842002001882,
+      "prepare_seconds": 0.1396985770043102,
+      "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+      "tokens": {
+        "total": 19778,
+        "uncached": 578,
+        "output": 452,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63e-fc23-7a40-ac79-0da8213bb89d",
+          "answered_monotonic_s": "50383.785161994",
+          "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+          "usage": {
+            "input_tokens": 19326,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 452,
+            "reasoning_output_tokens": 343
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "credit.tide",
+                "old": "fold readings 0 total row item + total (cents get sold item)",
+                "replacement": "cents (fold readings 0 total row item + total (get sold item))"
+              },
+              {
+                "file": "debit.tide",
+                "old": "fold readings 0 total row item + total (cents get bought item)",
+                "replacement": "cents (fold readings 0 total row item + total (get bought item))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 3,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:24:19.879737537Z",
+      "monotonic_s": {
+        "start": "50383.853300767",
+        "packet_ready": "50383.992369631",
+        "end": "50412.688252156"
+      },
+      "seconds": 28.83495138899889,
+      "prepare_seconds": 0.13906886400218355,
+      "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+      "tokens": {
+        "total": 40317,
+        "uncached": 1533,
+        "output": 1141,
+        "cached": 38784
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63f-24e9-7270-bbb6-4c8383be2e0b",
+          "answered_monotonic_s": "50412.620427180",
+          "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+          "usage": {
+            "input_tokens": 39176,
+            "cached_input_tokens": 38784,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1141,
+            "reasoning_output_tokens": 910
+          },
+          "tools": [
+            {
+              "command": "/usr/bin/bash -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"'\"",
+              "status": 0,
+              "output": "lower.tide\nrows.tide\nsummary.tide\nupper.tide\n"
+            }
+          ],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.tide",
+                "old": "  if (> (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (> (get score candidate) (get score best)) candidate (if (< (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              },
+              {
+                "file": "lower.tide",
+                "old": "  if (< (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (< (get score candidate) (get score best)) candidate (if (> (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 3,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:24:48.722918823Z",
+      "monotonic_s": {
+        "start": "50412.697278080",
+        "packet_ready": "50412.731891912",
+        "end": "50422.887626504"
+      },
+      "seconds": 10.190348424002877,
+      "prepare_seconds": 0.03461383200192358,
+      "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+      "tokens": {
+        "total": 19728,
+        "uncached": 1808,
+        "output": 405,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63f-9531-7c20-b94c-bc4a1a3c4f14",
+          "answered_monotonic_s": "50422.849500761",
+          "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+          "usage": {
+            "input_tokens": 19323,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 405,
+            "reasoning_output_tokens": 221
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.py",
+                "old": "        if candidate[\"score\"] > best[\"score\"]:",
+                "replacement": "        if (\n            candidate[\"score\"] > best[\"score\"]\n            or (\n                candidate[\"score\"] == best[\"score\"]\n                and candidate[\"ticket\"] < best[\"ticket\"]\n            )\n        ):"
+              },
+              {
+                "file": "lower.py",
+                "old": "        if candidate[\"score\"] < best[\"score\"]:",
+                "replacement": "        if (\n            candidate[\"score\"] < best[\"score\"]\n            or (\n                candidate[\"score\"] == best[\"score\"]\n                and candidate[\"ticket\"] < best[\"ticket\"]\n            )\n        ):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 4,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:24:58.919871412Z",
+      "monotonic_s": {
+        "start": "50422.893024914",
+        "packet_ready": "50422.924546693",
+        "end": "50433.919766436"
+      },
+      "seconds": 11.02674152200052,
+      "prepare_seconds": 0.0315217789975577,
+      "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+      "tokens": {
+        "total": 19735,
+        "uncached": 535,
+        "output": 412,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63f-bce0-71d3-ab5a-727cca4257a0",
+          "answered_monotonic_s": "50432.602553199",
+          "prompt_sha256": "518d2f91cf520c508b4f319f22310562c563306e7d5dba2998f679179c20400b",
+          "usage": {
+            "input_tokens": 19323,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 412,
+            "reasoning_output_tokens": 248
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.py",
+                "old": "        if candidate[\"score\"] > best[\"score\"]:",
+                "replacement": "        if candidate[\"score\"] > best[\"score\"] or (\n            candidate[\"score\"] == best[\"score\"]\n            and candidate[\"ticket\"] < best[\"ticket\"]\n        ):"
+              },
+              {
+                "file": "lower.py",
+                "old": "        if candidate[\"score\"] < best[\"score\"]:",
+                "replacement": "        if candidate[\"score\"] < best[\"score\"] or (\n            candidate[\"score\"] == best[\"score\"]\n            and candidate[\"ticket\"] < best[\"ticket\"]\n        ):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "range",
+      "repetition": 4,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:25:10.379905193Z",
+      "monotonic_s": {
+        "start": "50434.356284410",
+        "packet_ready": "50434.713756690",
+        "end": "50453.340894302"
+      },
+      "seconds": 18.984609891995206,
+      "prepare_seconds": 0.3574722799967276,
+      "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+      "tokens": {
+        "total": 20169,
+        "uncached": 2249,
+        "output": 817,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e63f-eb7c-7e43-b1a0-a84ac3c503c9",
+          "answered_monotonic_s": "50453.263257478",
+          "prompt_sha256": "6111b9024b38ea69db8804ab6f1bf8c0a95c1e65bb94755b243f822d7cffba87",
+          "usage": {
+            "input_tokens": 19352,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 817,
+            "reasoning_output_tokens": 630
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "upper.tide",
+                "old": "  if (> (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (> (get score candidate) (get score best)) candidate (if (< (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              },
+              {
+                "file": "lower.tide",
+                "old": "  if (< (get score candidate) (get score best)) candidate best",
+                "replacement": "  if (< (get score candidate) (get score best)) candidate (if (> (get score candidate) (get score best)) best (if (< (get ticket candidate) (get ticket best)) candidate best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 38,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 38,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 4,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:25:29.376978888Z",
+      "monotonic_s": {
+        "start": "50453.350536317",
+        "packet_ready": "50453.499643381",
+        "end": "50465.626394907"
+      },
+      "seconds": 12.275858590001008,
+      "prepare_seconds": 0.14910706400405616,
+      "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+      "tokens": {
+        "total": 19855,
+        "uncached": 655,
+        "output": 529,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e640-3392-7280-9b54-fdf348d8e0af",
+          "answered_monotonic_s": "50465.558121523",
+          "prompt_sha256": "4c9d1771d73b4cbbdb937624dc7bac8aa80828960dc7390d8a33b02b817f4c91",
+          "usage": {
+            "input_tokens": 19326,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 529,
+            "reasoning_output_tokens": 389
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "credit.tide",
+                "old": "fold readings 0 total row item + total (cents get sold item)",
+                "replacement": "cents (fold readings 0 total row item + total (get sold item))"
+              },
+              {
+                "file": "debit.tide",
+                "old": "fold readings 0 total row item + total (cents get bought item)",
+                "replacement": "cents (fold readings 0 total row item + total (get bought item))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "bills",
+      "repetition": 4,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:25:41.660687716Z",
+      "monotonic_s": {
+        "start": "50465.633923679",
+        "packet_ready": "50465.669610153",
+        "end": "50474.838924548"
+      },
+      "seconds": 9.205000868998468,
+      "prepare_seconds": 0.03568647400243208,
+      "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+      "tokens": {
+        "total": 19601,
+        "uncached": 1681,
+        "output": 306,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e640-62fa-71f1-a155-0b962983697c",
+          "answered_monotonic_s": "50474.796883266",
+          "prompt_sha256": "41ea07fa0fc71f2ce54a4c4c8677d506fb70ce02cb8e59c78a8def277119cde0",
+          "usage": {
+            "input_tokens": 19295,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 306,
+            "reasoning_output_tokens": 160
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "credit.py",
+                "old": "    return sum(cents(item[\"sold\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"sold\"] for item in readings))"
+              },
+              {
+                "file": "debit.py",
+                "old": "    return sum(cents(item[\"bought\"]) for item in readings)",
+                "replacement": "    return cents(sum(item[\"bought\"] for item in readings))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 31,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 31,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 4,
+      "language": "python",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:25:50.872496003Z",
+      "monotonic_s": {
+        "start": "50474.846088203",
+        "packet_ready": "50474.882613464",
+        "end": "50487.519734488"
+      },
+      "seconds": 12.673646285002178,
+      "prepare_seconds": 0.036525260999042075,
+      "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+      "tokens": {
+        "total": 19912,
+        "uncached": 1992,
+        "output": 509,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e640-880b-79b0-8d3d-986985903231",
+          "answered_monotonic_s": "50487.456908705",
+          "prompt_sha256": "e5c6f67b3ba9d17252e20731cadcb7509c346abd62a5808e23b87586613c8eed",
+          "usage": {
+            "input_tokens": 19403,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 509,
+            "reasoning_output_tokens": 291
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.py",
+                "old": "def history(samples):\n    edges = []\n    previous = None\n    restarted = False\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not restarted))\n        previous = height\n        restarted = sample[\"restart\"]\n    return edges",
+                "replacement": "def history(samples):\n    edges = []\n    previous = None\n    for sample in samples:\n        height = sample[\"height\"]\n        if previous is not None:\n            edges.append(Edge(height - previous, not sample[\"restart\"]))\n        previous = height\n    return edges"
+              },
+              {
+                "file": "profile.py",
+                "old": "        if edge.change < 0:\n            descent -= edge.change",
+                "replacement": "        if edge.valid and edge.change < 0:\n            descent -= edge.change"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "tracks",
+      "repetition": 4,
+      "language": "tide",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:26:03.559519829Z",
+      "monotonic_s": {
+        "start": "50487.534489967",
+        "packet_ready": "50487.764632961",
+        "end": "50500.346239270"
+      },
+      "seconds": 12.811749303000397,
+      "prepare_seconds": 0.2301429939980153,
+      "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+      "tokens": {
+        "total": 19943,
+        "uncached": 19943,
+        "output": 458,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e640-bbd8-71d2-be1f-9153e61cc670",
+          "answered_monotonic_s": "50500.240510648",
+          "prompt_sha256": "f1c12310e369fcce78a9be32925b9baec002db591a61081d4fc74e65cda6db2c",
+          "usage": {
+            "input_tokens": 19485,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 458,
+            "reasoning_output_tokens": 314
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "history.tide",
+                "old": "valid (not get restarted track)",
+                "replacement": "valid (not get restart sample)"
+              },
+              {
+                "file": "profile.tide",
+                "old": "descent (+ (get descent totals) (if (< change 0) (- 0 change) 0))",
+                "replacement": "descent (+ (get descent totals) (if (and (get valid edge) (< change 0)) (- 0 change) 0))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 36,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 36,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ]
+}

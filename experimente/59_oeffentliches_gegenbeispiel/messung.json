@@ -1,0 +1,3509 @@
+{
+  "probe_pool": [
+    {
+      "a": 0,
+      "b": 1
+    },
+    {
+      "a": 1,
+      "b": 1
+    },
+    {
+      "a": 2,
+      "b": 1
+    },
+    {
+      "a": 3,
+      "b": 1
+    },
+    {
+      "a": 4,
+      "b": 1
+    },
+    {
+      "a": 5,
+      "b": 1
+    }
+  ],
+  "sweeps": [
+    {
+      "family": "balance",
+      "visible_before": [
+        {
+          "inputs": {
+            "a": 20,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 0
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 8
+          },
+          "expect": -19
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": -3
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": -7
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": -11
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": -15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": -23
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 12
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": -31
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": -4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 31
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": -12
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 23
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": -20
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": -28
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 7
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": -1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": -5
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": -9
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 26
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": -17
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": -25
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": -6
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": -10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": -14
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 12
+          },
+          "expect": -18
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 6
+          },
+          "expect": 17
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 0
+          },
+          "expect": 13
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 9
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 1
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": -3
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": -7
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": -11
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": -15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": -23
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 12
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": -31
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": -4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 31
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": -12
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 23
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": -20
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": -28
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 7
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": -1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": -5
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": -9
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 26
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": -17
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": -25
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": -6
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": -10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": -14
+        }
+      ],
+      "added_public": null,
+      "before": {
+        "TIDE": {
+          "tested": 14,
+          "revision": "f9a1b493fc8668cfe22cca1bf261361d5049240d24d91f0a26d1dce6391dd59b",
+          "actual": 34,
+          "candidates": [
+            {
+              "edit": {
+                "node": "ledger.tide:7:1",
+                "op": "-"
+              },
+              "expr": "(+ budget cost)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 14,
+          "actual": 34,
+          "candidates": [
+            {
+              "edit": {
+                "node": "ledger.py:7:12:7:25",
+                "op": "-"
+              },
+              "expr": "budget + cost"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      },
+      "after": {
+        "TIDE": {
+          "tested": 14,
+          "revision": "f9a1b493fc8668cfe22cca1bf261361d5049240d24d91f0a26d1dce6391dd59b",
+          "actual": 34,
+          "candidates": [
+            {
+              "edit": {
+                "node": "ledger.tide:7:1",
+                "op": "-"
+              },
+              "expr": "(+ budget cost)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 14,
+          "actual": 34,
+          "candidates": [
+            {
+              "edit": {
+                "node": "ledger.py:7:12:7:25",
+                "op": "-"
+              },
+              "expr": "budget + cost"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      }
+    },
+    {
+      "family": "dispatch",
+      "visible_before": [
+        {
+          "inputs": {
+            "a": 10,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 4
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 16
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 28
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 13
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 25
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 37
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 22
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 34
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 19
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 31
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 4
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 16
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 28
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 13
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 25
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 37
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 22
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 34
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 4
+          },
+          "expect": 10
+        }
+      ],
+      "added_public": null,
+      "before": {
+        "TIDE": {
+          "tested": 4,
+          "revision": "64930d7340cb7461f18748f2fea52d633c3d276e7626cd9650520191976a1f58",
+          "actual": 90,
+          "candidates": [
+            {
+              "edit": {
+                "node": "capacity.tide:2:1",
+                "op": "<="
+              },
+              "expr": "(< load cap)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 4,
+          "actual": 90,
+          "candidates": [
+            {
+              "edit": {
+                "node": "capacity.py:2:12:2:22",
+                "op": "<="
+              },
+              "expr": "load < cap"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      },
+      "after": {
+        "TIDE": {
+          "tested": 4,
+          "revision": "64930d7340cb7461f18748f2fea52d633c3d276e7626cd9650520191976a1f58",
+          "actual": 90,
+          "candidates": [
+            {
+              "edit": {
+                "node": "capacity.tide:2:1",
+                "op": "<="
+              },
+              "expr": "(< load cap)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 4,
+          "actual": 90,
+          "candidates": [
+            {
+              "edit": {
+                "node": "capacity.py:2:12:2:22",
+                "op": "<="
+              },
+              "expr": "load < cap"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      }
+    },
+    {
+      "family": "windows",
+      "visible_before": [
+        {
+          "inputs": {
+            "a": 18,
+            "b": 5
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 7,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 10
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 11
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 5
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 12
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 13
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 1
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 8
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 2
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 9
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 3
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 11
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 12
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 13
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 1
+          },
+          "expect": 28
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 11
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 9
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 3
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 10
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 11
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 12
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 6
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 13
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 1
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 2
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 9
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 10
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 11
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 5
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 12
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 13
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 1
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 8
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 2
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 9
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 3
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 11
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 12
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 13
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 1
+          },
+          "expect": 28
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 11
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 9
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 3
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 10
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 11
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 12
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 6
+          },
+          "expect": 0
+        }
+      ],
+      "added_public": null,
+      "before": {
+        "TIDE": {
+          "tested": 8,
+          "revision": "71f6f550962aa1aa149dc16be2ee9656ed3dcd2b93d132505d6b4b7b49709f52",
+          "actual": 1,
+          "candidates": [
+            {
+              "edit": {
+                "node": "windows.tide:2:1",
+                "op": "div"
+              },
+              "expr": "(mod minutes width)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 8,
+          "actual": 1,
+          "candidates": [
+            {
+              "edit": {
+                "node": "windows.py:2:12:2:27",
+                "op": "//"
+              },
+              "expr": "minutes % width"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      },
+      "after": {
+        "TIDE": {
+          "tested": 8,
+          "revision": "71f6f550962aa1aa149dc16be2ee9656ed3dcd2b93d132505d6b4b7b49709f52",
+          "actual": 1,
+          "candidates": [
+            {
+              "edit": {
+                "node": "windows.tide:2:1",
+                "op": "div"
+              },
+              "expr": "(mod minutes width)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 8,
+          "actual": 1,
+          "candidates": [
+            {
+              "edit": {
+                "node": "windows.py:2:12:2:27",
+                "op": "//"
+              },
+              "expr": "minutes % width"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      }
+    },
+    {
+      "family": "invoice",
+      "visible_before": [
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 0
+          },
+          "expect": 18
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": 242
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": 156
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 203
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": 98
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 192
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": 171
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 108
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": 140
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 124
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": 99
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 130
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 126
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 494
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": 112
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": 462
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 88
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 56
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 54
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 69
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 72
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 385
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 65
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": 360
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": 325
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 12
+          },
+          "expect": 280
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 6
+          },
+          "expect": 296
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 0
+          },
+          "expect": 30
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 288
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 1
+          },
+          "expect": 30
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 8
+          },
+          "expect": 270
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": 242
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": 156
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 203
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": 98
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 192
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": 171
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 108
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": 140
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 124
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": 99
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 130
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 126
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 494
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": 112
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": 462
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 88
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 56
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 54
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 69
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 72
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 385
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 65
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": 360
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": 325
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        }
+      ],
+      "added_public": null,
+      "before": {
+        "TIDE": {
+          "tested": 10,
+          "revision": "e2affd7d1ec0a24b2221eed84ba1910ec429d4a0d9906398d5eb66f6cc857fbf",
+          "actual": 17,
+          "candidates": [
+            {
+              "edit": {
+                "node": "prices.tide:2:1",
+                "replace": "(* units (+ rate 2))"
+              },
+              "expr": "(+ (* units rate) 2)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 10,
+          "actual": 17,
+          "candidates": [
+            {
+              "edit": {
+                "node": "prices.py:2:12:2:28",
+                "replace": "units * (rate + 2)"
+              },
+              "expr": "units * rate + 2"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      },
+      "after": {
+        "TIDE": {
+          "tested": 10,
+          "revision": "e2affd7d1ec0a24b2221eed84ba1910ec429d4a0d9906398d5eb66f6cc857fbf",
+          "actual": 17,
+          "candidates": [
+            {
+              "edit": {
+                "node": "prices.tide:2:1",
+                "replace": "(* units (+ rate 2))"
+              },
+              "expr": "(+ (* units rate) 2)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 10,
+          "actual": 17,
+          "candidates": [
+            {
+              "edit": {
+                "node": "prices.py:2:12:2:28",
+                "replace": "units * (rate + 2)"
+              },
+              "expr": "units * rate + 2"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      }
+    },
+    {
+      "family": "remainder",
+      "visible_before": [
+        {
+          "inputs": {
+            "a": 3,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 0,
+            "b": 2
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 6
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 5
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 6
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 7
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 6
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 5
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 7
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 8
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 7
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 6
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 8
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 3
+          },
+          "expect": 0
+        }
+      ],
+      "added_public": {
+        "inputs": {
+          "a": 1,
+          "b": 1
+        },
+        "expect": 0
+      },
+      "before": {
+        "TIDE": {
+          "tested": 4,
+          "revision": "7233bed6f49797f3b6d49270cf13f223c7f05bab9c747e65a18d96bb4b4c901e",
+          "actual": 5,
+          "candidates": [
+            {
+              "edit": {
+                "node": "loads.tide:2:1",
+                "op": "div"
+              },
+              "expr": "(+ units cap)"
+            },
+            {
+              "edit": {
+                "node": "loads.tide:2:1",
+                "op": "mod"
+              },
+              "expr": "(+ units cap)"
+            }
+          ],
+          "counterexample": {
+            "inputs": {
+              "a": 1,
+              "b": 1
+            },
+            "outcomes": [
+              {
+                "edit": {
+                  "node": "loads.tide:2:1",
+                  "op": "div"
+                },
+                "actual": 1
+              },
+              {
+                "edit": {
+                  "node": "loads.tide:2:1",
+                  "op": "mod"
+                },
+                "actual": 0
+              }
+            ]
+          },
+          "probes_checked": 2
+        },
+        "Python-AST": {
+          "tested": 4,
+          "actual": 5,
+          "candidates": [
+            {
+              "edit": {
+                "node": "loads.py:2:12:2:23",
+                "op": "//"
+              },
+              "expr": "units + cap"
+            },
+            {
+              "edit": {
+                "node": "loads.py:2:12:2:23",
+                "op": "%"
+              },
+              "expr": "units + cap"
+            }
+          ],
+          "counterexample": {
+            "inputs": {
+              "a": 1,
+              "b": 1
+            },
+            "outcomes": [
+              {
+                "edit": {
+                  "node": "loads.py:2:12:2:23",
+                  "op": "//"
+                },
+                "actual": 1
+              },
+              {
+                "edit": {
+                  "node": "loads.py:2:12:2:23",
+                  "op": "%"
+                },
+                "actual": 0
+              }
+            ]
+          },
+          "probes_checked": 2
+        }
+      },
+      "after": {
+        "TIDE": {
+          "tested": 4,
+          "revision": "8933b6d8c94bb7d034037d7f0bea8afb3f36dd22158079b57b64650c58f3a8ed",
+          "actual": 5,
+          "candidates": [
+            {
+              "edit": {
+                "node": "loads.tide:2:1",
+                "op": "mod"
+              },
+              "expr": "(+ units cap)"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        },
+        "Python-AST": {
+          "tested": 4,
+          "actual": 5,
+          "candidates": [
+            {
+              "edit": {
+                "node": "loads.py:2:12:2:23",
+                "op": "%"
+              },
+              "expr": "units + cap"
+            }
+          ],
+          "counterexample": null,
+          "probes_checked": 0
+        }
+      }
+    }
+  ],
+  "runs": [
+    {
+      "family": "balance",
+      "seed": 83,
+      "arm": "TIDE",
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "balance",
+      "seed": 83,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 83,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 83,
+      "arm": "TIDE",
+      "selected": {
+        "node": "capacity.tide:2:1",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 83,
+      "arm": "TIDE",
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 83,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 83,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "prices.py:2:12:2:28",
+        "replace": "units * (rate + 2)"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 83,
+      "arm": "TIDE",
+      "selected": {
+        "node": "prices.tide:2:1",
+        "replace": "(* units (+ rate 2))"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 83,
+      "arm": "TIDE",
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "mod"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 83,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "%"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "balance",
+      "seed": 137,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "balance",
+      "seed": 137,
+      "arm": "TIDE",
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 137,
+      "arm": "TIDE",
+      "selected": {
+        "node": "capacity.tide:2:1",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 137,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 137,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 137,
+      "arm": "TIDE",
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 137,
+      "arm": "TIDE",
+      "selected": {
+        "node": "prices.tide:2:1",
+        "replace": "(* units (+ rate 2))"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 137,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "prices.py:2:12:2:28",
+        "replace": "units * (rate + 2)"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 137,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "%"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 137,
+      "arm": "TIDE",
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "mod"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "balance",
+      "seed": 269,
+      "arm": "TIDE",
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "balance",
+      "seed": 269,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 269,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "dispatch",
+      "seed": 269,
+      "arm": "TIDE",
+      "selected": {
+        "node": "capacity.tide:2:1",
+        "op": "<="
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 269,
+      "arm": "TIDE",
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "windows",
+      "seed": 269,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 269,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "prices.py:2:12:2:28",
+        "replace": "units * (rate + 2)"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "invoice",
+      "seed": 269,
+      "arm": "TIDE",
+      "selected": {
+        "node": "prices.tide:2:1",
+        "replace": "(* units (+ rate 2))"
+      },
+      "passed": true,
+      "public": 3,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 269,
+      "arm": "TIDE",
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "mod"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    },
+    {
+      "family": "remainder",
+      "seed": 269,
+      "arm": "Python-AST",
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "%"
+      },
+      "passed": true,
+      "public": 4,
+      "hidden": 72,
+      "tokens": 0,
+      "model_requests": 0
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "same_outputs_in_both_languages": true,
+  "tasks": {
+    "cut": {
+      "function": "samples",
+      "public_passed": 2,
+      "hidden_passed": 1,
+      "first_failure": {
+        "inputs": {
+          "begin": 3,
+          "finish": 4,
+          "rate": 4
+        },
+        "expect": 4,
+        "actual": -4
+      },
+      "accepted_at_both": false
+    },
+    "tape": {
+      "function": "address",
+      "public_passed": 1,
+      "hidden_passed": 4,
+      "first_failure": {
+        "inputs": {
+          "bank": 0,
+          "track": 0,
+          "sector": 1
+        },
+        "expect": 1,
+        "actual": 100
+      },
+      "accepted_at_both": false
+    },
+    "page": {
+      "function": "pages",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "ticket": {
+      "function": "job",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "namespace": {
+      "function": "position",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "annotation": {
+      "function": "boundary",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "telemetry": {
+      "function": "adjust",
+      "public_passed": 1,
+      "hidden_passed": 2,
+      "first_failure": {
+        "inputs": {
+          "label": "A1",
+          "inbound": 1,
+          "outbound": 0
+        },
+        "expect": 3,
+        "actual": 1
+      },
+      "accepted_at_both": false
+    },
+    "trailer": {
+      "function": "trailer",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "thermal": {
+      "function": "balance",
+      "public_passed": 8,
+      "hidden_passed": 64,
+      "first_failure": null,
+      "accepted_at_both": true
+    },
+    "flag": {
+      "function": "count",
+      "public_passed": 3,
+      "hidden_passed": 33,
+      "first_failure": {
+        "inputs": {
+          "mode": "on",
+          "packets": 2
+        },
+        "expect": 2,
+        "actual": 0
+      },
+      "accepted_at_both": false
+    }
+  }
+}

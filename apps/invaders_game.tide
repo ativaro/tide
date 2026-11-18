@@ -1,0 +1,179 @@
+record Keys
+left:b right:b fire:b start:b pause:b
+
+record Alien
+x:i y:i row:i
+
+record Bunker
+x:i hp:i
+
+variant Phase
+ready playing paused won lost respawn
+
+record Game
+mode:{Phase} age:i ship:i direction:i aliens:*{Alien}
+shot:?&ii bomb:?&ii bunkers:*{Bunker} lives:i score:i grace:i volley:i
+
+left_edge > i
+2
+
+right_edge > i
+58
+
+ship_y > i
+19
+
+bunker_y > i
+16
+
+within x:i center:i radius:i > b
+and (not < x - center radius) (not > x + center radius)
+
+spawn_row army:*{Alien} row:i > *{Alien}
+fold list i 7 10 16 22 28 34 40 46 army acc index col
+append acc make Alien x col y (+ 4 * 2 row) row row
+
+new_game > {Game}
+make Game mode (tag Phase playing) age 0 ship 30 direction 1
+aliens (fold list i 3 0 1 2 list {Alien} 0 army index row spawn_row army row)
+shot nil &ii bomb nil &ii
+bunkers (map {Bunker} (list i 3 12 30 48) col (make Bunker x col hp 3))
+lives 3 score 0 grace 0 volley 0
+
+move_ship x:i keys:{Keys} > i
+let dx - (if get right keys 2 0) (if get left keys 2 0)
+let dest + x dx
+if < dest left_edge left_edge if > dest right_edge right_edge dest
+
+formation_period count:i > i
+if < count 4 2 if < count 11 4 6
+
+at_wall army:*{Alien} dx:i > b
+fold army false found index enemy
+or found (if > dx 0 eq get x enemy right_edge eq get x enemy left_edge)
+
+march army:*{Alien} dx:i drop:b > *{Alien}
+map {Alien} army enemy
+  (if drop with y enemy + get y enemy 1 with x enemy + get x enemy dx)
+
+advance_shot previous:?&ii fire:b ship:i > ?&ii
+case previous (if fire some pair ship - ship_y 1 nil &ii) p
+if > second p 3 some pair first p - second p 1 nil &ii
+
+aim_bomb army:*{Alien} volley:i > ?&ii
+if eq length army 0 nil &ii
+case (at army (mod + * volley 5 2 length army)) (nil &ii) picked
+let col get x picked
+let lowest fold army (get y picked) y index enemy
+if and eq get x enemy col > get y enemy y get y enemy y
+some pair col + lowest 1
+
+advance_bomb previous:?&ii army:*{Alien} age:i volley:i > ?&ii
+case previous
+(if and > length army 0 eq mod age 13 0 aim_bomb army volley nil &ii) p
+let y + second p (if eq mod age 2 0 1 0)
+if > y ship_y nil &ii some pair first p y
+
+bolt_at bolt:?&ii x:i y:i radius:i > b
+case bolt false p and eq second p y within first p x radius
+
+bunker_blocks forts:*{Bunker} bolt:?&ii > b
+fold forts false blocked index fort
+or blocked and > get hp fort 0 bolt_at bolt get x fort bunker_y 2
+
+damage_bunkers forts:*{Bunker} bolt:?&ii > *{Bunker}
+map {Bunker} forts fort
+  (if and > get hp fort 0 bolt_at bolt get x fort bunker_y 2
+    with hp fort - get hp fort 1 fort)
+
+enemy_hit enemy:{Alien} bolt:?&ii > b
+bolt_at bolt get x enemy get y enemy 1
+
+hit_points army:*{Alien} bolt:?&ii > i
+case bolt 0 p
+fold army 0 points index enemy
+if enemy_hit enemy bolt (* 10 - 3 get row enemy) points
+
+survivors army:*{Alien} bolt:?&ii > *{Alien}
+fold army list {Alien} 0 remaining index enemy
+if enemy_hit enemy bolt remaining append remaining enemy
+
+invaded army:*{Alien} > b
+fold army false landed index enemy or landed not < get y enemy ship_y
+
+battle world:{Game} keys:{Keys} > {Game}
+let age + get age world 1
+let ship move_ship (get ship world) keys
+let old_army get aliens world
+let dx get direction world
+let moving eq mod age formation_period length old_army 0
+let drop and moving at_wall old_army dx
+let army if moving march old_army dx drop old_army
+let shot advance_shot get shot world get fire keys ship
+let bomb advance_bomb get bomb world army age get volley world
+let fired and (case get bomb world true p false) (case bomb false p true)
+let old_forts get bunkers world
+let shot_blocked bunker_blocks old_forts shot
+let forts if shot_blocked damage_bunkers old_forts shot old_forts
+let bomb_blocked bunker_blocks forts bomb
+let points if shot_blocked 0 hit_points army shot
+let alive if > points 0 survivors army shot army
+let contact and (not bomb_blocked) (bolt_at bomb ship ship_y 1)
+let hurt and contact eq get grace world 0
+let lives - get lives world (if hurt 1 0)
+make Game
+mode (if or eq lives 0 invaded alive (tag Phase lost)
+      if eq length alive 0 (tag Phase won)
+      if hurt (tag Phase respawn) (tag Phase playing))
+age age ship ship direction (if drop - 0 dx dx) aliens alive
+shot (if or shot_blocked > points 0 nil &ii shot)
+bomb (if or bomb_blocked contact nil &ii bomb)
+bunkers (if bomb_blocked damage_bunkers forts bomb forts)
+lives lives score (+ get score world points)
+grace (if hurt (+ respawn_ticks shield_ticks) if > get grace world 0 - get grace world 1 0)
+volley (+ get volley world if fired 1 0)
+
+start_if_requested world:{Game} keys:{Keys} > {Game}
+if get start keys new_game world
+
+tick world:{Game} keys:{Keys} > {Game}
+match get mode world
+ready   start_if_requested world keys
+playing if get pause keys with mode world (tag Phase paused) battle world keys
+paused  if or get pause keys get start keys with mode world (tag Phase playing) world
+won     start_if_requested world keys
+lost    start_if_requested world keys
+respawn if > get grace world (+ shield_ticks 1)
+        with grace world (- get grace world 1)
+        with mode (with grace world shield_ticks) (tag Phase playing)
+end
+
+shield_ticks > i
+8
+
+respawn_ticks > i
+8
+
+example clamp_left move_ship
+{"inputs":{"x":3,"keys":{"left":true,"right":false,"fire":false,"start":false,"pause":false}},"expect":2}
+
+example descend_together march
+{"inputs":{"army":[{"x":57,"y":4,"row":0},{"x":58,"y":8,"row":2}],"dx":1,"drop":true},"expect":[{"x":57,"y":5,"row":0},{"x":58,"y":9,"row":2}]}
+
+example bottom_fires aim_bomb
+{"inputs":{"army":[{"x":10,"y":4,"row":0},{"x":16,"y":4,"row":0},{"x":10,"y":8,"row":2}],"volley":0},"expect":{"some":[10,9]}}
+
+example shield_wears damage_bunkers
+{"inputs":{"forts":[{"x":12,"hp":1},{"x":30,"hp":3}],"bolt":{"some":[11,16]}},"expect":[{"x":12,"hp":0},{"x":30,"hp":3}]}
+
+example top_scores hit_points
+{"inputs":{"army":[{"x":14,"y":5,"row":0}],"bolt":{"some":[15,5]}},"expect":30}
+
+example last_alien tick
+{"inputs":{"world":{"mode":"playing","age":0,"ship":30,"direction":1,"aliens":[{"x":20,"y":5,"row":0}],"shot":{"some":[20,6]},"bomb":{"none":true},"bunkers":[],"lives":1,"score":50,"grace":0,"volley":0},"keys":{"left":false,"right":false,"fire":false,"start":false,"pause":false}},"expect":{"mode":"won","age":1,"ship":30,"direction":1,"aliens":[],"shot":{"none":true},"bomb":{"none":true},"bunkers":[],"lives":1,"score":80,"grace":0,"volley":0}}
+
+example empty_formation aim_bomb
+{"inputs":{"army":[],"volley":0},"expect":{"none":true}}
+
+example surviving_hit tick
+{"inputs":{"world":{"mode":"playing","age":1,"ship":30,"direction":1,"aliens":[{"x":10,"y":4,"row":0}],"shot":{"none":true},"bomb":{"some":[30,18]},"bunkers":[],"lives":3,"score":0,"grace":0,"volley":0},"keys":{"left":false,"right":false,"fire":false,"start":false,"pause":false}},"expect":{"mode":"respawn","age":2,"ship":30,"direction":1,"aliens":[{"x":11,"y":4,"row":0}],"shot":{"none":true},"bomb":{"none":true},"bunkers":[],"lives":2,"score":0,"grace":16,"volley":0}}

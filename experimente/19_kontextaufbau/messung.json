@@ -1,0 +1,1410 @@
+{
+  "machine": "x86_64",
+  "python": "3.14.10",
+  "plan_sha256": "2f3784fea380a5b502b48edbcff3b20d3d6e937cf21da5ceeb6555994c6bc94e",
+  "supplement_sha256": "2809b6d3216aa0435dfa2d77f4b727405fa29a41f415a629d3227c40e9c61530",
+  "original_tide_sources": {
+    "function_body.tide": "use source_layout\n\nrecord Span\nheader:i body:i stop:i\n\nrecord Scan\noffset:i at_header:b active:b span:{Span}\n\nvalid_name name:t > b\nlet letters \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\nlet allowed concat letters \"0123456789_\"\nand (> text_len name 0) (fold (positions text_len name) true ok pos unused\n  and ok (case (text_find (if eq pos 1 letters allowed) (text_slice name (- pos 1) pos) 0) false idx true))\n\nscan_line source:t name:t cursor:{Scan} line:t > {Scan}\nif (case (text_find line \"\\r\" 0) false idx true) fail \"expected_lf_or_crlf\"\nlet offset get offset cursor\nlet stop + offset text_len line\nlet next if eq stop text_len source stop (+ stop (if text_eq (text_slice source stop (+ stop 2)) \"\\r\\n\" 2 1))\nlet blank indent_only line\nlet found and (get at_header cursor) (function_header line name)\nlet span get span cursor\nif and found (not < get header span 0) fail \"duplicate_function\"\nlet inside and (get active cursor) (not blank)\nlet updated if found (make Span header offset body next stop next)\n            if inside (with stop span stop) span\nmake Scan offset next at_header blank active (or found inside) span updated\n\nlocate source:t name:t > {Span}\nif or (not valid_name name) (fold (list t 5 \"rule\" \"record\" \"variant\" \"example\" \"use\") false acc row kw or acc text_eq kw name)\n   fail \"expected_function_name\"\nif other_line_ending source fail \"expected_lf_or_crlf\"\nlet initial make Scan offset 0 at_header true active false span (make Span header -1 body -1 stop -1)\nlet result get span (fold (lines source) initial cursor row line scan_line source name cursor line)\nif < get header result 0 fail \"function_not_found\"\nif not > get stop result get body result fail \"missing_function_body\"\nresult\n\npacket source:t name:t task:t > t\nlet span locate source name\nlet definition text_slice source (get header span) (get stop span)\nconcat task (concat \"\\n\" (concat definition \"\\nReturn only the new TIDE body as one prefix expression on one line.\"))\n\nmain source:r name:t task:t > t\npacket (read source) name task\n\none_line answer:t > t\nlet n text_len answer\nlet cut if text_eq (text_slice answer (- n 2) n) \"\\r\\n\" (- n 2)\n        if text_eq (text_slice answer (- n 1) n) \"\\n\" (- n 1) n\nlet body text_slice answer 0 cut\nlet multiline or (other_line_ending body) (or (case (text_find body \"\\n\" 0) false idx true) (case (text_find body \"\\r\" 0) false idx true))\nif or multiline (indent_only body) fail \"expected_one_expression_line\" body\n\nreplace_body source:t name:t answer:t > t\nlet span locate source name\nconcat (text_slice source 0 (get body span))\n  (concat (one_line answer) (text_slice source (get stop span) (text_len source)))\n\ncandidate source:r name:t answer:r > t\nreplace_body (read source) name (read answer)\n\nrecord SourceFile\nfile:t source:t\n\nrecord Form\nname:t file:t body:t\n\nrecord Change\nname:t body:t\n\nrecord RepairView\ninstruction:t observation:t files:*{SourceFile}\n\nowner forms:*{Form} name:t > t\nlet found fold forms (nil t) previous row form\n  if (text_eq name (get name form))\n    (case previous (some get file form) duplicate (fail \"ambiguous_function\")) previous\nneed found \"unknown_function\" 0\n\npatched_file files:*{SourceFile} path:t name:t body:t > *{SourceFile}\nlet count fold files 0 n row unit + n (if text_eq path (get file unit) 1 0)\nif not eq count 1 fail \"expected_one_source_file\"\nfold files (list {SourceFile} 0) updated row unit\n  append updated (if text_eq path (get file unit)\n    (with source unit (replace_body (get source unit) name body)) unit)\n\ncandidate_files files:*{SourceFile} forms:*{Form} edits:*{Change} > *{SourceFile}\nif eq length edits 0 fail \"expected_edits\"\nfold edits files updated row edit\n  let name get name edit\n  let count fold edits 0 n index item + n (if text_eq (get name item) name 1 0)\n  if not eq count 1 fail \"duplicate_edit\"\n  patched_file updated (owner forms name) name (get body edit)\n\nrepair_view observation:t files:*{SourceFile} forms:*{Form} > {RepairView}\nlet expanded fold forms files updated row form\n  patched_file updated (get file form) (get name form) (get body form)\nmake RepairView\n  instruction \"The reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\"\n  observation observation files expanded\n\nrecord ParseIssue\nfile:t code:t message:t line:i column:i\n\nclosing_retry files:*{SourceFile} edits:*{Change} diagnostic:{ParseIssue} > ?*{Change}\nif not (and (text_eq (get code diagnostic) \"E_SYNTAX\") (text_eq (get message diagnostic) \"Missing operand\")) (nil *{Change})\nlet line get line diagnostic\nlet column get column diagnostic\nif or (< line 2) (< column 2) (nil *{Change})\nlet file_text fold files (nil t) found row unit\n  if (text_eq (get file unit) (get file diagnostic))\n    (case found (some (get source unit)) duplicate (fail \"duplicate_source_file\")) found\ncase file_text (nil *{Change}) source\nlet rows lines source\ncase (at rows (- line 1)) (nil *{Change}) body\nlet header need (at rows (- line 2)) \"missing_header\" line\nif not (case (at rows (- line 3)) true prev (indent_only prev)) (nil *{Change})\nlet offset - column 1\nlet size text_len body\nif or (> offset size) (gap (text_slice body (- offset 1) offset)) (nil *{Change})\nlet tail text_slice body offset size\nif not (indent_only tail) (nil *{Change})\nlet target fold edits (nil t) found row edit\n  if (and (function_header header (get name edit)) (text_eq body (one_line (get body edit))))\n    (case found (some (get name edit)) duplicate (fail \"duplicate_edit\")) found\ncase target (nil *{Change}) name\nlet closed concat (text_slice body 0 offset) (concat \")\" tail)\nsome (fold edits (list {Change} 0) result row edit\n  append result (if (text_eq (get name edit) name) (with body edit closed) edit))\n\nexample close_at_compiler_column closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"other.tide\",\"source\":\"h > i\\n1\"},{\"file\":\"lib.tide\",\"source\":\"use a\\r\\n\\r\\nf > t\\r\\n(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\\r\\ng > i\\r\\n12\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\"},{\"name\":\"g\",\"body\":\"12\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":4,\"column\":20}},\"expect\":{\"some\":[{\"name\":\"f\",\"body\":\"(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\") \\t\"},{\"name\":\"g\",\"body\":\"12\"}]}}\n\nexample leave_other_diagnostic closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"other.tide\",\"source\":\"h > i\\n1\"},{\"file\":\"lib.tide\",\"source\":\"use a\\r\\n\\r\\nf > t\\r\\n(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\\r\\ng > i\\r\\n12\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\"},{\"name\":\"g\",\"body\":\"12\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_TYPE\",\"message\":\"Missing operand\",\"line\":4,\"column\":20}},\"expect\":{\"none\":true}}\n\nexample require_corresponding_edit closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"other.tide\",\"source\":\"h > i\\n1\"},{\"file\":\"lib.tide\",\"source\":\"use a\\r\\n\\r\\nf > t\\r\\n(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\\r\\ng > i\\r\\n12\"}],\"edits\":[{\"name\":\"f\",\"body\":\"1\"},{\"name\":\"g\",\"body\":\"12\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":4,\"column\":20}},\"expect\":{\"none\":true}}\n\nexample require_corresponding_file closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"other.tide\",\"source\":\"h > i\\n1\"},{\"file\":\"lib.tide\",\"source\":\"use a\\r\\n\\r\\nf > t\\r\\n(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\\r\\ng > i\\r\\n12\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\"},{\"name\":\"g\",\"body\":\"12\"}],\"diagnostic\":{\"file\":\"missing.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":4,\"column\":20}},\"expect\":{\"none\":true}}\n\nexample require_end_position closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"other.tide\",\"source\":\"h > i\\n1\"},{\"file\":\"lib.tide\",\"source\":\"use a\\r\\n\\r\\nf > t\\r\\n(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\\r\\ng > i\\r\\n12\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(concat \\\"猫)\\\" \\\"(\\\\\\\"x\\\" \\t\\r\\n\"},{\"name\":\"g\",\"body\":\"12\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":4,\"column\":4}},\"expect\":{\"none\":true}}\n\nexample skip_nonheader closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"lib.tide\",\"source\":\"f > i\\n+ 1\\nf 1\\n(+ 2 3\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(+ 2 3\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":4,\"column\":7}},\"expect\":{\"none\":true}}\n\nexample first_definition_retry closing_retry\n{\"inputs\":{\"files\":[{\"file\":\"lib.tide\",\"source\":\"f > i\\n(+ 1 2\"}],\"edits\":[{\"name\":\"f\",\"body\":\"(+ 1 2\"}],\"diagnostic\":{\"file\":\"lib.tide\",\"code\":\"E_SYNTAX\",\"message\":\"Missing operand\",\"line\":2,\"column\":7}},\"expect\":{\"some\":[{\"name\":\"f\",\"body\":\"(+ 1 2)\"}]}}\n\nexample two_modules candidate_files\n{\"inputs\":{\"files\":[{\"file\":\"a.tide\",\"source\":\"f > i\\r\\n1\\r\\n\\r\\nother > i\\r\\n4\\r\\n\"},{\"file\":\"b.tide\",\"source\":\"g > i\\n2\"}],\"forms\":[{\"name\":\"f\",\"file\":\"a.tide\",\"body\":\"1\"},{\"name\":\"g\",\"file\":\"b.tide\",\"body\":\"2\"}],\"edits\":[{\"name\":\"g\",\"body\":\"8\"},{\"name\":\"f\",\"body\":\"(+ 1 2)\"}]},\"expect\":[{\"file\":\"a.tide\",\"source\":\"f > i\\r\\n(+ 1 2)\\r\\n\\r\\nother > i\\r\\n4\\r\\n\"},{\"file\":\"b.tide\",\"source\":\"g > i\\n8\"}]}\n\nexample repeated_target candidate_files\n{\"inputs\":{\"files\":[],\"forms\":[],\"edits\":[{\"name\":\"f\",\"body\":\"1\"},{\"name\":\"f\",\"body\":\"2\"}]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"duplicate_edit\"}}\n\nexample unknown_target candidate_files\n{\"inputs\":{\"files\":[],\"forms\":[],\"edits\":[{\"name\":\"missing\",\"body\":\"1\"}]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"unknown_function\"}}\n\nexample ambiguous_owner candidate_files\n{\"inputs\":{\"files\":[],\"forms\":[{\"name\":\"f\",\"file\":\"a.tide\",\"body\":\"1\"},{\"name\":\"f\",\"file\":\"b.tide\",\"body\":\"2\"}],\"edits\":[{\"name\":\"f\",\"body\":\"3\"}]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"ambiguous_function\"}}\n\nexample invalid_second_edit candidate_files\n{\"inputs\":{\"files\":[{\"file\":\"lib.tide\",\"source\":\"f > i\\n0\\n\\ng > i\\n0\\n\"}],\"forms\":[{\"name\":\"f\",\"file\":\"lib.tide\",\"body\":\"0\"},{\"name\":\"g\",\"file\":\"lib.tide\",\"body\":\"0\"}],\"edits\":[{\"name\":\"f\",\"body\":\"1\"},{\"name\":\"g\",\"body\":\"2\\n\\nextra > i\\n3\"}]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"expected_one_expression_line\"}}\n\nexample local_context packet\n{\"inputs\":{\"source\":\"longer x:i > i\\nx\\n\\nlong x:i > i\\n+ x 3\\n\\nmain > i\\nlong 4\\n\",\"name\":\"long\",\"task\":\"double the input\"},\"expect\":\"double the input\\nlong x:i > i\\n+ x 3\\nReturn only the new TIDE body as one prefix expression on one line.\"}\n\nexample preserve_layout replace_body\n{\"inputs\":{\"source\":\"record Test\\r\\nvalue:i\\r\\n\\t \\r\\n  f\\tx:i > i\\r\\nlet y 3\\r\\n+ x y\\r\\n \\t\\r\\nmain > i\\r\\nf 2\",\"name\":\"f\",\"answer\":\"* x 2\\r\\n\"},\"expect\":\"record Test\\r\\nvalue:i\\r\\n\\t \\r\\n  f\\tx:i > i\\r\\n* x 2\\r\\n \\t\\r\\nmain > i\\r\\nf 2\"}\n\nexample last_body replace_body\n{\"inputs\":{\"source\":\"f > i\\n1\",\"name\":\"f\",\"answer\":\"2\"},\"expect\":\"f > i\\n2\"}\n\nexample declaration_as_answer one_line\n{\"inputs\":{\"answer\":\"3\\n\\nother > i\\n4\"},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"expected_one_expression_line\"}}\n\nexample empty_answer one_line\n{\"inputs\":{\"answer\":\" \\t\\n\"},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"expected_one_expression_line\"}}\n\nexample rule_is_not_function locate\n{\"inputs\":{\"source\":\"rule f v:i > i\\nstate n:i=0\\nelse -> n=keep\\nout n\",\"name\":\"f\"},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"function_not_found\"}}\n\nexample unicode_blank replace_body\n{\"inputs\":{\"source\":\"f > i\\n1\\n\\u00a0\\nmain > i\\nf\\n\",\"name\":\"f\",\"answer\":\"2\"},\"expect\":\"f > i\\n2\\n\\u00a0\\nmain > i\\nf\\n\"}\n\nexample bare_cr replace_body\n{\"inputs\":{\"source\":\"f > i\\n1\\r\\rmain > i\\nf\\n\",\"name\":\"f\",\"answer\":\"2\"},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"expected_lf_or_crlf\"}}\n\nexample invalid_target locate\n{\"inputs\":{\"source\":\"record Point\\nx:i\\n\\nmain > i\\n1\",\"name\":\"record Point\"},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"expected_function_name\"}}\n",
+    "project_context.tide": "use source_layout\n\nrecord Definition\nname:t calls:*t\n\nrecord Unit\nfile:t source:t\n\nrecord View\noffset:i header:b include:b found:*t source:t\n\nrecord Bundle\nfiles:*{Unit} found:*t\n\nrecord Packet\nobservation:t files:*{Unit}\n\ncontains_name names:*t target:t > b\nfold names false hit row name or hit text_eq name target\n\nenqueue names:*t target:t > *t\nif contains_name names target names append names target\n\ncallees graph:*{Definition} target:t > *t\nlet edges fold graph (nil *t) result row node\n  if text_eq (get name node) target (some get calls node) result\nneed edges \"definition_missing_from_graph\" 0\n\nreachable graph:*{Definition} root:t > *t\nlet queue fold graph (list t 1 root) names row unused\n  case (at names (- row 1)) names target\n  fold (callees graph target) names acc index child enqueue acc child\nif > length queue length graph fail \"incomplete_graph\" queue\n\nrecord ApiSignature\nname:t kind:t signature:t\n\nunused_signatures signatures:*{ApiSignature} reachable_names:*t > *t\nfold signatures (list t 0) acc row entry\n  if (and (text_eq (get kind entry) \"function\") (not (contains_name reachable_names (get name entry))))\n     (append acc (get signature entry)) acc\n\nselected_name header:t wanted:*t > ?t\nlet signature if (function_header header \"rule\")\n  (text_slice header (+ 4 (need (text_find header \"rule\" 0) \"invalid_header\" 0)) (text_len header)) header\nfold wanted (nil t) previous row name\n  case previous (if function_header signature name (some name) (nil t)) match_name previous\n\nvisit_line text:t wanted:*t view:{View} line:t > {View}\nif (case (text_find line \"\\r\" 0) false idx true) fail \"expected_lf_or_crlf\"\nlet start get offset view\nlet stop + start text_len line\nlet next if eq stop (text_len text) stop (+ stop (if text_eq (text_slice text stop (+ stop 2)) \"\\r\\n\" 2 1))\nlet blank indent_only line\nlet header and (get header view) (not blank)\nlet name if header (selected_name line wanted) (nil t)\nlet include if blank false\n  if header (case name (or (function_header line \"record\") (function_header line \"variant\")) selected true)\n  get include view\nlet found case name (get found view) selected\n  if (contains_name (get found view) selected) fail \"duplicate_definition_source\" (append (get found view) selected)\nlet output get source view\nlet separator if (and header (> (text_len output) 0)) \"\\n\" \"\"\nmake View offset next header blank include include found found\n  source (if include (concat output (concat separator (text_slice text start next))) output)\n\ncollect_file bundle:{Bundle} unit:{Unit} wanted:*t > {Bundle}\nlet text get source unit\nif other_line_ending text fail \"expected_lf_or_crlf\"\nlet initial make View offset 0 header true include false found (get found bundle) source \"\"\nlet view fold (lines text) initial acc row line visit_line text wanted acc line\nlet excerpt get source view\nmake Bundle files (if text_eq excerpt \"\" (get files bundle)\n  (append (get files bundle) (with source unit excerpt))) found (get found view)\n\nmain root:t observation:t graph:*{Definition} units:*{Unit} > {Packet}\nlet wanted reachable graph root\nlet bundle fold units (make Bundle files (list {Unit} 0) found (list t 0)) acc row unit collect_file acc unit wanted\nif not eq (length get found bundle) (length wanted) fail \"definition_missing_from_source\"\nmake Packet observation observation files (get files bundle)\n\nexample shared_leaf reachable\n{\"inputs\":{\"root\":\"top\",\"graph\":[{\"name\":\"leaf\",\"calls\":[]},{\"name\":\"other\",\"calls\":[]},{\"name\":\"aa\",\"calls\":[\"leaf\"]},{\"name\":\"bb\",\"calls\":[\"leaf\"]},{\"name\":\"top\",\"calls\":[\"aa\",\"bb\"]}]},\"expect\":[\"top\",\"aa\",\"bb\",\"leaf\"]}\n\nexample imported_api unused_signatures\n{\"inputs\":{\"reachable_names\":[\"main\"],\"signatures\":[{\"name\":\"main\",\"kind\":\"function\",\"signature\":\"main > i\"},{\"name\":\"tick\",\"kind\":\"rule\",\"signature\":\"rule tick\"},{\"name\":\"double\",\"kind\":\"function\",\"signature\":\"double x:i > i\"}]},\"expect\":[\"double x:i > i\"]}\n\nexample crosses_files main\n{\"inputs\":{\"root\":\"app\",\"observation\":\"expected 2, got 3\",\"graph\":[{\"name\":\"helper\",\"calls\":[]},{\"name\":\"app\",\"calls\":[\"helper\"]},{\"name\":\"extra\",\"calls\":[]}],\"units\":[{\"file\":\"entry.tide\",\"source\":\"use lib\\n\\napp v:i > i\\nhelper v\\n\\nexample test app\\n{}\"},{\"file\":\"lib.tide\",\"source\":\"record Box\\r\\nv:i\\r\\n\\r\\nextra > i\\r\\n0\\r\\n\\r\\n\\trule\\thelper v:i > i\\r\\nstate n:i=0\\r\\nelse -> n=set v\\r\\nout n\\r\\n\"}]},\"expect\":{\"observation\":\"expected 2, got 3\",\"files\":[{\"file\":\"entry.tide\",\"source\":\"app v:i > i\\nhelper v\\n\"},{\"file\":\"lib.tide\",\"source\":\"record Box\\r\\nv:i\\r\\n\\n\\trule\\thelper v:i > i\\r\\nstate n:i=0\\r\\nelse -> n=set v\\r\\nout n\\r\\n\"}]}}\n\nexample source_missing main\n{\"inputs\":{\"root\":\"app\",\"observation\":\"\",\"graph\":[{\"name\":\"app\",\"calls\":[]}],\"units\":[]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"definition_missing_from_source\"}}\n\nexample unknown_root main\n{\"inputs\":{\"root\":\"other\",\"observation\":\"\",\"graph\":[{\"name\":\"app\",\"calls\":[]}],\"units\":[]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"definition_missing_from_graph\"}}\n",
+    "source_layout.tide": "gap c:t > b\nand (not text_eq c \"\") (case (text_find \" \\t\\u001f\\u00a0\\u1680\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000\" c 0) false idx true)\n\npositions n:i > *t\nlet marks fold (list i 18 131072 65536 32768 16384 8192 4096 2048 1024 512 256 128 64 32 16 8 4 2 1) \"\" acc row bit\nconcat (concat acc acc) (if eq mod div n bit 2 1 \"\\n\" \"\")\nlines marks\n\nindent_only s:t > b\nlet n text_len s\nif eq n 0 true\nif not and (gap text_slice s 0 1) (gap text_slice s (- n 1) n) false\nfold (positions n) true ok pos unused\nand ok (gap text_slice s (- pos 1) pos)\n\nother_line_ending s:t > b\nfold (list t 8 \"\\u000b\" \"\\u000c\" \"\\u001c\" \"\\u001d\" \"\\u001e\" \"\\u0085\" \"\\u2028\" \"\\u2029\") false acc row sep\nor acc (case (text_find s sep 0) false idx true)\n\nfunction_header line:t name:t > b\ncase (text_find line name 0) false pos\nlet stop + pos text_len name\nand (indent_only text_slice line 0 pos) (gap text_slice line stop (+ stop 1))\n"
+  },
+  "current_tide_sha256": {
+    "function_body.tide": "fc8dbc983e3c6006ed223ab75f612938e47339e648ee75f711e4f158a48fdd90",
+    "grouped_view.tide": "f359913c31b298214eefcfea69907ed2eb68c4d28ce1060e69d3018a783bc4f7",
+    "grouping.tide": "0a2ccd9b86945632175c67b39bbb942977eba629411bf49f7517ab1d0ad4ee65",
+    "project_context.tide": "ab4ac1235f913fecabcd645e309fafe817c71fbeb5ca5abec0dad2e286532f8f",
+    "source_layout.tide": "0af0d45c0557250b6ddb75c953c20f53038c8a457263d0d138aa75da78c9a7d0"
+  },
+  "fixtures": {
+    "journal": {
+      "entry": "summary.tide",
+      "input": {
+        "root": "main",
+        "observation": "{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}",
+        "graph": [
+          {
+            "name": "journal",
+            "calls": [
+              "advance"
+            ]
+          },
+          {
+            "name": "main",
+            "calls": [
+              "journal"
+            ]
+          },
+          {
+            "name": "advance",
+            "calls": [
+              "earlier"
+            ]
+          },
+          {
+            "name": "earlier",
+            "calls": []
+          }
+        ],
+        "units": [
+          {
+            "file": "summary.tide",
+            "source": "use streak\n\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\nlet empty make Progress prior (nil {Event}) breaks 0 current 0 longest 0\nlet state_value fold events empty totals row item advance totals item\nmake Report breaks (get breaks state_value) longest (get current state_value)\n\nmain batches:**{Event} > *{Report}\nfold batches (list {Report} 0) reports row batch append reports (journal batch)\n"
+          },
+          {
+            "file": "streak.tide",
+            "source": "use sequence\n\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\nlet backward case (get prior state_value) false previous (earlier incoming previous)\nlet count if backward 1 (+ (get current state_value) 1)\nlet peak get longest state_value\nmake Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0))\n  current count longest (if (> count peak) count peak)\n"
+          },
+          {
+            "file": "sequence.tide",
+            "source": "use event\n\nearlier incoming:{Event} prior:{Event} > b\nor (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (not (> (get serial incoming) (get serial prior))))))\n"
+          },
+          {
+            "file": "event.tide",
+            "source": "record Event\nminute:i priority:i serial:i\n"
+          }
+        ]
+      },
+      "revision": "1e0eaaf59b1db02b35ae919dfc0c7ab9f06b30cfede16c493c74e475db4bf406",
+      "grouped_json_sha256": "91ee21f68f0387f9c4a7052c2e9bc3bede5a8bff705ae6f492f880532da64e35"
+    },
+    "allocation": {
+      "entry": "summary.tide",
+      "input": {
+        "root": "main",
+        "observation": "{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}",
+        "graph": [
+          {
+            "name": "picks",
+            "calls": [
+              "nearby",
+              "urgent"
+            ]
+          },
+          {
+            "name": "main",
+            "calls": [
+              "picks"
+            ]
+          },
+          {
+            "name": "prefer_min",
+            "calls": []
+          },
+          {
+            "name": "prefer_max",
+            "calls": []
+          },
+          {
+            "name": "urgent",
+            "calls": [
+              "initial"
+            ]
+          },
+          {
+            "name": "initial",
+            "calls": []
+          },
+          {
+            "name": "nearby",
+            "calls": [
+              "initial"
+            ]
+          }
+        ],
+        "units": [
+          {
+            "file": "summary.tide",
+            "source": "use ordering\n\nuse urgent\n\nuse nearby\n\nrecord Pick\nurgent_id:i nearby_id:i\n\npicks jobs:*{Job} > {Pick}\nmake Pick urgent_id (urgent jobs) nearby_id (nearby jobs)\n\nmain batches:**{Job} > *{Pick}\nfold batches (list {Pick} 0) acc row batch append acc (picks batch)\n"
+          },
+          {
+            "file": "ordering.tide",
+            "source": "prefer_min candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (< candidate current)\n\nprefer_max candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (> candidate current)\n\nexample earlier_min prefer_min\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":false},\"expect\":true}\n\nexample later_min prefer_min\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":true},\"expect\":false}\n\nexample equal_keep prefer_min\n{\"inputs\":{\"candidate\":0,\"current\":0,\"on_equal\":false},\"expect\":false}\n\nexample equal_take prefer_min\n{\"inputs\":{\"candidate\":-5,\"current\":-5,\"on_equal\":true},\"expect\":true}\n\nexample larger_max prefer_max\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":false},\"expect\":true}\n\nexample smaller_max prefer_max\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":true},\"expect\":false}\n\nexample equal_first_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":false},\"expect\":false}\n\nexample equal_second_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":true},\"expect\":true}\n"
+          },
+          {
+            "file": "urgent.tide",
+            "source": "use jobs\n\nurgent jobs:*{Job} > i\nlet chosen fold jobs (initial jobs) best row candidate\n  if (> (get severity candidate) (get severity best)) candidate best\nget id chosen\n"
+          },
+          {
+            "file": "jobs.tide",
+            "source": "record Job\nid:i severity:i travel:i capacity:i\n\ninitial jobs:*{Job} > {Job}\ncase (at jobs 0) (make Job id 0 severity 0 travel 0 capacity 0) head head\n"
+          },
+          {
+            "file": "nearby.tide",
+            "source": "use jobs\n\nnearby jobs:*{Job} > i\nlet chosen fold jobs (initial jobs) best row candidate\n  if (< (get travel candidate) (get travel best)) candidate best\nget id chosen\n"
+          }
+        ]
+      },
+      "revision": "f123302f271b0f7516a27b6821a1be759ec81eef614c71ab26aaa0367b866c6e",
+      "grouped_json_sha256": "69f10eca468b77b9fc6dd35428a1549c8dbc5a7506b8dc0e7bfdd647ecc9c772"
+    },
+    "report": {
+      "entry": "report.tide",
+      "input": {
+        "root": "main",
+        "observation": "sensor observations",
+        "graph": [
+          {
+            "name": "main",
+            "calls": [
+              "higher",
+              "reading"
+            ]
+          },
+          {
+            "name": "reading",
+            "calls": []
+          },
+          {
+            "name": "higher",
+            "calls": []
+          }
+        ],
+        "units": [
+          {
+            "file": "report.tide",
+            "source": "use readings\n\nrecord Summary\nabove:i peak:?i\n\nmain input:r limit:i > {Summary}\nfold lines read input make Summary above 0 peak nil i result row line\nlet value reading line row\nmake Summary\nabove (if > value limit + get above result 1 get above result)\npeak (higher value get peak result)\n\nexample threshold main\n{\"inputs\":{\"input\":\"80\\n81\\n98\\n\",\"limit\":80},\"expect\":{\"above\":2,\"peak\":{\"some\":98}}}\n\nexample empty main\n{\"inputs\":{\"input\":\"\",\"limit\":80},\"expect\":{\"above\":0,\"peak\":{\"none\":true}}}\n\nexample invalid main\n{\"inputs\":{\"input\":\"80\\nx\",\"limit\":80},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"invalid_integer\",\"input_line\":2}}\n"
+          },
+          {
+            "file": "readings.tide",
+            "source": "reading line:t row:i > i\nneed int line \"invalid_integer\" row\n\nhigher value:i previous:?i > ?i\nsome case previous value old if > value old value old\n"
+          }
+        ]
+      },
+      "revision": "131727ab1e5c5f174677fa99aa70a0b24710ae0721d3ec0ba360476ec7a328f6",
+      "grouped_json_sha256": "a9d4d7aa574f61ef82a2ea994b50a911903a261ed34571af337d4c4ff35c914b"
+    },
+    "nano": {
+      "entry": "nano.tide",
+      "input": {
+        "root": "step",
+        "observation": "check",
+        "graph": [
+          {
+            "name": "main",
+            "calls": []
+          },
+          {
+            "name": "line_begin",
+            "calls": []
+          },
+          {
+            "name": "line_limit",
+            "calls": []
+          },
+          {
+            "name": "previous_pos",
+            "calls": []
+          },
+          {
+            "name": "next_pos",
+            "calls": []
+          },
+          {
+            "name": "moved",
+            "calls": []
+          },
+          {
+            "name": "vertical",
+            "calls": [
+              "line_begin",
+              "line_limit",
+              "moved",
+              "next_pos",
+              "previous_pos"
+            ]
+          },
+          {
+            "name": "splice",
+            "calls": []
+          },
+          {
+            "name": "insert_text",
+            "calls": [
+              "splice"
+            ]
+          },
+          {
+            "name": "cut_line",
+            "calls": [
+              "line_begin",
+              "line_limit",
+              "next_pos",
+              "splice"
+            ]
+          },
+          {
+            "name": "stay",
+            "calls": []
+          },
+          {
+            "name": "shortcut",
+            "calls": [
+              "cut_line",
+              "insert_text",
+              "stay"
+            ]
+          },
+          {
+            "name": "edit_key",
+            "calls": [
+              "insert_text",
+              "line_begin",
+              "line_limit",
+              "moved",
+              "next_pos",
+              "previous_pos",
+              "shortcut",
+              "splice",
+              "stay",
+              "vertical"
+            ]
+          },
+          {
+            "name": "confirm_key",
+            "calls": [
+              "stay"
+            ]
+          },
+          {
+            "name": "step",
+            "calls": [
+              "confirm_key",
+              "edit_key"
+            ]
+          },
+          {
+            "name": "view",
+            "calls": []
+          }
+        ],
+        "units": [
+          {
+            "file": "nano.tide",
+            "source": "variant Input\ncharacter control left right up down home_key end_key backspace delete_key enter_key escape stored io_error\n\nvariant Effect\nidle store finish\n\nvariant Mode\nwriting confirm_exit\n\nrecord Buffer\nbody:t caret:i goal:i clip:t eol:t dirty:b mode:{Mode} notice:t\n\nrecord View\nbody:t caret:i title:t status:t help:t\n\nmain body:t > {Buffer}\nlet eol case (text_find body \"\\n\" 0) \"\\n\" lf\n    if text_eq (text_slice body (- lf 1) lf) \"\\r\" \"\\r\\n\" \"\\n\"\nmake Buffer body body caret 0 goal -1 clip \"\" eol eol dirty false mode (tag Mode writing) notice \"\"\n\nline_begin body:t pos:i > i\ncase (text_rfind body \"\\n\" pos) 0 lf (+ lf 1)\n\nline_limit body:t pos:i > i\ncase (text_find body \"\\n\" pos) (text_len body) lf\nif text_eq (text_slice body (- lf 1) lf) \"\\r\" (- lf 1) lf\n\nprevious_pos body:t pos:i > i\nif < pos 1 0\nif text_eq (text_slice body (- pos 2) pos) \"\\r\\n\" (- pos 2) (- pos 1)\n\nnext_pos body:t pos:i > i\nif eq pos (text_len body) pos\nif text_eq (text_slice body pos (+ pos 2)) \"\\r\\n\" (+ pos 2) (+ pos 1)\n\nmoved world:{Buffer} dest:i goal:i > {Buffer}\nmake Buffer body (get body world) caret dest goal goal clip (get clip world) eol (get eol world)\ndirty (get dirty world) mode (tag Mode writing) notice \"\"\n\nvertical world:{Buffer} upwards:b > {Buffer}\nlet body get body world\nlet pos get caret world\nlet begin line_begin body pos\nlet limit line_limit body pos\nlet goal if < get goal world 0 (- pos begin) get goal world\nif or (and upwards eq begin 0) (and not upwards eq limit text_len body) world\nlet row if upwards (previous_pos body begin) (next_pos body limit)\nlet target + (line_begin body row) goal\nlet last line_limit body row\nmoved world (if > target last last target) goal\n\nsplice world:{Buffer} lo:i hi:i value:t clip:t > {Buffer}\nif and eq lo hi text_eq value \"\" world\nlet body get body world\nlet result concat (text_slice body 0 lo) (concat value (text_slice body hi (text_len body)))\nmake Buffer body result caret (+ lo text_len value) goal -1 clip clip eol (get eol world)\ndirty true mode (tag Mode writing) notice \"\"\n\ninsert_text world:{Buffer} value:t > {Buffer}\nsplice world (get caret world) (get caret world) value (get clip world)\n\ncut_line world:{Buffer} > {Buffer}\nlet body get body world\nlet pos get caret world\nlet lo line_begin body pos\nlet hi next_pos body (line_limit body pos)\nsplice world lo hi \"\" (text_slice body lo hi)\n\nstay world:{Buffer} > &{Buffer}{Effect}\npair world (tag Effect idle)\n\nshortcut world:{Buffer} value:t > &{Buffer}{Effect}\nif text_eq value \"o\" (pair world (tag Effect store))\nif text_eq value \"x\"\n   (if get dirty world (stay with mode world (tag Mode confirm_exit)) (pair world (tag Effect finish)))\nif text_eq value \"k\" (stay cut_line world)\nif text_eq value \"u\" (stay insert_text world get clip world)\nstay world\n\nedit_key world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}\nlet body get body world\nlet pos get caret world\nmatch key\ncharacter  stay insert_text world value\nenter_key  stay insert_text world get eol world\nbackspace  stay splice world (previous_pos body pos) pos \"\" (get clip world)\ndelete_key stay splice world pos (next_pos body pos) \"\" (get clip world)\nleft       stay moved world (previous_pos body pos) -1\nright      stay moved world (next_pos body pos) -1\nhome_key   stay moved world (line_begin body pos) -1\nend_key    stay moved world (line_limit body pos) -1\nup         stay vertical world true\ndown       stay vertical world false\ncontrol    shortcut world value\nescape     stay world\nstored     stay with notice (with dirty world false) \"Gespeichert\"\nio_error   stay with notice world value\nend\n\nconfirm_key world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}\nmatch key\ncharacter  if or (or text_eq value \"j\" text_eq value \"J\") (or text_eq value \"y\" text_eq value \"Y\")\n           (pair world (tag Effect store))\n           if or text_eq value \"n\" text_eq value \"N\" (pair world (tag Effect finish)) (stay world)\ncontrol    if text_eq value \"c\" (stay with mode world (tag Mode writing)) (stay world)\nescape     stay with mode world (tag Mode writing)\nstored     pair world (tag Effect finish)\nio_error   stay with notice (with mode world (tag Mode writing)) value\nleft       stay world\nright      stay world\nup         stay world\ndown       stay world\nhome_key   stay world\nend_key    stay world\nbackspace  stay world\ndelete_key stay world\nenter_key  stay world\nend\n\nstep world:{Buffer} key:{Input} value:t > &{Buffer}{Effect}\nmatch get mode world\nwriting      edit_key world key value\nconfirm_exit confirm_key world key value\nend\n\nview world:{Buffer} name:t > {View}\nlet title concat \"TIDE nano  \" (concat name (if get dirty world \"  *\" \"\"))\nlet prompt match get mode world\n  writing get notice world\n  confirm_exit \"Vor dem Beenden speichern?  J Ja   N Verwerfen   Esc Abbrechen\"\nend\nmake View body (get body world) caret (get caret world) title title status prompt\nhelp \"^O Speichern   ^X Beenden   ^K Zeile ausschneiden   ^U Einsetzen\"\n\nexample unicode_insert insert_text\n{\"inputs\":{\"world\":{\"body\":\"Tür\",\"caret\":1,\"goal\":-1,\"clip\":\"\",\"eol\":\"\\n\",\"dirty\":false,\"mode\":\"writing\",\"notice\":\"\"},\"value\":\"Ω\"},\"expect\":{\"body\":\"TΩür\",\"caret\":2,\"goal\":-1,\"clip\":\"\",\"eol\":\"\\n\",\"dirty\":true,\"mode\":\"writing\",\"notice\":\"\"}}\n\nexample cross_crlf previous_pos\n{\"inputs\":{\"body\":\"ab\\r\\ncd\",\"pos\":4},\"expect\":2}\n\nexample dirty_exit shortcut\n{\"inputs\":{\"world\":{\"body\":\"hi\",\"caret\":2,\"goal\":-1,\"clip\":\"\",\"eol\":\"\\n\",\"dirty\":true,\"mode\":\"writing\",\"notice\":\"\"},\"value\":\"x\"},\"expect\":[{\"body\":\"hi\",\"caret\":2,\"goal\":-1,\"clip\":\"\",\"eol\":\"\\n\",\"dirty\":true,\"mode\":\"confirm_exit\",\"notice\":\"\"},\"idle\"]}\n"
+          }
+        ]
+      },
+      "revision": "8342cb84c833977634b76fb212206c70f5cbb28c7c4c7786aa6750cae7de24ea",
+      "grouped_json_sha256": "bc08f1e9618ea0b28091aa45196a18c918cf234e3f7bd6f465c8b72aece4c985"
+    },
+    "invaders": {
+      "entry": "space_invaders.tide",
+      "input": {
+        "root": "draw",
+        "observation": "check",
+        "graph": [
+          {
+            "name": "main",
+            "calls": [
+              "new_game"
+            ]
+          },
+          {
+            "name": "size",
+            "calls": []
+          },
+          {
+            "name": "glyph",
+            "calls": []
+          },
+          {
+            "name": "digit",
+            "calls": []
+          },
+          {
+            "name": "score_text",
+            "calls": [
+              "digit"
+            ]
+          },
+          {
+            "name": "ship_icons",
+            "calls": []
+          },
+          {
+            "name": "frame_base",
+            "calls": [
+              "glyph",
+              "score_text",
+              "ship_icons"
+            ]
+          },
+          {
+            "name": "alien_glyph",
+            "calls": [
+              "glyph"
+            ]
+          },
+          {
+            "name": "paint_fleet",
+            "calls": [
+              "alien_glyph"
+            ]
+          },
+          {
+            "name": "paint_bunkers",
+            "calls": [
+              "bunker_y",
+              "glyph"
+            ]
+          },
+          {
+            "name": "paint_bolt",
+            "calls": [
+              "glyph"
+            ]
+          },
+          {
+            "name": "banner",
+            "calls": [
+              "glyph"
+            ]
+          },
+          {
+            "name": "draw",
+            "calls": [
+              "banner",
+              "frame_base",
+              "glyph",
+              "paint_bolt",
+              "paint_bunkers",
+              "paint_fleet",
+              "ship_y"
+            ]
+          },
+          {
+            "name": "left_edge",
+            "calls": []
+          },
+          {
+            "name": "right_edge",
+            "calls": []
+          },
+          {
+            "name": "ship_y",
+            "calls": []
+          },
+          {
+            "name": "bunker_y",
+            "calls": []
+          },
+          {
+            "name": "within",
+            "calls": []
+          },
+          {
+            "name": "spawn_row",
+            "calls": []
+          },
+          {
+            "name": "new_game",
+            "calls": [
+              "spawn_row"
+            ]
+          },
+          {
+            "name": "move_ship",
+            "calls": [
+              "left_edge",
+              "right_edge"
+            ]
+          },
+          {
+            "name": "formation_period",
+            "calls": []
+          },
+          {
+            "name": "at_wall",
+            "calls": [
+              "left_edge",
+              "right_edge"
+            ]
+          },
+          {
+            "name": "march",
+            "calls": []
+          },
+          {
+            "name": "advance_shot",
+            "calls": [
+              "ship_y"
+            ]
+          },
+          {
+            "name": "aim_bomb",
+            "calls": []
+          },
+          {
+            "name": "advance_bomb",
+            "calls": [
+              "aim_bomb",
+              "ship_y"
+            ]
+          },
+          {
+            "name": "bolt_at",
+            "calls": [
+              "within"
+            ]
+          },
+          {
+            "name": "bunker_blocks",
+            "calls": [
+              "bolt_at",
+              "bunker_y"
+            ]
+          },
+          {
+            "name": "damage_bunkers",
+            "calls": [
+              "bolt_at",
+              "bunker_y"
+            ]
+          },
+          {
+            "name": "enemy_hit",
+            "calls": [
+              "bolt_at"
+            ]
+          },
+          {
+            "name": "hit_points",
+            "calls": [
+              "enemy_hit"
+            ]
+          },
+          {
+            "name": "survivors",
+            "calls": [
+              "enemy_hit"
+            ]
+          },
+          {
+            "name": "invaded",
+            "calls": [
+              "ship_y"
+            ]
+          },
+          {
+            "name": "battle",
+            "calls": [
+              "advance_bomb",
+              "advance_shot",
+              "at_wall",
+              "bolt_at",
+              "bunker_blocks",
+              "damage_bunkers",
+              "formation_period",
+              "hit_points",
+              "invaded",
+              "march",
+              "move_ship",
+              "respawn_ticks",
+              "shield_ticks",
+              "ship_y",
+              "survivors"
+            ]
+          },
+          {
+            "name": "start_if_requested",
+            "calls": [
+              "new_game"
+            ]
+          },
+          {
+            "name": "tick",
+            "calls": [
+              "battle",
+              "shield_ticks",
+              "start_if_requested"
+            ]
+          },
+          {
+            "name": "shield_ticks",
+            "calls": []
+          },
+          {
+            "name": "respawn_ticks",
+            "calls": []
+          }
+        ],
+        "units": [
+          {
+            "file": "space_invaders.tide",
+            "source": "use invaders_game\n\nrecord Glyph\nx:i y:i text:t ink:t\n\nmain > {Game}\nwith mode new_game (tag Phase ready)\n\nsize > &ii\npair 61 23\n\nglyph x:i y:i text:t ink:t > {Glyph}\nmake Glyph x x y y text text ink ink\n\ndigit n:i divisor:i > t\nneed (at (list t 10 \"0\" \"1\" \"2\" \"3\" \"4\" \"5\" \"6\" \"7\" \"8\" \"9\") (mod div n divisor 10)) \"digit\" 0\n\nscore_text n:i > t\nconcat (digit n 1000) concat (digit n 100) concat (digit n 10) (digit n 1)\n\nship_icons n:i > t\nif > n 2 \"^ ^ ^\" if eq n 2 \"^ ^\" if eq n 1 \"^\" \"-\"\n\nframe_base world:{Game} > *{Glyph}\nlist {Glyph} 13\nglyph 1 0 \"SPACE INVADERS\" \"cyan\"\nglyph 25 0 \"PUNKTE\" \"dim\"\nglyph 32 0 (score_text get score world) \"gold\"\nglyph 45 0 \"SCHIFFE\" \"dim\"\nglyph 53 0 (ship_icons get lives world) \"green\"\nglyph 0 2 \"+-----------------------------------------------------------+\" \"dim\"\nglyph 0 20 \"+-----------------------------------------------------------+\" \"dim\"\nglyph 5 6 \".\" \"dim\"\nglyph 28 10 \".\" \"dim\"\nglyph 52 12 \".\" \"dim\"\nglyph 21 15 \".\" \"dim\"\nglyph 40 5 \".\" \"dim\"\nglyph 2 22 \"< > / A D  BEWEGEN    LEER  FEUER    P  PAUSE    Q  ENDE\" \"dim\"\n\nalien_glyph enemy:{Alien} animation:b > {Glyph}\nlet species get row enemy\nlet sprite if eq species 0 (if animation \"<o>\" \"{o}\")\nif eq species 1 (if animation \"[W]\" \"[M]\") (if animation \"/v\\\\\" \"\\\\v/\")\nglyph - get x enemy 1 get y enemy sprite (if eq species 0 \"pink\" if eq species 1 \"cyan\" \"gold\")\n\npaint_fleet marks:*{Glyph} world:{Game} > *{Glyph}\nlet animation eq mod div get age world 6 2 0\nfold get aliens world marks scene index enemy append scene alien_glyph enemy animation\n\npaint_bunkers marks:*{Glyph} forts:*{Bunker} > *{Glyph}\nfold forts marks scene index fort\nlet hp get hp fort\nif eq hp 0 scene append scene\nglyph - get x fort 2 bunker_y (if eq hp 3 \"[###]\" if eq hp 2 \"[# #]\" \"[ . ]\") \"green\"\n\npaint_bolt marks:*{Glyph} bolt:?&ii sprite:t ink:t > *{Glyph}\ncase bolt marks p append marks glyph first p second p sprite ink\n\nbanner marks:*{Glyph} title:t action:t color:t > *{Glyph}\nlet panel append marks glyph 8 8  \"+-------------------------------------------+\" color\nlet body fold list i 4 9 10 11 12 panel scene index y\nappend scene glyph 8 y \"|                                           |\" color\nlet edge append body glyph 8 13 \"+-------------------------------------------+\" color\nappend (append edge glyph 15 10 title color) glyph 15 12 action \"white\"\n\ndraw world:{Game} > *{Glyph}\nlet fleet paint_fleet (frame_base world) world\nlet forts paint_bunkers fleet get bunkers world\nlet shots paint_bolt (paint_bolt forts get shot world \"|\" \"cyan\") get bomb world \"!\" \"pink\"\nlet scene if and > get grace world 0 eq mod get age world 2 1 shots\nappend shots glyph - get ship world 1 ship_y \"/^\\\\\" \"green\"\nmatch get mode world\nready   banner scene \"S P A C E   I N V A D E R S\" \"ENTER  SPIEL STARTEN\" \"cyan\"\nplaying scene\npaused  banner scene \"P A U S E\" \"P / ENTER  WEITER\" \"gold\"\nwon     banner scene \"S E K T O R   G E S I C H E R T\" \"ENTER  NOCH EINMAL\" \"green\"\nlost    banner scene \"G A M E   O V E R\" \"ENTER  NOCH EINMAL\" \"pink\"\nrespawn banner scene \"T R E F F E R\" \"GLEICH GEHT ES WEITER\" \"gold\"\nend\n\nexample arcade_score score_text\n{\"inputs\":{\"n\":240},\"expect\":\"0240\"}\n\nexample arcade_size size\n{\"inputs\":{},\"expect\":[61,23]}\n"
+          },
+          {
+            "file": "invaders_game.tide",
+            "source": "record Keys\nleft:b right:b fire:b start:b pause:b\n\nrecord Alien\nx:i y:i row:i\n\nrecord Bunker\nx:i hp:i\n\nvariant Phase\nready playing paused won lost respawn\n\nrecord Game\nmode:{Phase} age:i ship:i direction:i aliens:*{Alien}\nshot:?&ii bomb:?&ii bunkers:*{Bunker} lives:i score:i grace:i volley:i\n\nleft_edge > i\n2\n\nright_edge > i\n58\n\nship_y > i\n19\n\nbunker_y > i\n16\n\nwithin x:i center:i radius:i > b\nand (not < x - center radius) (not > x + center radius)\n\nspawn_row army:*{Alien} row:i > *{Alien}\nfold list i 7 10 16 22 28 34 40 46 army acc index col\nappend acc make Alien x col y (+ 4 * 2 row) row row\n\nnew_game > {Game}\nmake Game mode (tag Phase playing) age 0 ship 30 direction 1\naliens (fold list i 3 0 1 2 list {Alien} 0 army index row spawn_row army row)\nshot nil &ii bomb nil &ii\nbunkers (fold list i 3 12 30 48 list {Bunker} 0 forts index col append forts make Bunker x col hp 3)\nlives 3 score 0 grace 0 volley 0\n\nmove_ship x:i keys:{Keys} > i\nlet dx - (if get right keys 2 0) (if get left keys 2 0)\nlet dest + x dx\nif < dest left_edge left_edge if > dest right_edge right_edge dest\n\nformation_period count:i > i\nif < count 4 2 if < count 11 4 6\n\nat_wall army:*{Alien} dx:i > b\nfold army false found index enemy\nor found (if > dx 0 eq get x enemy right_edge eq get x enemy left_edge)\n\nmarch army:*{Alien} dx:i drop:b > *{Alien}\nfold army list {Alien} 0 moved index enemy\nappend moved (if drop with y enemy + get y enemy 1 with x enemy + get x enemy dx)\n\nadvance_shot previous:?&ii fire:b ship:i > ?&ii\ncase previous (if fire some pair ship - ship_y 1 nil &ii) p\nif > second p 3 some pair first p - second p 1 nil &ii\n\naim_bomb army:*{Alien} volley:i > ?&ii\nif eq length army 0 nil &ii\ncase (at army (mod + * volley 5 2 length army)) (nil &ii) picked\nlet col get x picked\nlet lowest fold army (get y picked) y index enemy\nif and eq get x enemy col > get y enemy y get y enemy y\nsome pair col + lowest 1\n\nadvance_bomb previous:?&ii army:*{Alien} age:i volley:i > ?&ii\ncase previous\n(if and > length army 0 eq mod age 13 0 aim_bomb army volley nil &ii) p\nlet y + second p (if eq mod age 2 0 1 0)\nif > y ship_y nil &ii some pair first p y\n\nbolt_at bolt:?&ii x:i y:i radius:i > b\ncase bolt false p and eq second p y within first p x radius\n\nbunker_blocks forts:*{Bunker} bolt:?&ii > b\nfold forts false blocked index fort\nor blocked and > get hp fort 0 bolt_at bolt get x fort bunker_y 2\n\ndamage_bunkers forts:*{Bunker} bolt:?&ii > *{Bunker}\nfold forts list {Bunker} 0 updated index fort\nappend updated (if and > get hp fort 0 bolt_at bolt get x fort bunker_y 2\nwith hp fort - get hp fort 1 fort)\n\nenemy_hit enemy:{Alien} bolt:?&ii > b\nbolt_at bolt get x enemy get y enemy 1\n\nhit_points army:*{Alien} bolt:?&ii > i\ncase bolt 0 p\nfold army 0 points index enemy\nif enemy_hit enemy bolt (* 10 - 3 get row enemy) points\n\nsurvivors army:*{Alien} bolt:?&ii > *{Alien}\nfold army list {Alien} 0 remaining index enemy\nif enemy_hit enemy bolt remaining append remaining enemy\n\ninvaded army:*{Alien} > b\nfold army false landed index enemy or landed not < get y enemy ship_y\n\nbattle world:{Game} keys:{Keys} > {Game}\nlet age + get age world 1\nlet ship move_ship (get ship world) keys\nlet old_army get aliens world\nlet dx get direction world\nlet moving eq mod age formation_period length old_army 0\nlet drop and moving at_wall old_army dx\nlet army if moving march old_army dx drop old_army\nlet shot advance_shot get shot world get fire keys ship\nlet bomb advance_bomb get bomb world army age get volley world\nlet fired and (case get bomb world true p false) (case bomb false p true)\nlet old_forts get bunkers world\nlet shot_blocked bunker_blocks old_forts shot\nlet forts if shot_blocked damage_bunkers old_forts shot old_forts\nlet bomb_blocked bunker_blocks forts bomb\nlet points if shot_blocked 0 hit_points army shot\nlet alive if > points 0 survivors army shot army\nlet contact and (not bomb_blocked) (bolt_at bomb ship ship_y 1)\nlet hurt and contact eq get grace world 0\nlet lives - get lives world (if hurt 1 0)\nmake Game\nmode (if or eq lives 0 invaded alive (tag Phase lost)\n      if eq length alive 0 (tag Phase won)\n      if hurt (tag Phase respawn) (tag Phase playing))\nage age ship ship direction (if drop - 0 dx dx) aliens alive\nshot (if or shot_blocked > points 0 nil &ii shot)\nbomb (if or bomb_blocked contact nil &ii bomb)\nbunkers (if bomb_blocked damage_bunkers forts bomb forts)\nlives lives score (+ get score world points)\ngrace (if hurt (+ respawn_ticks shield_ticks) if > get grace world 0 - get grace world 1 0)\nvolley (+ get volley world if fired 1 0)\n\nstart_if_requested world:{Game} keys:{Keys} > {Game}\nif get start keys new_game world\n\ntick world:{Game} keys:{Keys} > {Game}\nmatch get mode world\nready   start_if_requested world keys\nplaying if get pause keys with mode world (tag Phase paused) battle world keys\npaused  if or get pause keys get start keys with mode world (tag Phase playing) world\nwon     start_if_requested world keys\nlost    start_if_requested world keys\nrespawn if > get grace world (+ shield_ticks 1)\n        with grace world (- get grace world 1)\n        with mode (with grace world shield_ticks) (tag Phase playing)\nend\n\nshield_ticks > i\n8\n\nrespawn_ticks > i\n8\n\nexample clamp_left move_ship\n{\"inputs\":{\"x\":3,\"keys\":{\"left\":true,\"right\":false,\"fire\":false,\"start\":false,\"pause\":false}},\"expect\":2}\n\nexample descend_together march\n{\"inputs\":{\"army\":[{\"x\":57,\"y\":4,\"row\":0},{\"x\":58,\"y\":8,\"row\":2}],\"dx\":1,\"drop\":true},\"expect\":[{\"x\":57,\"y\":5,\"row\":0},{\"x\":58,\"y\":9,\"row\":2}]}\n\nexample bottom_fires aim_bomb\n{\"inputs\":{\"army\":[{\"x\":10,\"y\":4,\"row\":0},{\"x\":16,\"y\":4,\"row\":0},{\"x\":10,\"y\":8,\"row\":2}],\"volley\":0},\"expect\":{\"some\":[10,9]}}\n\nexample shield_wears damage_bunkers\n{\"inputs\":{\"forts\":[{\"x\":12,\"hp\":1},{\"x\":30,\"hp\":3}],\"bolt\":{\"some\":[11,16]}},\"expect\":[{\"x\":12,\"hp\":0},{\"x\":30,\"hp\":3}]}\n\nexample top_scores hit_points\n{\"inputs\":{\"army\":[{\"x\":14,\"y\":5,\"row\":0}],\"bolt\":{\"some\":[15,5]}},\"expect\":30}\n\nexample last_alien tick\n{\"inputs\":{\"world\":{\"mode\":\"playing\",\"age\":0,\"ship\":30,\"direction\":1,\"aliens\":[{\"x\":20,\"y\":5,\"row\":0}],\"shot\":{\"some\":[20,6]},\"bomb\":{\"none\":true},\"bunkers\":[],\"lives\":1,\"score\":50,\"grace\":0,\"volley\":0},\"keys\":{\"left\":false,\"right\":false,\"fire\":false,\"start\":false,\"pause\":false}},\"expect\":{\"mode\":\"won\",\"age\":1,\"ship\":30,\"direction\":1,\"aliens\":[],\"shot\":{\"none\":true},\"bomb\":{\"none\":true},\"bunkers\":[],\"lives\":1,\"score\":80,\"grace\":0,\"volley\":0}}\n\nexample empty_formation aim_bomb\n{\"inputs\":{\"army\":[],\"volley\":0},\"expect\":{\"none\":true}}\n\nexample surviving_hit tick\n{\"inputs\":{\"world\":{\"mode\":\"playing\",\"age\":1,\"ship\":30,\"direction\":1,\"aliens\":[{\"x\":10,\"y\":4,\"row\":0}],\"shot\":{\"none\":true},\"bomb\":{\"some\":[30,18]},\"bunkers\":[],\"lives\":3,\"score\":0,\"grace\":0,\"volley\":0},\"keys\":{\"left\":false,\"right\":false,\"fire\":false,\"start\":false,\"pause\":false}},\"expect\":{\"mode\":\"respawn\",\"age\":2,\"ship\":30,\"direction\":1,\"aliens\":[{\"x\":11,\"y\":4,\"row\":0}],\"shot\":{\"none\":true},\"bomb\":{\"none\":true},\"bunkers\":[],\"lives\":2,\"score\":0,\"grace\":16,\"volley\":0}}\n"
+          }
+        ]
+      },
+      "revision": "3aaac23a3713e0ae8a522c697bb0bf98fe98cbe547c795f20b7aa3dc8ab4d7b6",
+      "grouped_json_sha256": "448fb9bf6fa82575afcd60e43c7b004bee41c2f5745e46dd861a436c20ab6178"
+    },
+    "rule": {
+      "entry": "heat.tide",
+      "input": {
+        "root": "heat_ready",
+        "observation": "check",
+        "graph": [
+          {
+            "name": "heat_ready",
+            "calls": []
+          },
+          {
+            "name": "simulate",
+            "calls": [
+              "heat_ready"
+            ]
+          },
+          {
+            "name": "main",
+            "calls": [
+              "simulate"
+            ]
+          }
+        ],
+        "units": [
+          {
+            "file": "heat.tide",
+            "source": "rule heat_ready temperature:i > b\nstate streak:i=0\nwhen > temperature 80 -> streak=set (if < streak 3 + streak 1 3)\nelse -> streak=reset\nout eq streak 3\n\nsimulate temperatures:*i > *b\nscan heat_ready temperatures\n\nmain > *b\nsimulate list i 7 81 70 95 82 90 91 80\n\nexample interruption heat_ready\n{\"events\":[81,70,95,82],\"expect\":[false,false,false,false]}\n\nexample active_until_reset heat_ready\n{\"events\":[81,95,82,99,80,83],\"expect\":[false,false,true,true,false,false]}\n\nexample threshold heat_ready\n{\"events\":[81,80,95,82],\"expect\":[false,false,false,false]}\n"
+          }
+        ]
+      },
+      "revision": "f0e6071355692cf1d428dcb2120fd75b245001e20b80bdcf75fcd9569b681a32",
+      "grouped_json_sha256": "e2fb7a8839c378ed60f8665bb237b475a248b582c29e631efda77cfa675cbfa4"
+    },
+    "layout": {
+      "entry": "main name.tide",
+      "input": {
+        "root": "main",
+        "observation": "check",
+        "graph": [
+          {
+            "name": "main",
+            "calls": [
+              "deep",
+              "inc"
+            ]
+          },
+          {
+            "name": "unused",
+            "calls": []
+          },
+          {
+            "name": "inc",
+            "calls": []
+          },
+          {
+            "name": "deep",
+            "calls": []
+          }
+        ],
+        "units": [
+          {
+            "file": "main name.tide",
+            "source": "use helper\n\nmain n:i > i\n\t( inc (deep n))\n\nunused > t\n\"(\"\n"
+          },
+          {
+            "file": "helper.tide",
+            "source": "inc n:i > i\n(\n  + n 1)\n\ndeep n:i > i\n                                    * n 2\n"
+          }
+        ]
+      },
+      "revision": "c0a439541f79ec9503bffde667e0be0e75c454f835b42756a16efa6e5fa922d9",
+      "grouped_json_sha256": "41ccce8c5015fd18fddc57f12a79254cb2315eb709d0aa722031974657f68fc3"
+    }
+  },
+  "commands": {
+    "timed-old": "#!/usr/bin/env bash\nset -euo pipefail\nrepo=/var/tmp/tide-kontext-djTNlehK/legacy\nexport TIDE_PROJECT_ROOT=\"$repo\"\noriginal=/var/tmp/tide-ordering-y8PzxCLV/control\nw=$1\nentry=$2\nroot=$3\nobs=$4\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nstamp > \"$w/start\"\nargs=$(\"$original/tide-args\" \"$entry\" \"$obs\" \"$w/checked\" | jq -c --arg root \"$root\" '.root=$root')\nprintf '%s\\n' \"$args\" > \"$w/input\"\n\"$repo/tide\" run \"$repo/workbench/project_context.tide\" --inputs \"$args\" > \"$w/packet\"\n\"$original/forms\" \"$entry\" \"$w/input\" > \"$w/forms\"\nview=$(jq -c --slurpfile forms \"$w/forms\" '.+{forms:$forms[0]}' \"$w/packet\")\n\"$repo/tide\" run \"$repo/workbench/function_body.tide\" --call repair_view --inputs \"$view\" > \"$w/grouped\"\ncatalog=$(jq -nc --slurpfile forms \"$w/forms\" --slurpfile checked \"$w/checked\" '{reachable_names:[$forms[0][].name],signatures:($checked[0].definitions|to_entries|map({name:.key,kind:.value.kind,signature:([.key]+[.value.params|to_entries[]|.key+\":\"+.value]+[\">\",.value.returns]|join(\" \"))}))}')\n\"$repo/tide\" run \"$repo/workbench/project_context.tide\" --call unused_signatures --inputs \"$catalog\" > \"$w/unused\"\nstamp > \"$w/end\"\n",
+    "timed-new": "#!/usr/bin/env bash\nset -euo pipefail\nrepo=/home/ativaro/Documents/tide\noriginal=/var/tmp/tide-ordering-y8PzxCLV/control\nw=$1\nentry=$2\nroot=$3\nobs=$4\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nstamp > \"$w/start\"\nargs=$(\"$original/tide-args\" \"$entry\" \"$obs\" \"$w/checked\" | jq -c --arg root \"$root\" '.root=$root')\nprintf '%s\\n' \"$args\" > \"$w/input\"\nchecked=$(cat \"$w/checked\")\nrev=$(jq -er .revision <<< \"$checked\")\nmkdir \"$w/source\"\njq -c .version <<< \"$checked\" > \"$w/source/tide.lock\"\nwhile IFS= read -r file; do\n  jq -ejr --arg file \"$file\" '.units[]|select(.file==$file)|.source' \"$w/input\" > \"$w/source/$file\"\ndone < <(jq -r '.units[].file' \"$w/input\")\nbase=$(basename -- \"$entry\")\nentry=\"$w/source/$base\"\n\"$repo/tide\" check \"$entry\" | jq -e --arg rev \"$rev\" '.revision==$rev' >/dev/null\npayload=$(jq -nc --argjson input \"$args\" --argjson checked \"$checked\" '$input+{signatures:($checked.definitions|to_entries|map({name:.key,kind:.value.kind,signature:([.key]+[.value.params|to_entries[]|.key+\":\"+.value]+[\">\",.value.returns]|join(\" \"))}))}')\n\"$repo/tide\" run \"$repo/workbench/grouping.tide\" --call prepare_grouping --inputs \"$payload\" > \"$w/plan\"\njq -c .packet \"$w/plan\" > \"$w/packet\"\njq -c .unused \"$w/plan\" > \"$w/unused\"\njq -r --arg base \"$base\" '.queries[] | [.name,(if .file==$base then \".\" else .file end),.line,.column] | @tsv' \"$w/plan\" |\nwhile IFS=$'\\t' read -r name file line column; do\n  if [[ $file == \".\" ]]; then file=$base; fi\n  if [[ $column == 0 ]]; then\n    node=$(\"$repo/tide\" context \"$entry\" --function \"$name\" |\n      jq -er --arg rev \"$rev\" 'if .revision==$rev then .nodes[0].node else error(\"project revision changed\") end')\n  else\n    node=\"$line:$column\"\n    if [[ $file != \"$base\" ]]; then node=\"$file:$node\"; fi\n  fi\n  \"$repo/tide\" context \"$entry\" --function \"$name\" --node \"$node\" |\n    jq -ce --arg rev \"$rev\" --arg file \"$file\" 'if .revision==$rev then {name:.definition,$file,body:.selection.expanded} else error(\"project revision changed\") end'\ndone | jq -sc . > \"$w/forms\"\nview=$(jq -c --slurpfile forms \"$w/forms\" '.+{forms:$forms[0]}' \"$w/packet\")\n\"$repo/tide\" run \"$repo/workbench/grouped_view.tide\" --call compiler_view --inputs \"$view\" > \"$w/grouped\"\nstamp > \"$w/end\"\n",
+    "bench": "#!/usr/bin/env bash\nset -euo pipefail\nw=$(cd \"$(dirname \"$0\")\" && pwd)\nprevious=/var/tmp/tide-ordering-y8PzxCLV\nlast=/var/tmp/tide-closing-My5zCIPK/fresh\nrepo=$PWD\nfor rep in {1..8}; do\n for family in journal allocation report; do\n  case \"$family\" in\n  journal) entry=\"$last/seeds/journal_again/tide-plain/summary.tide\"; control=\"$last/control\"; oldrun=\"$last/results/journal_again-1-tide-plain\"; task=\"$control/journal_again/task\";;\n  allocation) entry=\"$previous/seeds/allocation/tide-lib/summary.tide\"; control=\"$previous/control\"; oldrun=\"$previous/results/allocation-1-tide-lib\"; task=\"$control/allocation/task\";;\n  report) entry=\"$repo/apps/report.tide\"; oldrun=\"\";;\n  esac\n  obs=\"sensor observations\"; if [[ -n \"$oldrun\" ]]; then obs=$(cat \"$oldrun/before\"); fi\n  if ((rep % 2)); then order=(new old); else order=(old new); fi\n  for arm in \"${order[@]}\"; do\n    dest=\"$w/$family-$rep-$arm\"; mkdir \"$dest\"\n    \"$w/timed-$arm\" \"$dest\" \"$entry\" main \"$obs\"\n    if [[ -n \"$oldrun\" ]]; then\n      { cat \"$task\"; echo; cat \"$control/instructions-name\"; jq -r .instruction \"$dest/grouped\"; jq -r 'if length>0 then \"Other checked functions:\",.[] else empty end' \"$dest/unused\"; echo; jq -r '.observation,(.files|sort_by(.file)[]|\"\\n--- \"+.file+\" ---\\n\"+.source)' \"$dest/grouped\"; } > \"$dest/prompt\"\n      cmp \"$dest/prompt\" \"$oldrun/prompt\"\n    fi\n  done\n  for file in grouped unused forms; do cmp <(jq -cS . \"$w/$family-$rep-new/$file\") <(jq -cS . \"$w/$family-$rep-old/$file\"); done\n  jq -nc --arg family \"$family\" --argjson rep \"$rep\" --arg first \"${order[0]}\" --argjson ns \"$(cat \"$w/$family-$rep-new/start\")\" --argjson ne \"$(cat \"$w/$family-$rep-new/end\")\" --argjson os \"$(cat \"$w/$family-$rep-old/start\")\" --argjson oe \"$(cat \"$w/$family-$rep-old/end\")\" --argjson count \"$(jq length \"$w/$family-$rep-new/forms\")\" --arg prompt \"$(if [[ -n \"$oldrun\" ]]; then sha256sum \"$oldrun/prompt\"|cut -d' ' -f1; fi)\" '{family:$family,rep:$rep,first:$first,new_seconds:($ne-$ns),old_seconds:($oe-$os),monotonic_new:[$ns,$ne],monotonic_old:[$os,$oe],forms:$count,archived_prompt_sha256:$prompt,equivalent:true}' >> \"$w/times.ndjson\"\n done\ndone\n",
+    "special": "#!/usr/bin/env bash\nset -euo pipefail\nw=$(cd \"$(dirname \"$0\")\" && pwd)\nrepo=$PWD\nfor caseid in nano invaders rule layout; do\n  case \"$caseid\" in\n    nano) entry=\"$repo/apps/nano.tide\"; root=step;;\n    invaders) entry=\"$repo/apps/space_invaders.tide\"; root=draw;;\n    rule) entry=\"$repo/apps/heat.tide\"; root=heat_ready;;\n    layout) entry=\"$w/layout/main name.tide\"; root=main;;\n  esac\n  a=\"$w/special-$caseid-old\"; b=\"$w/special-$caseid-new\"\n  mkdir \"$a\" \"$b\"\n  rc=0; \"$w/timed-old\" \"$a\" \"$entry\" \"$root\" check 2> \"$a/errors\" || rc=$?\n  \"$w/timed-new\" \"$b\" \"$entry\" \"$root\" check\n  cmp <(jq -Sc . \"$a/forms\") <(jq -Sc . \"$b/forms\")\n  if [[ $rc != 0 ]]; then\n    jq -e '.code==\"E_LIMIT\"' \"$a/errors\" >/dev/null\n    cp \"$a/packet\" \"$a/partial\"; jq -c '.[]' \"$a/forms\" |\n    while IFS= read -r form; do\n      p=$(jq -c --argjson form \"$form\" '{observation,files,forms:[$form]}' \"$a/partial\")\n      \"$repo/tide\" run \"$w/legacy/workbench/function_body.tide\" --call repair_view --inputs \"$p\" > \"$a/next\"\n      mv \"$a/next\" \"$a/partial\"\n    done\n    cmp <(jq -Sc . \"$a/partial\") <(jq -Sc . \"$b/grouped\")\n  else\n    cmp <(jq -Sc . \"$a/grouped\") <(jq -Sc . \"$b/grouped\")\n  fi\n  p=$(jq -nc --slurpfile i \"$b/input\" --slurpfile forms \"$b/forms\" '{observation:\"\",files:$i[0].units,forms:$forms[0]}')\n  \"$repo/tide\" run \"$repo/workbench/grouped_view.tide\" --call compiler_view --inputs \"$p\" > \"$b/full\"\n  mkdir \"$b/recompiled\"\n  while IFS= read -r file; do jq -ejr --arg file \"$file\" '.files[]|select(.file==$file)|.source' \"$b/full\" > \"$b/recompiled/$file\"; done < <(jq -r '.files[].file' \"$b/full\")\n  base=$(basename -- \"$entry\")\n  \"$repo/tide\" test \"$entry\" > \"$b/before-tests\"\n  \"$repo/tide\" test \"$b/recompiled/$base\" > \"$b/after-tests\"\n  cmp \"$b/before-tests\" \"$b/after-tests\"\n  if [[ $caseid == layout ]]; then\n    v=$(\"$repo/tide\" run \"$entry\" --inputs '{\"n\":4}')\n    [[ $v == 9 && $(\"$repo/tide\" run \"$b/recompiled/$base\" --inputs '{\"n\":4}') == 9 ]]\n  fi\n  jq -nc --arg id \"$caseid\" --arg root \"$root\" --slurpfile plan \"$b/plan\" --slurpfile tests \"$b/after-tests\" --slurpfile diag \"$a/errors\" --argjson rc \"$rc\" '{project:$id,root:$root,old_exit:$rc,old_diagnostic:$diag[0],new_matches_reference:true,forms:($plan[0].queries|length),two_calls:([$plan[0].queries[]|select(.column==0)]|length),recompiled_tests:$tests[0]}' >> \"$w/special.ndjson\"\ndone\n",
+    "compare": "#!/usr/bin/env bash\nset -euo pipefail\nw=$(cd \"$(dirname \"$0\")\" && pwd)\nprevious=/var/tmp/tide-ordering-y8PzxCLV\nlast=/var/tmp/tide-closing-My5zCIPK/fresh\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nfor rep in {1..6}; do\n for family in journal allocation; do\n  if [[ $family == journal ]]; then base=$last; bug=journal_again; tide_arm=tide-plain; else base=$previous; bug=allocation; tide_arm=tide-lib; fi\n  ctl=\"$base/control\"\n  if ((rep%2)); then order=(python-native \"$tide_arm\"); else order=(\"$tide_arm\" python-native); fi\n  for arm in \"${order[@]}\"; do\n    seed=\"$base/seeds/$bug/$arm\"; dest=\"$w/pair-$family-$rep-$arm\"; mkdir \"$dest\"\n    start=$(stamp)\n    rc=0; (cd \"$seed\" && \"$ctl/$bug/verify\") > \"$dest/red\" || rc=$?\n    [[ $rc == 1 ]]; jq -e '.failed>0' \"$dest/red\" >/dev/null; obs=$(cat \"$dest/red\")\n    if [[ $arm == python-native ]]; then\n      for file in \"$seed/\"*.py; do jq -n --arg file \"${file##*/}\" --rawfile source \"$file\" '{file:$file,source:$source}'; done | jq -cs --arg observation \"$obs\" '{observation:$observation,files:.}' > \"$dest/grouped\"\n      cp \"$ctl/python-guide\" \"$dest/guide\"\n    else\n      \"$w/timed-new\" \"$dest\" \"$seed/summary.tide\" main \"$obs\"\n      { jq -r .instruction \"$dest/grouped\"; jq -r 'if length>0 then \"Other checked functions:\",.[] else empty end' \"$dest/unused\"; } > \"$dest/guide\"\n    fi\n    { cat \"$ctl/$bug/task\"; echo; cat \"$ctl/instructions-name\"; cat \"$dest/guide\"; echo; jq -r '.observation,(.files|sort_by(.file)[]|\"\\n--- \"+.file+\" ---\\n\"+.source)' \"$dest/grouped\"; } > \"$dest/prompt\"\n    end=$(stamp)\n    cmp \"$dest/prompt\" \"$base/results/$bug-1-$arm/prompt\"\n    jq -nc --arg family \"$family\" --arg arm \"$arm\" --argjson rep \"$rep\" --arg first \"${order[0]}\" --argjson start \"$start\" --argjson end \"$end\" --arg hash \"$(sha256sum \"$dest/prompt\"|cut -d' ' -f1)\" '{family:$family,arm:$arm,rep:$rep,first:$first,start:$start,end:$end,seconds:($end-$start),prompt_sha256:$hash}' >> \"$w/python-comparison.ndjson\"\n  done\n done\ndone\n",
+    "forms": "#!/usr/bin/env bash\nset -euo pipefail\nentry=$1\ngraph_input=$2\nrepo=${TIDE_PROJECT_ROOT:-/home/ativaro/Documents/tide}\ncli=\"$repo/tide\"\nnames=$(\"$cli\" run \"$repo/workbench/project_context.tide\" --call reachable --inputs \"$(jq -c '{root,graph}' \"$graph_input\")\")\njq -r '.[]' <<< \"$names\" | while IFS= read -r name; do\n  context=$(\"$cli\" context \"$entry\" --function \"$name\")\n  if [[ $(jq -r .kind <<< \"$context\") == rule ]]; then continue; fi\n  node=$(jq -er '.nodes[0].node' <<< \"$context\")\n  file=$(basename -- \"$entry\")\n  if [[ $node == *:*:* ]]; then file=${node%:*:*}; fi\n  \"$cli\" context \"$entry\" --function \"$name\" --node \"$node\" |\n    jq -c --arg file \"$file\" '{name:.definition,$file,body:.selection.expanded}'\ndone | jq -sc .\n",
+    "tide-args": "#!/usr/bin/env bash\nset -euo pipefail\nentry=$1\nobs=$2\ntide=/home/ativaro/Documents/tide/tide\ndir=$(dirname -- \"$entry\")\nchecked=$(\"$tide\" check \"$entry\")\nprintf '%s\\n' \"$checked\" > \"$3\"\n{ basename -- \"$entry\"; jq -r '.modules[]' <<< \"$checked\"; } |\nwhile IFS= read -r file; do\n  jq -n --arg file \"$file\" --rawfile source \"$dir/$file\" '{file:$file,source:$source}'\ndone |\njq -cs --arg observation \"$obs\" --argjson checked \"$checked\" '{root:\"main\", $observation, graph:($checked.definitions|to_entries|map({name:.key,calls:.value.calls})),units:.}'\n"
+  },
+  "profile_s": {
+    "check_inputs": 0.04864607800027443,
+    "selection": 0.04476541899975928,
+    "lookups": 0.3690087089998997,
+    "display_and_signatures": 0.08717633300011585
+  },
+  "paired": [
+    {
+      "family": "journal",
+      "rep": 1,
+      "first": "new",
+      "new_seconds": 0.3202235980002115,
+      "old_seconds": 0.4904424060000565,
+      "monotonic_new": [
+        3115.277399746,
+        3115.597623344
+      ],
+      "monotonic_old": [
+        3115.611541489,
+        3116.101983895
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 1,
+      "first": "new",
+      "new_seconds": 0.36354908600014824,
+      "old_seconds": 0.5952166649999526,
+      "monotonic_new": [
+        3116.125682461,
+        3116.489231547
+      ],
+      "monotonic_old": [
+        3116.498946675,
+        3117.09416334
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 1,
+      "first": "new",
+      "new_seconds": 0.2795829130000129,
+      "old_seconds": 0.41647794999971666,
+      "monotonic_new": [
+        3117.112379555,
+        3117.391962468
+      ],
+      "monotonic_old": [
+        3117.395469638,
+        3117.811947588
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 2,
+      "first": "old",
+      "new_seconds": 0.31601263500033383,
+      "old_seconds": 0.4935923520001779,
+      "monotonic_new": [
+        3118.326302911,
+        3118.642315546
+      ],
+      "monotonic_old": [
+        3117.824862768,
+        3118.31845512
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 2,
+      "first": "old",
+      "new_seconds": 0.3610472669997762,
+      "old_seconds": 0.5697069490001923,
+      "monotonic_new": [
+        3119.238667686,
+        3119.599714953
+      ],
+      "monotonic_old": [
+        3118.660019818,
+        3119.229726767
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 2,
+      "first": "old",
+      "new_seconds": 0.2801043409999693,
+      "old_seconds": 0.41369271299981847,
+      "monotonic_new": [
+        3120.034941647,
+        3120.315045988
+      ],
+      "monotonic_old": [
+        3119.61794577,
+        3120.031638483
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 3,
+      "first": "new",
+      "new_seconds": 0.3234591079999518,
+      "old_seconds": 0.4953444739999213,
+      "monotonic_new": [
+        3120.328349538,
+        3120.651808646
+      ],
+      "monotonic_old": [
+        3120.660258562,
+        3121.155603036
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 3,
+      "first": "new",
+      "new_seconds": 0.36482375800005684,
+      "old_seconds": 0.5874849220003853,
+      "monotonic_new": [
+        3121.174740035,
+        3121.539563793
+      ],
+      "monotonic_old": [
+        3121.547879125,
+        3122.135364047
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 3,
+      "first": "new",
+      "new_seconds": 0.27339777099996354,
+      "old_seconds": 0.42503595900006985,
+      "monotonic_new": [
+        3122.15309244,
+        3122.426490211
+      ],
+      "monotonic_old": [
+        3122.429903939,
+        3122.854939898
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 4,
+      "first": "old",
+      "new_seconds": 0.31988527200019234,
+      "old_seconds": 0.503860326999984,
+      "monotonic_new": [
+        3123.380822568,
+        3123.70070784
+      ],
+      "monotonic_old": [
+        3122.867928,
+        3123.371788327
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 4,
+      "first": "old",
+      "new_seconds": 0.3626582370002325,
+      "old_seconds": 0.5786051499999303,
+      "monotonic_new": [
+        3124.307177673,
+        3124.66983591
+      ],
+      "monotonic_old": [
+        3123.719820609,
+        3124.298425759
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 4,
+      "first": "old",
+      "new_seconds": 0.2839764059999652,
+      "old_seconds": 0.4359656339997855,
+      "monotonic_new": [
+        3125.127381266,
+        3125.411357672
+      ],
+      "monotonic_old": [
+        3124.687927073,
+        3125.123892707
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 5,
+      "first": "new",
+      "new_seconds": 0.3299194820001503,
+      "old_seconds": 0.500101937999716,
+      "monotonic_new": [
+        3125.423904553,
+        3125.753824035
+      ],
+      "monotonic_old": [
+        3125.762013974,
+        3126.262115912
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 5,
+      "first": "new",
+      "new_seconds": 0.3721331830001873,
+      "old_seconds": 0.5815825049999148,
+      "monotonic_new": [
+        3126.281031816,
+        3126.653164999
+      ],
+      "monotonic_old": [
+        3126.66216473,
+        3127.243747235
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 5,
+      "first": "new",
+      "new_seconds": 0.28093647100013186,
+      "old_seconds": 0.4185681439998916,
+      "monotonic_new": [
+        3127.262273319,
+        3127.54320979
+      ],
+      "monotonic_old": [
+        3127.546870813,
+        3127.965438957
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 6,
+      "first": "old",
+      "new_seconds": 0.3220977360001598,
+      "old_seconds": 0.5054920010002206,
+      "monotonic_new": [
+        3128.491445753,
+        3128.813543489
+      ],
+      "monotonic_old": [
+        3127.977966208,
+        3128.483458209
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 6,
+      "first": "old",
+      "new_seconds": 0.37339409100013654,
+      "old_seconds": 0.5849270170001546,
+      "monotonic_new": [
+        3129.426790181,
+        3129.800184272
+      ],
+      "monotonic_old": [
+        3128.83272904,
+        3129.417656057
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 6,
+      "first": "old",
+      "new_seconds": 0.28236538200008,
+      "old_seconds": 0.4290713670002333,
+      "monotonic_new": [
+        3130.25154012,
+        3130.533905502
+      ],
+      "monotonic_old": [
+        3129.818523862,
+        3130.247595229
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 7,
+      "first": "new",
+      "new_seconds": 0.3248720200003845,
+      "old_seconds": 0.49513826299971697,
+      "monotonic_new": [
+        3130.545895769,
+        3130.870767789
+      ],
+      "monotonic_old": [
+        3130.878937018,
+        3131.374075281
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 7,
+      "first": "new",
+      "new_seconds": 0.36906687400005467,
+      "old_seconds": 0.5851079100002607,
+      "monotonic_new": [
+        3131.392439501,
+        3131.761506375
+      ],
+      "monotonic_old": [
+        3131.770363111,
+        3132.355471021
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 7,
+      "first": "new",
+      "new_seconds": 0.2872867299997779,
+      "old_seconds": 0.4290426029997434,
+      "monotonic_new": [
+        3132.373989555,
+        3132.661276285
+      ],
+      "monotonic_old": [
+        3132.664911368,
+        3133.093953971
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    },
+    {
+      "family": "journal",
+      "rep": 8,
+      "first": "old",
+      "new_seconds": 0.3277280070001325,
+      "old_seconds": 0.4933412209998096,
+      "monotonic_new": [
+        3133.608802784,
+        3133.936530791
+      ],
+      "monotonic_old": [
+        3133.10679505,
+        3133.600136271
+      ],
+      "forms": 4,
+      "archived_prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207",
+      "equivalent": true
+    },
+    {
+      "family": "allocation",
+      "rep": 8,
+      "first": "old",
+      "new_seconds": 0.36775641600024755,
+      "old_seconds": 0.592291380000006,
+      "monotonic_new": [
+        3134.555682759,
+        3134.923439175
+      ],
+      "monotonic_old": [
+        3133.954631685,
+        3134.546923065
+      ],
+      "forms": 5,
+      "archived_prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "equivalent": true
+    },
+    {
+      "family": "report",
+      "rep": 8,
+      "first": "old",
+      "new_seconds": 0.2739906830001928,
+      "old_seconds": 0.4232968910000636,
+      "monotonic_new": [
+        3135.368943314,
+        3135.642933997
+      ],
+      "monotonic_old": [
+        3134.94201296,
+        3135.365309851
+      ],
+      "forms": 3,
+      "archived_prompt_sha256": "",
+      "equivalent": true
+    }
+  ],
+  "python_comparison": [
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 1,
+      "first": "python-native",
+      "start": 3311.169836738,
+      "end": 3311.208183388,
+      "seconds": 0.038346650000221416,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 1,
+      "first": "python-native",
+      "start": 3311.213539389,
+      "end": 3311.580960431,
+      "seconds": 0.3674210420003874,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 1,
+      "first": "python-native",
+      "start": 3311.585699166,
+      "end": 3311.616719632,
+      "seconds": 0.031020465999972657,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 1,
+      "first": "python-native",
+      "start": 3311.620975965,
+      "end": 3312.024653201,
+      "seconds": 0.40367723600002137,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 2,
+      "first": "tide-plain",
+      "start": 3312.029039467,
+      "end": 3312.406083624,
+      "seconds": 0.37704415700000027,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 2,
+      "first": "tide-plain",
+      "start": 3312.410813558,
+      "end": 3312.441844255,
+      "seconds": 0.031030697000005603,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 2,
+      "first": "tide-lib",
+      "start": 3312.44658513,
+      "end": 3312.850567186,
+      "seconds": 0.40398205599967696,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 2,
+      "first": "tide-lib",
+      "start": 3312.85489668,
+      "end": 3312.881914601,
+      "seconds": 0.027017921000151546,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    },
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 3,
+      "first": "python-native",
+      "start": 3312.886387519,
+      "end": 3312.919150472,
+      "seconds": 0.03276295300020138,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 3,
+      "first": "python-native",
+      "start": 3312.92328106,
+      "end": 3313.295286996,
+      "seconds": 0.3720059359998231,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 3,
+      "first": "python-native",
+      "start": 3313.300298788,
+      "end": 3313.329518087,
+      "seconds": 0.02921929900003306,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 3,
+      "first": "python-native",
+      "start": 3313.334371595,
+      "end": 3313.742503842,
+      "seconds": 0.4081322470001396,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 4,
+      "first": "tide-plain",
+      "start": 3313.747217326,
+      "end": 3314.110921613,
+      "seconds": 0.36370428700001867,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 4,
+      "first": "tide-plain",
+      "start": 3314.115132124,
+      "end": 3314.148069381,
+      "seconds": 0.032937256999957754,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 4,
+      "first": "tide-lib",
+      "start": 3314.152564129,
+      "end": 3314.561819127,
+      "seconds": 0.4092549980000513,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 4,
+      "first": "tide-lib",
+      "start": 3314.566749187,
+      "end": 3314.596068459,
+      "seconds": 0.02931927200006612,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    },
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 5,
+      "first": "python-native",
+      "start": 3314.600471135,
+      "end": 3314.633156906,
+      "seconds": 0.03268577099970571,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 5,
+      "first": "python-native",
+      "start": 3314.63786888,
+      "end": 3315.01040378,
+      "seconds": 0.3725349000001188,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 5,
+      "first": "python-native",
+      "start": 3315.015135015,
+      "end": 3315.043839901,
+      "seconds": 0.028704886000014085,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 5,
+      "first": "python-native",
+      "start": 3315.048419532,
+      "end": 3315.475027408,
+      "seconds": 0.4266078760001619,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "journal",
+      "arm": "tide-plain",
+      "rep": 6,
+      "first": "tide-plain",
+      "start": 3315.480463951,
+      "end": 3315.861119886,
+      "seconds": 0.3806559350000498,
+      "prompt_sha256": "943cc62edac21d78e8a3745c9ae3101945cc9d097af6f4cdc9e5ffa3e8bfc207"
+    },
+    {
+      "family": "journal",
+      "arm": "python-native",
+      "rep": 6,
+      "first": "tide-plain",
+      "start": 3315.867138895,
+      "end": 3315.900791891,
+      "seconds": 0.03365299600000071,
+      "prompt_sha256": "d35b478852bd0cf6440ed08befb630dd14790de8ed2b41fab73a4cbf90fd4e6d"
+    },
+    {
+      "family": "allocation",
+      "arm": "tide-lib",
+      "rep": 6,
+      "first": "tide-lib",
+      "start": 3315.905651909,
+      "end": 3316.317013555,
+      "seconds": 0.4113616459999321,
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7"
+    },
+    {
+      "family": "allocation",
+      "arm": "python-native",
+      "rep": 6,
+      "first": "tide-lib",
+      "start": 3316.321947355,
+      "end": 3316.352594112,
+      "seconds": 0.030646757000340585,
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef"
+    }
+  ],
+  "special": [
+    {
+      "project": "nano",
+      "root": "step",
+      "old_exit": 1,
+      "old_diagnostic": {
+        "file": "source_layout.tide",
+        "code": "E_LIMIT",
+        "message": "Work budget exhausted",
+        "line": 11,
+        "column": 11
+      },
+      "new_matches_reference": true,
+      "forms": 14,
+      "two_calls": 0,
+      "recompiled_tests": {
+        "passed": 3
+      }
+    },
+    {
+      "project": "invaders",
+      "root": "draw",
+      "old_exit": 0,
+      "old_diagnostic": null,
+      "new_matches_reference": true,
+      "forms": 13,
+      "two_calls": 0,
+      "recompiled_tests": {
+        "passed": 10
+      }
+    },
+    {
+      "project": "rule",
+      "root": "heat_ready",
+      "old_exit": 0,
+      "old_diagnostic": null,
+      "new_matches_reference": true,
+      "forms": 0,
+      "two_calls": 0,
+      "recompiled_tests": {
+        "passed": 3
+      }
+    },
+    {
+      "project": "layout",
+      "root": "main",
+      "old_exit": 0,
+      "old_diagnostic": null,
+      "new_matches_reference": true,
+      "forms": 3,
+      "two_calls": 2,
+      "recompiled_tests": {
+        "passed": 0
+      }
+    }
+  ],
+  "summary": {
+    "journal": {
+      "old_median": 0.49524136849981915,
+      "new_median": 0.3227784220000558,
+      "paired_saved_median": 0.17107580449965099,
+      "range_saved": [
+        0.1656132139996771,
+        0.1839750549997916
+      ],
+      "faster": 8,
+      "red_to_prompt": {
+        "tide": 0.37227041799997096,
+        "python": 0.032850105000079566,
+        "paired_delta": 0.3395460560000174,
+        "python_faster": 6
+      }
+    },
+    "allocation": {
+      "old_median": 0.5850174635002077,
+      "new_median": 0.3662900870001522,
+      "paired_saved_median": 0.21599397449995195,
+      "range_saved": [
+        0.20865968200041607,
+        0.2316675789998044
+      ],
+      "faster": 8,
+      "red_to_prompt": {
+        "tide": 0.40869362250009544,
+        "python": 0.02926928550004959,
+        "paired_delta": 0.37942433700004585,
+        "python_faster": 6
+      }
+    },
+    "report": {
+      "old_median": 0.42416642500006674,
+      "new_median": 0.28052040600005057,
+      "paired_saved_median": 0.1442309290000594,
+      "range_saved": [
+        0.1335883719998492,
+        0.1519892279998203
+      ],
+      "faster": 8
+    }
+  }
+}

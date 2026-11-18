@@ -1,0 +1,10 @@
+record Dataset
+text:t above:i peak:?i
+
+main groups:i > {Dataset}
+let text fold (list i 10 512 256 128 64 32 16 8 4 2 1) "" acc row bit
+  concat (concat acc acc) (if (eq (mod (div groups bit) 2) 1) "80\r\n81\n98\n-9\n" "")
+make Dataset text text above (* groups 2) peak (if (> groups 0) (some 98) (nil i))
+
+example four_rows main
+{"inputs":{"groups":1},"expect":{"text":"80\r\n81\n98\n-9\n","above":2,"peak":{"some":98}}}

@@ -1,0 +1,78 @@
+use public_data
+
+https_origin origin:t > b
+let host text_slice origin 8 (text_len origin)
+and (text_eq (text_slice origin 0 8) "https://") (and (> (text_len host) 0) (and (< (text_len host) 256)
+  (fold (indices (text_len host)) true ok row unused and ok (white (text_slice host (- row 1) row) "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.:-[]"))))
+
+http_safe_text value:t > b
+if (> (text_len value) 4096) false
+fold (indices (text_len value)) true ok row unused
+  let code bootstrap_code_at value (- row 1)
+  and ok (and (> code 31) (< code 127))
+
+http_lower value:t > t
+fold (indices (text_len value)) "" result row unused
+  let ch bootstrap_code_at value (- row 1)
+  concat result (bootstrap_character (if (and (> ch 64) (< ch 91)) (+ ch 32) ch))
+
+http_request_headers headers:{EvalValue} > ?*t
+if (> (length (get members headers)) 64) (nil *t)
+fold (get members headers) (some (list t 0)) prior row unused
+  case prior (nil *t) lines_out
+  let key get name (member_cell headers (- row 1))
+  let val get text (member_value headers (- row 1))
+  if (or (eq (text_len key) 0) (> (text_len key) 128)) (nil *t)
+  if (not (fold (indices (text_len key)) true ok pos unused2 and ok (white (text_slice key (- pos 1) pos) "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-"))) (nil *t)
+  let lower http_lower key
+  if (or (white (cat3 "|" lower "|") "|host|connection|content-length|transfer-encoding|upgrade|proxy-authorization|") (not (http_safe_text val))) (nil *t)
+  some (append lines_out (if (text_eq val "") (concat key ";") (cat3 key ": " val)))
+
+http_mock net:{EvalValue} path:t limit:i > &i&tt
+let keys map t (get members net) offset (get name (tape_at (get tape net) (+ (get offset net) offset)))
+case (entry_at keys path) (pair -1 (pair "" "")) pos
+let item member_value net pos
+let body bootstrap_utf8_octets (get text (pair_member item false "t"))
+if (> (text_len body) limit) (pair -2 (pair "" ""))
+pair (get num (pair_member item true "i")) (pair "" body)
+
+http_error file:t site:{Site} code:t why:t > {DataAction}
+make DataAction result (scalar_failure file site code "HTTPS request failed" why) work 0 bytes 0
+
+http_headers raw:t > ?{EvalValue}
+if (not (line_count_ok raw)) (nil {EvalValue})
+fold (lines raw) (some (number_value 16)) state row line
+  case state (nil {EvalValue}) headers
+  if (text_eq (text_slice line 0 5) "HTTP/") (some (number_value 16))
+  case (text_find line ":" 0) state cut
+  if (or (> cut 128) (> (length (get members headers)) 128)) (nil {EvalValue})
+  let key http_lower (text_slice line 0 cut)
+  let start + 1 cut
+  let pos if (text_eq (text_slice line start (+ 1 start)) " ") (+ 1 start) start
+  let n text_len line
+  let stop if (text_eq (text_slice line (- n 1) n) "\r") (- n 1) n
+  let value text_value (text_slice line pos stop)
+  let item data_operation "dict_put" "%t" (list {EvalValue} 3 headers (text_value key) value) (make Declarations names (list t 0) entries (list {SchemaType} 0)) "" (make Site word "" line 1 column 1)
+  some (get value (get result item))
+
+https_action args:*{EvalValue} file:t site:{Site} > {DataAction}
+let net need (at args 0) "https_net" 0
+let path get text (need (at args 1) "https_path" 0)
+let headers need (at args 2) "https_headers" 0
+let timeout get num (need (at args 3) "https_timeout" 0)
+let limit get num (need (at args 4) "https_limit" 0)
+if (or (< timeout 1) (or (> timeout 30000) (or (< limit 0) (> limit 131072)))) (http_error file site "E_LIMIT" "https_budget")
+if (or (not (text_eq (text_slice path 0 1) "/")) (or (text_eq (text_slice path 0 2) "//") (or (not (http_safe_text path)) (case (text_find path "\\" 0) false pos true)))) (http_error file site "E_CAPABILITY" "https_path")
+case (http_request_headers headers) (http_error file site "E_DATA" "https_headers") fields
+let origin get text net
+let upload case (at args 5) (nil t) body (some (get text body))
+let reply if (text_eq origin "") (http_mock net path limit) (bootstrap_https (concat origin path) fields timeout limit upload)
+let status first reply
+if (eq status -2) (http_error file site "E_LIMIT" "https_response_limit")
+if (< status 100) (http_error file site "E_IO" (if (eq status -3) "https_timeout" (if (eq status -5) "https_certificate" (if (eq status -4) "https_library" "https_transport"))))
+case (http_headers (first (second reply))) (http_error file site "E_LIMIT" "https_header_limit") response_headers
+let body text_value (second (second reply))
+let status_field add_member (number_value 16) "status" "i" (number_value status) 8
+let header_field add_member status_field "headers" "%t" response_headers (field_bytes response_headers "%t")
+let result add_member header_field "body" "y" body (field_bytes body "y")
+data_value result 0 (get num result)

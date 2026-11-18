@@ -1,0 +1,35 @@
+{
+  "Pumpe": {
+    "erste_abweichung": 5,
+    "diagnose": "Bei 19 in Schritt 4 startet die Pumpe. Der folgende Wert 80 liegt im Haltebereich. Der letzte Rückgabepfad schaltet aus, obwohl der vorherige Zustand an war.",
+    "tausch": [
+      "\n    return False",
+      "\n    return on"
+    ],
+    "vorhersage": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "Licht": {
+    "erste_abweichung": 3,
+    "erster_falscher_zaehler": 2,
+    "diagnose": "Die Bewegung in Schritt 2 schaltet das Licht ein, lässt aber den Ruhezähler auf 1. In Schritt 3 steigt er auf 2 und schaltet das Licht schon bei der ersten Ruhe nach der Bewegung aus.",
+    "tausch": [
+      "return True, missed",
+      "return True, 0"
+    ],
+    "vorhersage": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  }
+}

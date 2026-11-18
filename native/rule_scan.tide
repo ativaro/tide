@@ -1,0 +1,159 @@
+use scan_image
+
+use source
+
+record StateSlot
+name:t kind:t initial:t offset:i
+
+record RuleProgram
+fields:i code:{ScanCode}
+
+word_range tokens:*t start:i stop:i > *t
+fold tokens (list t 0) result row token
+  if (and (> row start) (not (> row stop))) (append result token) result
+
+scalar_type kind:t > t
+if (or (text_eq kind "i") (text_eq kind "b")) kind (fail "expected_native_scalar")
+
+typed_name declaration:t > &tt
+let pos need (text_find declaration ":" 0) "expected_typed_name" 0
+pair (text_slice declaration 0 pos) (text_slice declaration (+ pos 1) (text_len declaration))
+
+literal_bits kind:t token:t > t
+if (text_eq kind "b")
+  (if (text_eq token "true") (le64 1) (if (text_eq token "false") (le64 0) (fail "expected_bool_literal")))
+le64 (need (int token) "expected_i64_literal" 0)
+
+state_slots tokens:*t > *{StateSlot}
+if (not (and (text_eq (word tokens 0) "state") (and (> (length tokens) 1) (eq (mod (- (length tokens) 1) 3) 0)))) fail "expected_state_fields"
+fold tokens (list {StateSlot} 0) slots row token
+  if (not (eq (mod row 3) 2)) slots
+  let field typed_name token
+  let kind scalar_type (second field)
+  if (not (text_eq (word tokens row) "=")) fail "expected_state_initializer"
+  append slots (make StateSlot name (first field) kind kind initial (concat "48b8" (literal_bits kind (word tokens (+ row 1)))) offset (* 8 (length slots)))
+
+state_load field:{StateSlot} > t
+concat "498b87" (le32 (get offset field))
+
+select_action clauses:**t name:t > *t
+let found fold clauses (nil *t) hit row clause
+  if (text_eq (word clause 0) name) (case hit (some clause) dup (fail "duplicate_state_action")) hit
+need found "missing_state_action" 0
+
+branch_arrow terms:*t > i
+let arrow fold terms -1 found row token if (text_eq token "->") (- row 1) found
+if (< arrow 1) fail "expected_rule_arrow" arrow
+
+rule_needs_meter rows:**t fields:i > b
+let counts fold rows (pair 0 0) costs row terms
+  if (or (eq row 1) (eq row (length rows))) costs
+  let arrow branch_arrow terms
+  let action_tokens - (length terms) (+ arrow 1)
+  pair (+ (first costs) (- arrow 1)) (if (> action_tokens (second costs)) action_tokens (second costs))
+let out_terms need (at rows (- (length rows) 1)) "expected_rule_output" 0
+let per_event + (length out_terms) (+ (first counts) (second counts))
+> (+ (+ 4100 fields) (* 4096 per_event)) 100000
+
+branch_actions tokens:*t start:i slots:*{StateSlot} bindings:*{ScalarBinding} metered:b > t
+let pieces fold tokens (pair (list *t 0) (list t 0)) state_value row token
+  if (not (> row start)) state_value
+  if (text_eq token ",") (pair (append (first state_value) (second state_value)) (list t 0))
+  pair (first state_value) (append (second state_value) token)
+let clauses append (first pieces) (second pieces)
+if (not (eq (length clauses) (length slots))) fail "expected_all_state_actions"
+fold slots "" code row field
+  let clause select_action clauses (get name field)
+  let mode word clause 2
+  if (not (text_eq (word clause 1) "=")) fail "expected_state_action"
+  let value if (text_eq mode "set") (scalar_expression clause 3 bindings (get kind field) metered true)
+    (if (not (eq (length clause) 3)) (fail "invalid_state_action")
+     if (text_eq mode "reset") (get initial field) (if (text_eq mode "keep") (state_load field) (fail "invalid_state_action")))
+  concat code (concat (if metered tick_code "") (concat value (concat "498980" (le32 (get offset field)))))
+
+compile_rule_block rule_decl:{Declaration} > {RuleProgram}
+let signature words (get header rule_decl)
+if (not (and (eq (length signature) 5) (text_eq (word signature 3) ">"))) fail "expected_scalar_rule"
+let param typed_name (word signature 2)
+let input_kind scalar_type (second param)
+let output_kind scalar_type (word signature 4)
+let rows fold (get body rule_decl) (list *t 0) tokens row line append tokens (words line)
+let n length rows
+if (< n 3) fail "incomplete_rule"
+let slots state_slots (need (at rows 0) "expected_state_fields" 0)
+let metered rule_needs_meter rows (length slots)
+let bindings fold slots (list {ScalarBinding} 1 (scalar_binding (first param) input_kind "488b06")) acc row field
+  append acc (scalar_binding (get name field) (get kind field) (state_load field))
+let init fold slots "" code row field concat code (concat (get initial field) (concat "498987" (le32 (get offset field))))
+let output_terms need (at rows (- n 1)) "expected_rule_output" 0
+if (not (text_eq (word output_terms 0) "out")) fail "expected_rule_output"
+let output scalar_expression output_terms 1 bindings output_kind metered true
+let transition fold rows "" tail row unused
+  let index - n row
+  if (or (eq index 0) (eq index (- n 1))) tail
+  let terms need (at rows index) "expected_rule_branch" 0
+  let arrow branch_arrow terms
+  let actions branch_actions terms (+ arrow 1) slots bindings metered
+  if (eq index (- n 2))
+    (if (and (eq arrow 1) (text_eq (word terms 0) "else")) actions (fail "expected_final_else"))
+  if (not (text_eq (word terms 0) "when")) fail "expected_when"
+  conditional (scalar_expression (word_range terms 1 arrow) 0 bindings "b" metered true) actions tail
+make RuleProgram fields (length slots) code (make ScanCode input_kind input_kind output_kind output_kind
+  state_bytes (* 8 (length slots)) metered metered init init transition transition output output)
+
+find_rule blocks:*{Declaration} name:t > {Declaration}
+let found fold blocks (nil {Declaration}) hit row decl
+  let header words (get header decl)
+  if (and (text_eq (word header 0) "rule") (text_eq (word header 1) name))
+    (case hit (some decl) dup (fail "ambiguous_native_rule")) hit
+need found "unknown_native_rule" 0
+
+scan_values tokens:*t kind:t > &it
+let grouped text_eq (word tokens 0) "("
+let start if grouped 1 0
+let stop - (length tokens) (if grouped 1 0)
+if (and grouped (not (text_eq (word tokens stop) ")"))) fail "invalid_list_group"
+if (not (and (text_eq (word tokens start) "list") (text_eq (word tokens (+ start 1)) kind))) fail "expected_literal_event_list"
+let count need (int (word tokens (+ start 2))) "expected_list_length" 0
+if (or (< count 0) (or (> count 4096) (not (eq count (- stop (+ start 3)))))) fail "wrong_list_length"
+pair count (fold (word_range tokens (+ start 3) stop) "" data row token concat data (literal_bits kind token))
+
+scan_program blocks:*{Declaration} entry:{Declaration} > t
+let sig words (get header entry)
+let dynamic eq (length sig) 4
+if (not (or dynamic (eq (length sig) 3))) fail "expected_scan_entry"
+let expr body_words entry
+let direct text_eq (word expr 0) "scan"
+let target if direct entry (find_declaration blocks (word expr 0))
+let scan_terms if direct expr (body_words target)
+if (not (text_eq (word scan_terms 0) "scan")) fail "expected_scan_body"
+let rule_value compile_rule_block (find_rule blocks (word scan_terms 1))
+let code get code rule_value
+let list_type concat "*" (get input_kind code)
+let args_at if direct 2 1
+let args word_range expr args_at (length expr)
+if (not direct)
+  (let ts words (get header target)
+   if (not (and (eq (length ts) 4) (and (eq (length scan_terms) 3)
+      (text_eq (word ts 1) (concat (word scan_terms 2) (concat ":" list_type)))))) fail "expected_forwarded_event_list"
+   scan_entry_image code (get fields rule_value) sig args dynamic false)
+  (scan_entry_image code (get fields rule_value) sig args dynamic true)
+
+scan_entry_image code:{ScanCode} fields:i sig:*t args:*t dynamic:b direct:b > t
+let n length sig
+if (not (and (text_eq (word sig (- n 2)) ">") (text_eq (word sig (- n 1)) (concat "*" (get output_kind code)))) ) fail "expected_scan_result"
+let setup + fields (if direct 2 4)
+if dynamic
+  (if (not (and (eq (length args) 1) (text_eq (word sig 1) (concat (word args 0) (concat ":*" (get input_kind code)))))) fail "expected_event_parameter"
+   scan_image code setup (nil t) 0)
+let values scan_values args (get input_kind code)
+scan_image code (+ setup (first values)) (some (second values)) (first values)
+
+example spaced_fields state_slots
+{"inputs":{"tokens":["state","flag:b","=","true","total:i","=","-2"]},"expect":[{"name":"flag","kind":"b","initial":"48b80100000000000000","offset":0},{"name":"total","kind":"i","initial":"48b8feffffffffffffff","offset":8}]}
+
+example grouped_booleans scan_values
+{"inputs":{"tokens":["(","list","b","2","false","true",")"],"kind":"b"},"expect":[2,"00000000000000000100000000000000"]}
+
+example count_mismatch scan_values
+{"inputs":{"tokens":["list","i","2","4"],"kind":"i"},"expect_error":{"code":"E_DATA","reason":"wrong_list_length"}}

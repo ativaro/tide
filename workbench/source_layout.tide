@@ -1,0 +1,29 @@
+gap c:t > b
+and (not text_eq c "") (case (text_find " \t\u001f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000" c 0) false idx true)
+
+positions n:i > *t
+let marks fold (list i 18 131072 65536 32768 16384 8192 4096 2048 1024 512 256 128 64 32 16 8 4 2 1) "" acc row bit
+concat (concat acc acc) (if eq mod div n bit 2 1 "\n" "")
+lines marks
+
+indent_only s:t > b
+let n text_len s
+if eq n 0 true
+if not and (gap text_slice s 0 1) (gap text_slice s (- n 1) n) false
+fold (positions n) true ok pos unused
+and ok (gap text_slice s (- pos 1) pos)
+
+other_line_ending s:t > b
+fold (list t 8 "\u000b" "\u000c" "\u001c" "\u001d" "\u001e" "\u0085" "\u2028" "\u2029") false acc row sep
+or acc (case (text_find s sep 0) false idx true)
+
+function_header line:t name:t > b
+case (text_find line name 0) false pos
+let stop + pos text_len name
+and (indent_only text_slice line 0 pos) (gap text_slice line stop (+ stop 1))
+
+example header_after_indent function_header
+{"inputs":{"line":"\u00a0 balance opening:i > i","name":"balance"},"expect":true}
+
+example header_name_prefix function_header
+{"inputs":{"line":"balances entries:*i > i","name":"balance"},"expect":false}

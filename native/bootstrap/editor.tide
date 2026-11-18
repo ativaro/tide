@@ -1,0 +1,67 @@
+use function_run
+
+use sha256
+
+edit_compiled project:{ProjectFiles} > {CompiledProject}
+let unit need (at (get units project) 0) "missing_root" 0
+compile_project project (schema_blocks (get source unit) true)
+
+edit_base project:{ProjectFiles} base:t > {CompiledProject}
+let revision sha256_utf8 (project_snapshot project)
+let root need (at (get units project) 0) "missing_root" 0
+if (not (text_eq base revision)) fail (extra_fields (root_diagnostic (get file root) "E_REVISION" "Source changed") (concat "\"actual\":" (json_string revision)))
+edit_compiled project
+
+edit_contract book:{SourceDeclarations} index:i > t
+if (< index 0) "null"
+let ex need (at (get examples book) index) "example_index" 0
+let object contract_object (get data ex)
+cat3 "{\"target\":" (json_string (get target ex)) (concat "," (text_slice object 1 (text_len object)))
+
+record ContractScan
+left:i right:i existing_changed:b rows:t
+
+contract_next before:{SourceDeclarations} after:{SourceDeclarations} old_order:*i new_order:*i scan:{ContractScan} > {ContractScan}
+let l case (at old_order (get left scan)) -1 i i
+let r case (at new_order (get right scan)) -1 i i
+if (and (< l 0) (< r 0)) scan
+let old_name case (at (get sample_names before) l) "" name name
+let new_name case (at (get sample_names after) r) "" name name
+let same text_eq old_name new_name
+let old_side or (< r 0) (and (not (< l 0)) (or same (label_before old_name new_name)))
+let new_side or same (not old_side)
+let advanced with left (with right scan (+ (get right scan) (if new_side 1 0))) (+ (get left scan) (if old_side 1 0))
+let old edit_contract before (if old_side l -1)
+let new edit_contract after (if new_side r -1)
+if (text_eq old new) advanced
+let item cat3 "{\"example\":" (json_string (if old_side old_name new_name)) (cat3 ",\"before\":" old (cat3 ",\"after\":" new "}"))
+with rows (with existing_changed advanced (or old_side (get existing_changed scan))) (json_item (get rows scan) item)
+
+contract_changes before:{SourceDeclarations} after:{SourceDeclarations} > &bt
+let old_order label_order (get sample_names before)
+let new_order label_order (get sample_names after)
+let bound + (length old_order) (length new_order)
+let start make ContractScan left 0 right 0 existing_changed false rows ""
+let diff fold (indices (div (+ bound 63) 64)) start done page unused
+  let left - bound (* (- page 1) 64)
+  let part fold (indices (if (< left 64) left 64)) (with rows done "") scan row unused_row
+    contract_next before after old_order new_order scan
+  with rows part (if (text_eq (get rows part) "") (get rows done) (json_item (get rows done) (get rows part)))
+pair (get existing_changed diff) (cat3 "[" (get rows diff) "]")
+
+checked_edit_fields before:{SourceDeclarations} candidate:{ProjectFiles} base:t allow:b target_fields:t > t
+let root need (at (get units candidate) 0) "missing_root" 0
+let file get file root
+let compiled edit_compiled candidate
+let changes contract_changes before (get declarations compiled)
+if (and (first changes) (not allow))
+  fail (extra_fields (root_diagnostic file "E_CONTRACT" "Changed or deleted examples require --change-examples") (concat "\"changes\":" (second changes)))
+let passed passed_examples compiled file
+let revision sha256_utf8 (project_snapshot candidate)
+let result cat3 "{\"base\":" (json_string base) (cat3 ",\"revision\":" (json_string revision) target_fields)
+cat3 result ",\"examples\":{\"passed\":" (cat3 (decimal passed) "},\"contract_changes\":" (second changes))
+
+edit_candidate before:{SourceDeclarations} candidate:{ProjectFiles} unit_name:t base:t allow:b write:b > t
+let target need (at (get units candidate) (need (entry_at (get names candidate) unit_name) "candidate_name" 0)) "candidate_unit" 0
+let checked checked_edit_fields before candidate base allow (concat ",\"target\":" (json_string (get name target)))
+concat checked (if write ",\"written\":true}\n" (cat3 ",\"written\":false,\"source\":" (get wire target) "}\n"))

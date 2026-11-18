@@ -1,0 +1,2168 @@
+{
+  "timecode": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ermittle die Bildnummer am Anfang der angegebenen Sekunde ab Minute null.",
+          "sources": {
+            "panel": "from route import at_frame\n\ndef main(minutes: int, seconds: int, fps: int) -> int:\n    return at_frame(minutes, seconds, fps)\n",
+            "route": "from rulebook import elapsed\n\ndef at_frame(minutes: int, seconds: int, fps: int) -> int:\n    return elapsed(minutes, seconds) * fps\n",
+            "rulebook": "def elapsed(minutes: int, seconds: int) -> int:\n    return (minutes + 60) + seconds\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "minutes": 0,
+                "seconds": 0,
+                "fps": 24
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "minutes": 1,
+                "seconds": 0,
+                "fps": 25
+              },
+              "expect": 1500
+            },
+            {
+              "inputs": {
+                "minutes": 4,
+                "seconds": 1,
+                "fps": 48
+              },
+              "expect": 11568
+            },
+            {
+              "inputs": {
+                "minutes": 19,
+                "seconds": 17,
+                "fps": 30
+              },
+              "expect": 34710
+            },
+            {
+              "inputs": {
+                "minutes": 10,
+                "seconds": 41,
+                "fps": 60
+              },
+              "expect": 38460
+            },
+            {
+              "inputs": {
+                "minutes": 28,
+                "seconds": 11,
+                "fps": 60
+              },
+              "expect": 101460
+            },
+            {
+              "inputs": {
+                "minutes": 5,
+                "seconds": 31,
+                "fps": 50
+              },
+              "expect": 16550
+            },
+            {
+              "inputs": {
+                "minutes": 21,
+                "seconds": 28,
+                "fps": 60
+              },
+              "expect": 77280
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "minutes": 0,
+            "seconds": 0,
+            "fps": 24
+          },
+          "expect": 0,
+          "actual": 1440,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:13:2:25",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:13:2:25",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ermittle die Bildnummer am Anfang der angegebenen Sekunde ab Minute null.",
+          "sources": {
+            "panel": "use route\n\nmain minutes:i seconds:i fps:i > i\nat_frame minutes seconds fps\n",
+            "route": "use rulebook\n\nat_frame minutes:i seconds:i fps:i > i\n* (elapsed minutes seconds) fps\n",
+            "rulebook": "elapsed minutes:i seconds:i > i\n+ (+ minutes 60) seconds\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "minutes": 0,
+                "seconds": 0,
+                "fps": 24
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "minutes": 1,
+                "seconds": 0,
+                "fps": 25
+              },
+              "expect": 1500
+            },
+            {
+              "inputs": {
+                "minutes": 4,
+                "seconds": 1,
+                "fps": 48
+              },
+              "expect": 11568
+            },
+            {
+              "inputs": {
+                "minutes": 19,
+                "seconds": 17,
+                "fps": 30
+              },
+              "expect": 34710
+            },
+            {
+              "inputs": {
+                "minutes": 10,
+                "seconds": 41,
+                "fps": 60
+              },
+              "expect": 38460
+            },
+            {
+              "inputs": {
+                "minutes": 28,
+                "seconds": 11,
+                "fps": 60
+              },
+              "expect": 101460
+            },
+            {
+              "inputs": {
+                "minutes": 5,
+                "seconds": 31,
+                "fps": 50
+              },
+              "expect": 16550
+            },
+            {
+              "inputs": {
+                "minutes": 21,
+                "seconds": 28,
+                "fps": 60
+              },
+              "expect": 77280
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "minutes": 0,
+            "seconds": 0,
+            "fps": 24
+          },
+          "expect": 0,
+          "actual": 1440,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:4",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:4",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ]
+  },
+  "rowgroup": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die Gruppenkennung eines ab eins gezählten Datensatzes. Jede Gruppe umfasst width Datensätze, die erste heisst base.",
+          "sources": {
+            "panel": "use route\n\nmain record_no:i width:i base:i > i\nlocate record_no width base\n",
+            "route": "use rulebook\n\nlocate record_no:i width:i base:i > i\n* base (div (offset record_no) width)\n",
+            "rulebook": "offset record_no:i > i\n+ record_no 1\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "record_no": 1,
+                "width": 1,
+                "base": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "record_no": 2,
+                "width": 1,
+                "base": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "record_no": 34,
+                "width": 12,
+                "base": 4
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "record_no": 513,
+                "width": 1,
+                "base": 73
+              },
+              "expect": 585
+            },
+            {
+              "inputs": {
+                "record_no": 33,
+                "width": 17,
+                "base": 54
+              },
+              "expect": 55
+            },
+            {
+              "inputs": {
+                "record_no": 657,
+                "width": 15,
+                "base": 64
+              },
+              "expect": 107
+            },
+            {
+              "inputs": {
+                "record_no": 179,
+                "width": 1,
+                "base": 35
+              },
+              "expect": 213
+            },
+            {
+              "inputs": {
+                "record_no": 792,
+                "width": 11,
+                "base": 9
+              },
+              "expect": 80
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "record_no": 2,
+            "width": 1,
+            "base": 0
+          },
+          "expect": 1,
+          "actual": 0,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.tide:4:1",
+                "op": "+"
+              },
+              {
+                "node": "rulebook.tide:2:1",
+                "op": "-"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:4:1",
+              "op": "+"
+            },
+            {
+              "node": "rulebook.tide:2:1",
+              "op": "-"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die Gruppenkennung eines ab eins gezählten Datensatzes. Jede Gruppe umfasst width Datensätze, die erste heisst base.",
+          "sources": {
+            "panel": "from route import locate\n\ndef main(record_no: int, width: int, base: int) -> int:\n    return locate(record_no, width, base)\n",
+            "route": "from rulebook import offset\n\ndef locate(record_no: int, width: int, base: int) -> int:\n    return base * (offset(record_no) // width)\n",
+            "rulebook": "def offset(record_no: int) -> int:\n    return record_no + 1\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "record_no": 1,
+                "width": 1,
+                "base": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "record_no": 2,
+                "width": 1,
+                "base": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "record_no": 34,
+                "width": 12,
+                "base": 4
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "record_no": 513,
+                "width": 1,
+                "base": 73
+              },
+              "expect": 585
+            },
+            {
+              "inputs": {
+                "record_no": 33,
+                "width": 17,
+                "base": 54
+              },
+              "expect": 55
+            },
+            {
+              "inputs": {
+                "record_no": 657,
+                "width": 15,
+                "base": 64
+              },
+              "expect": 107
+            },
+            {
+              "inputs": {
+                "record_no": 179,
+                "width": 1,
+                "base": 35
+              },
+              "expect": 213
+            },
+            {
+              "inputs": {
+                "record_no": 792,
+                "width": 11,
+                "base": 9
+              },
+              "expect": 80
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "record_no": 2,
+            "width": 1,
+            "base": 0
+          },
+          "expect": 1,
+          "actual": 0,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.py:4:12:4:47",
+                "op": "+"
+              },
+              {
+                "node": "rulebook.py:2:12:2:25",
+                "op": "-"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:4:12:4:47",
+              "op": "+"
+            },
+            {
+              "node": "rulebook.py:2:12:2:25",
+              "op": "-"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ]
+  },
+  "flood": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Messung mindestens auf Warnhöhe zählt eine volle Messperiode. Liefere die Gesamtdauer in Minuten.",
+          "sources": {
+            "panel": "from route import duration\n\ndef main(samples: list[int], level: int, period: int) -> int:\n    return duration(samples, level, period)\n",
+            "route": "from rulebook import intervals\n\ndef duration(samples: list[int], level: int, period: int) -> int:\n    return intervals(samples, level) - period\n",
+            "rulebook": "def intervals(samples: list[int], level: int) -> int:\n    count = 0\n    for sample in samples:\n        if sample > level:\n            count = count + 1\n    return count\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "samples": [],
+                "level": 0,
+                "period": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "samples": [
+                  1,
+                  -1,
+                  -1,
+                  1
+                ],
+                "level": 1,
+                "period": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "samples": [
+                  2,
+                  4,
+                  0,
+                  5
+                ],
+                "level": 2,
+                "period": 2
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "samples": [
+                  16,
+                  14,
+                  14,
+                  17
+                ],
+                "level": 16,
+                "period": 2
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "samples": [
+                  6,
+                  7,
+                  4,
+                  7
+                ],
+                "level": 6,
+                "period": 15
+              },
+              "expect": 45
+            },
+            {
+              "inputs": {
+                "samples": [
+                  11,
+                  13,
+                  9,
+                  11
+                ],
+                "level": 11,
+                "period": 9
+              },
+              "expect": 27
+            },
+            {
+              "inputs": {
+                "samples": [
+                  18,
+                  18,
+                  16,
+                  20
+                ],
+                "level": 18,
+                "period": 3
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "samples": [
+                  15,
+                  12,
+                  13,
+                  19
+                ],
+                "level": 15,
+                "period": 12
+              },
+              "expect": 24
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "samples": [],
+            "level": 0,
+            "period": 1
+          },
+          "expect": 0,
+          "actual": -1,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.py:4:12:4:46",
+                "op": "*"
+              },
+              {
+                "node": "rulebook.py:4:12:4:26",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:4:12:4:46",
+              "op": "*"
+            },
+            {
+              "node": "rulebook.py:4:12:4:26",
+              "op": ">="
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Messung mindestens auf Warnhöhe zählt eine volle Messperiode. Liefere die Gesamtdauer in Minuten.",
+          "sources": {
+            "panel": "use route\n\nmain samples:*i level:i period:i > i\nduration samples level period\n",
+            "route": "use rulebook\n\nduration samples:*i level:i period:i > i\n- (intervals samples level) period\n",
+            "rulebook": "intervals samples:*i level:i > i\nfold samples 0 count index sample (if (> sample level) (+ count 1) count)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "samples": [],
+                "level": 0,
+                "period": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "samples": [
+                  1,
+                  -1,
+                  -1,
+                  1
+                ],
+                "level": 1,
+                "period": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "samples": [
+                  2,
+                  4,
+                  0,
+                  5
+                ],
+                "level": 2,
+                "period": 2
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "samples": [
+                  16,
+                  14,
+                  14,
+                  17
+                ],
+                "level": 16,
+                "period": 2
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "samples": [
+                  6,
+                  7,
+                  4,
+                  7
+                ],
+                "level": 6,
+                "period": 15
+              },
+              "expect": 45
+            },
+            {
+              "inputs": {
+                "samples": [
+                  11,
+                  13,
+                  9,
+                  11
+                ],
+                "level": 11,
+                "period": 9
+              },
+              "expect": 27
+            },
+            {
+              "inputs": {
+                "samples": [
+                  18,
+                  18,
+                  16,
+                  20
+                ],
+                "level": 18,
+                "period": 3
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "samples": [
+                  15,
+                  12,
+                  13,
+                  19
+                ],
+                "level": 15,
+                "period": 12
+              },
+              "expect": 24
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "samples": [],
+            "level": 0,
+            "period": 1
+          },
+          "expect": 0,
+          "actual": -1,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.tide:4:1",
+                "op": "*"
+              },
+              {
+                "node": "rulebook.tide:2:40",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:4:1",
+              "op": "*"
+            },
+            {
+              "node": "rulebook.tide:2:40",
+              "op": ">="
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ]
+  },
+  "wire": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Nachricht enthält ein Headerbyte und den Text in UTF-8. Liefere die Gesamtzahl der Bytes für copies Nachrichten.",
+          "sources": {
+            "panel": "use route\n\nmain label:t copies:i > i\nwire_size label copies\n",
+            "route": "use rulebook\n\nwire_size label:t copies:i > i\n* (payload label) copies\n",
+            "rulebook": "payload label:t > i\n+ (text_len label) 1\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "0",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "copies": 1
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫33",
+                "copies": 7
+              },
+              "expect": 42
+            },
+            {
+              "inputs": {
+                "label": "é512",
+                "copies": 4
+              },
+              "expect": 24
+            },
+            {
+              "inputs": {
+                "label": "🌡8159",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "label": "é16007",
+                "copies": 1
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "label": "🌡20044",
+                "copies": 5
+              },
+              "expect": 50
+            },
+            {
+              "inputs": {
+                "label": "猫49553",
+                "copies": 11
+              },
+              "expect": 99
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "猫33",
+            "copies": 7
+          },
+          "expect": 42,
+          "actual": 28,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Nachricht enthält ein Headerbyte und den Text in UTF-8. Liefere die Gesamtzahl der Bytes für copies Nachrichten.",
+          "sources": {
+            "panel": "from route import wire_size\n\ndef main(label: str, copies: int) -> int:\n    return wire_size(label, copies)\n",
+            "route": "from rulebook import payload\n\ndef wire_size(label: str, copies: int) -> int:\n    return payload(label) * copies\n",
+            "rulebook": "def payload(label: str) -> int:\n    return len(label) + 1\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "0",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "copies": 1
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫33",
+                "copies": 7
+              },
+              "expect": 42
+            },
+            {
+              "inputs": {
+                "label": "é512",
+                "copies": 4
+              },
+              "expect": 24
+            },
+            {
+              "inputs": {
+                "label": "🌡8159",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "label": "é16007",
+                "copies": 1
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "label": "🌡20044",
+                "copies": 5
+              },
+              "expect": 50
+            },
+            {
+              "inputs": {
+                "label": "猫49553",
+                "copies": 11
+              },
+              "expect": 99
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "猫33",
+            "copies": 7
+          },
+          "expect": 42,
+          "actual": 28,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ]
+  },
+  "mosaic": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Bildzeile umfasst pitch Speicherplätze. Liefere den nullbasierten Speicherplatz von row, column.",
+          "sources": {
+            "panel": "from route import address\n\ndef main(row: int, column: int, pitch: int) -> int:\n    return address(row, column, pitch)\n",
+            "route": "from rulebook import offset\n\ndef address(row: int, column: int, pitch: int) -> int:\n    return offset(column, row, pitch)\n",
+            "rulebook": "def offset(row: int, column: int, pitch: int) -> int:\n    return row * pitch + column\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "row": 0,
+                "column": 0,
+                "pitch": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "row": 0,
+                "column": 0,
+                "pitch": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "row": 4,
+                "column": 11,
+                "pitch": 34
+              },
+              "expect": 147
+            },
+            {
+              "inputs": {
+                "row": 13,
+                "column": 26,
+                "pitch": 36
+              },
+              "expect": 494
+            },
+            {
+              "inputs": {
+                "row": 25,
+                "column": 16,
+                "pitch": 51
+              },
+              "expect": 1291
+            },
+            {
+              "inputs": {
+                "row": 6,
+                "column": 1,
+                "pitch": 2
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "row": 13,
+                "column": 4,
+                "pitch": 11
+              },
+              "expect": 147
+            },
+            {
+              "inputs": {
+                "row": 29,
+                "column": 33,
+                "pitch": 52
+              },
+              "expect": 1541
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "row": 4,
+            "column": 11,
+            "pitch": 34
+          },
+          "expect": 147,
+          "actual": 378,
+          "tested": [
+            10,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Bildzeile umfasst pitch Speicherplätze. Liefere den nullbasierten Speicherplatz von row, column.",
+          "sources": {
+            "panel": "use route\n\nmain row:i column:i pitch:i > i\naddress row column pitch\n",
+            "route": "use rulebook\n\naddress row:i column:i pitch:i > i\noffset column row pitch\n",
+            "rulebook": "offset row:i column:i pitch:i > i\n+ (* row pitch) column\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "row": 0,
+                "column": 0,
+                "pitch": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "row": 0,
+                "column": 0,
+                "pitch": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "row": 4,
+                "column": 11,
+                "pitch": 34
+              },
+              "expect": 147
+            },
+            {
+              "inputs": {
+                "row": 13,
+                "column": 26,
+                "pitch": 36
+              },
+              "expect": 494
+            },
+            {
+              "inputs": {
+                "row": 25,
+                "column": 16,
+                "pitch": 51
+              },
+              "expect": 1291
+            },
+            {
+              "inputs": {
+                "row": 6,
+                "column": 1,
+                "pitch": 2
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "row": 13,
+                "column": 4,
+                "pitch": 11
+              },
+              "expect": 147
+            },
+            {
+              "inputs": {
+                "row": 29,
+                "column": 33,
+                "pitch": 52
+              },
+              "expect": 1541
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "row": 4,
+            "column": 11,
+            "pitch": 34
+          },
+          "expect": 147,
+          "actual": 378,
+          "tested": [
+            10,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ]
+  },
+  "reserve": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zwei Spiegel verarbeiten dieselben Blöcke. Ziehe den höheren Belegungsstand von capacity ab, mindestens null Plätze bleiben frei.",
+          "sources": {
+            "panel": "use route\n\nmain left:i right:i capacity:i > i\nfree_space left right capacity\n",
+            "route": "use rulebook\n\nfree_space left:i right:i capacity:i > i\nlet free - capacity (used left right)\nif (< free 0) 0 free\n",
+            "rulebook": "used left:i right:i > i\nif (< left right) left right\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "left": 0,
+                "right": 0,
+                "capacity": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 1,
+                "right": 0,
+                "capacity": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 33,
+                "right": 8,
+                "capacity": 36
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "left": 31,
+                "right": 17,
+                "capacity": 9
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 19,
+                "right": 4,
+                "capacity": 55
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "left": 23,
+                "right": 5,
+                "capacity": 16
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 27,
+                "right": 16,
+                "capacity": 28
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "left": 10,
+                "right": 30,
+                "capacity": 11
+              },
+              "expect": 0
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "left": 1,
+            "right": 0,
+            "capacity": 1
+          },
+          "expect": 0,
+          "actual": 1,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:5",
+                "op": ">"
+              }
+            ],
+            [
+              {
+                "node": "rulebook.tide:2:5",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:5",
+              "op": ">"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zwei Spiegel verarbeiten dieselben Blöcke. Ziehe den höheren Belegungsstand von capacity ab, mindestens null Plätze bleiben frei.",
+          "sources": {
+            "panel": "from route import free_space\n\ndef main(left: int, right: int, capacity: int) -> int:\n    return free_space(left, right, capacity)\n",
+            "route": "from rulebook import used\n\ndef free_space(left: int, right: int, capacity: int) -> int:\n    free = capacity - used(left, right)\n    return 0 if free < 0 else free\n",
+            "rulebook": "def used(left: int, right: int) -> int:\n    return left if left < right else right\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "left": 0,
+                "right": 0,
+                "capacity": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 1,
+                "right": 0,
+                "capacity": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 33,
+                "right": 8,
+                "capacity": 36
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "left": 31,
+                "right": 17,
+                "capacity": 9
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 19,
+                "right": 4,
+                "capacity": 55
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "left": 23,
+                "right": 5,
+                "capacity": 16
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "left": 27,
+                "right": 16,
+                "capacity": 28
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "left": 10,
+                "right": 30,
+                "capacity": 11
+              },
+              "expect": 0
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "left": 1,
+            "right": 0,
+            "capacity": 1
+          },
+          "expect": 0,
+          "actual": 1,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:20:2:32",
+                "op": ">"
+              }
+            ],
+            [
+              {
+                "node": "rulebook.py:2:20:2:32",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:20:2:32",
+              "op": ">"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ]
+  },
+  "spread": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Die erste Liste enthält untere, die zweite obere Bandgrenzen. Gib den Abstand von der kleinsten unteren bis zur grössten oberen Grenze aus. Beide Listen sind belegt.",
+          "sources": {
+            "panel": "from route import width\n\ndef main(lows: list[int], highs: list[int]) -> int:\n    return width(lows, highs)\n",
+            "route": "from rulebook import bottom\n\ndef width(lows: list[int], highs: list[int]) -> int:\n    top = highs[0]\n    for item in highs:\n        top = item if item > top else top\n    return top + bottom(lows)\n",
+            "rulebook": "def bottom(lows: list[int]) -> int:\n    best = lows[0]\n    for item in lows:\n        best = item if item > best else best\n    return best\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "lows": [
+                  3,
+                  0,
+                  2
+                ],
+                "highs": [
+                  8,
+                  4
+                ]
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "lows": [
+                  1,
+                  2
+                ],
+                "highs": [
+                  6,
+                  7,
+                  9
+                ]
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "lows": [
+                  4,
+                  5
+                ],
+                "highs": [
+                  17,
+                  13
+                ]
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "lows": [
+                  22,
+                  19,
+                  21
+                ],
+                "highs": [
+                  40,
+                  41,
+                  43
+                ]
+              },
+              "expect": 24
+            },
+            {
+              "inputs": {
+                "lows": [
+                  10,
+                  11
+                ],
+                "highs": [
+                  17,
+                  18,
+                  20
+                ]
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "lows": [
+                  28,
+                  29
+                ],
+                "highs": [
+                  55,
+                  56,
+                  58
+                ]
+              },
+              "expect": 30
+            },
+            {
+              "inputs": {
+                "lows": [
+                  8,
+                  5,
+                  7
+                ],
+                "highs": [
+                  15,
+                  16,
+                  18
+                ]
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "lows": [
+                  21,
+                  22
+                ],
+                "highs": [
+                  27,
+                  28,
+                  30
+                ]
+              },
+              "expect": 9
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "lows": [
+              3,
+              0,
+              2
+            ],
+            "highs": [
+              8,
+              4
+            ]
+          },
+          "expect": 8,
+          "actual": 11,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.py:7:12:7:30",
+                "op": "-"
+              },
+              {
+                "node": "rulebook.py:4:24:4:35",
+                "op": "<"
+              }
+            ],
+            [
+              {
+                "node": "route.py:7:12:7:30",
+                "op": "-"
+              },
+              {
+                "node": "rulebook.py:4:24:4:35",
+                "op": "<="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:7:12:7:30",
+              "op": "-"
+            },
+            {
+              "node": "rulebook.py:4:24:4:35",
+              "op": "<"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Die erste Liste enthält untere, die zweite obere Bandgrenzen. Gib den Abstand von der kleinsten unteren bis zur grössten oberen Grenze aus. Beide Listen sind belegt.",
+          "sources": {
+            "panel": "use route\n\nmain lows:*i highs:*i > i\nwidth lows highs\n",
+            "route": "use rulebook\n\nwidth lows:*i highs:*i > i\nlet top fold highs (need (at highs 0) \"empty\" 0) best pos item (if (> item best) item best)\n+ top (bottom lows)\n",
+            "rulebook": "bottom lows:*i > i\nfold lows (need (at lows 0) \"empty\" 0) best pos item (if (> item best) item best)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "lows": [
+                  3,
+                  0,
+                  2
+                ],
+                "highs": [
+                  8,
+                  4
+                ]
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "lows": [
+                  1,
+                  2
+                ],
+                "highs": [
+                  6,
+                  7,
+                  9
+                ]
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "lows": [
+                  4,
+                  5
+                ],
+                "highs": [
+                  17,
+                  13
+                ]
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "lows": [
+                  22,
+                  19,
+                  21
+                ],
+                "highs": [
+                  40,
+                  41,
+                  43
+                ]
+              },
+              "expect": 24
+            },
+            {
+              "inputs": {
+                "lows": [
+                  10,
+                  11
+                ],
+                "highs": [
+                  17,
+                  18,
+                  20
+                ]
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "lows": [
+                  28,
+                  29
+                ],
+                "highs": [
+                  55,
+                  56,
+                  58
+                ]
+              },
+              "expect": 30
+            },
+            {
+              "inputs": {
+                "lows": [
+                  8,
+                  5,
+                  7
+                ],
+                "highs": [
+                  15,
+                  16,
+                  18
+                ]
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "lows": [
+                  21,
+                  22
+                ],
+                "highs": [
+                  27,
+                  28,
+                  30
+                ]
+              },
+              "expect": 9
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "lows": [
+              3,
+              0,
+              2
+            ],
+            "highs": [
+              8,
+              4
+            ]
+          },
+          "expect": 8,
+          "actual": 11,
+          "tested": [
+            12,
+            32
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.tide:5:1",
+                "op": "-"
+              },
+              {
+                "node": "rulebook.tide:2:59",
+                "op": "<"
+              }
+            ],
+            [
+              {
+                "node": "route.tide:5:1",
+                "op": "-"
+              },
+              {
+                "node": "rulebook.tide:2:59",
+                "op": "<="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:5:1",
+              "op": "-"
+            },
+            {
+              "node": "rulebook.tide:2:59",
+              "op": "<"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_checked": 64
+        }
+      }
+    ]
+  },
+  "suffix": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Archivschlüssel besteht aus durch Schrägstriche getrennten Komponenten. Liefere die Zeichenzahl der letzten Komponente.",
+          "sources": {
+            "panel": "use route\n\nmain key:t > i\ntail_size key\n",
+            "route": "use rulebook\n\ntail_size key:t > i\nlet split separator key\n- (text_len key) (+ split 1)\n",
+            "rulebook": "separator key:t > i\ncase (text_find key \"/\" 0) -1 pos pos\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "key": "ä0"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "key": "archiv/"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "key": "archiv/ä33"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "key": "ä512"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "key": "a//b/ä8159"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "key": "a//b/ä16007"
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "key": "ä20044"
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "key": "archiv/ä49553"
+              },
+              "expect": 6
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "key": "a//b/ä8159"
+          },
+          "expect": 5,
+          "actual": 8,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Archivschlüssel besteht aus durch Schrägstriche getrennten Komponenten. Liefere die Zeichenzahl der letzten Komponente.",
+          "sources": {
+            "panel": "from route import tail_size\n\ndef main(key: str) -> int:\n    return tail_size(key)\n",
+            "route": "from rulebook import separator\n\ndef tail_size(key: str) -> int:\n    split = separator(key)\n    return len(key) - (split + 1)\n",
+            "rulebook": "def separator(key: str) -> int:\n    return key.find('/')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "key": "ä0"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "key": "archiv/"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "key": "archiv/ä33"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "key": "ä512"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "key": "a//b/ä8159"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "key": "a//b/ä16007"
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "key": "ä20044"
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "key": "archiv/ä49553"
+              },
+              "expect": 6
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "key": "a//b/ä8159"
+          },
+          "expect": 5,
+          "actual": 8,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_checked": 0
+        }
+      }
+    ]
+  }
+}

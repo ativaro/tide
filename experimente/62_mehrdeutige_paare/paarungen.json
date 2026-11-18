@@ -1,0 +1,43 @@
+{
+  "entry": {
+    "tide": "use route\n\nmain a:i b:i > i\nroute a b\n",
+    "python": "from route import route\n\ndef main(a: int, b: int) -> int:\n    return route(a, b)\n"
+  },
+  "families": {
+    "versandetiketten": {
+      "contract": "At most b packages. Issue b standard labels and two reserve labels per package, or -99 above capacity.",
+      "tide": "+ (* a b) 2",
+      "python": "a * b + 2",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\nlet labels compute a b\nif (< a b) labels -99\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    labels = compute(a, b)\n    return labels if a < b else -99\n"
+    },
+    "nettogewicht": {
+      "contract": "Subtract b from a when a is at most b, otherwise return -99.",
+      "tide": "+ a b",
+      "python": "a + b",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\nlet net compute a b\nif (< a b) net -99\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    net = compute(a, b)\n    return net if a < b else -99\n"
+    },
+    "taktfenster": {
+      "contract": "Return the offset in the first cycle of length b. At or beyond the next cycle, return -99.",
+      "tide": "+ a b",
+      "python": "a + b",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\nlet offset compute a b\nif (> a b) offset -99\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    offset = compute(a, b)\n    return offset if a > b else -99\n"
+    },
+    "lackbedarf": {
+      "contract": "The paint required at rate a for a square of side length b.",
+      "tide": "- a b",
+      "python": "a - b",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\n- (compute a b) b\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    return compute(a, b) - b\n"
+    },
+    "restladung": {
+      "contract": "Charge three units per item that does not fit in full trays of capacity b.",
+      "tide": "+ a b",
+      "python": "a + b",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\n+ (compute a b) 3\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    return compute(a, b) + 3\n"
+    }
+  }
+}

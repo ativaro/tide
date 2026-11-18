@@ -1,0 +1,2 @@
+balance opening:i entries:*i > i
+  fold entries opening acc row entry + acc entry

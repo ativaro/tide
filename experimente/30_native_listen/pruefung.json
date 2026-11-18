@@ -1,0 +1,1110 @@
+{
+  "date": "2026-11-17",
+  "platform": "Linux x86-64",
+  "native_package": {
+    "bootstrap_checks_and_installed_apps_pass": true,
+    "stock_app_examples": {
+      "balance": 3,
+      "heating": 5,
+      "cartons": 6
+    },
+    "cross_module_list_examples": 7,
+    "unchanged_app_elf_hashes": 12,
+    "checker_sha256": "5b41071f07501b2d3c8d09d9d48d33c1c1bc2a24ff724b559ad9138b0c8e163e",
+    "reference_files_in_clean_package": 0
+  },
+  "comparison": {
+    "list_commands": 176,
+    "list_by_command": {
+      "check": 36,
+      "run": 68,
+      "test": 36,
+      "fmt": 36
+    },
+    "scalar_regression_commands": 466,
+    "scalar_by_command": {
+      "check": 53,
+      "run": 309,
+      "test": 52,
+      "fmt": 52
+    },
+    "differences": 0,
+    "criteria": [
+      "exit status",
+      "stdout/stderr routing",
+      "full JSON including integer precision and diagnostics",
+      "exact formatter output"
+    ]
+  },
+  "checks": [
+    {
+      "label": "balance",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "balance",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "balance",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "balance",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "cartons",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "cartons",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "cartons",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "cartons",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heating",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heating",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heating",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "heating",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "lists",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "lists",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "lists",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "lists",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "empty",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "whitespace",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "min",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "max",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "overflow",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "underflow",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "not_i",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "wrong_type",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "mixed",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "null",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "wrong_scalar",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "empty_object",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "limit",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "above_limit",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "allocate0",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "allocate1",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "allocate723",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "allocate724",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "append_size4095",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "append_size4096",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "bad_type_without_count",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "bad_type_without_count",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "bad_type_without_count",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "bad_type_without_count",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "group_no_type",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "group_no_type",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "group_no_type",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "group_no_type",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "zerolist",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zerolist",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zerolist",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "zerolist",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "typed",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "typed",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "typed",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "typed",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "body_type",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "body_type",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "body_type",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "body_type",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "fold_arg",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "fold_arg",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "fold_arg",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "fold_arg",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "bad_before_binder",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "bad_before_binder",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "bad_before_binder",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "bad_before_binder",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "duplicate",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "duplicate",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "duplicate",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "duplicate",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "double_binder",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "double_binder",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "double_binder",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "double_binder",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "shadow",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "shadow",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "shadow",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "shadow",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_NAME"
+    },
+    {
+      "label": "stray",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "stray",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "stray",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "stray",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "omitted",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "omitted",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "omitted",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "omitted",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_neg",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_neg",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_neg",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_neg",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_big",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "count_big",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "count_big",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "count_big",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "count_word",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_word",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_word",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "count_word",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_SYNTAX"
+    },
+    {
+      "label": "element_bad",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_bad",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_bad",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_bad",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_mixed",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_mixed",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_mixed",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "element_mixed",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_wrong",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_wrong",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_wrong",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_wrong",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_nonlist",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_nonlist",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_nonlist",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "append_nonlist",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "len_nonlist",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "len_nonlist",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "len_nonlist",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "len_nonlist",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_TYPE"
+    },
+    {
+      "label": "eager_start",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "eager_start",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "eager_start",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "eager_start",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_DATA"
+    },
+    {
+      "label": "skip_body",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "skip_body",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "skip_body",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "skip_body",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_fold",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_fold",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_fold",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "nested_fold",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "scoped_list",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "scoped_list",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "scoped_list",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "scoped_list",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "long_example4096",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "long_example4096",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "long_example4096",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "long_example4096",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "long_example4097",
+      "cmd": "check",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "long_example4097",
+      "cmd": "test",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "long_example4097",
+      "cmd": "fmt",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "long_example4097",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_INPUT"
+    },
+    {
+      "label": "literal255",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal255",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal255",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal255",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal256",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal256",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal256",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal256",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal257",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal257",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal257",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal257",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4095",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4095",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4095",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4095",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4096",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4096",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4096",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "literal4096",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "wide_lines",
+      "cmd": "check",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "wide_lines",
+      "cmd": "test",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "wide_lines",
+      "cmd": "fmt",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "wide_lines",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "fold_work_100000",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "fold_work_100001",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "import_overflow",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_OVERFLOW"
+    },
+    {
+      "label": "import_position",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "distinct_lists",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "repeated_alloc510",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "repeated_alloc511",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "repeated_alloc512",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    },
+    {
+      "label": "work180",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "work181",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "work182",
+      "cmd": "run",
+      "status": 0,
+      "code": null
+    },
+    {
+      "label": "work183",
+      "cmd": "run",
+      "status": 1,
+      "code": "E_LIMIT"
+    }
+  ],
+  "reference_tests": 35,
+  "source_sha256": {
+    "Makefile": "397913bb5cbec13d9c95bae0a51413840cd3825a66f8a73b19966ce3909d28c0",
+    "tide": "5083dec3e3001bcb708fb02aaf227f9c2c556426cf4d99c6bd27e3f101e4de68",
+    "native/bootstrap/schema.tide": "dd3aac84c6f05e750b2229a725142fd895458c840ea7aad182964318c0bcd298",
+    "native/bootstrap/functions.tide": "a6133b84f490af42ac4eeeae6d61230a50d6b16c5f767b764742a491457a5e42",
+    "native/bootstrap/function_run.tide": "c59989521c6cd4f8ae01e58239d4bbd05a356a7dfc8bf0c642ce6e39cfdc5252",
+    "native/bootstrap/scalar_json.tide": "61202da6830689ef3cc793db8d395cb392c8397095f2dea0144ce71e1852d168",
+    "native/bootstrap/project.tide": "330ffff30da78dc59ef55368a48dfe89d7e05c190944716915841a6b293c064d",
+    "native/bootstrap/checks.tide": "4be8caef7f477d9d6431d943775312920566fa01e0258670ea2b9a2904c86b67",
+    "native/bootstrap/fixtures/functions/lists.tide": "7f534fa7f438ab73403aa39294934b0d5ad5389a315cb4b87c70df070a0bed0c",
+    "native/bootstrap/fixtures/functions/list_ops.tide": "d1d4c82fd4f46258d3ae71e83bd7093d4b970d8a24b3bc534367b824aa388bb6"
+  }
+}

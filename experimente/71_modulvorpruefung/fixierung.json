@@ -1,0 +1,25 @@
+{
+  "files": {
+    "versuchsplan.json": "696da9aaa8c4bf22cf7dd83d4b38a4f07b0bf0d1cdef0b76b5735dcfdccf49db",
+    "messen.mjs": "70b6bb991d115147f8f0e9894fcd093ff2923bcef3d466793935289b9bcbcb88",
+    "cpython_modul.py": "cf7b72f4a271b376dcd8bbde017f558a0385556fcefd3c4391412ec681a5b518",
+    "prueffaelle.json": "739c4ed9df9c3618090e82a4503c6baddf0d34c227cf73581e22d72e0b2a1b47",
+    "../70_strukturelle_reparatur/aufgaben.json": "45aa609c2dcc75bc450068ce10e4ab99d2026b1f256f748302880a9995dc2ab2",
+    "../70_strukturelle_reparatur/abnahme.tide": "0b311e085eec60aa019f9b544048aa77ce7f8af6d637118036ef26f0707e2c5f",
+    "../70_strukturelle_reparatur/messung.json": "37840576e0a9362789093e06b3094195e0f0ce8f4916d27b109ebac84f4496a9",
+    "../70_strukturelle_reparatur/protokolle.json": "9417b1d868aa423e5f66fed931d54716dbe9874f1b0328f895b7c847102acdfb",
+    "../70_strukturelle_reparatur/cpython_suche.py": "c343b5d72f9aa668661257d484e47c9c4eb62d438355a7ada0d2a6000eebef1c",
+    "../70_strukturelle_reparatur/auswerten.mjs": "d9fb9828ec459990a11b87533b5603ac4f4d2f56d48a0ecf459eeef4074cdbf7",
+    "../60_reparaturzeit/cpython_comparison.py": "56d480b0bd79f704744bf0ab308564e1e592bd75ab004c4ac96b75d69a3970ea",
+    "../55_knotenreparatur/cpython_ast.py": "2c71e4b4c054e4f123684dd52780505be011b81e6f81d405ceb432a255f07d65",
+    "../../native/bootstrap/explain.tide": "7800348c444404fe228824bb22d0263263d39c47ac244dbb13f7e191d20f1cc8",
+    "../../tide": "8e02a4594002285be6e67f06e788cddc882b7bbb4ad68764f048da8549372827"
+  },
+  "builds": {
+    "checker": "cc262613fc6bd41ab54f2114583d7b28f0a13b6bfbb7a35d148a4f1c0410c753",
+    "editor": "bd936374e0c51e95266def0511fe77ba0b0a6bcc4dcf3931208f3415f906a04c",
+    "inspector": "baa22207b4e2e294f6347e15a09dd1f5f95ff48ac9ca7b2ae20b439236f28d8e"
+  },
+  "seed": "20c7fa3dad18eed72418e0b58d55e296627fcbfb927e5db814e2f13757fdd183",
+  "frozen_utc": "2026-11-18T12:06:40.815Z"
+}

@@ -1,0 +1,29 @@
+prefer_min candidate:i current:i on_equal:b > b
+if (eq candidate current) on_equal (< candidate current)
+
+prefer_max candidate:i current:i on_equal:b > b
+if (eq candidate current) on_equal (> candidate current)
+
+example earlier_min prefer_min
+{"inputs":{"candidate":-9223372036854775808,"current":9223372036854775807,"on_equal":false},"expect":true}
+
+example later_min prefer_min
+{"inputs":{"candidate":9223372036854775807,"current":-9223372036854775808,"on_equal":true},"expect":false}
+
+example equal_keep prefer_min
+{"inputs":{"candidate":0,"current":0,"on_equal":false},"expect":false}
+
+example equal_take prefer_min
+{"inputs":{"candidate":-5,"current":-5,"on_equal":true},"expect":true}
+
+example larger_max prefer_max
+{"inputs":{"candidate":9223372036854775807,"current":-9223372036854775808,"on_equal":false},"expect":true}
+
+example smaller_max prefer_max
+{"inputs":{"candidate":-9223372036854775808,"current":9223372036854775807,"on_equal":true},"expect":false}
+
+example equal_first_max prefer_max
+{"inputs":{"candidate":7,"current":7,"on_equal":false},"expect":false}
+
+example equal_second_max prefer_max
+{"inputs":{"candidate":7,"current":7,"on_equal":true},"expect":true}

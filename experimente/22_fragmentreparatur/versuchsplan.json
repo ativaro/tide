@@ -1,0 +1,244 @@
+{
+  "design": "New seeded faults in two previously repaired four-module programs. B = TIDE complete body, F = TIDE function fragment, P = CPython same fragment option. Three blocks per fault, opposite balanced Latin squares. Serial ephemeral CLI calls, same model/effort/service. Timed before failed public check through application and first passing public verification. Max three attempts. Separate fresh public and holdout replay. Gross tokens from turn.completed input+output, cached included. Primary: within-block paired median difference F minus P and F minus B, plus wins. Frozen before model runs.",
+  "base": "../16_gruppierte_reparaturen/versuchsplan.json",
+  "cases": "For each family prepend extra_first to original public cases, then retain only the first occurrence of each distinct input across public then holdout. Retain original expected outputs; all initial and canonical outputs checked for language parity. Model receives contract, first failed result, alphabetically ordered reachable sources and edit instructions. Retry gets previous reply and public feedback only. For hidden checks prepend extra_hidden before deduplication.",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "tier": "priority",
+  "seq": [
+    [
+      "dispatch",
+      1,
+      "BFP"
+    ],
+    [
+      "press",
+      1,
+      "PFB"
+    ],
+    [
+      "press",
+      2,
+      "FBP"
+    ],
+    [
+      "dispatch",
+      2,
+      "FPB"
+    ],
+    [
+      "dispatch",
+      3,
+      "PBF"
+    ],
+    [
+      "press",
+      3,
+      "BPF"
+    ]
+  ],
+  "families": {
+    "dispatch": {
+      "contract": "Select routes for a fast profile (minimize delay, then watts) and a green profile (minimize watts, then delay). Full ties retain the earliest input. Return the selected IDs or zero for each if empty. Route IDs are distinct positive integers. Delay and watts are small nonnegative integers.",
+      "extra_first": {
+        "input": [
+          {
+            "id": 11,
+            "delay": 2,
+            "watts": 8
+          },
+          {
+            "id": 22,
+            "delay": 2,
+            "watts": 5
+          },
+          {
+            "id": 33,
+            "delay": 2,
+            "watts": 5
+          }
+        ],
+        "expect": {
+          "fast": 22,
+          "green": 22
+        }
+      },
+      "mutations": {
+        "tide": [
+          [
+            "interactive.tide",
+            "(< (get watts next) (get watts best))",
+            "(< (get watts next) (get delay best))"
+          ],
+          [
+            "eco.tide",
+            "(< (get delay next) (get delay best))",
+            "(not (> (get delay next) (get delay best)))"
+          ]
+        ],
+        "python": [
+          [
+            "interactive.py",
+            "(best[\"delay\"], best[\"watts\"])",
+            "(best[\"delay\"], best[\"delay\"])"
+          ],
+          [
+            "eco.py",
+            ") < (",
+            ") <= ("
+          ]
+        ]
+      },
+      "canonical": {
+        "tide/routes.tide": "record Route\nid:i delay:i watts:i\n\ninitial routes:*{Route} > {Route}\ncase (at routes 0) (make Route id 0 delay 0 watts 0) head head\n",
+        "python/routes.py": "def initial(routes):\n    return routes[0] if routes else {\"id\": 0, \"delay\": 0, \"watts\": 0}\n",
+        "tide/interactive.tide": "use routes\n\ninteractive routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get delay next) (get delay best)) (and (eq (get delay next) (get delay best)) (< (get watts next) (get watts best)))) next best\nget id chosen\n",
+        "python/interactive.py": "from routes import initial\n\n\ndef interactive(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/eco.tide": "use routes\n\neco routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get watts next) (get watts best)) (and (eq (get watts next) (get watts best)) (< (get delay next) (get delay best)))) next best\nget id chosen\n",
+        "python/eco.py": "from routes import initial\n\n\ndef eco(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/summary.tide": "use eco\n\nuse interactive\n\nrecord Choice\nfast:i green:i\n\nchoose routes:*{Route} > {Choice}\nmake Choice fast (interactive routes) green (eco routes)\n\nmain batches:**{Route} > *{Choice}\nfold batches (list {Choice} 0) acc row batch append acc (choose batch)\n",
+        "python/summary.py": "from eco import eco\nfrom interactive import interactive\n\n\ndef choose(routes):\n    return {\"fast\": interactive(routes), \"green\": eco(routes)}\n\n\ndef main(batches):\n    return [choose(batch) for batch in batches]\n"
+      },
+      "extra_hidden": [
+        {
+          "input": [
+            {
+              "id": 99,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 4,
+              "delay": 0,
+              "watts": 3
+            },
+            {
+              "id": 12,
+              "delay": 0,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 4,
+            "green": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 61,
+              "delay": 5,
+              "watts": 0
+            },
+            {
+              "id": 2,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 61,
+            "green": 61
+          }
+        }
+      ]
+    },
+    "press": {
+      "contract": "Report sheets needed for colour and mono printing. A sheet holds four colour pages or three mono pages. For each job, runs of the same kind share sheets. Separate jobs and kinds cannot share them. Empty jobs or runs consume no sheets. Counts are small nonnegative integers.",
+      "extra_first": {
+        "input": [
+          {
+            "colour": [
+              4
+            ],
+            "mono": [
+              7
+            ]
+          }
+        ],
+        "expect": {
+          "colour_sheets": 1,
+          "mono_sheets": 3
+        }
+      },
+      "mutations": {
+        "tide": [
+          [
+            "job.tide",
+            "(+ n (- capacity 1))",
+            "(+ n capacity)"
+          ],
+          [
+            "mono.tide",
+            "(get mono job)) 3",
+            "(get mono job)) 4"
+          ]
+        ],
+        "python": [
+          [
+            "job.py",
+            "(n + capacity - 1)",
+            "(n + capacity)"
+          ],
+          [
+            "mono.py",
+            "job[\"mono\"]), 3",
+            "job[\"mono\"]), 4"
+          ]
+        ]
+      },
+      "canonical": {
+        "tide/job.tide": "record Job\ncolour:*i mono:*i\n\npages runs:*i > i\nfold runs 0 total row n + total n\n\nsheets n:i capacity:i > i\ndiv (+ n (- capacity 1)) capacity\n",
+        "python/job.py": "def pages(runs):\n    return sum(runs)\n\n\ndef sheets(n, capacity):\n    return (n + capacity - 1) // capacity\n",
+        "tide/colour.tide": "use job\n\ncolour_total jobs:*{Job} > i\nfold jobs 0 total row job + total (sheets (pages (get colour job)) 4)\n",
+        "python/colour.py": "from job import pages, sheets\n\n\ndef colour_total(jobs):\n    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)\n",
+        "tide/mono.tide": "use job\n\nmono_total jobs:*{Job} > i\nfold jobs 0 total row job\n  + total (sheets (pages (get mono job)) 3)\n",
+        "python/mono.py": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)\n",
+        "tide/summary.tide": "use colour\n\nuse mono\n\nrecord Stock\ncolour_sheets:i mono_sheets:i\n\nstock jobs:*{Job} > {Stock}\nmake Stock colour_sheets (colour_total jobs) mono_sheets (mono_total jobs)\n\nmain batches:**{Job} > *{Stock}\nfold batches (list {Stock} 0) acc row jobs append acc (stock jobs)\n",
+        "python/summary.py": "from colour import colour_total\nfrom mono import mono_total\n\n\ndef stock(jobs):\n    return {\"colour_sheets\": colour_total(jobs), \"mono_sheets\": mono_total(jobs)}\n\n\ndef main(batches):\n    return [stock(jobs) for jobs in batches]\n"
+      },
+      "extra_hidden": [
+        {
+          "input": [
+            {
+              "colour": [
+                3,
+                5
+              ],
+              "mono": [
+                3,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                0
+              ]
+            },
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 1,
+            "mono_sheets": 2
+          }
+        }
+      ]
+    }
+  }
+}

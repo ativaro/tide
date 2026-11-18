@@ -1,0 +1,39 @@
+use list_ops
+
+positions values:*b > *i
+fold values (list i 0) seen pos active
+  if active (append seen pos) seen
+
+select flag:b left:*b right:*b > *b
+let chosen (if flag left right) chosen
+
+nested values:*i > i
+fold values 0 outer row x
+  fold values outer inner column y (+ inner (* x y))
+
+length_after values:*i > i
+length (append values 0)
+
+main > *i
+positions (select true (list b 4 true false true true) (list b 0))
+
+example one_based weighted
+{"inputs":{"values":[10,20,30]},"expect":140}
+
+example empty weighted
+{"inputs":{"values":[]},"expect":0}
+
+example result_list main
+{"inputs":{},"expect":[1,3,4]}
+
+example boolean_result select
+{"inputs":{"flag":false,"left":[true],"right":[false,true]},"expect":[false,true]}
+
+example nested_scope nested
+{"inputs":{"values":[2,-1,3]},"expect":16}
+
+example immutable_input length_after
+{"inputs":{"values":[1,2,3]},"expect":4}
+
+example checked_overflow weighted
+{"inputs":{"values":[-1,9223372036854775807]},"expect_error":{"code":"E_OVERFLOW"}}

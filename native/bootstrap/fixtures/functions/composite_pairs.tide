@@ -1,0 +1,59 @@
+variant Outcome
+waiting finish
+
+record Cursor
+label:t pos:i
+
+record Journal
+last:?&{Cursor}{Outcome} entries:*&{Cursor}{Outcome}
+
+transition c:{Cursor} > &{Cursor}{Outcome}
+pair (with pos c (+ 1 (get pos c))) (tag Outcome finish)
+
+annotate log:{Journal} c:{Cursor} > {Journal}
+let next transition c
+with entries (with last log (some next)) (append (get entries log) next)
+
+positions entries:*&{Cursor}{Outcome} > *i
+fold entries (list i 0) seen row item (append seen (get pos (first item)))
+
+select items:*&{Cursor}{Outcome} index:i > ?&{Cursor}{Outcome}
+at items index
+
+empty_log > {Journal}
+make Journal last (nil &{Cursor}{Outcome}) entries (list &{Cursor}{Outcome} 0)
+
+reverse_nested v:&&it&{Outcome}{Cursor} > &&{Cursor}{Outcome}&ti
+let basic first v
+let action second v
+pair (pair (second action) (first action)) (pair (second basic) (first basic))
+
+swap_data v:&*t?i > &?i*t
+pair (second v) (first v)
+
+example transition_field transition
+{"inputs":{"c":{"label":"Ω","pos":3}},"expect":[{"pos":4,"label":"Ω"},"finish"]}
+
+example append_pair annotate
+{"inputs":{"log":{"entries":[],"last":{"none":true}},"c":{"pos":7,"label":"🐈"}},"expect":{"last":{"some":[{"pos":8,"label":"🐈"},"finish"]},"entries":[[{"label":"🐈","pos":8},"finish"]]}}
+
+example fold_positions positions
+{"inputs":{"entries":[[{"pos":7,"label":"a"},"finish"],[{"pos":0,"label":"b"},"waiting"]]},"expect":[7,0]}
+
+example hit select
+{"inputs":{"items":[[{"pos":7,"label":"a"},"waiting"]],"index":0},"expect":{"some":[{"pos":7,"label":"a"},"waiting"]}}
+
+example miss select
+{"inputs":{"items":[],"index":0},"expect":{"none":true}}
+
+example empty empty_log
+{"inputs":{},"expect":{"last":{"none":true},"entries":[]}}
+
+example nested reverse_nested
+{"inputs":{"v":[[3,"a"],["waiting",{"pos":2,"label":"🦊"}]]},"expect":[[{"label":"🦊","pos":2},"waiting"],["a",3]]}
+
+example present swap_data
+{"inputs":{"v":[["x","y"],{"some":2}]},"expect":[{"some":2},["x","y"]]}
+
+example absent swap_data
+{"inputs":{"v":[[],{"none":true}]},"expect":[{"none":true},[]]}

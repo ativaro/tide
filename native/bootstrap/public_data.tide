@@ -1,0 +1,162 @@
+use eval_values
+
+record Projection
+reader:{ValueReader} skipped:i issue:t
+
+project_accept state:{Projection} reader:{ValueReader} key:t value:{EvalValue} > {Projection}
+with reader state (accept_value reader key (some value))
+
+project_close state:{Projection} > {Projection}
+let reader get reader state
+let frame get frame reader
+let complete case (get decl frame) frame decl
+  fold (get fields decl) frame filled row name
+    let typ need (at (get types decl) (- row 1)) "json_field" 0
+    if (not (text_eq (text_slice typ 0 1) "?")) filled
+    if (case (entry_at (get names filled) name) false found true) filled
+    with values (with names filled (append (get names filled) name)) (append (get values filled) (number_value 0))
+case (decoded_container complete)
+  (with issue state (incomplete_input complete (input_frame_path reader ""))) value
+let parents get parents reader
+let outer need (at parents (- (length parents) 1)) "json_parent" 0
+let resumed with frame (with parents reader (value_parents parents)) outer
+project_accept state resumed (get key frame) (if (get optional frame) (with present value true) value)
+
+project_event state:{Projection} token:{JsonValueToken} kind:t schemas:{Declarations} > {Projection}
+let op get op token
+let opens or (text_eq op "[") (text_eq op "{")
+let closes text_eq op "close"
+let depth get skipped state
+if (> depth 0) (with skipped state (+ depth (if opens 1 (if closes -1 0))))
+if closes (project_close state)
+let reader get reader state
+let frame get frame reader
+let key get key token
+let expected input_child frame key kind
+if (and (text_eq expected "") (named_kind (get kind frame))) (with skipped state (if opens 1 0))
+let path input_segment (input_frame_path reader "") frame key
+if (or (> (text_len key) 4096) (eq (length (get values frame)) 4096))
+  (with issue state (input_issue path "within collection limits" "limit exceeded"))
+let optional text_eq (text_slice expected 0 1) "?"
+let typ if optional (text_slice expected 1 (text_len expected)) expected
+if (and optional (and (text_eq op "scalar") (text_eq (get value token) "null"))) (project_accept state reader key (number_value 0))
+let decl named_schema schemas typ
+if (and opens (input_container op typ decl))
+  (let child with optional (value_frame typ key decl) optional
+   with reader state (with frame (with parents reader (append (get parents reader) frame)) child))
+let value if (and (variant_kind schemas typ) (text_eq op "string"))
+  (tagged_value (need decl "json_variant" 0) (get value token)) (decoded_atom token typ)
+case value (with issue state (input_issue path expected (input_wire_type token))) item
+project_accept state reader key (if optional (with present item true) item)
+
+json_syntax_path parser:{JsonStream} source:t > t
+let prefix fold (get parents parser) "" path row frame
+  let typ get kind frame
+  if (text_eq typ "root") path
+  pointer_child path (if (text_eq typ "array") (decimal (- (get count frame) 1)) (get key frame))
+let frame get frame parser
+let phase get phase frame
+let typ get kind frame
+if (text_eq typ "root") ""
+if (text_eq phase "comma") prefix
+if (text_eq typ "array") (pointer_child prefix (decimal (get count frame)))
+if (or (text_eq phase "key") (text_eq phase "first"))
+  (let pos skip_json_space source (get pos parser)
+   if (not (text_eq (text_slice source pos (+ pos 1)) "\"")) prefix
+   bootstrap_recover (pointer_child prefix (get value (decode_json_string source pos internal_json))) prefix)
+pointer_child prefix (get key frame)
+
+record PublicCursor
+syntax:{JsonStream} projection:{Projection} done:b
+
+public_step prior:{PublicCursor} source:t kind:t schemas:{Declarations} > {PublicCursor}
+let syntax get syntax prior
+let state get projection prior
+let origin with fixed internal_json "public_json"
+let next bootstrap_recover (some (stream_step syntax source (text_len source) origin true)) (nil {JsonStream})
+case next
+  (with done (with projection prior (with issue state (input_issue (json_syntax_path syntax source) "JSON" "invalid JSON"))) true) parser
+let event get event parser
+if (text_eq event "") (with done (with syntax prior parser) (> (get pos parser) (text_len source)))
+let token get token parser
+let item make JsonValueToken op (if (text_eq event "close") "close" (get kind token)) key (get field parser) value (get value token)
+let projected project_event state item kind schemas
+make PublicCursor syntax parser projection projected done (not (text_eq (get issue projected) ""))
+
+public_decode raw:t kind:t schemas:{Declarations} file:t site:{Site} > {ScalarResult}
+case (bootstrap_octets_utf8 raw)
+  (let error scalar_failure file site "E_UTF8" "Invalid UTF-8 in JSON document" ""
+   with detail error (extra_fields (get detail error) (input_issue "" "UTF-8" "invalid bytes"))) source
+let start make PublicCursor syntax (stream_start 0) projection (make Projection reader initial_value_reader skipped 0 issue "") done false
+let final bootstrap_while start cursor (not (get done cursor)) (public_step cursor source kind schemas)
+let projection get projection final
+let issue get issue projection
+if (text_eq issue "") (value_ok (need (at (get values (get frame (get reader projection))) 0) "json_result" 0))
+let error scalar_failure file site "E_DATA" "Cannot decode JSON value" "invalid_json"
+with detail error (extra_fields (get detail error) issue)
+
+record DataAction
+result:{ScalarResult} work:i bytes:i
+
+data_value value:{EvalValue} work:i bytes:i > {DataAction}
+make DataAction result (value_ok value) work work bytes bytes
+
+write_action grant:{EvalValue} body:{EvalValue} file:t site:{Site} > {ScalarResult}
+let bytes get text body
+let count if (get present grant) (text_len bytes) (bootstrap_replace (get text grant) bytes)
+if (eq count -2) (scalar_failure file site "E_CAPABILITY" "Write target must be a regular file" "")
+if (< count 0) (scalar_failure file site "E_IO" "Atomic file replacement failed" "write_failed") (scalar_ok count)
+
+encoded_value v:{EvalValue} kind:t schemas:{Declarations} > ?t
+let prefix text_slice kind 0 1
+if (text_eq prefix "?") (if (get present v) (encoded_value v (text_slice kind 1 (text_len kind)) schemas) (some "null"))
+let object or (dict_kind kind) (case (named_schema schemas kind) false decl not (get tagged decl))
+if (and (not object) (eq (length (get members v)) 0)) (some (field_wire v kind))
+let built fold (get members v) (some "") prior row unused
+  case prior (nil t) output
+  let cell member_cell v (- row 1)
+  case (encoded_value (member_value v (- row 1)) (get kind cell) schemas) (nil t) encoded
+  let entry if object (cat3 (json_string (get name cell)) ":" encoded) encoded
+  if (> (+ (text_len output) (text_len entry)) 131072) (nil t)
+  some (json_item output entry)
+case built (nil t) content (some (cat3 (if object "{" "[") content (if object "}" "]")))
+
+data_operation op:t typ:t values:*{EvalValue} schemas:{Declarations} file:t site:{Site} > {DataAction}
+if (text_eq op "dict") (data_value (number_value 16) 0 16)
+let a need (at values 0) "data_argument" 0
+let raw get text a
+if (or (text_eq op "q_units") (or (text_eq op "q_from_units") (text_eq op "unix_seconds"))) (data_value (number_value (get num a)) 0 0)
+if (text_eq op "json_encode")
+  (let large make DataAction result (scalar_failure file site "E_LIMIT" "JSON output exceeds 128 KiB" "") work 0 bytes 0
+   case (encoded_value a typ schemas) large rendered
+   let bytes bootstrap_utf8_octets rendered
+   if (> (text_len bytes) 131072) large (data_value (text_value bytes) (+ 1 (div (text_len bytes) 16)) (+ 8 (text_len bytes))))
+if (text_eq op "utf8_text")
+  (case (bootstrap_octets_utf8 raw) (make DataAction result (scalar_failure file site "E_UTF8" "Invalid UTF-8 input" "") work 0 bytes 0) s
+   data_value (text_value s) (+ 1 (div (text_len raw) 32)) (+ 8 (* 4 (text_len s))))
+if (text_eq op "utf8_bytes")
+  (let bytes bootstrap_utf8_octets raw
+   let n text_len bytes
+   if (> n 131072) (make DataAction result (scalar_failure file site "E_LIMIT" "Byte string exceeds 128 KiB" "") work 0 bytes 0)
+   data_value (text_value bytes) (+ 1 (div n 32)) (+ 8 n))
+if (text_eq op "byte_len") (data_value (number_value (text_len raw)) 0 0)
+if (text_eq op "json_decode")
+  (let result public_decode raw typ schemas file site
+   let cost if (text_eq (get code result) "") (field_bytes (get value result) typ) 0
+   make DataAction result result work (+ 1 (div (text_len raw) 16)) bytes cost)
+let bvalue need (at values 1) "data_operand" 0
+if (text_eq op "byte_at")
+  (let idx get num bvalue
+   data_value (if (or (< idx 0) (not (< idx (text_len raw)))) (number_value 0) (with present (number_value (bootstrap_code_at raw idx)) true)) 0 0)
+let key get text bvalue
+let keys map t (get members a) offset (get name (tape_at (get tape a) (+ (get offset a) offset)))
+let found entry_at keys key
+if (text_eq op "dict_get") (data_value (case found (number_value 0) idx (with present (member_value a idx) true)) (length keys) 0)
+if (or (> (text_len key) 4096) (and (eq (length keys) 4096) (case found true idx false)))
+  (make DataAction result (scalar_failure file site "E_LIMIT" "Dictionary limit exceeded" "") work 0 bytes 0)
+let item need (at values 2) "dictionary_item" 0
+let slot case found -1 idx idx
+let items fold (get members a) (list {EvalValue} 0) acc row offset
+  append acc (if (eq (- row 1) slot) item (member_from_offset a offset))
+let result dictionary_value (if (< slot 0) (append keys key) keys) (if (< slot 0) (append items item) items) (text_slice typ 1 (text_len typ))
+data_value result (length keys) (get num result)

@@ -1,0 +1,24 @@
+record Trial
+name:t step:t initial:t items:t expected:t
+
+trial name:t step:t initial:t items:t expected:t > {Trial}
+make Trial name name step step initial initial items items expected expected
+
+main > *{Trial}
+list {Trial} 16
+  (trial "quotient_truncates" "div a x" "-23" "1 5" "-4")
+  (trial "negative_divisor" "div a x" "23" "1 -5" "-4")
+  (trial "negative_remainder" "mod a x" "-23" "1 -5" "-3")
+  (trial "positive_remainder" "mod a x" "23" "1 -5" "3")
+  (trial "quotient_overflow" "div a x" "-9223372036854775808" "1 -1" "E_OVERFLOW")
+  (trial "remainder_representable" "mod a x" "-9223372036854775808" "1 -1" "0")
+  (trial "mod_zero" "mod a x" "0" "1 0" "E_DATA")
+  (trial "div_zero" "div a x" "0" "1 0" "E_DATA")
+  (trial "lazy_if" "if (eq x 0) a (div a x)" "60" "3 0 -5 2" "-6")
+  (trial "lazy_or" "if (or (eq x 0) (eq (mod a x) 0)) a 0" "7" "2 0 7" "7")
+  (trial "first_operand_overflows" "div (+ a 1) x" "9223372036854775807" "1 0" "E_OVERFLOW")
+  (trial "first_operand_zero_divisor" "div (mod a 0) (+ x 1)" "1" "1 9223372036854775807" "E_DATA")
+  (trial "right_operand_zero_divisor" "div a (div 3 x)" "-9223372036854775808" "1 0" "E_DATA")
+  (trial "both_operands_divide" "div (div a x) (mod x 3)" "81" "1 5" "8")
+  (trial "loop_position" "+ a (mod x row)" "-4" "3 3 5 -8" "-5")
+  (trial "original_seed" "+ (mod initial x) (div a x)" "17" "2 4 3" "3")

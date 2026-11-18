@@ -1,0 +1,163 @@
+use elf64
+
+record FoldNames
+seed:t acc:t row_name:t item:t
+
+record Fragment
+kind:t code:t grouped_call:b next:i
+
+record Fragments
+nodes:*{Fragment} top:i
+
+scalar_fragment kind:t code:t grouped_call:b next:i > {Fragment}
+make Fragment kind kind code code grouped_call grouped_call next next
+
+fragment stack:{Fragments} index:i > {Fragment}
+need (at (get nodes stack) index) "missing_scalar_operand" 0
+
+conditional test_code:t yes:t no:t > t
+let skip_yes concat "4885c00f84" (le32 (+ (bytes_in yes) 5))
+let skip_no concat "e9" (le32 (bytes_in no))
+concat test_code (concat skip_yes (concat yes (concat skip_no no)))
+
+division_code quotient:b rule_errors:b > t
+let zero if rule_errors "41ffe5" (diagnostic_exit "7b22636f6465223a22455f44415441222c22726561736f6e223a226469766973696f6e5f62795f7a65726f227d0a")
+let nonzero concat "4885d2" (skip_if "75" zero)
+let minus_one if quotient "48f7d8710341ffe3" "31c0"
+let normal concat "4889d3489948f7fb" (if quotient "" "4889d0")
+let done concat "eb" (byte_hex (bytes_in minus_one))
+concat nonzero (concat "4883faff" (concat (skip_if "74" (concat normal done)) minus_one))
+
+binary_code op:t lhs:t rhs:t rule_errors:b > t
+let inputs concat lhs (concat "50" (concat rhs "4889c258"))
+if (or (text_eq op "div") (text_eq op "mod")) (concat inputs (division_code (text_eq op "div") rule_errors))
+let instruction if (text_eq op "+") "4801d0" (if (text_eq op "-") "4829d0" "480fafc2")
+let arithmetic or (text_eq op "+") (or (text_eq op "-") (text_eq op "*"))
+if arithmetic (concat inputs (concat instruction "710341ffe3"))
+let compare if (text_eq op "<") "0f9cc0" (if (text_eq op ">") "0f9fc0"
+  (if (text_eq op "<=") "0f9ec0" (if (text_eq op ">=") "0f9dc0" "0f94c0")))
+concat inputs (concat "4839d0" (concat compare "0fb6c0"))
+
+combine stack:{Fragments} op:t rule_errors:b > {Fragment}
+let lhs fragment stack (get top stack)
+let a get code lhs
+let ak get kind lhs
+if (text_eq op "not")
+  (if (text_eq ak "b") (scalar_fragment "b" (concat a "83f001") true (get next lhs)) (fail "expected_scalar_bool"))
+let rhs fragment stack (get next lhs)
+let bcode get code rhs
+let bk get kind rhs
+let after get next rhs
+if (text_eq op "if")
+  (let alt fragment stack after
+   if (not (and (text_eq ak "b") (and (not (text_eq bk ")")) (text_eq bk (get kind alt))))) (fail "invalid_scalar_if")
+   scalar_fragment bk (conditional a bcode (get code alt)) true (get next alt))
+if (or (text_eq op "and") (text_eq op "or"))
+  (if (not (and (text_eq ak "b") (text_eq bk "b"))) (fail "expected_scalar_bool")
+   scalar_fragment "b" (if (text_eq op "and") (conditional a bcode "31c0") (conditional a "b801000000" bcode)) true after)
+if (not (and (text_eq ak "i") (text_eq bk "i"))) (fail "expected_scalar_int")
+let comparison or (text_eq op "eq") (or (or (text_eq op "<") (text_eq op ">")) (or (text_eq op "<=") (text_eq op ">=")))
+scalar_fragment (if comparison "b" "i") (binary_code op a bcode rule_errors) true after
+
+record ScalarBinding
+name:t kind:t code:t
+
+scalar_binding name:t kind:t code:t > {ScalarBinding}
+make ScalarBinding name name kind kind code code
+
+scalar_token stack:{Fragments} bindings:*{ScalarBinding} token:t rule_errors:b > {Fragment}
+let top get top stack
+if (text_eq token ")") (scalar_fragment ")" "" false top)
+if (text_eq token "(")
+  (let expr fragment stack top
+   let marker fragment stack (get next expr)
+   if (not (and (get grouped_call expr) (text_eq (get kind marker) ")"))) (fail "invalid_scalar_group")
+   scalar_fragment (get kind expr) (get code expr) false (get next marker))
+let bound fold bindings (nil {ScalarBinding}) found row slot
+  if (text_eq token (get name slot)) (some slot) found
+case bound (unbound_token stack token rule_errors) slot (scalar_fragment (get kind slot) (get code slot) false top)
+
+unbound_token stack:{Fragments} token:t rule_errors:b > {Fragment}
+let top get top stack
+if (text_eq token "true") (scalar_fragment "b" "b801000000" false top)
+if (text_eq token "false") (scalar_fragment "b" "31c0" false top)
+case (int token)
+  (if (fold (list t 14 "+" "-" "*" "div" "mod" "<" ">" "<=" ">=" "eq" "and" "or" "not" "if") false found row symbol or found (text_eq symbol token))
+   (combine stack token rule_errors) (fail "unsupported_scalar_token"))
+  number (scalar_fragment "i" (concat "48b8" (le64 number)) false top)
+
+tick_code > t
+"83ed01730341ffe4"
+
+scalar_expression tokens:*t start:i bindings:*{ScalarBinding} expected:t metered:b rule_errors:b > t
+let size length tokens
+let end_stack fold tokens (make Fragments nodes (list {Fragment} 0) top -1) stack row unused
+  let pos - size row
+  if (< pos start) stack
+  let token need (at tokens pos) "missing_scalar_token" 0
+  let part scalar_token stack bindings token rule_errors
+  let charged if (and metered (not (or (text_eq token "(") (text_eq token ")"))))
+    (with code part (concat tick_code (get code part))) part
+  let nodes get nodes stack
+  make Fragments nodes (append nodes charged) top (length nodes)
+let result fragment end_stack (get top end_stack)
+if (not (and (eq (get next result) -1) (text_eq (get kind result) expected))) (fail (if (text_eq expected "i") "expected_one_i64_expression" "expected_one_bool_expression"))
+get code result
+
+scalar_step_mode tokens:*t start:i names:{FoldNames} metered:b > t
+let bindings list {ScalarBinding} 4
+  (scalar_binding (get acc names) "i" "4889f8") (scalar_binding (get item names) "i" "488b06")
+  (scalar_binding (get row_name names) "i" "4c89c8") (scalar_binding (get seed names) "i" "4c89c0")
+scalar_expression tokens start bindings "i" metered false
+
+scalar_step tokens:*t start:i names:{FoldNames} > t
+scalar_step_mode tokens start names false
+
+scalar_kernel step:t > t
+let body concat "49ffc14889c7" (concat step "4883c608ffc9")
+let loop_code concat body (concat "0f85" (le32 (- -6 (bytes_in body))))
+let inner concat "4c89c04531c985c90f84" (concat (le32 (bytes_in loop_code)) (concat loop_code "c3"))
+concat "4c8d1d" (concat (le32 (bytes_in inner)) (concat inner overflow_error))
+
+scalar_image step:t initial:i count:i data:t repetitions:i > t
+if (or (< repetitions 1) (> repetitions 2147483647)) (fail "invalid_repetitions")
+let kernel scalar_kernel step
+let output print_integer
+let setup concat "49b8" (concat (le64 initial) (concat "b9" (le32 count)))
+let tail_size if (eq repetitions 1) 0 9
+let call_offset + tail_size (bytes_in output)
+let data_offset + 5 (+ call_offset (bytes_in kernel))
+let call_kernel concat setup (concat "488d35" (concat (le32 data_offset) (concat "e8" (le32 call_offset))))
+let loop_tail if (eq repetitions 1) "" (concat "41ffca0f85" (le32 (- 0 (+ (bytes_in call_kernel) tail_size))))
+let counter if (eq repetitions 1) "" (concat "41ba" (le32 repetitions))
+elf_image (concat counter (concat call_kernel (concat loop_tail (concat output (concat kernel data)))))
+
+example grouped_literal scalar_step
+{"inputs":{"tokens":["(","1",")"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"invalid_scalar_group"}}
+
+example missing_argument scalar_step
+{"inputs":{"tokens":["if","true","1"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"missing_scalar_operand"}}
+
+example extra_argument scalar_step
+{"inputs":{"tokens":["1","2"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"expected_one_i64_expression"}}
+
+example wrong_guard scalar_step
+{"inputs":{"tokens":["if","a","1","2"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"invalid_scalar_if"}}
+
+example mixed_alternatives scalar_step
+{"inputs":{"tokens":["if","true","1","false"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"invalid_scalar_if"}}
+
+example wrong_addend scalar_step
+{"inputs":{"tokens":["+","true","a"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"expected_scalar_int"}}
+
+example unknown_scalar scalar_step
+{"inputs":{"tokens":["length","x"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"unsupported_scalar_token"}}
+
+example boolean_divisor scalar_step
+{"inputs":{"tokens":["div","a","true"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"expected_scalar_int"}}
+
+example not_integer_fold scalar_step
+{"inputs":{"tokens":["and","true","false"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"expected_one_i64_expression"}}
+
+example misplaced_group scalar_step
+{"inputs":{"tokens":["(","+","1",")","2"],"start":0,"names":{"seed":"initial","acc":"a","row_name":"row","item":"x"}},"expect_error":{"code":"E_DATA","reason":"expected_scalar_int"}}

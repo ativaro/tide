@@ -1,0 +1,286 @@
+use json_stream
+
+record JsonSpan
+start:i stop:i nested:b
+
+record JsonWords
+spans:*{JsonSpan} start:i quoted:b escaped:b depth:i nested:b
+
+json_word_end lexer:{JsonWords} stop:i > {JsonWords}
+let start get start lexer
+if (< start 0) lexer
+let span make JsonSpan start start stop stop nested (get nested lexer)
+with nested (with start (with spans lexer (append (get spans lexer) span)) -1) false
+
+json_words source:t > *{JsonSpan}
+let n text_len source
+let lexer fold (indices (chunk_count n)) (make JsonWords spans (list {JsonSpan} 0) start -1 quoted false escaped false depth 0 nested false) before block unused
+  let base * (- block 1) 2048
+  let width if (> (- n base) 2048) 2048 (- n base)
+  let skip if (or (> (get depth before) 0) (get quoted before))
+    (let segment text_slice source base (+ base width)
+     and (not (get escaped before)) (and (case (text_find segment "\"" 0) true hit false)
+       (and (case (text_find segment "\\" 0) true hit false) (or (get quoted before)
+         (and (case (text_find segment "{" 0) true hit false) (and (case (text_find segment "[" 0) true hit false) (case (text_find segment "]" 0) true hit false))))))) false
+  if skip before
+  fold (indices width) before acc offset unused_offset
+    let pos + base (- offset 1)
+    let ch text_slice source pos (+ pos 1)
+    if (get escaped acc) (with escaped acc false)
+    if (get quoted acc)
+      (if (text_eq ch "\\") (with escaped acc true)
+       if (text_eq ch "\"") (with quoted (if (> (get depth acc) 0) acc (json_word_end acc (+ pos 1))) false) acc)
+    let depth get depth acc
+    if (> depth 0)
+      (if (text_eq ch "\"") (with quoted acc true)
+       if (text_eq ch "[") (with nested (with depth acc (+ depth 1)) true)
+       if (text_eq ch "{") (with nested acc true)
+       if (text_eq ch "]") (with depth (if (eq depth 1) (json_word_end acc (+ pos 1)) acc) (- depth 1)) acc)
+    if (text_eq ch "[") (with depth (with start (json_word_end acc pos) pos) 1)
+    if (text_eq ch "\"") (with quoted (with start (json_word_end acc pos) pos) true)
+    if (white ch " \n\r\t") (json_word_end acc pos)
+    if (white ch "{}:,")
+      (let closed json_word_end acc pos
+       with spans closed (append (get spans closed) (make JsonSpan start pos stop (+ pos 1) nested false)))
+    if (< (get start acc) 0) (with start acc pos) acc
+get spans (json_word_end lexer n)
+
+signed_text value:i > t
+if (eq value -9223372036854775808) "-9223372036854775808"
+if (< value 0) (concat "-" (decimal (- 0 value))) (decimal value)
+
+record JsonList
+path:t typ:t items:*i texts:*t events:{JsonEvents}
+
+record ScalarJson
+paths:*t values:*t compact:t lists:*{JsonList} strings:*&tt
+
+record JsonCursor
+data:{ScalarJson} path:t key:t phase:t duplicate:b
+
+string_token token:t > {JsonToken}
+decode_json_string token 0 internal_json
+
+json_named token:t > t
+let n text_len token
+if (or (< n 3) (not (and (text_eq (text_slice token 0 1) "\"") (text_eq (text_slice token (- n 1) n) "\"")))) fail "defer_check"
+let decoded string_token token
+let name get value decoded
+if (and (text_eq (get kind decoded) "string") (valid_id name)) name (fail "defer_check")
+
+integer_token token:t > b
+let offset if (text_eq (text_slice token 0 1) "-") 1 0
+and (< offset (text_len token)) (only_chars token offset "0123456789")
+
+json_integer_spelling token:t > t
+let start if (text_eq (text_slice token 0 1) "-") 1 0
+if (and (> (text_len token) (+ start 1)) (text_eq (text_slice token start (+ start 1)) "0")) fail "defer_check"
+if (text_eq token "-0") "0" token
+
+json_scalar_token token:t > t
+if (or (text_eq token "null") (or (text_eq token "true") (text_eq token "false"))) token
+if (text_eq (text_slice token 0 1) "\"") (let parsed string_token token
+ if (text_eq (get kind parsed) "string") (ascii_string (get value parsed)) token)
+if (integer_token token) (json_integer_spelling token)
+if (and (> (text_len token) 0) (eq (json_number_end token 0) (text_len token))) token (fail "defer_check")
+
+record FlatArray
+items:*i texts:*t typ:t compact:t count:i
+
+array_item array:{FlatArray} token:t string:?{JsonToken} > {FlatArray}
+let number int token
+let value case string (case number (json_scalar_token token) parsed (json_integer_spelling token)) parsed (if (text_eq (get kind parsed) "string") (ascii_string (get value parsed)) token)
+let kind case string (case number (if (or (text_eq value "true") (text_eq value "false")) "b" "invalid") parsed "i") parsed (if (text_eq (get kind parsed) "string") "t" "invalid")
+let count + 1 (get count array)
+let typ if (and (not (> count 4096)) (or (eq count 1) (text_eq (get typ array) kind))) kind "invalid"
+let items if (or (text_eq typ "t") (text_eq typ "invalid")) (get items array)
+  (append (get items array) (case number (if (text_eq value "true") 1 0) parsed parsed))
+let texts if (text_eq typ "t") (append (get texts array) (get value (need string "text_item" 0))) (get texts array)
+make FlatArray items items texts texts typ typ compact (json_item (get compact array) value) count count
+
+empty_array > {FlatArray}
+make FlatArray items (list i 0) texts (list t 0) typ "" compact "" count 0
+
+json_trim token:t > t
+let n text_len token
+let gaps " \t\r\n"
+if (eq n 0) ""
+if (not (or (white (text_slice token 0 1) gaps) (white (text_slice token (- n 1) n) gaps))) token
+let bounds fold (indices (chunk_count n)) (pair n n) prior batch unused
+  let base * (- batch 1) 2048
+  let left - n base
+  fold (indices (if (< left 2048) left 2048)) prior acc row unused_row
+    let pos + base (- row 1)
+    if (white (text_slice token pos (+ pos 1)) gaps) acc
+    pair (if (eq (first acc) n) pos (first acc)) (+ pos 1)
+text_slice token (first bounds) (second bounds)
+
+flat_array_batch token:t end_pos:i quoted:b steps:*t original:t offset:i origin:{JsonOrigin} before:&{FlatArray}i > &{FlatArray}i
+if (> (second before) end_pos) before
+let previous first before
+let chunk make FlatArray items (list i 0) texts (list t 0) typ (get typ previous) compact "" count (get count previous)
+let piece fold steps (pair chunk (second before)) acc row unused_row
+  let start second acc
+  if (> start end_pos) acc
+  let first_pos if quoted (skip_json_space token start) start
+  let parsed if (and quoted (text_eq (text_slice token first_pos (+ first_pos 1)) "\"")) (some (decode_json_string original (+ offset first_pos) origin)) (nil {JsonToken})
+  let after case parsed start text (skip_json_space token (- (get end text) offset))
+  let stop case parsed (case (text_find token "," start) end_pos pos pos) text
+    (if (or (eq after end_pos) (text_eq (text_slice token after (+ after 1)) ",")) after (fail "defer_check"))
+  let field json_trim (text_slice token start stop)
+  let data first acc
+  let next if (text_eq field "")
+    (if (and (eq start 1) (eq stop end_pos)) data (fail "defer_check"))
+    (array_item data field parsed)
+  pair next (+ stop 1)
+let part first piece
+let items fold (get items part) (get items previous) values pos item append values item
+let compact get compact part
+let prefix get compact previous
+let texts fold (get texts part) (get texts previous) values pos item append values item
+let all with compact (with texts (with items part items) texts) (if (text_eq compact "") prefix (json_item prefix compact))
+pair all (second piece)
+
+read_flat_array token:t > {FlatArray}
+source_array token token 0 internal_json
+
+source_array token:t original:t offset:i origin:{JsonOrigin} > {FlatArray}
+let quoted case (text_find token "\"" 0) false pos true
+let end_pos - (text_len token) 1
+let groups div (+ end_pos 63) 64
+let steps indices (if (< end_pos 64) end_pos 64)
+let parsed fold (indices (div (+ groups 63) 64)) (pair empty_array 1) prior page unused
+  if (> (second prior) end_pos) prior
+  let left - groups (* (- page 1) 64)
+  fold (indices (if (< left 64) left 64)) prior before batch unused_batch
+    flat_array_batch token end_pos quoted steps original offset origin before
+first parsed
+
+member_path parent:t key:t > t
+cat3 parent "." (path_key key false)
+
+path_key key:t undo:b > t
+if (and (case (text_find key "~" 0) true found false) (or undo (case (text_find key "." 0) true found false))) key
+let result fold (indices (text_len key)) (pair "" 0) acc row unused
+  let i - row 1
+  if (< i (second acc)) acc
+  let ch text_slice key i row
+  let escape and undo (text_eq ch "~")
+  let value if escape (if (text_eq (text_slice key row (+ row 1)) "0") "~" ".")
+    (if (text_eq ch "~") "~0" (if (text_eq ch ".") "~1" ch))
+  pair (concat (first acc) value) (if escape (+ row 1) row)
+first result
+
+json_close cursor:{JsonCursor} > {JsonCursor}
+let path get path cursor
+case (text_rfind path "." (text_len path))
+  (with phase cursor "done") cut
+  with phase (with path cursor (text_slice path 0 cut)) "comma"
+
+read_scalar_json text:t origin:{JsonOrigin} canonical:b > {ScalarJson}
+let words json_words text
+let empty make ScalarJson paths (list t 0) values (list t 0) compact "" lists (list {JsonList} 0) strings (list &tt 0)
+let start make JsonCursor data empty path "" key "" phase "root" duplicate false
+let parsed fold words start before row span
+  let pos get start span
+  let token text_slice text pos (get stop span)
+  let src get data before
+  let phase get phase before
+  let first_char text_slice token 0 1
+  let key_phase or (text_eq phase "key") (text_eq phase "first")
+  if (and (text_eq phase "comma") (not (or (text_eq token ",") (text_eq token "}")))) fail (string_problem text pos origin "Expecting ',' delimiter")
+  if (and (text_eq phase "colon") (not (text_eq token ":"))) fail (string_problem text pos origin "Expecting ':' delimiter")
+  if (and key_phase (not (or (text_eq first_char "\"") (and (text_eq phase "first") (text_eq token "}"))))) fail (string_problem text pos origin "Expecting property name enclosed in double quotes")
+  if (text_eq phase "done") fail (string_problem text pos origin "Extra data")
+  let string if (text_eq first_char "\"") (some (decode_json_string text pos origin)) (nil {JsonToken})
+  let is_list and (text_eq phase "value") (text_eq (text_slice token 0 1) "[")
+  let events if (and is_list (get nested span)) (indexed_json text pos (get stop span) origin) empty_events
+  let array if is_list
+    (if (get nested span)
+       (with compact (with typ empty_array "invalid") (text_slice token 1 (- (text_len token) 1)))
+     if (not (text_eq (text_slice token (- (text_len token) 1) (text_len token)) "]")) fail "defer_check"
+     source_array token text pos origin) empty_array
+  let encoded case string
+    (if is_list (cat3 "[" (get compact array) "]") (if (and (text_eq phase "value") (not (text_eq token "{"))) (json_scalar_token token) token)) parsed
+    (if key_phase (json_string (get value parsed)) (if (and canonical (text_eq (get kind parsed) "string")) (ascii_string (get value parsed)) token))
+  let cursor with data before (with compact src (concat (get compact src) encoded))
+  if (text_eq phase "root") (if (text_eq token "{") (with phase cursor "first") (fail "defer_check"))
+  if (and (text_eq phase "first") (text_eq token "}")) (json_close cursor)
+  if (or (text_eq phase "first") (text_eq phase "key"))
+    (let text_key need string "defer_check" 0
+     let key get value text_key
+     if (not (and (text_eq (get kind text_key) "string") (not (> (text_len key) 4096)))) fail "defer_check"
+     let path member_path (get path cursor) key
+     let seen case (entry_at (get paths src) path) false found true
+     with duplicate (with phase (with key cursor key) "colon") (or seen (get duplicate cursor)))
+  if (text_eq phase "colon") (if (text_eq token ":") (with phase cursor "value") (fail "defer_check"))
+  if (text_eq phase "value")
+    (let path member_path (get path cursor) (get key cursor)
+     let lists if is_list (append (get lists src) (make JsonList path path typ (get typ array) items (get items array) texts (get texts array) events events)) (get lists src)
+     let strings case string (get strings src) text
+       (if (text_eq (get kind text) "string") (append (get strings src) (pair path (get value text))) (get strings src))
+     let data make ScalarJson paths (append (get paths src) path) values (append (get values src) encoded) compact (get compact (get data cursor)) lists lists strings strings
+     let moved with data cursor data
+     if (text_eq token "{") (with phase (with path moved path) "first") (with phase moved "comma"))
+  if (not (text_eq phase "comma")) fail "defer_check"
+  if (text_eq token ",") (with phase cursor "key")
+  if (text_eq token "}") (json_close cursor) (fail "defer_check")
+if (not (text_eq (get phase parsed) "done")) fail "defer_check"
+if (get duplicate parsed) (fail (json_error origin "Duplicate JSON key")) (get data parsed)
+
+scalar_json text:t > {ScalarJson}
+read_scalar_json text internal_json true
+
+json_at data:{ScalarJson} path:t > ?t
+case (entry_at (get paths data) path) (nil t) index (at (get values data) index)
+
+json_count data:{ScalarJson} path:t > i
+fold (get paths data) 0 n row key
+  let cut need (text_rfind key "." (text_len key)) "json_path" 0
+  if (text_eq (text_slice key 0 cut) path) (+ n 1) n
+
+example normalized_json scalar_json
+{"inputs":{"text":"{\"expect\":-0,\"inputs\":{ \"tick\":true}}"},"expect":{"paths":[".expect",".inputs",".inputs.tick"],"values":["0","{","true"],"lists":[],"strings":[],"compact":"{\"expect\":0,\"inputs\":{\"tick\":true}}"}}
+
+record CanonicalFrame
+key:t object:b names:*t parts:*t
+
+record CanonicalState
+frames:*{CanonicalFrame} output:t
+
+canonical_add state:{CanonicalState} frames:*{CanonicalFrame} key:t value:t > {CanonicalState}
+let n length frames
+case (at frames (- n 1)) (with output (with frames state frames) value) frame
+let names if (get object frame) (append (get names frame) key) (get names frame)
+let parents fold frames (list {CanonicalFrame} 0) acc row f if (eq row n) acc (append acc f)
+with frames state (append parents (with names (with parts frame (append (get parts frame) value)) names))
+
+canonical_step state:{CanonicalState} token:{JsonValueToken} > {CanonicalState}
+let op get op token
+let frames get frames state
+let n length frames
+if (text_eq op "close")
+  (let frame need (at frames (- n 1)) "canonical_container" 0
+   let parts get parts frame
+   let value if (get object frame)
+     (let keys get names frame
+      let fields fold (label_order keys) "" acc row i
+        json_item acc (cat3 (json_string (need (at keys i) "key" 0)) ":" (need (at parts i) "member" 0))
+      cat3 "{" fields "}")
+     (cat3 "[" (fold parts "" acc row part json_item acc part) "]")
+   let parents fold frames (list {CanonicalFrame} 0) acc row f if (eq row n) acc (append acc f)
+   canonical_add state parents (get key frame) value)
+let key get key token
+if (or (text_eq op "{") (text_eq op "["))
+  (with frames state (append frames (make CanonicalFrame key key object (text_eq op "{") names (list t 0) parts (list t 0))))
+let value if (text_eq op "string") (ascii_string (get value token)) (json_scalar_token (get value token))
+canonical_add state frames key value
+
+canonical_array events:{JsonEvents} > t
+let start make CanonicalState frames (list {CanonicalFrame} 0) output ""
+let done fold (append (get pages events) (get tail events)) start prior page group
+  fold group prior state row token canonical_step state token
+get output done
+
+array_at data:{ScalarJson} path:t > ?{JsonList}
+fold (get lists data) (nil {JsonList}) found row seq if (text_eq (get path seq) path) (some seq) found

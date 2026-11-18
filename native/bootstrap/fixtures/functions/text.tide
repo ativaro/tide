@@ -1,0 +1,48 @@
+find_last body:t pattern:t stop:i > ?i
+text_rfind body pattern stop
+
+excerpt body:t start:i stop:i > t
+text_slice body start stop
+
+join parts:*t > t
+fold parts "" joined row part (concat joined part)
+
+project part:?t > t
+case part "empty" value (concat value "!")
+
+must_find body:t pattern:t > i
+need (text_find body pattern 0) "missing pattern" 7
+
+last_line body:t > ?t
+let rows (lines body)
+at rows (- (length rows) 1)
+
+example supplementary find_last
+{"inputs":{"body":"a🐈a🐈","pattern":"🐈","stop":4},"expect":{"some":3}}
+
+example empty_match find_last
+{"inputs":{"body":"abc","pattern":"","stop":-5},"expect":{"some":0}}
+
+example absent find_last
+{"inputs":{"body":"abc","pattern":"z","stop":9},"expect":{"none":true}}
+
+example combining excerpt
+{"inputs":{"body":"e\u0301🐈","start":1,"stop":3},"expect":"\u0301\ud83d\udc08"}
+
+example punctuation join
+{"inputs":{"parts":["a,b","[x]","\"","\\","\u0000"]},"expect":"a,b[x]\"\\\u0000"}
+
+example none project
+{"inputs":{"part":{"none":true}},"expect":"empty"}
+
+example some_empty project
+{"inputs":{"part":{"some":""}},"expect":"!"}
+
+example missing must_find
+{"inputs":{"body":"ab","pattern":"z"},"expect_error":{"code":"E_DATA","reason":"missing pattern","input_line":7}}
+
+example crlf last_line
+{"inputs":{"body":"a\r\nb\rc\n"},"expect":{"some":"b\rc"}}
+
+example empty last_line
+{"inputs":{"body":""},"expect":{"none":true}}

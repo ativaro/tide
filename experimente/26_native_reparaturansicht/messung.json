@@ -1,0 +1,921 @@
+{
+  "raw": [
+    {
+      "project": "jury",
+      "rep": -1,
+      "method": "baseline",
+      "wall_ns": 311860106,
+      "stage_s": 0.17444557100134261
+    },
+    {
+      "project": "jury",
+      "rep": -1,
+      "method": "batch",
+      "wall_ns": 139132569,
+      "stage_s": 0.007017543999609188
+    },
+    {
+      "project": "depot",
+      "rep": -1,
+      "method": "batch",
+      "wall_ns": 139562557,
+      "stage_s": 0.006698266999592306
+    },
+    {
+      "project": "depot",
+      "rep": -1,
+      "method": "baseline",
+      "wall_ns": 305068486,
+      "stage_s": 0.1702718119995552
+    },
+    {
+      "project": "nano",
+      "rep": -1,
+      "method": "baseline",
+      "wall_ns": 663940028,
+      "stage_s": 0.5132868210002925
+    },
+    {
+      "project": "nano",
+      "rep": -1,
+      "method": "batch",
+      "wall_ns": 167030810,
+      "stage_s": 0.014974534999055322
+    },
+    {
+      "project": "invaders",
+      "rep": -1,
+      "method": "batch",
+      "wall_ns": 212477205,
+      "stage_s": 0.02693574200020521
+    },
+    {
+      "project": "invaders",
+      "rep": -1,
+      "method": "baseline",
+      "wall_ns": 1218895685,
+      "stage_s": 1.0331941399999778
+    },
+    {
+      "project": "jury",
+      "rep": 0,
+      "method": "batch",
+      "wall_ns": 144396789,
+      "stage_s": 0.00753244399857067
+    },
+    {
+      "project": "jury",
+      "rep": 0,
+      "method": "baseline",
+      "wall_ns": 305833683,
+      "stage_s": 0.17066819900173869
+    },
+    {
+      "project": "depot",
+      "rep": 0,
+      "method": "baseline",
+      "wall_ns": 310405049,
+      "stage_s": 0.17224059900036082
+    },
+    {
+      "project": "depot",
+      "rep": 0,
+      "method": "batch",
+      "wall_ns": 148537909,
+      "stage_s": 0.007907850998890353
+    },
+    {
+      "project": "nano",
+      "rep": 0,
+      "method": "batch",
+      "wall_ns": 171103448,
+      "stage_s": 0.014951944998756517
+    },
+    {
+      "project": "nano",
+      "rep": 0,
+      "method": "baseline",
+      "wall_ns": 661709459,
+      "stage_s": 0.5084035199997743
+    },
+    {
+      "project": "invaders",
+      "rep": 0,
+      "method": "baseline",
+      "wall_ns": 1215422635,
+      "stage_s": 1.0289696139989246
+    },
+    {
+      "project": "invaders",
+      "rep": 0,
+      "method": "batch",
+      "wall_ns": 209301036,
+      "stage_s": 0.02575945099852106
+    },
+    {
+      "project": "jury",
+      "rep": 1,
+      "method": "baseline",
+      "wall_ns": 306196461,
+      "stage_s": 0.17061509899940575
+    },
+    {
+      "project": "jury",
+      "rep": 1,
+      "method": "batch",
+      "wall_ns": 146594911,
+      "stage_s": 0.007543083000200568
+    },
+    {
+      "project": "depot",
+      "rep": 1,
+      "method": "batch",
+      "wall_ns": 142045695,
+      "stage_s": 0.007183837000411586
+    },
+    {
+      "project": "depot",
+      "rep": 1,
+      "method": "baseline",
+      "wall_ns": 308486725,
+      "stage_s": 0.1697478719997889
+    },
+    {
+      "project": "nano",
+      "rep": 1,
+      "method": "baseline",
+      "wall_ns": 662168432,
+      "stage_s": 0.5085894170006213
+    },
+    {
+      "project": "nano",
+      "rep": 1,
+      "method": "batch",
+      "wall_ns": 168791655,
+      "stage_s": 0.01417278000008082
+    },
+    {
+      "project": "invaders",
+      "rep": 1,
+      "method": "batch",
+      "wall_ns": 209793346,
+      "stage_s": 0.026299551000192878
+    },
+    {
+      "project": "invaders",
+      "rep": 1,
+      "method": "baseline",
+      "wall_ns": 1208605732,
+      "stage_s": 1.021939337000731
+    },
+    {
+      "project": "jury",
+      "rep": 2,
+      "method": "batch",
+      "wall_ns": 145679765,
+      "stage_s": 0.007665935001568869
+    },
+    {
+      "project": "jury",
+      "rep": 2,
+      "method": "baseline",
+      "wall_ns": 314803487,
+      "stage_s": 0.17663134500071465
+    },
+    {
+      "project": "depot",
+      "rep": 2,
+      "method": "baseline",
+      "wall_ns": 312628386,
+      "stage_s": 0.17372222999983933
+    },
+    {
+      "project": "depot",
+      "rep": 2,
+      "method": "batch",
+      "wall_ns": 146984000,
+      "stage_s": 0.008440810999672976
+    },
+    {
+      "project": "nano",
+      "rep": 2,
+      "method": "batch",
+      "wall_ns": 166534372,
+      "stage_s": 0.014177731000017957
+    },
+    {
+      "project": "nano",
+      "rep": 2,
+      "method": "baseline",
+      "wall_ns": 661379391,
+      "stage_s": 0.5126921169994603
+    },
+    {
+      "project": "invaders",
+      "rep": 2,
+      "method": "baseline",
+      "wall_ns": 1216913426,
+      "stage_s": 1.0348833380012366
+    },
+    {
+      "project": "invaders",
+      "rep": 2,
+      "method": "batch",
+      "wall_ns": 206804181,
+      "stage_s": 0.025163769998471253
+    },
+    {
+      "project": "jury",
+      "rep": 3,
+      "method": "baseline",
+      "wall_ns": 320746711,
+      "stage_s": 0.18083845600085624
+    },
+    {
+      "project": "jury",
+      "rep": 3,
+      "method": "batch",
+      "wall_ns": 145892379,
+      "stage_s": 0.007411841001157882
+    },
+    {
+      "project": "depot",
+      "rep": 3,
+      "method": "batch",
+      "wall_ns": 143321811,
+      "stage_s": 0.006974952000746271
+    },
+    {
+      "project": "depot",
+      "rep": 3,
+      "method": "baseline",
+      "wall_ns": 314860379,
+      "stage_s": 0.1765428039998369
+    },
+    {
+      "project": "nano",
+      "rep": 3,
+      "method": "baseline",
+      "wall_ns": 665443631,
+      "stage_s": 0.5119289959984599
+    },
+    {
+      "project": "nano",
+      "rep": 3,
+      "method": "batch",
+      "wall_ns": 168666524,
+      "stage_s": 0.014952784998968127
+    },
+    {
+      "project": "invaders",
+      "rep": 3,
+      "method": "batch",
+      "wall_ns": 212413978,
+      "stage_s": 0.0270434350004507
+    },
+    {
+      "project": "invaders",
+      "rep": 3,
+      "method": "baseline",
+      "wall_ns": 1208128685,
+      "stage_s": 1.0242525809990184
+    },
+    {
+      "project": "jury",
+      "rep": 4,
+      "method": "batch",
+      "wall_ns": 144878991,
+      "stage_s": 0.007156477000535233
+    },
+    {
+      "project": "jury",
+      "rep": 4,
+      "method": "baseline",
+      "wall_ns": 311160721,
+      "stage_s": 0.17510852700070245
+    },
+    {
+      "project": "depot",
+      "rep": 4,
+      "method": "baseline",
+      "wall_ns": 309158403,
+      "stage_s": 0.17299620700032392
+    },
+    {
+      "project": "depot",
+      "rep": 4,
+      "method": "batch",
+      "wall_ns": 143035336,
+      "stage_s": 0.007202556998890941
+    },
+    {
+      "project": "nano",
+      "rep": 4,
+      "method": "batch",
+      "wall_ns": 166509894,
+      "stage_s": 0.015061877000334789
+    },
+    {
+      "project": "nano",
+      "rep": 4,
+      "method": "baseline",
+      "wall_ns": 669557043,
+      "stage_s": 0.5152441019999969
+    },
+    {
+      "project": "invaders",
+      "rep": 4,
+      "method": "baseline",
+      "wall_ns": 1218943008,
+      "stage_s": 1.0359916699999303
+    },
+    {
+      "project": "invaders",
+      "rep": 4,
+      "method": "batch",
+      "wall_ns": 207128089,
+      "stage_s": 0.026266460999977426
+    },
+    {
+      "project": "jury",
+      "rep": 5,
+      "method": "baseline",
+      "wall_ns": 306767169,
+      "stage_s": 0.17130382600043959
+    },
+    {
+      "project": "jury",
+      "rep": 5,
+      "method": "batch",
+      "wall_ns": 143077168,
+      "stage_s": 0.007460032000381034
+    },
+    {
+      "project": "depot",
+      "rep": 5,
+      "method": "batch",
+      "wall_ns": 142610279,
+      "stage_s": 0.007296789000974968
+    },
+    {
+      "project": "depot",
+      "rep": 5,
+      "method": "baseline",
+      "wall_ns": 309338068,
+      "stage_s": 0.17214282200075104
+    },
+    {
+      "project": "nano",
+      "rep": 5,
+      "method": "baseline",
+      "wall_ns": 669404864,
+      "stage_s": 0.5165857299998606
+    },
+    {
+      "project": "nano",
+      "rep": 5,
+      "method": "batch",
+      "wall_ns": 163694331,
+      "stage_s": 0.014092687999436748
+    },
+    {
+      "project": "invaders",
+      "rep": 5,
+      "method": "batch",
+      "wall_ns": 211008603,
+      "stage_s": 0.027204279000216047
+    },
+    {
+      "project": "invaders",
+      "rep": 5,
+      "method": "baseline",
+      "wall_ns": 1235328196,
+      "stage_s": 1.0472972910010867
+    },
+    {
+      "project": "jury",
+      "rep": 6,
+      "method": "batch",
+      "wall_ns": 145582477,
+      "stage_s": 0.007655005998458364
+    },
+    {
+      "project": "jury",
+      "rep": 6,
+      "method": "baseline",
+      "wall_ns": 305454545,
+      "stage_s": 0.17080099699887796
+    },
+    {
+      "project": "depot",
+      "rep": 6,
+      "method": "baseline",
+      "wall_ns": 304188881,
+      "stage_s": 0.16794384199965862
+    },
+    {
+      "project": "depot",
+      "rep": 6,
+      "method": "batch",
+      "wall_ns": 145626518,
+      "stage_s": 0.008177065999916522
+    },
+    {
+      "project": "nano",
+      "rep": 6,
+      "method": "batch",
+      "wall_ns": 167996654,
+      "stage_s": 0.013949075999335037
+    },
+    {
+      "project": "nano",
+      "rep": 6,
+      "method": "baseline",
+      "wall_ns": 652103358,
+      "stage_s": 0.5020860059994448
+    },
+    {
+      "project": "invaders",
+      "rep": 6,
+      "method": "baseline",
+      "wall_ns": 1211471217,
+      "stage_s": 1.0239174899998034
+    },
+    {
+      "project": "invaders",
+      "rep": 6,
+      "method": "batch",
+      "wall_ns": 207577550,
+      "stage_s": 0.02539126400006353
+    },
+    {
+      "project": "jury",
+      "rep": 7,
+      "method": "baseline",
+      "wall_ns": 304715792,
+      "stage_s": 0.1699754719993507
+    },
+    {
+      "project": "jury",
+      "rep": 7,
+      "method": "batch",
+      "wall_ns": 141687733,
+      "stage_s": 0.007641006000994821
+    },
+    {
+      "project": "depot",
+      "rep": 7,
+      "method": "batch",
+      "wall_ns": 145338352,
+      "stage_s": 0.007719217001067591
+    },
+    {
+      "project": "depot",
+      "rep": 7,
+      "method": "baseline",
+      "wall_ns": 310358851,
+      "stage_s": 0.17388547800146625
+    },
+    {
+      "project": "nano",
+      "rep": 7,
+      "method": "baseline",
+      "wall_ns": 664243582,
+      "stage_s": 0.507966099999976
+    },
+    {
+      "project": "nano",
+      "rep": 7,
+      "method": "batch",
+      "wall_ns": 166800512,
+      "stage_s": 0.014267403001213097
+    },
+    {
+      "project": "invaders",
+      "rep": 7,
+      "method": "batch",
+      "wall_ns": 208796754,
+      "stage_s": 0.026808571999936248
+    },
+    {
+      "project": "invaders",
+      "rep": 7,
+      "method": "baseline",
+      "wall_ns": 1209281882,
+      "stage_s": 1.0261982590000116
+    },
+    {
+      "project": "jury",
+      "rep": 8,
+      "method": "batch",
+      "wall_ns": 146819691,
+      "stage_s": 0.007053045001157443
+    },
+    {
+      "project": "jury",
+      "rep": 8,
+      "method": "baseline",
+      "wall_ns": 309583747,
+      "stage_s": 0.17289970899946638
+    },
+    {
+      "project": "depot",
+      "rep": 8,
+      "method": "baseline",
+      "wall_ns": 314639844,
+      "stage_s": 0.1769427060007729
+    },
+    {
+      "project": "depot",
+      "rep": 8,
+      "method": "batch",
+      "wall_ns": 145147810,
+      "stage_s": 0.007967112000187626
+    },
+    {
+      "project": "nano",
+      "rep": 8,
+      "method": "batch",
+      "wall_ns": 167300572,
+      "stage_s": 0.014599759000702761
+    },
+    {
+      "project": "nano",
+      "rep": 8,
+      "method": "baseline",
+      "wall_ns": 661662536,
+      "stage_s": 0.5085196840009303
+    },
+    {
+      "project": "invaders",
+      "rep": 8,
+      "method": "baseline",
+      "wall_ns": 1205231441,
+      "stage_s": 1.024021991999689
+    },
+    {
+      "project": "invaders",
+      "rep": 8,
+      "method": "batch",
+      "wall_ns": 210654481,
+      "stage_s": 0.026175629998760996
+    },
+    {
+      "project": "jury",
+      "rep": 9,
+      "method": "baseline",
+      "wall_ns": 312055646,
+      "stage_s": 0.17768799199984642
+    },
+    {
+      "project": "jury",
+      "rep": 9,
+      "method": "batch",
+      "wall_ns": 147418764,
+      "stage_s": 0.007639705001565744
+    },
+    {
+      "project": "depot",
+      "rep": 9,
+      "method": "batch",
+      "wall_ns": 144096170,
+      "stage_s": 0.007942292000734597
+    },
+    {
+      "project": "depot",
+      "rep": 9,
+      "method": "baseline",
+      "wall_ns": 310479875,
+      "stage_s": 0.17278021800120769
+    },
+    {
+      "project": "nano",
+      "rep": 9,
+      "method": "baseline",
+      "wall_ns": 672376884,
+      "stage_s": 0.5142761859988241
+    },
+    {
+      "project": "nano",
+      "rep": 9,
+      "method": "batch",
+      "wall_ns": 171452893,
+      "stage_s": 0.01435232400035602
+    },
+    {
+      "project": "invaders",
+      "rep": 9,
+      "method": "batch",
+      "wall_ns": 215762679,
+      "stage_s": 0.026517227001022547
+    },
+    {
+      "project": "invaders",
+      "rep": 9,
+      "method": "baseline",
+      "wall_ns": 1224044746,
+      "stage_s": 1.0363859130011406
+    },
+    {
+      "project": "jury",
+      "rep": 10,
+      "method": "batch",
+      "wall_ns": 144306964,
+      "stage_s": 0.007564944000478135
+    },
+    {
+      "project": "jury",
+      "rep": 10,
+      "method": "baseline",
+      "wall_ns": 310130991,
+      "stage_s": 0.17274118800014548
+    },
+    {
+      "project": "depot",
+      "rep": 10,
+      "method": "baseline",
+      "wall_ns": 308322466,
+      "stage_s": 0.17161848599971563
+    },
+    {
+      "project": "depot",
+      "rep": 10,
+      "method": "batch",
+      "wall_ns": 144578530,
+      "stage_s": 0.008090123999863863
+    },
+    {
+      "project": "nano",
+      "rep": 10,
+      "method": "batch",
+      "wall_ns": 168052129,
+      "stage_s": 0.015159038999627228
+    },
+    {
+      "project": "nano",
+      "rep": 10,
+      "method": "baseline",
+      "wall_ns": 665325523,
+      "stage_s": 0.5104191350001201
+    },
+    {
+      "project": "invaders",
+      "rep": 10,
+      "method": "baseline",
+      "wall_ns": 1209281630,
+      "stage_s": 1.0260951220006973
+    },
+    {
+      "project": "invaders",
+      "rep": 10,
+      "method": "batch",
+      "wall_ns": 210522840,
+      "stage_s": 0.02702682599920081
+    },
+    {
+      "project": "jury",
+      "rep": 11,
+      "method": "baseline",
+      "wall_ns": 316403792,
+      "stage_s": 0.17457656300030067
+    },
+    {
+      "project": "jury",
+      "rep": 11,
+      "method": "batch",
+      "wall_ns": 146903785,
+      "stage_s": 0.008135605001371005
+    },
+    {
+      "project": "depot",
+      "rep": 11,
+      "method": "batch",
+      "wall_ns": 142078663,
+      "stage_s": 0.0066891370006487705
+    },
+    {
+      "project": "depot",
+      "rep": 11,
+      "method": "baseline",
+      "wall_ns": 315325061,
+      "stage_s": 0.17593425999984902
+    },
+    {
+      "project": "nano",
+      "rep": 11,
+      "method": "baseline",
+      "wall_ns": 657762641,
+      "stage_s": 0.5049795039994933
+    },
+    {
+      "project": "nano",
+      "rep": 11,
+      "method": "batch",
+      "wall_ns": 167666012,
+      "stage_s": 0.014966995999202481
+    },
+    {
+      "project": "invaders",
+      "rep": 11,
+      "method": "batch",
+      "wall_ns": 214416645,
+      "stage_s": 0.026683170000978862
+    },
+    {
+      "project": "invaders",
+      "rep": 11,
+      "method": "baseline",
+      "wall_ns": 1221347016,
+      "stage_s": 1.0370663970006717
+    },
+    {
+      "project": "jury",
+      "rep": 12,
+      "method": "batch",
+      "wall_ns": 141337869,
+      "stage_s": 0.008120574999338714
+    },
+    {
+      "project": "jury",
+      "rep": 12,
+      "method": "baseline",
+      "wall_ns": 310866458,
+      "stage_s": 0.17377606899935927
+    },
+    {
+      "project": "depot",
+      "rep": 12,
+      "method": "baseline",
+      "wall_ns": 315802682,
+      "stage_s": 0.17948931799946877
+    },
+    {
+      "project": "depot",
+      "rep": 12,
+      "method": "batch",
+      "wall_ns": 145176304,
+      "stage_s": 0.007705906999035506
+    },
+    {
+      "project": "nano",
+      "rep": 12,
+      "method": "batch",
+      "wall_ns": 166080043,
+      "stage_s": 0.014009837001140113
+    },
+    {
+      "project": "nano",
+      "rep": 12,
+      "method": "baseline",
+      "wall_ns": 703132521,
+      "stage_s": 0.5467345739998564
+    },
+    {
+      "project": "invaders",
+      "rep": 12,
+      "method": "baseline",
+      "wall_ns": 1325542793,
+      "stage_s": 1.1261213039997529
+    },
+    {
+      "project": "invaders",
+      "rep": 12,
+      "method": "batch",
+      "wall_ns": 226852714,
+      "stage_s": 0.026596667999911006
+    }
+  ],
+  "medians": {
+    "jury": {
+      "stage_s": {
+        "reference_s": 0.17333788899941283,
+        "batch_s": 0.00760232450102194,
+        "saved_s": 0.16575107899916475,
+        "factor": 22.89865567657832,
+        "wins": 12,
+        "range_saved_s": [
+          0.16233446599835588,
+          0.17342661499969836
+        ]
+      },
+      "wall_ns": {
+        "reference_s": 0.31049872450000005,
+        "batch_s": 0.14563112099999997,
+        "saved_s": 0.1652304545,
+        "factor": 2.1484172911313495,
+        "wins": 12,
+        "range_saved_s": [
+          0.15960154999999998,
+          0.17485433200000003
+        ]
+      }
+    },
+    "depot": {
+      "stage_s": {
+        "reference_s": 0.17335921850008162,
+        "batch_s": 0.007712562000051548,
+        "saved_s": 0.16553753450079967,
+        "factor": 22.90937139575451,
+        "wins": 12,
+        "range_saved_s": [
+          0.1597667759997421,
+          0.17178341100043326
+        ]
+      },
+      "wall_ns": {
+        "reference_s": 0.310419363,
+        "batch_s": 0.14433735,
+        "saved_s": 0.16641236750000002,
+        "factor": 2.1645665039580657,
+        "wins": 12,
+        "range_saved_s": [
+          0.158562363,
+          0.17324639800000002
+        ]
+      }
+    },
+    "nano": {
+      "stage_s": {
+        "reference_s": 0.51117406549929,
+        "batch_s": 0.014309863500784559,
+        "saved_s": 0.49611815349999233,
+        "factor": 35.717760783266414,
+        "wins": 12,
+        "range_saved_s": [
+          0.4881369300001097,
+          0.5327247369987163
+        ]
+      },
+      "wall_ns": {
+        "reference_s": 0.6647845525,
+        "batch_s": 0.167483292,
+        "saved_s": 0.4970252505,
+        "factor": 3.9569877049988644,
+        "wins": 12,
+        "range_saved_s": [
+          0.484106704,
+          0.537052478
+        ]
+      }
+    },
+    "invaders": {
+      "stage_s": {
+        "reference_s": 1.030540798500624,
+        "batch_s": 0.026556947500466777,
+        "saved_s": 1.0045546275014203,
+        "factor": 38.974715941925204,
+        "wins": 12,
+        "range_saved_s": [
+          0.9956397860005382,
+          1.0995246359998418
+        ]
+      },
+      "wall_ns": {
+        "reference_s": 1.2141923215000001,
+        "batch_s": 0.2105886605,
+        "saved_s": 1.005412019,
+        "factor": 5.77630223296185,
+        "wins": 12,
+        "range_saved_s": [
+          0.9945769600000001,
+          1.098690079
+        ]
+      }
+    }
+  },
+  "function_counts": {
+    "jury": 5,
+    "depot": 5,
+    "nano": 14,
+    "invaders": 26
+  },
+  "hashes": {
+    "jury": [
+      "0d79975ffe64849d705846ba74e9cf6eb95800dd55a4dbedf51d0a070bf825a6",
+      "15bb554c62ccc8d9b79678a12f8d3004c94eed57481a6744ecaa419437e3a2f8",
+      "f9e1dc508cf0310dcd3978d73d3392335b8e7eed77ff054cd5719f9e4a45675e"
+    ],
+    "depot": [
+      "9a26893ab62bdf951a6d6cc02a5cc03065514401caf5252a09b97d4a1bdda06a",
+      "9017bdec2ec963e7f7dd1a996f03ccfa78d697b8ed0e215834df830ab2886289",
+      "28257b6b3cdaf61108f06a10392ba960ead5dc7ca08c5446b631bdd0d6ee28a3"
+    ],
+    "nano": [
+      "47a0d33d32ee61eda136751039c8a957863b1abf7121093bdb7cdb9703725d8c",
+      "975029891a9142266d82c8df919f539a225cf8a13d3fbc1cd019b2d44a332eb1",
+      "f89d4fbcd0079b19607a14b2988a07cb2f130735486e0ee2658564a0365fcc46"
+    ],
+    "invaders": [
+      "0af8e4b3a4ff2320a586cfc710b83f26e8f69b8df1d1151631d1f5e9be87cc14",
+      "d228bc72a2946b4d386ab3ded2fb299f2789f6248c434bec2c1bcc9992859877",
+      "f23fe1fe33e6a28a3cbc1586d639654329e197c4cdadf887cf786e440540286e"
+    ]
+  },
+  "build_s": 5.0224,
+  "methods": {
+    "baseline": "#!/usr/bin/env bash\nset -euo pipefail\nrepo=/home/ativaro/Documents/tide\noriginal=$(dirname \"$(realpath \"$0\")\")\nw=$1\nentry=$2\nroot=$3\nobs=$4\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nstamp > \"$w/start\"\nargs=$(\"$original/tide-args\" \"$entry\" \"$obs\" \"$w/checked\" | jq -c --arg root \"$root\" '.root=$root')\nprintf '%s\\n' \"$args\" > \"$w/input\"\nchecked=$(cat \"$w/checked\")\nrev=$(jq -er .revision <<< \"$checked\")\npayload=$(jq -nc --argjson input \"$args\" --argjson checked \"$checked\" '$input+{signatures:($checked.definitions|to_entries|map({name:.key,kind:.value.kind,signature:([.key]+[.value.params|to_entries[]|.key+\":\"+.value]+[\">\",.value.returns]|join(\" \"))}))}')\n\"$repo/tide\" run \"$repo/workbench/grouping.tide\" --call prepare_grouping --inputs \"$payload\" > \"$w/plan\"\nif [[ ${5:-} == source_repair ]]; then\n  payload=$(jq -c '.packet+{queries}' \"$w/plan\")\n  \"$repo/tide\" run \"$repo/workbench/source_repair.tide\" --call source_repair --inputs \"$payload\" > \"$w/source\"\n  jq -c .forms \"$w/source\" > \"$w/forms\"\n  jq -c .view \"$w/source\" > \"$w/grouped\"\n  exit 0\nfi\njq -c .packet \"$w/plan\" > \"$w/packet\"\njq -c .unused \"$w/plan\" > \"$w/unused\"\nbase=$(basename -- \"$entry\")\nstamp > \"$w/forms-start\"\njq -r '.queries[] | [.name,.file,.line,.column] | @tsv' \"$w/plan\" |\nwhile IFS=$'\\t' read -r name file line column; do\n  if [[ $column == 0 ]]; then\n    node=$(\"$repo/tide\" context \"$entry\" --function \"$name\" |\n      jq -er --arg rev \"$rev\" 'if .revision==$rev then .nodes[0].node else error(\"project revision changed\") end')\n  else\n    node=\"$line:$column\"\n    if [[ $file != \"$base\" ]]; then node=\"$file:$node\"; fi\n  fi\n  \"$repo/tide\" context \"$entry\" --function \"$name\" --node \"$node\" |\n    jq -ce --arg rev \"$rev\" --arg file \"$file\" 'if .revision==$rev then {name:.definition,$file,body:.selection.expanded} else error(\"project revision changed\") end'\ndone | jq -sc . > \"$w/forms\"\nstamp > \"$w/forms-end\"\nview=$(jq -c --slurpfile forms \"$w/forms\" '.+{forms:$forms[0]}' \"$w/packet\")\n\"$repo/tide\" run \"$repo/workbench/grouped_view.tide\" --call \"${5:-compiler_view}\" --inputs \"$view\" > \"$w/grouped\"\nstamp > \"$w/end\"\n",
+    "batch": "#!/usr/bin/env bash\nset -euo pipefail\nrepo=/home/ativaro/Documents/tide\noriginal=$(dirname \"$(realpath \"$0\")\")\nw=$1\nentry=$2\nroot=$3\nobs=$4\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nstamp > \"$w/start\"\nargs=$(\"$original/tide-args\" \"$entry\" \"$obs\" \"$w/checked\" | jq -c --arg root \"$root\" '.root=$root')\nprintf '%s\\n' \"$args\" > \"$w/input\"\nchecked=$(cat \"$w/checked\")\nrev=$(jq -er .revision <<< \"$checked\")\npayload=$(jq -nc --argjson input \"$args\" --argjson checked \"$checked\" '$input+{signatures:($checked.definitions|to_entries|map({name:.key,kind:.value.kind,signature:([.key]+[.value.params|to_entries[]|.key+\":\"+.value]+[\">\",.value.returns]|join(\" \"))}))}')\n\"$repo/tide\" run \"$repo/workbench/grouping.tide\" --call prepare_grouping --inputs \"$payload\" > \"$w/plan\"\nif [[ ${5:-} == source_repair ]]; then\n  payload=$(jq -c '.packet+{queries}' \"$w/plan\")\n  \"$repo/tide\" run \"$repo/workbench/source_repair.tide\" --call source_repair --inputs \"$payload\" > \"$w/source\"\n  jq -c .forms \"$w/source\" > \"$w/forms\"\n  jq -c .view \"$w/source\" > \"$w/grouped\"\n  exit 0\nfi\njq -c .packet \"$w/plan\" > \"$w/packet\"\njq -c .unused \"$w/plan\" > \"$w/unused\"\nbase=$(basename -- \"$entry\")\nstamp > \"$w/forms-start\"\njq -jr '[.packet.files[].source] | join(\"\\n\\n\")' \"$w/plan\" |\n  \"$repo/tide\" forms > \"$w/forms.tsv\"\njq -ce --rawfile table \"$w/forms.tsv\" '\n  ($table | split(\"\\n\") | map(select(length > 0) | split(\"\\t\"))) as $rows |\n  INDEX($rows[]; .[0]) as $by_name |\n  if ($rows|all(length == 2)) and ($rows|length) == ($by_name|length)\n     and (.queries|length) == ($rows|length) and (.queries|map(.name)|unique|length) == ($rows|length)\n  then [.queries[] | . as $q | ($by_name[$q.name][1] // error(\"missing grouped function\")) as $body |\n        {name:$q.name,file:$q.file,$body}]\n  else error(\"inconsistent grouped functions\") end' \"$w/plan\" > \"$w/forms\"\nstamp > \"$w/forms-end\"\nview=$(jq -c --slurpfile forms \"$w/forms\" '.+{forms:$forms[0]}' \"$w/packet\")\n\"$repo/tide\" run \"$repo/workbench/grouped_view.tide\" --call \"${5:-compiler_view}\" --inputs \"$view\" > \"$w/grouped\"\nstamp > \"$w/end\"\n",
+    "tide-args": "#!/usr/bin/env bash\nset -euo pipefail\nentry=$1\nobs=$2\ntide=/home/ativaro/Documents/tide/tide\ndir=$(dirname -- \"$entry\")\nchecked=$(\"$tide\" check \"$entry\")\nprintf '%s\\n' \"$checked\" > \"$3\"\n{ basename -- \"$entry\"; jq -r '.modules[]' <<< \"$checked\"; } |\nwhile IFS= read -r file; do\n  jq -n --arg file \"$file\" --rawfile source \"$dir/$file\" '{file:$file,source:$source}'\ndone |\njq -cs --arg observation \"$obs\" --argjson checked \"$checked\" '{root:\"main\", $observation, graph:($checked.definitions|to_entries|map({name:.key,calls:.value.calls})),units:.}'\n"
+  },
+  "measure": "from pathlib import Path\nfrom statistics import median\nimport hashlib,json,random,subprocess,time,sys\nw=Path(sys.argv[1]).resolve();repo=Path.cwd();dest=repo/'experimente/26_native_reparaturansicht'\ndef digest(data):return hashlib.sha256(data).hexdigest()\ndef readjson(p):return json.loads(p.read_text())\ndef run(cmd,cwd):\n    p=subprocess.run(cmd,cwd=cwd,capture_output=True)\n    if p.returncode: raise RuntimeError([cmd,p.stderr.decode(),p.stdout.decode()[:200]])\n    return p.stdout\nold=readjson(repo/'experimente/25_blinde_quellreparatur/versuchsplan.json')\narchive=readjson(repo/'experimente/25_blinde_quellreparatur/messung.json')\nprojects={}\nfor key in ['jury','depot']:\n    info=old['families'][key];folder=w/'projects'/key;folder.mkdir(parents=True,exist_ok=True)\n    for path,source in info['canonical'].items():\n        lang,name=path.split('/')\n        if lang!='tide':continue\n        for owner,a,b in info['mutations']['tide']:\n            if name==owner:\n                assert source.count(a)==1;source=source.replace(a,b)\n        (folder/name).write_text(source)\n    trial=next(r for r in archive['trials'] if r['bug']==key and r['arm']=='G')\n    prompt=trial['attempts'][0]['prompt']\n    obs=next(l for l in prompt.splitlines() if l.startswith('{\"passed\":'))\n    projects[key]=(folder,'summary.tide','main',obs,prompt)\nfor key,name,root in [('nano','nano.tide','step'),('invaders','space_invaders.tide','tick')]:\n    projects[key]=(repo/'apps',name,root,'Vergleiche die Eingabeverarbeitung.',None)\nraw=[];hashes={};cost={}\nfor i in range(14):\n    for j,key in enumerate(projects):\n        folder,entry,root,obs,prompt=projects[key]\n        rendered=[]\n        for variant in (['baseline','batch'] if (i+j)%2==0 else ['batch','baseline']):\n            work=w/'timed'/key/variant;work.mkdir(exist_ok=True,parents=True)\n            for filename in ('forms','grouped','forms.tsv'):\n                (work/filename).unlink(missing_ok=True)\n            start=time.monotonic_ns()\n            run([w/'control'/variant,work,entry,root,obs,'fragment_view'],folder)\n            end=time.monotonic_ns()\n            forms=(work/'forms').read_bytes();view=(work/'grouped').read_bytes()\n            data=json.loads(view)\n            context='\\n\\n'.join(\"--- \"+f['file']+\" ---\\n\"+f['source'] for f in sorted(data['files'],key=lambda f:f['file']))\n            if prompt is not None:assert prompt.endswith(obs+'\\n\\n'+context) and data['instruction'] in prompt\n            evidence=[digest(forms),digest(view),digest(context.encode())]\n            hashes.setdefault(key,evidence);assert hashes[key]==evidence\n            cost[key]=len(json.loads(forms))\n            raw.append(dict(project=key,rep=i-1,method=variant,wall_ns=end-start,stage_s=float((work/'forms-end').read_text())-float((work/'forms-start').read_text())))\n            rendered.append([forms,view])\n        assert rendered[0]==rendered[1]\n    print('block',i,flush=True)\nresult={}\nfor k in projects:\n    records=[r for r in raw if r['project']==k and r['rep']>0]\n    stats={}\n    for metric in ['stage_s','wall_ns']:\n        vals={v:[r[metric]/(1e9 if metric=='wall_ns' else 1) for r in records if r['method']==v] for v in ['baseline','batch']}\n        pairs=list(zip(vals['baseline'],vals['batch']))\n        stats[metric]={'reference_s':median(vals['baseline']),'batch_s':median(vals['batch']),'saved_s':median(a-b for a,b in pairs),'factor':median(a/b for a,b in pairs),'wins':sum(a>b for a,b in pairs),'range_saved_s':[min(a-b for a,b in pairs),max(a-b for a,b in pairs)]}\n    result[k]=stats\ndata=dict(raw=raw,medians=result,function_counts=cost,hashes=hashes,build_s=float((w/'build-seconds').read_text()),methods={f:(w/'control'/f).read_text() for f in ['baseline','batch','tide-args']},measure=Path(__file__).read_text())\n(dest/'messung.json').write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\\n')\nprint(json.dumps(result))\n"
+}

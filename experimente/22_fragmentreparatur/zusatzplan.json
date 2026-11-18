@@ -1,0 +1,38 @@
+{
+  "base_sha256": "117aa0cc6789feb42d7acd8330b099669aeb20ccedb851bc9c952278c64e1247",
+  "design": "Prospective follow-up triggered by repeated inspections in the first observed block of the fragment experiment. Same seeded defects, cases and limits as initial, new independent sessions. F=TIDE neutral fragment workflow from the first experiment, D=TIDE source/test provenance instruction built into fragment_view, P=CPython equivalent provenance instruction and same fragment schema. Three blocks per task, reverse Latin squares, serial, each condition in every position once per family. Freeze before first follow-up. Primary paired differences in time to successful verification and gross input+output tokens D-F and D-P. Report command counts and failures. Prior blocks excluded from these differences.",
+  "evidence": "The directory listing, reachable source inspection and ./verify have already run on this same snapshot. Use the supplied results for your first proposal. Inspect only if a specific fact needed to propose a repair is missing.",
+  "guide": "The directory listing, reachable source inspection and ./verify have already run on this same snapshot. Use the supplied results for your first proposal. Inspect only if a specific fact needed to propose a repair is missing. Use name, before, after. Replace a unique exact substring of the displayed function body. An empty before replaces the entire body. TIDE result bodies must be single-line expressions. The TIDE compiler grouped each body: (if test yes no), (fold items seed accumulator row item step).",
+  "seq": [
+    [
+      "press",
+      1,
+      "DFP"
+    ],
+    [
+      "dispatch",
+      1,
+      "PFD"
+    ],
+    [
+      "dispatch",
+      2,
+      "FDP"
+    ],
+    [
+      "press",
+      2,
+      "FPD"
+    ],
+    [
+      "press",
+      3,
+      "PDF"
+    ],
+    [
+      "dispatch",
+      3,
+      "DPF"
+    ]
+  ]
+}

@@ -1,0 +1,283 @@
+[
+  {
+    "name": "missing_seed",
+    "args": [],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "missing_seed"
+    }
+  },
+  {
+    "name": "empty_list",
+    "args": [
+      "-7"
+    ],
+    "output": "-7"
+  },
+  {
+    "name": "mixed",
+    "args": [
+      "3",
+      "20",
+      "18",
+      "12",
+      "17"
+    ],
+    "output": "10"
+  },
+  {
+    "name": "changing",
+    "args": [
+      "2",
+      "11",
+      "18",
+      "19"
+    ],
+    "output": "9"
+  },
+  {
+    "name": "all_above",
+    "args": [
+      "-12",
+      "30",
+      "30",
+      "22"
+    ],
+    "output": "-12"
+  },
+  {
+    "name": "minimum",
+    "args": [
+      "-9223372036854775808"
+    ],
+    "output": "-9223372036854775808"
+  },
+  {
+    "name": "maximum",
+    "args": [
+      "9223372036854775807"
+    ],
+    "output": "9223372036854775807"
+  },
+  {
+    "name": "negative_zero",
+    "args": [
+      "-00",
+      "00018",
+      "00017"
+    ],
+    "output": "1"
+  },
+  {
+    "name": "subtraction_limit",
+    "args": [
+      "0",
+      "-9223372036854775789"
+    ],
+    "output": "9223372036854775807"
+  },
+  {
+    "name": "addition_limit",
+    "args": [
+      "9223372036854775806",
+      "17"
+    ],
+    "output": "9223372036854775807"
+  },
+  {
+    "name": "min_seed_with_positive_delta",
+    "args": [
+      "-9223372036854775808",
+      "17"
+    ],
+    "output": "-9223372036854775807"
+  },
+  {
+    "name": "subtraction_early",
+    "args": [
+      "-9223372036854775808",
+      "-9223372036854775808"
+    ],
+    "error": {
+      "code": "E_OVERFLOW"
+    }
+  },
+  {
+    "name": "sum_overflow",
+    "args": [
+      "9223372036854775807",
+      "17"
+    ],
+    "error": {
+      "code": "E_OVERFLOW"
+    }
+  },
+  {
+    "name": "late_before_overflow",
+    "args": [
+      "9223372036854775807",
+      "17",
+      "bad"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 3
+    }
+  },
+  {
+    "name": "empty_token",
+    "args": [
+      "0",
+      ""
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "only_minus",
+    "args": [
+      "-"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 1
+    }
+  },
+  {
+    "name": "positive_sign",
+    "args": [
+      "0",
+      "+12"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "leading_space",
+    "args": [
+      " 0"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 1
+    }
+  },
+  {
+    "name": "trailing_space",
+    "args": [
+      "0",
+      "7 "
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "newline",
+    "args": [
+      "0",
+      "1\n"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "unicode_digit",
+    "args": [
+      "0",
+      "７"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "unicode_minus",
+    "args": [
+      "0",
+      "−3"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "hex_prefix",
+    "args": [
+      "0",
+      "0x10"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "fraction",
+    "args": [
+      "0",
+      "1.0"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "above_i64",
+    "args": [
+      "0",
+      "9223372036854775808"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 2
+    }
+  },
+  {
+    "name": "below_i64",
+    "args": [
+      "-9223372036854775809"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 1
+    }
+  },
+  {
+    "name": "first_of_two_invalid",
+    "args": [
+      "0",
+      "1",
+      "1_0",
+      "--4"
+    ],
+    "error": {
+      "code": "E_INPUT",
+      "reason": "expected_i64",
+      "argument": 3
+    }
+  }
+]

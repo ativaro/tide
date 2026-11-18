@@ -1,0 +1,63 @@
+use function_body
+
+record CopyCursor
+offset:i copied:i header:b replacing:b needs_body:b output:t found:*t
+
+copy_line source:t forms:*{Form} cursor:{CopyCursor} line:t > {CopyCursor}
+if (case (text_find line "\r" 0) false pos true) fail "expected_lf_or_crlf"
+let start get offset cursor
+let stop + start (text_len line)
+let next if (eq stop (text_len source)) stop (+ stop (if (text_eq (text_slice source stop (+ stop 2)) "\r\n") 2 1))
+let blank indent_only line
+if (and blank (get needs_body cursor)) fail "missing_function_body"
+let form if (and (get header cursor) (not blank))
+  (fold forms (nil {Form}) hit row item
+    if (function_header line (get name item))
+      (case hit (some item) duplicate (fail "duplicate_form")) hit)
+  (nil {Form})
+case form
+  (let inside and (get replacing cursor) (not blank)
+   make CopyCursor offset next copied (if inside stop (get copied cursor)) header blank
+     replacing inside needs_body false output (get output cursor) found (get found cursor))
+  chosen
+  let name get name chosen
+  let found get found cursor
+  if (fold found false hit row seen or hit (text_eq seen name)) fail "duplicate_function"
+  let kept text_slice source (get copied cursor) next
+  make CopyCursor offset next copied next header false replacing true needs_body true
+    output (concat (get output cursor) (concat kept (one_line (get body chosen)))) found (append found name)
+
+group_file unit:{SourceFile} forms:*{Form} > {SourceFile}
+let local_forms fold forms (list {Form} 0) picked row form
+  if (text_eq (get file form) (get file unit)) (append picked form) picked
+if (eq (length local_forms) 0) unit
+let source get source unit
+if (other_line_ending source) fail "expected_lf_or_crlf"
+let initial make CopyCursor offset 0 copied 0 header true replacing false needs_body false output "" found (list t 0)
+let final fold (lines source) initial cursor row line copy_line source local_forms cursor line
+if (get needs_body final) fail "missing_function_body"
+if (not (eq (length (get found final)) (length local_forms))) fail "function_not_found"
+with source unit (concat (get output final) (text_slice source (get copied final) (text_len source)))
+
+compiler_view observation:t files:*{SourceFile} forms:*{Form} > {RepairView}
+if not (fold forms true ok row form and ok (editable_name (get name form))) fail "expected_function_name"
+let paths_ok fold forms true ok row form
+  and ok (eq 1 (fold files 0 n i unit + n (if (text_eq (get file form) (get file unit)) 1 0)))
+if not paths_ok fail "expected_one_source_file"
+grouped_result observation (fold files (list {SourceFile} 0) out_files row unit append out_files (group_file unit forms))
+
+fragment_view observation:t files:*{SourceFile} forms:*{Form} > {RepairView}
+with instruction (compiler_view observation files forms)
+  "The directory listing, reachable source inspection and ./verify have already run on this same snapshot. Use the supplied results for your first proposal. Inspect only if a specific fact needed to propose a repair is missing. Use name, before, after. Replace a unique exact substring of the displayed function body. An empty before replaces the entire body. TIDE result bodies must be single-line expressions. The TIDE compiler grouped each body: (if test yes no), (fold items seed accumulator row item step)."
+
+example preserve_between group_file
+{"inputs":{"unit":{"file":"a","source":"f > i\r\n+ 1\n2\r\n \t\r\nrecord A\nv:i\n\ng > i\n4"},"forms":[{"file":"a","name":"g","body":"4"},{"file":"a","name":"f","body":"(+ 1 2)"}]},"expect":{"file":"a","source":"f > i\r\n(+ 1 2)\r\n \t\r\nrecord A\nv:i\n\ng > i\n4"}}
+
+example no_body group_file
+{"inputs":{"unit":{"file":"a","source":"f > i\n\nother > i\n2"},"forms":[{"file":"a","name":"f","body":"1"}]},"expect_error":{"code":"E_DATA","reason":"missing_function_body"}}
+
+example repeated_form group_file
+{"inputs":{"unit":{"file":"a","source":"f > i\n1"},"forms":[{"file":"a","name":"f","body":"1"},{"file":"a","name":"f","body":"2"}]},"expect_error":{"code":"E_DATA","reason":"duplicate_form"}}
+
+example missing_form_file compiler_view
+{"inputs":{"observation":"","files":[],"forms":[{"file":"a","name":"f","body":"1"}]},"expect_error":{"code":"E_DATA","reason":"expected_one_source_file"}}

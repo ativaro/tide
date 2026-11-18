@@ -1,0 +1,131 @@
+use nodes
+
+use edit_json
+
+validate_edit_payload payload:{EditPayload} file:t > b
+if (or (not (get valid_nodes payload)) (eq (get count payload) 0)) fail (root_diagnostic file "E_EDIT" "Expected edits with node identifiers")
+if (> (get count payload) 256) fail (root_diagnostic file "E_EDIT" "Supply 1..256 edits")
+true
+
+edit_unit_index project:{ProjectFiles} unit:?t file:t > i
+case unit 0 name
+  let i need (entry_at (get names project) name) (root_diagnostic file "E_NODE" "Unknown module") 0
+  if (eq i 0) (fail (root_diagnostic file "E_NODE" "Unknown module")) i
+
+edit_target project:{ProjectFiles} payload:{EditPayload} file:t > {SourceUnit}
+if (not (validate_edit_payload payload file)) fail "edit_payload"
+if (get mixed payload) fail (root_diagnostic file "E_EDIT" "One source file per atomic edit")
+need (at (get units project) (edit_unit_index project (get unit payload) file)) "edit_unit" 0
+
+record NodeLocation
+definition:i index:i
+
+edit_location program:{CheckedFunctions} unit:{SourceUnit} id:t file:t > {NodeLocation}
+let prefix case (edit_module id) 0 name (+ (text_len name) 1)
+let missing root_diagnostic file "E_NODE" (concat "Unknown node: " id)
+let cut need (text_find id ":" prefix) missing 0
+let row need (int (text_slice id prefix cut)) missing 0
+let column need (int (text_slice id (+ cut 1) (text_len id))) missing 0
+if (or (< row 1) (< column 1)) fail missing
+if (not (text_eq (text_slice id prefix (text_len id)) (cat3 (decimal row) ":" (decimal column)))) fail missing
+let owner fold (get signatures program) (pair -1 0) acc pos fn
+  let header get line (get loc fn)
+  if (and (text_eq (get file fn) (get file unit)) (and (> header (second acc)) (< header row))) (pair (- pos 1) header) acc
+let tree need (at (get trees program) (first owner)) missing 0
+let nodes get nodes tree
+let pages append (get pages nodes) (get tail nodes)
+let index fold pages -1 prior page items
+  if (not (< prior 0)) prior
+  fold items prior acc pos node
+    let site get site node
+    if (and (eq row (get line site)) (eq column (get column site))) (+ (* (- page 1) 256) (- pos 1)) acc
+if (< index 0) fail missing
+make NodeLocation definition (first owner) index index
+
+record SourceChange
+start:i stop:i text:t
+
+edit_operator op:t fn:{Signature} names:*t > b
+if (or (text_eq op "") (case (text_find op "|" 0) false found true)) false
+or (case (scoped_call fn names op) false found true) (or (or (text_eq op "list") (text_eq op "make")) (or (case (intrinsic op) false found true) (case (display_arity op) false found true)))
+
+node_change program:{CheckedFunctions} unit:{SourceUnit} offsets:{LineOffsets} edit:{NodeEdit} file:t > {SourceChange}
+let op get method edit
+if (or (not (eq (get members edit) 2)) (text_eq op "")) fail (root_diagnostic file "E_EDIT" "Expected node and op or replace")
+let loc edit_location program unit (need (get id edit) "missing_edit_node" 0) file
+let fn need (at (get signatures program) (get definition loc)) "edit_function" 0
+let tree need (at (get trees program) (get definition loc)) "edit_tree" 0
+let nodes get nodes tree
+let node node_at nodes (get index loc)
+let site get site node
+let operator text_eq op "op"
+let error root_diagnostic file "E_EDIT" (if operator "Expected a known call operator" "Expected one expression on a single line")
+let text need (get value edit) error 0
+let names get names program
+let expr if operator
+  (let word get word site
+   let call or (not (< (get target node) 0)) (or (or (text_eq word "nil") (text_eq word "list")) (or (text_eq word "tag") (> (length (get children node)) 0)))
+   if (not (and call (edit_operator text fn names))) fail error
+   let compact inspect_view nodes (get index loc) names "" "compact"
+   case (text_find compact " " 0) text cut (concat text (text_slice compact cut (text_len compact))))
+  (if (or (includes_break text "\n\r\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029") (eq (site_count (schema_tokens text 1)) 0)) (fail error) text)
+let scope node_scope tree fn (get index loc)
+let local with params (with types (with body (with file fn file) (schema_tokens expr 1)) (get types scope)) (get names scope)
+let parsed parsed_body local (get signatures program) names empty_tree
+if (eq (node_count (get nodes parsed)) 0) fail error
+let start if operator (pair (get line site) (get column site)) (get start node)
+let stop if operator (pair (get line site) (+ (get column site) (text_len (get word site)))) (get stop node)
+make SourceChange start (source_offset offsets start) stop (source_offset offsets stop) text text
+
+insert_change items:*{SourceChange} change:{SourceChange} > *{SourceChange}
+let ordered case (at items (- (length items) 1)) true last (not (< (get start change) (get start last)))
+if ordered (append items change)
+let result fold items (pair false (list {SourceChange} 0)) acc row item
+  let here and (not (first acc)) (< (get start change) (get start item))
+  let before if here (append (second acc) change) (second acc)
+  pair (or here (first acc)) (append before item)
+if (first result) (second result) (append (second result) change)
+
+edited_unit_text compiled:{CompiledProject} unit:{SourceUnit} edits:*{NodeEdit} file:t > t
+let source get source unit
+let offsets line_offsets source
+let ordered fold edits (list {SourceChange} 0) acc row item
+  insert_change acc (node_change (get program compiled) unit offsets item file)
+let changed fold ordered (pair 0 "") acc row e
+  if (< (get start e) (first acc)) fail (root_diagnostic file "E_EDIT" "Overlapping edits")
+  pair (get stop e) (cat3 (second acc) (text_slice source (first acc) (get start e)) (get text e))
+concat (second changed) (text_slice source (first changed) (text_len source))
+
+changed_project_size total:i original:t updated:t > i
++ (- total (text_len (bootstrap_utf8_octets original))) (text_len (bootstrap_utf8_octets updated))
+
+edited_source project:{ProjectFiles} compiled:{CompiledProject} unit:{SourceUnit} edits:*{NodeEdit} file:t > t
+let text edited_unit_text compiled unit edits file
+if (> (changed_project_size (get total project) (get source unit) text) 131072) fail (root_diagnostic file "E_LIMIT" "Project source size limit")
+text
+
+record EditPreview
+project:{ProjectFiles} files:t
+
+multi_edit_preview original:{ProjectFiles} before:{CompiledProject} payload:{EditPayload} file:t > {EditPreview}
+if (not (validate_edit_payload payload file)) fail "edit_payload"
+let edits get edits payload
+let indices_for_edits map i edits edit (edit_unit_index original (edit_module (need (get id edit) "missing_edit_node" 0)) file)
+let start make EditPreview project (with units original (list {SourceUnit} 0)) files ""
+let preview fold (get units original) start acc row unit
+  let candidate get project acc
+  let group fold edits (list {NodeEdit} 0) matching pos edit
+    if (eq (- row 1) (need (at indices_for_edits (- pos 1)) "edit_unit" 0)) (append matching edit) matching
+  let units get units candidate
+  if (eq (length group) 0) (with project acc (with units candidate (append units unit)))
+  let text edited_unit_text before unit group file
+  let imported import_sites text
+  let same_imports text_eq (json_labels (map t imported loc (get word loc))) (json_labels (map t (get imports unit) loc (get word loc)))
+  if (not same_imports) fail (root_diagnostic file "E_EDIT" "Node edits must preserve imports")
+  let wire ascii_string text
+  let updated with imports (with wire (with source unit text) wire) imported
+  let total changed_project_size (get total candidate) (get source unit) text
+  let item cat3 "{\"file\":" (json_string (get name unit)) (cat3 ",\"source\":" wire "}")
+  make EditPreview project (with total (with units candidate (append units updated)) total) files (json_item (get files acc) item)
+if (> (get total (get project preview)) 131072) fail (root_diagnostic file "E_LIMIT" "Project source size limit")
+preview

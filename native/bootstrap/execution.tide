@@ -1,0 +1,58 @@
+use function_run
+
+record BranchVisit
+owner:i node:i arm:i
+
+record Execution
+owners:*i last_owner:i branches:*{BranchVisit} limited:b
+
+enter_owner execution:{Execution} owner:i > {Execution}
+if (eq owner (get last_owner execution)) execution
+let owners get owners execution
+let seen fold owners false hit row index or hit (eq owner index)
+with last_owner (if seen execution (with owners execution (append owners owner))) owner
+
+visit_branch execution:{Execution} owner:i node:i arm:i > {Execution}
+let branches get branches execution
+let seen fold branches false hit row item
+  or hit (and (eq (get owner item) owner) (and (eq (get node item) node) (eq (get arm item) arm)))
+if seen execution
+if (eq (length branches) 64) (with limited execution true)
+with branches execution (append branches (make BranchVisit owner owner node node arm arm))
+
+observe_frame execution:{Execution} frame:{EvalFrame} program:{CheckedFunctions} > {Execution}
+let owner get owner frame
+let seen enter_owner execution owner
+if (get limited seen) seen
+let values get values frame
+case (get scan_state frame)
+  (if (not (eq (length values) 1)) seen
+   let tree need (at (get trees program) owner) "execution_tree" 0
+   let index get node frame
+   let node node_at (get nodes tree) index
+   let op get word (get site node)
+   if (text_eq op "catch") (visit_branch seen owner index (get cursor frame))
+   if (text_eq op "match") (visit_branch seen owner index (match_arm node (need (at values 0) "variant_subject" 0)))
+   if (not (lazy_operand op)) seen
+   visit_branch seen owner index (next_operand op values (length (get children node))))
+  scan
+  if (and (text_eq (get phase scan) "actions") (and (eq (length (get updated scan)) 0) (eq (length values) 0)))
+    (visit_branch seen owner -1 (+ 1 (get branch scan))) seen
+
+record ObservedCall
+machine:{EvalMachine} execution:{Execution}
+
+observe_sample program:{CheckedFunctions} sample:{SampleArgs} > {ObservedCall}
+let machine begin_call program (get target sample) (get args sample) (nil {TraceRequest})
+let empty make Execution owners (list i 0) last_owner -1 branches (list {BranchVisit} 0) limited false
+let initial make ObservedCall machine machine execution empty
+bootstrap_while initial state (> (length (get stack (get machine state))) 0)
+  let before get machine state
+  let frame need (at (get stack before) (- (length (get stack before)) 1)) "execution_frame" 0
+  let seen observe_frame (get execution state) frame program
+  make ObservedCall machine (eval_step before program true) execution seen
+
+same_result original:{ScalarResult} replay:{ScalarResult} kind:t > b
+if (not (text_eq (get code original) (get code replay))) false
+if (not (text_eq (get code original) "")) (text_eq (get detail original) (get detail replay))
+case (value_difference (get value original) (get value replay) kind) true mismatch false

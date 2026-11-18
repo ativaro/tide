@@ -1,0 +1,4 @@
+use route
+
+main net:i fee:i > i
+relay net fee

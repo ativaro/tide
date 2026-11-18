@@ -1,0 +1,2 @@
+policy net:i fee:i > i
+- net fee

@@ -1,0 +1,4 @@
+use reading
+
+record Closing
+value:{Reading}

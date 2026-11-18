@@ -1,0 +1,1344 @@
+{
+  "date": "2026-11-17",
+  "feature": "Native pairs over i, b and t and optional pairs in ordinary functions",
+  "before": {
+    "check": "E_BACKEND",
+    "test": "E_BACKEND"
+  },
+  "benchmark": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": 2,
+    "kernel": "Linux 7.3.4-1-cachyos x86_64 GNU/Linux",
+    "python": "Python 3.14.10",
+    "compiler": "c++ (GCC) 16.2.1 20260810",
+    "warmup": 3,
+    "repetitions": 21,
+    "clock": "monotonic wall, subprocess start through exit; output verified every invocation",
+    "cpython_source": "import json\nimport sys\n\ndef counts(readings):\n    if len(readings) > 4096:\n        raise ValueError(\"list limit\")\n    below = 0\n    for reading in readings:\n        if type(reading) is not int or not -(1 << 63) <= reading < 1 << 63:\n            raise ValueError(\"integer required\")\n        below += reading < 0\n    return [below, len(readings) - below]\n\ndef peak_lines(rows):\n    if len(rows) > 4096:\n        raise ValueError(\"list limit\")\n    best = None\n    for row, line in enumerate(rows, 1):\n        digits = line.removeprefix(\"-\")\n        if not (digits.isascii() and digits.isdecimal()):\n            raise ValueError((\"invalid_integer\", row))\n        magnitude = digits.lstrip(\"0\") or \"0\"\n        if len(magnitude) > 19:\n            raise ValueError((\"invalid_integer\", row))\n        number = int(magnitude)\n        if line.startswith(\"-\"):\n            number = -number\n        if not -(1 << 63) <= number < 1 << 63:\n            raise ValueError((\"invalid_integer\", row))\n        if best is None or number > best[0]:\n            best = [number, row]\n    return {\"some\": best} if best is not None else {\"none\": True}\n\ncall, inputs = sys.argv[1:]\nresult = {\"counts\": counts, \"peak_lines\": peak_lines}[call](**json.loads(inputs))\nprint(json.dumps(result, separators=(\",\", \":\")))\n",
+    "counts_source": "counts readings:*i > &ii\nfold readings (pair 0 0) totals row v\nif (< v 0) (pair (+ (first totals) 1) (second totals)) (pair (first totals) (+ (second totals) 1))\n",
+    "peak_source": "peak_lines rows:*t > ?&ii\nfold rows (nil &ii) best row line\nlet value need (int line) \"invalid_integer\" row\ncase best (some (pair value row)) previous\nif (> value (first previous)) (some (pair value row)) best\n\nexample first_maximum peak_lines\n{\"inputs\":{\"rows\":[\"-8\",\"-2\",\"-2\"]},\"expect\":{\"some\":[-2,2]}}\n\nexample no_rows peak_lines\n{\"inputs\":{\"rows\":[]},\"expect\":{\"none\":true}}\n\nexample invalid_row peak_lines\n{\"inputs\":{\"rows\":[\"4\",\"\",\"7\"]},\"expect_error\":{\"code\":\"E_DATA\",\"reason\":\"invalid_integer\",\"input_line\":2}}\n",
+    "checker_sha256": {
+      "original": "724212daf8c03c0e8531e8f9a969a406c8855b9d101700901cdca3be641e6650",
+      "generic": "015ed4b5b26b71ec378f81312f62005e9e250c3c1ecc0aaa505d427b821ad0ea",
+      "projection": "00945f26916744000e03da3e7ae52fb3fe68579b2a8ecd0a18ce849d474045a2"
+    },
+    "samples": [
+      {
+        "name": "counts",
+        "length": 16,
+        "expected": [
+          6,
+          10
+        ],
+        "medians": {
+          "generic": 5.746616,
+          "projection": 5.754757,
+          "cpython": 9.37972
+        },
+        "paired_saving_ms": 0.036280999999999786,
+        "projection_faster": 13,
+        "trials": {
+          "generic": [
+            6.812558,
+            6.719626,
+            6.644655,
+            6.655885,
+            6.861329,
+            6.637274,
+            6.659825,
+            6.169655,
+            5.44188,
+            5.549062,
+            5.696025,
+            5.697045,
+            5.447881,
+            5.892609,
+            5.691205,
+            5.456201,
+            5.746616,
+            5.751816,
+            5.679495,
+            5.668125,
+            5.675445
+          ],
+          "projection": [
+            6.632004,
+            6.683345,
+            6.678045,
+            6.732407,
+            6.687385,
+            6.750256,
+            6.671304,
+            6.118064,
+            5.473201,
+            5.353649,
+            5.804218,
+            5.395209,
+            5.43018,
+            5.644475,
+            5.44019,
+            5.883719,
+            5.630094,
+            5.754757,
+            5.643704,
+            5.597433,
+            5.595953
+          ],
+          "cpython": [
+            11.456622,
+            11.140706,
+            11.057754,
+            11.209277,
+            11.171526,
+            11.054054,
+            10.582404,
+            10.140976,
+            9.403521,
+            9.37972,
+            9.300188,
+            9.131854,
+            9.315168,
+            9.427191,
+            9.351059,
+            9.224167,
+            9.166845,
+            9.156145,
+            9.284478,
+            9.360309,
+            9.280978
+          ]
+        }
+      },
+      {
+        "name": "counts",
+        "length": 4096,
+        "expected": [
+          1366,
+          2730
+        ],
+        "medians": {
+          "generic": 51.977062,
+          "projection": 37.06328,
+          "cpython": 9.490853
+        },
+        "paired_saving_ms": 14.846339999999998,
+        "projection_faster": 21,
+        "trials": {
+          "generic": [
+            52.622825,
+            51.996152,
+            51.842239,
+            52.38126,
+            51.526233,
+            51.977062,
+            52.223817,
+            52.078074,
+            51.849779,
+            51.87945,
+            52.132475,
+            52.169816,
+            52.046773,
+            51.509312,
+            51.803428,
+            51.771388,
+            52.133515,
+            51.888719,
+            52.773418,
+            51.830939,
+            51.851889
+          ],
+          "projection": [
+            36.675962,
+            37.215983,
+            36.995899,
+            36.971808,
+            37.07506,
+            36.967058,
+            37.06328,
+            37.248804,
+            37.116771,
+            37.082051,
+            36.980879,
+            36.973638,
+            36.845606,
+            37.093071,
+            37.147811,
+            37.264114,
+            37.0538,
+            37.07224,
+            36.890026,
+            37.183572,
+            36.972578
+          ],
+          "cpython": [
+            9.518843,
+            9.586744,
+            9.477042,
+            9.517163,
+            9.520502,
+            9.421791,
+            9.425301,
+            9.38969,
+            9.508323,
+            9.362839,
+            9.520052,
+            9.573363,
+            9.452641,
+            9.497392,
+            9.463252,
+            9.530663,
+            9.39247,
+            9.439632,
+            9.490853,
+            9.39547,
+            9.498982
+          ]
+        }
+      },
+      {
+        "name": "peak_lines",
+        "length": 16,
+        "expected": {
+          "some": [
+            -3,
+            16
+          ]
+        },
+        "medians": {
+          "generic": 6.220706,
+          "projection": 6.164524,
+          "cpython": 9.242277
+        },
+        "paired_saving_ms": 0.05882100000000001,
+        "projection_faster": 15,
+        "trials": {
+          "generic": [
+            6.199075,
+            6.306258,
+            6.277177,
+            6.187395,
+            6.44119,
+            6.261806,
+            6.234306,
+            6.206025,
+            6.266107,
+            6.171775,
+            6.215356,
+            6.266337,
+            6.116544,
+            6.271126,
+            6.211336,
+            6.147655,
+            6.264637,
+            6.220706,
+            6.286847,
+            6.217495,
+            6.209436
+          ],
+          "projection": [
+            6.240046,
+            6.311828,
+            6.131674,
+            6.293817,
+            6.299197,
+            6.164524,
+            6.175485,
+            6.133884,
+            6.194435,
+            6.134514,
+            6.100264,
+            6.258077,
+            6.126194,
+            6.144445,
+            6.186265,
+            6.152304,
+            6.124484,
+            6.022082,
+            6.151324,
+            6.465321,
+            6.182255
+          ],
+          "cpython": [
+            9.268988,
+            9.154955,
+            9.177196,
+            9.129344,
+            9.116544,
+            9.178075,
+            9.209757,
+            9.277008,
+            9.3959,
+            9.280358,
+            9.242277,
+            9.222937,
+            9.290668,
+            9.263407,
+            9.199556,
+            9.195306,
+            9.326099,
+            9.231767,
+            9.42437,
+            9.296829,
+            9.250797
+          ]
+        }
+      },
+      {
+        "name": "peak_lines",
+        "length": 4096,
+        "expected": {
+          "some": [
+            18,
+            37
+          ]
+        },
+        "medians": {
+          "generic": 69.24091,
+          "projection": 60.858961,
+          "cpython": 9.932721
+        },
+        "paired_saving_ms": 8.381948999999999,
+        "projection_faster": 21,
+        "trials": {
+          "generic": [
+            69.311662,
+            69.645009,
+            69.611488,
+            69.557157,
+            69.65771,
+            69.109629,
+            69.604998,
+            68.931735,
+            68.767661,
+            68.997846,
+            69.207921,
+            68.953075,
+            69.010806,
+            68.977365,
+            69.547916,
+            69.394834,
+            68.953835,
+            69.351183,
+            70.074518,
+            69.24091,
+            69.152249
+          ],
+          "projection": [
+            61.055745,
+            61.085376,
+            61.000325,
+            61.186698,
+            60.716739,
+            61.016764,
+            60.663707,
+            61.30874,
+            60.574566,
+            60.995874,
+            60.718588,
+            60.929512,
+            60.747489,
+            60.899512,
+            60.583326,
+            60.902992,
+            60.573526,
+            60.654467,
+            60.851141,
+            60.858961,
+            60.584146
+          ],
+          "cpython": [
+            9.945301,
+            9.989982,
+            10.011863,
+            9.8729,
+            9.851789,
+            9.853329,
+            9.937551,
+            9.946141,
+            9.86343,
+            9.88778,
+            9.974721,
+            9.863329,
+            9.949161,
+            10.330699,
+            9.88341,
+            10.017802,
+            9.932721,
+            9.964682,
+            9.919071,
+            9.837479,
+            9.820399
+          ]
+        }
+      },
+      {
+        "name": "balance",
+        "length": 16,
+        "expected": 4,
+        "medians": {
+          "original": 5.687035,
+          "generic": 5.729765,
+          "projection": 5.700845
+        },
+        "paired_saving_ms": -0.011029999999999873,
+        "projection_faster": 9,
+        "trials": {
+          "original": [
+            5.666554,
+            5.673355,
+            5.622484,
+            5.698015,
+            5.782867,
+            5.697026,
+            5.912359,
+            5.612023,
+            5.755126,
+            5.713336,
+            5.798167,
+            5.618374,
+            5.711136,
+            5.678045,
+            5.660334,
+            5.696415,
+            5.687035,
+            5.554792,
+            5.600614,
+            5.740986,
+            5.658334
+          ],
+          "generic": [
+            5.729425,
+            5.785677,
+            5.683374,
+            5.720956,
+            6.254846,
+            5.731216,
+            5.818308,
+            5.766577,
+            5.701345,
+            5.729765,
+            5.694046,
+            5.781357,
+            5.652844,
+            5.651625,
+            5.821828,
+            5.607413,
+            5.732796,
+            5.834568,
+            5.640874,
+            5.730976,
+            5.668335
+          ],
+          "projection": [
+            5.731766,
+            5.618993,
+            5.747677,
+            5.731986,
+            5.628274,
+            5.776197,
+            5.626124,
+            5.690915,
+            5.898279,
+            5.765106,
+            5.746046,
+            5.638184,
+            5.698565,
+            5.622604,
+            5.729746,
+            5.685985,
+            5.862429,
+            5.674685,
+            5.700845,
+            5.513222,
+            5.709196
+          ]
+        }
+      },
+      {
+        "name": "balance",
+        "length": 4096,
+        "expected": 1364,
+        "medians": {
+          "original": 7.082364,
+          "generic": 7.104974,
+          "projection": 7.157754
+        },
+        "paired_saving_ms": -0.06157099999999982,
+        "projection_faster": 10,
+        "trials": {
+          "original": [
+            7.085723,
+            7.057292,
+            7.064363,
+            7.008382,
+            6.980431,
+            7.065083,
+            7.135234,
+            6.988662,
+            7.154355,
+            7.119874,
+            7.185646,
+            7.091164,
+            7.118803,
+            7.135354,
+            7.128464,
+            7.011012,
+            7.037602,
+            6.89792,
+            7.076613,
+            7.082364,
+            7.263737
+          ],
+          "generic": [
+            7.197565,
+            7.028542,
+            7.172285,
+            6.983641,
+            6.990532,
+            7.020892,
+            7.156534,
+            7.090553,
+            7.073583,
+            7.090494,
+            7.013792,
+            7.096183,
+            7.121734,
+            7.123704,
+            7.104974,
+            7.219376,
+            7.250327,
+            7.160725,
+            7.171065,
+            6.969221,
+            7.346079
+          ],
+          "projection": [
+            7.114374,
+            7.188465,
+            7.146475,
+            7.266757,
+            7.193646,
+            7.319328,
+            7.119064,
+            7.179455,
+            7.036272,
+            7.347318,
+            7.146995,
+            7.157754,
+            7.227006,
+            7.043143,
+            7.277637,
+            7.063143,
+            7.105843,
+            7.130464,
+            7.103554,
+            7.189275,
+            7.218006
+          ]
+        }
+      }
+    ],
+    "commands": {
+      "generic": "tide run SOURCE --call NAME --inputs JSON",
+      "projection": "tide run SOURCE --call NAME --inputs JSON",
+      "cpython": "python3 -I -S baseline.py NAME JSON"
+    },
+    "control": "Identical checker sources and build flags except the fast path for first/second of a bound variable. Original is the installed pre-feature checker used for the balance control.",
+    "rotation": "Run each arm once per round, rotate the first by one. Inputs prepared before spawning. One logical CPU. Files cached, fresh processes.",
+    "inputs": {
+      "counts": "readings[i] = i % 3 === 0 ? -1 : 1",
+      "peak_lines": "rows[i] = String(i % 37 - 18)",
+      "balance": "opening = 0 and entries[i] as in counts"
+    }
+  },
+  "validation": {
+    "clean_no_python_build": "make check-no-python passed, including installed peak_lines and balance",
+    "public_comparisons": 184,
+    "public_differences": [],
+    "public_cases": [
+      {
+        "id": "ii_check",
+        "status": 0
+      },
+      {
+        "id": "ii_fmt",
+        "status": 0
+      },
+      {
+        "id": "ii_test",
+        "status": 0
+      },
+      {
+        "id": "ii_some",
+        "status": 0
+      },
+      {
+        "id": "ii_none",
+        "status": 0
+      },
+      {
+        "id": "ii_[]",
+        "status": 1
+      },
+      {
+        "id": "ii_[0]",
+        "status": 1
+      },
+      {
+        "id": "ii_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "ii_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "ii_{}",
+        "status": 1
+      },
+      {
+        "id": "ii_42",
+        "status": 1
+      },
+      {
+        "id": "ii_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "ii_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "ii_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "ii_context_",
+        "status": 0
+      },
+      {
+        "id": "ii_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "ii_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "ib_check",
+        "status": 0
+      },
+      {
+        "id": "ib_fmt",
+        "status": 0
+      },
+      {
+        "id": "ib_test",
+        "status": 0
+      },
+      {
+        "id": "ib_some",
+        "status": 0
+      },
+      {
+        "id": "ib_none",
+        "status": 0
+      },
+      {
+        "id": "ib_[]",
+        "status": 1
+      },
+      {
+        "id": "ib_[0]",
+        "status": 1
+      },
+      {
+        "id": "ib_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "ib_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "ib_{}",
+        "status": 1
+      },
+      {
+        "id": "ib_42",
+        "status": 1
+      },
+      {
+        "id": "ib_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "ib_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "ib_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "ib_context_",
+        "status": 0
+      },
+      {
+        "id": "ib_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "ib_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "it_check",
+        "status": 0
+      },
+      {
+        "id": "it_fmt",
+        "status": 0
+      },
+      {
+        "id": "it_test",
+        "status": 0
+      },
+      {
+        "id": "it_some",
+        "status": 0
+      },
+      {
+        "id": "it_none",
+        "status": 0
+      },
+      {
+        "id": "it_[]",
+        "status": 1
+      },
+      {
+        "id": "it_[0]",
+        "status": 1
+      },
+      {
+        "id": "it_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "it_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "it_{}",
+        "status": 1
+      },
+      {
+        "id": "it_42",
+        "status": 1
+      },
+      {
+        "id": "it_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "it_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "it_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "it_context_",
+        "status": 0
+      },
+      {
+        "id": "it_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "it_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bi_check",
+        "status": 0
+      },
+      {
+        "id": "bi_fmt",
+        "status": 0
+      },
+      {
+        "id": "bi_test",
+        "status": 0
+      },
+      {
+        "id": "bi_some",
+        "status": 0
+      },
+      {
+        "id": "bi_none",
+        "status": 0
+      },
+      {
+        "id": "bi_[]",
+        "status": 1
+      },
+      {
+        "id": "bi_[0]",
+        "status": 1
+      },
+      {
+        "id": "bi_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "bi_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "bi_{}",
+        "status": 1
+      },
+      {
+        "id": "bi_42",
+        "status": 1
+      },
+      {
+        "id": "bi_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "bi_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "bi_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "bi_context_",
+        "status": 0
+      },
+      {
+        "id": "bi_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bi_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bb_check",
+        "status": 0
+      },
+      {
+        "id": "bb_fmt",
+        "status": 0
+      },
+      {
+        "id": "bb_test",
+        "status": 0
+      },
+      {
+        "id": "bb_some",
+        "status": 0
+      },
+      {
+        "id": "bb_none",
+        "status": 0
+      },
+      {
+        "id": "bb_[]",
+        "status": 1
+      },
+      {
+        "id": "bb_[0]",
+        "status": 1
+      },
+      {
+        "id": "bb_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "bb_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "bb_{}",
+        "status": 1
+      },
+      {
+        "id": "bb_42",
+        "status": 1
+      },
+      {
+        "id": "bb_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "bb_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "bb_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "bb_context_",
+        "status": 0
+      },
+      {
+        "id": "bb_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bb_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bt_check",
+        "status": 0
+      },
+      {
+        "id": "bt_fmt",
+        "status": 0
+      },
+      {
+        "id": "bt_test",
+        "status": 0
+      },
+      {
+        "id": "bt_some",
+        "status": 0
+      },
+      {
+        "id": "bt_none",
+        "status": 0
+      },
+      {
+        "id": "bt_[]",
+        "status": 1
+      },
+      {
+        "id": "bt_[0]",
+        "status": 1
+      },
+      {
+        "id": "bt_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "bt_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "bt_{}",
+        "status": 1
+      },
+      {
+        "id": "bt_42",
+        "status": 1
+      },
+      {
+        "id": "bt_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "bt_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "bt_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "bt_context_",
+        "status": 0
+      },
+      {
+        "id": "bt_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "bt_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "ti_check",
+        "status": 0
+      },
+      {
+        "id": "ti_fmt",
+        "status": 0
+      },
+      {
+        "id": "ti_test",
+        "status": 0
+      },
+      {
+        "id": "ti_some",
+        "status": 0
+      },
+      {
+        "id": "ti_none",
+        "status": 0
+      },
+      {
+        "id": "ti_[]",
+        "status": 1
+      },
+      {
+        "id": "ti_[0]",
+        "status": 1
+      },
+      {
+        "id": "ti_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "ti_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "ti_{}",
+        "status": 1
+      },
+      {
+        "id": "ti_42",
+        "status": 1
+      },
+      {
+        "id": "ti_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "ti_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "ti_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "ti_context_",
+        "status": 0
+      },
+      {
+        "id": "ti_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "ti_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "tb_check",
+        "status": 0
+      },
+      {
+        "id": "tb_fmt",
+        "status": 0
+      },
+      {
+        "id": "tb_test",
+        "status": 0
+      },
+      {
+        "id": "tb_some",
+        "status": 0
+      },
+      {
+        "id": "tb_none",
+        "status": 0
+      },
+      {
+        "id": "tb_[]",
+        "status": 1
+      },
+      {
+        "id": "tb_[0]",
+        "status": 1
+      },
+      {
+        "id": "tb_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "tb_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "tb_{}",
+        "status": 1
+      },
+      {
+        "id": "tb_42",
+        "status": 1
+      },
+      {
+        "id": "tb_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "tb_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "tb_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "tb_context_",
+        "status": 0
+      },
+      {
+        "id": "tb_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "tb_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "tt_check",
+        "status": 0
+      },
+      {
+        "id": "tt_fmt",
+        "status": 0
+      },
+      {
+        "id": "tt_test",
+        "status": 0
+      },
+      {
+        "id": "tt_some",
+        "status": 0
+      },
+      {
+        "id": "tt_none",
+        "status": 0
+      },
+      {
+        "id": "tt_[]",
+        "status": 1
+      },
+      {
+        "id": "tt_[0]",
+        "status": 1
+      },
+      {
+        "id": "tt_[1,2,3]",
+        "status": 1
+      },
+      {
+        "id": "tt_[null,true]",
+        "status": 1
+      },
+      {
+        "id": "tt_{}",
+        "status": 1
+      },
+      {
+        "id": "tt_42",
+        "status": 1
+      },
+      {
+        "id": "tt_[[0],{\"some\":2}]",
+        "status": 1
+      },
+      {
+        "id": "tt_[1.5,false]",
+        "status": 1
+      },
+      {
+        "id": "tt_[9223372036854775808,false]",
+        "status": 1
+      },
+      {
+        "id": "tt_context_",
+        "status": 0
+      },
+      {
+        "id": "tt_hole_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "tt_context_--node.2:7",
+        "status": 0
+      },
+      {
+        "id": "pair missing run",
+        "status": 1
+      },
+      {
+        "id": "pair missing test",
+        "status": 1
+      },
+      {
+        "id": "first of scalar run",
+        "status": 1
+      },
+      {
+        "id": "first of scalar test",
+        "status": 1
+      },
+      {
+        "id": "second of list run",
+        "status": 1
+      },
+      {
+        "id": "second of list test",
+        "status": 1
+      },
+      {
+        "id": "mixed branch run",
+        "status": 1
+      },
+      {
+        "id": "mixed branch test",
+        "status": 1
+      },
+      {
+        "id": "fold pair run",
+        "status": 1
+      },
+      {
+        "id": "fold pair test",
+        "status": 1
+      },
+      {
+        "id": "failure first run",
+        "status": 1
+      },
+      {
+        "id": "failure first test",
+        "status": 0
+      },
+      {
+        "id": "failure second run",
+        "status": 1
+      },
+      {
+        "id": "failure second test",
+        "status": 0
+      },
+      {
+        "id": "unused branch run",
+        "status": 0
+      },
+      {
+        "id": "unused branch test",
+        "status": 0
+      },
+      {
+        "id": "option need run",
+        "status": 1
+      },
+      {
+        "id": "option need test",
+        "status": 0
+      },
+      {
+        "id": "bad expectation run",
+        "status": 1
+      },
+      {
+        "id": "bad expectation test",
+        "status": 1
+      },
+      {
+        "id": "wrong result run",
+        "status": 0
+      },
+      {
+        "id": "wrong result test",
+        "status": 1
+      },
+      {
+        "id": "imported preview",
+        "status": 0
+      },
+      {
+        "id": "imported corrected",
+        "status": 0
+      },
+      {
+        "id": "nested syntax [1,{\"x\":0,\"x\":1}]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,{\"x\":}]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,[true,]]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,{\"\\ud800\":0}]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,{\"a\\ud800\":0,\"\\u0061\\uD800\":1}]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,{\"\\ud800\":0,\"\\ud801\":0}]",
+        "status": 1
+      },
+      {
+        "id": "nested syntax [1,{\"k\":\"\\ud800\"}]",
+        "status": 1
+      }
+    ],
+    "contract_hashes_independently_checked": 9,
+    "imported_edit": true,
+    "stale_rejected": true,
+    "original_first_peak_comparisons": 16,
+    "app_inputs": [
+      "",
+      "0",
+      "-0",
+      "-8\r\n-2\r\n-2\r\n",
+      "9\n9\n4",
+      "-2\n-7\n0",
+      "-9223372036854775808\n9223372036854775807",
+      "42\r",
+      "4\n\n7",
+      "1\n+2",
+      "2\n3x",
+      "9999999999999999999",
+      "-9999999999999999999",
+      "09\n09",
+      "\n",
+      "🐈"
+    ],
+    "regressions": {
+      "text": 553,
+      "resources": 77,
+      "node_edits": 1041,
+      "node_edits_using_independent_expected_source": 9,
+      "differences": 0
+    },
+    "exact_pair_budget_bytes": 4194304
+  },
+  "sha256": {
+    "Makefile": "76c200bc6888fd79fea08bc7ba0d6691a0dae19a4b13f235ed6be1adaf647617",
+    "native/bootstrap/no-python.Dockerfile": "5f29ac231f1eef3847456ab640bb217e9ccbee259d0c97c1ff36f690187a5a2e",
+    "native/bootstrap/checks.tide": "a67f55efca70b0e7b04d9beee1a20edadaffcc7e16c114ed79b47411faf7dd61",
+    "native/bootstrap/editor_checks.tide": "fc05119d84765adc5840fdbfe2a7a3517acfa14a31f9063ed72cf43aa5ecc238",
+    "native/bootstrap/edit_json.tide": "cdfed64666ed93d516ccc7f0b3c5b405972f8133f9d610dccedf29c71254b7d0",
+    "native/bootstrap/json_text.tide": "4ddf5e504a16da3964608a9fba7ca2e3e91d4a4463521e61d4f514300103363b",
+    "native/bootstrap/json_stream.tide": "81c18eb6144e47a38b5c08a5eb7bd62869930e8dd8839b82e8c4a4bd7a6d0225",
+    "native/bootstrap/scalar_json.tide": "3bf6fe9d6aa5768a024f643b0f94147416fbb4ee53f0052f1edb600aedfe91bd",
+    "native/bootstrap/samples.tide": "f6ad33b5bce3657300081672ce6069ca227fe9c8649749cce1402a8efa6c7f60",
+    "native/bootstrap/functions.tide": "164364f67fe0b486ffe8700a1fe23abce9fb6a11c7d165060752e17747fa34a3",
+    "native/bootstrap/function_run.tide": "83abb8cd6a07d7d6c067d85be78fddd8c33837011a459d151ed4ba26a97ddeeb",
+    "native/bootstrap/nodes.tide": "9d97fcaa99e918a29af59368ca74922547afeef99c940384ed66ec68e1698bc4",
+    "native/bootstrap/fixtures/functions/pairs.tide": "94da36817c8026197d0fb2c9332e6610d4740c0b26e5e775276227412e8a696d",
+    "apps/peak_lines.tide": "19ec6162425032ed7b9141eed8f6689c96341cfa4ac0c6061d794fd2db450f00",
+    "apps/first_peak.tide": "711df984194b215f81666c44a749626a065031799947a2fe708cd0319eaf3654"
+  }
+}

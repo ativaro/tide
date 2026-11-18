@@ -1,0 +1,15 @@
+record Input
+a:i b:i
+
+fixed_pool task:t > *{Input}
+if (text_eq task "lackbedarf") (list {Input} 1 (make Input a 1 b 1))
+let diagonal or (text_eq task "versandetiketten") (text_eq task "nettogewicht")
+let early list i 16 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+if (or diagonal (text_eq task "taktfenster"))
+  (map {Input} early b (make Input a (if diagonal b (+ b 1)) b b))
+let trays list i 32 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+if (text_eq task "restladung") (map {Input} trays b (make Input a (+ b 1) b b))
+fail "unknown repair family"
+
+example fixed_control fixed_pool
+{"inputs":{"task":"lackbedarf"},"expect":[{"a":1,"b":1}]}

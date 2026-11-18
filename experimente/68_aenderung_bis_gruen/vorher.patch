@@ -1,0 +1,214 @@
+--- a/Makefile
++++ b/Makefile
+@@ -7,7 +7,7 @@
+ SEED_MODULES := native/bootstrap/syntax.tide native/bootstrap/seed.tide
+ PROJECT_MODULES := $(addprefix native/bootstrap/,syntax.tide schema.tide json_text.tide json_stream.tide scalar_json.tide functions.tide rules.tide value_tree.tide compound_json.tide input_issue.tide samples.tide packages.tide project_model.tide)
+ EVAL_MODULES := $(addprefix native/bootstrap/,eval_values.tide value_diff.tide run_inputs.tide function_run.tide)
+-CHECKER_MODULES := $(PROJECT_MODULES) $(EVAL_MODULES) native/catalog/lookup.tide native/bootstrap/aot.tide native/bootstrap/project.tide
++CHECKER_MODULES := $(PROJECT_MODULES) $(EVAL_MODULES) native/bootstrap/aot.tide native/bootstrap/project.tide
+ AOT_RUNTIME_MODULES := $(PROJECT_MODULES) $(addprefix native/bootstrap/,eval_values.tide run_inputs.tide aot_runtime.tide)
+ INSPECTOR_MODULES := $(PROJECT_MODULES) native/bootstrap/nodes.tide $(EVAL_MODULES) native/bootstrap/execution.tide native/bootstrap/sha256.tide native/bootstrap/probe_domain.tide native/bootstrap/explain.tide native/bootstrap/inspection.tide
+ EDITOR_MODULES := $(PROJECT_MODULES) native/bootstrap/nodes.tide $(EVAL_MODULES) native/bootstrap/sha256.tide native/bootstrap/editor.tide native/bootstrap/edit_json.tide native/bootstrap/node_edits.tide
+@@ -82,8 +82,7 @@
+ 	@install -m644 native/write-image "$(pkgdir)/native"
+ 	@install -m644 "$(BUILD)/aot-runtime.cpp" "$(pkgdir)/native"
+ 	@install -m644 native/catalog/*.tsv "$(pkgdir)/native/catalog"
+-	@ln -fT "$(pkgdir)/bin/checker" "$(pkgdir)/bin/tide"
+-	@ln -sfnT ../lib/tide/bin/tide "$(DESTDIR)$(PREFIX)/bin/tide"
++	@ln -sfnT ../lib/tide/tide "$(DESTDIR)$(PREFIX)/bin/tide"
+ 	@set -eu; modules="$(pkgdir)/tide_lang"; cache="$$modules/__pycache__"; \
+ 	rm -f -- "$(pkgdir)/compat-interpreter" "$(pkgdir)/reference-tide"; \
+ 	if [ -d "$$modules" ] && [ ! -L "$$modules" ]; then \
+@@ -195,9 +194,9 @@
+ .PHONY: catalog
+ catalog: $(BUILD)/catalog
+ 
+-$(BUILD)/catalog: native/catalog/lookup.tide native/catalog/query.tide $(BUILD)/seed
++$(BUILD)/catalog: native/catalog/query.tide $(BUILD)/seed
+ 	@set -eu; tmp=$$(mktemp -d "$(BUILD)/catalog.XXXXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
+-	{ cat native/catalog/lookup.tide; echo; cat native/catalog/query.tide; } | "$(BUILD)/seed" > "$$tmp/catalog.cpp"; \
++	"$(BUILD)/seed" < "$<" > "$$tmp/catalog.cpp"; \
+ 	$(CXX) $(BOOTFLAGS) -static "$$tmp/catalog.cpp" -o "$$tmp/catalog"; chmod 755 "$$tmp/catalog"; mv -f "$$tmp/catalog" "$@"
+ 
+ .PHONY: forms checker inspector editor aot-runtime
+--- a/tide
++++ b/tide
+@@ -336,12 +336,6 @@
+                 case $step in *'|'*) exit 2 ;; esac
+                 set -- "$call" "$step$field_option"
+             fi
+-            if [ "$action" = test ] && [ "$explain" = no ] && [ -z "$diff" ]; then
+-                prepare checker || exit 1
+-                if "$tool_dir/checker" --test-suite "$file" "$root/native/catalog/release.tsv"; then exit 0; else result=$?; fi
+-                # Unresolved paths and unverified pins use the existing CLI diagnostics.
+-                [ "$result" = 75 ] || exit "$result"
+-            fi
+             if project_command "$action" "$file" "$@"; then exit 0; else result=$?; fi
+             exit "$result"
+         ); then exit 0; else status=$?; fi
+--- a/native/bootstrap/seed.tide
++++ b/native/bootstrap/seed.tide
+@@ -722,71 +722,6 @@
+   cat3 calls "," (concat symbol suffix)
+ cat3 "if((argc==4||argc==6)&&std::string_view(argv[1])==\"--read-project\"){auto output=read_siblings(argv[2],decode(argv[3]),decode(argc==6?argv[4]:\"\"),decode(argc==6?argv[5]:\"{}\")" args ");std::cout<<output<<std::flush;return std::cout?0:74;}"
+ 
+-test_entry_code > t
+-let rows list t 50
+-  "#include <sys/auxv.h>"
+-  "#include <sys/utsname.h>"
+-  "int test_suite(const char* filename,const std::string& catalog){"
+-  "    std::unique_ptr<char,decltype(&std::free)> resolved(realpath(filename,nullptr),&std::free);"
+-  "    if(!resolved)return 75;"
+-  "    std::string path(resolved.get());"
+-  "    try{"
+-  "        auto source=[](const std::string& p){return read_unit_at(AT_FDCWD,p,false,[](int){return Failure{\"read_failed\",0};}).first;};"
+-  "        Opt<Text> pin;"
+-  "        for(auto dir=SourcePath(path).folder;;dir=SourcePath(dir).folder){"
+-  "            auto lock=(dir==\"/\"?dir:dir+\"/\")+\"tide.lock\";"
+-  "            struct stat st;"
+-  "            if(lstat(lock.c_str(),&st)==0){pin=source(lock);break;}"
+-  "            if(errno!=ENOENT)return 75;"
+-  "            if(dir==\"/\")break;"
+-  "        }"
+-  "        if(!f_test_release_matches(source(catalog),pin))return 75;"
+-  "    }catch(const Failure&){return 75;}catch(const std::exception&){return 75;}"
+-  "    Text file;try{file=decode(filename);}catch(const std::range_error&){return 75;}"
+-  "    try{"
+-  "        auto output=read_siblings(path,U\"?\"+file,Text{},Text(U\"{}\"),f_project_begin,f_project_supply,f_project_finish,f_project_escape,f_project_error);"
+-  "        std::cout<<output<<std::flush;"
+-  "        if(std::cout)return 0;"
+-  "        std::cerr<<\"Could not write TIDE output.\\n\";return 1;"
+-  "    }catch(const Failure& e){"
+-  "        if(e.reason.starts_with(U\"{\\\"file\\\":\"))std::cerr<<e.reason<<'\\n';"
+-  "        else if(e.reason==U\"E_UTF8\" || e.reason==U\"input_limit\" || e.reason==U\"regular_file_required\")std::cerr<<f_check_schema(file,e.reason)<<'\\n';"
+-  "        else return 3;"
+-  "        return 1;"
+-  "    }catch(const std::range_error& e){"
+-  "        if(std::string_view(e.what())!=\"E_UTF8\")return 3;"
+-  "        std::cerr<<f_check_schema(file,Text(U\"E_UTF8\"))<<'\\n';return 1;"
+-  "    }catch(const std::exception&){return 3;}"
+-  "}"
+-  "// AT_EXECFN also identifies a PATH or symlink invocation in a filesystem without /proc."
+-  "std::string installed_cli(){"
+-  "    const char* executed=reinterpret_cast<const char*>(getauxval(AT_EXECFN));"
+-  "    if(!executed)return {};"
+-  "    std::unique_ptr<char,decltype(&std::free)> exe(realpath(executed,nullptr),&std::free);"
+-  "    if(!exe)return {};"
+-  "    SourcePath path(exe.get());"
+-  "    return path.name==\"tide\"?SourcePath(path.folder).folder:std::string{};"
+-  "}"
+-  "int cli_fallback(const std::string& root,char** argv){"
+-  "    execv((root+\"/tide\").c_str(),argv);std::cerr<<\"Could not start TIDE launcher.\\n\";return 1;"
+-  "}"
+-  "bool plain_cli_test(int argc,char** argv){"
+-  "    if(argc!=3 || std::string_view(argv[1])!=\"test\" || !argv[2][0] || argv[2][0]=='-')return false;"
+-  "    struct utsname os;return uname(&os)==0 && std::string_view(os.sysname)==\"Linux\" && std::string_view(os.machine)==\"x86_64\";"
+-  "}"
+-fold rows "" code row line concat code (concat line "\n")
+-
+-test_dispatch > t
+-let rows list t 7
+-  "if(!cli.empty()){"
+-  "    int result=test_suite(argv[2],cli+\"/native/catalog/release.tsv\");"
+-  "    if(result==75)return cli_fallback(cli,argv);"
+-  "    if(result==3){std::cerr<<\"{\\\"code\\\":\\\"E_BACKEND\\\",\\\"message\\\":\\\"This invocation is unavailable in the native TIDE package.\\\"}\\n\";return 1;}"
+-  "    return result;"
+-  "}"
+-  "if(argc==4 && std::string_view(argv[1])==\"--test-suite\")return test_suite(argv[2],argv[3]);"
+-fold rows "" code row line concat code (concat line "\n")
+-
+ run_branch > t
+ concat "if(argc>=6&&std::string_view(argv[1])==\"--read-project\"&&argv[3][0]=='!'){"
+  "Seq<Text> grants;for(int i=6;i<argc;++i)grants=t_append(std::move(grants),decode(argv[i]));auto finish=[&](const auto& s,const Text& e,const Text& c,const Text& in){return f_project_run(s,e,c,in,grants);};auto output=read_siblings(argv[2],decode(argv[3]),decode(argv[4]),decode(argv[5]),f_project_begin,f_project_supply,finish,f_project_escape,f_project_error);std::cout<<output<<std::flush;return std::cout?0:74;}"
+@@ -796,16 +731,14 @@
+ let args if reads file_input_setup "if(argc>2)throw Failure{\"bootstrap_arguments\",0};entry=decode(argc==2?argv[1]:\"main\");"
+ let limit if (text_eq siblings "compiler") "1048576" "131072"
+ let setup if reads (cat3 "char block[8192];while(std::cin.read(block,sizeof block)||std::cin.gcount()){if(bytes.size()+std::cin.gcount()>" limit ")throw Failure{\"input_limit\",0};bytes.append(block,std::cin.gcount());}if(!std::cin.eof())throw Failure{\"E_IO\",0};input=decode(bytes);") ""
+-let runner text_eq siblings "runner"
+-let dispatch if runner "auto cli=installed_cli();if(!cli.empty() && !plain_cli_test(argc,argv))return cli_fallback(cli,argv);" ""
+-let start cat3 "int main(int argc,char**argv){try{" dispatch "for(auto [kind,max]:{std::pair{RLIMIT_AS,rlim_t(536870912)},std::pair{RLIMIT_CPU,rlim_t(20)}}){struct rlimit r;if(getrlimit(kind,&r))return 1;r.rlim_cur=std::min(r.rlim_cur,max);if(setrlimit(kind,&r))return 1;}std::string bytes;Text input,entry;"
++let start "int main(int argc,char**argv){try{for(auto [kind,max]:{std::pair{RLIMIT_AS,rlim_t(536870912)},std::pair{RLIMIT_CPU,rlim_t(20)}}){struct rlimit r;if(getrlimit(kind,&r))return 1;r.rlim_cur=std::min(r.rlim_cur,max);if(setrlimit(kind,&r))return 1;}std::string bytes;Text input,entry;"
+ if (text_eq siblings "aot")
+   (cat3 "Text compiled_entry(const Seq<Text>& args);\n" start
+     "Seq<Text> argv_text;for(int i=1;i<argc;++i)argv_text=t_append(std::move(argv_text),decode(argv[i]));std::cout<<compiled_entry(argv_text)<<std::flush;if(!std::cout){std::cerr<<\"Could not write TIDE output.\\n\";return 1;}return 0;}catch(const Failure&e){std::cerr<<e.reason<<'\\n';return 1;}catch(const std::exception&e){std::cerr<<e.what()<<'\\n';return 1;}}\n")
+ let protocol if (or (text_eq siblings "") (text_eq siblings "compiler")) start
+   (if (text_eq siblings "transaction")
+     (concat start "if(argc==8&&(std::string_view(argv[1])==\"--replace-root\"||std::string_view(argv[1])==\"--replace-nodes\")){bool write=std::string_view(argv[7])==\"yes\";R_ProjectGrant io(argv[2],decode(argv[3]),argv[4],write);std::cout<<f_apply_edit(io,decode(argv[3]),std::string_view(argv[1])==\"--replace-nodes\"?t_some(decode(argv[4])):Opt<Text>{},decode(argv[5]),std::string_view(argv[6])==\"yes\",write)<<std::flush;return std::cout?0:74;}")
+-    (cat3 (if runner (concat sibling_io_code test_entry_code) sibling_io_code) start (if runner (cat3 test_dispatch run_branch (sibling_branch "project")) (sibling_branch siblings))))
++    (cat3 sibling_io_code start (if (text_eq siblings "runner") (concat run_branch (sibling_branch "project")) (sibling_branch siblings))))
+ cat3 (cat3 protocol args (concat setup "std::cout<<std::boolalpha<<"))
+   entry
+   ";return std::cout?0:1;}catch(const Failure&e){std::cerr<<e.reason<<'\\n';return 1;}catch(const std::exception&e){std::cerr<<e.what()<<'\\n';return 1;}}\n"
+--- a/native/bootstrap/project.tide
++++ b/native/bootstrap/project.tide
+@@ -4,10 +4,6 @@
+ 
+ use aot
+ 
+-test_release_matches catalog:t pin:?t > b
+-case (lookup catalog "release.lock") false release
+-case pin true contents text_eq (pin_status contents release) "ok"
+-
+ project_output project:{ProjectFiles} fields:t > t
+ let modules fold (get units project) "" acc pos unit if (eq pos 1) acc (json_item acc (json_string (get name unit)))
+ cat3 "\"modules\":[" modules (cat3 "]," fields (concat "\n" (project_snapshot project)))
+--- a/native/bootstrap/checks.tide
++++ b/native/bootstrap/checks.tide
+@@ -3,7 +3,6 @@
+ use function_cases
+ 
+ all_bootstrap_checks > b
+-if (not test_release_checks) fail "test_release_preflight"
+ if (not map_boundaries) fail "map_work_memory_and_order"
+ if (not projected_map_boundaries) fail "map_projected_budget"
+ if (not input_issue_checks) fail "typed_input_location"
+@@ -20,13 +19,6 @@
+ if (not json_batch_boundary) fail "array_chunk_boundary"
+ and (and rule_trace_boundary scan_work_boundary) (and module_checks (and work_limit_examples (and list_budget_examples (and full_list_literal fold_work_boundary))))
+ 
+-test_release_checks > b
+-let catalog "release.lock\t{\"language\":\"0.6\",\"tool\":\"0.6.2\"}\n"
+-and (test_release_matches catalog (nil t))
+-  (and (test_release_matches catalog (some "{\"tool\":\"0.6.2\",\"language\":\"0.6\"}"))
+-    (and (not (test_release_matches catalog (some "{\"tool\":\"old\"}")))
+-      (not (test_release_matches "another.key\t{}\n" (nil t)))))
+-
+ input_issue_checks > b
+ let source "variant Mode\na b\n\nrecord Row\nbalance:i\n\nrecord Book\nrows:*{Row}"
+ let schemas validated_schema (schema_blocks source false) "types.tide"
+--- a/native/bootstrap/no-python.Dockerfile
++++ b/native/bootstrap/no-python.Dockerfile
+@@ -142,9 +142,6 @@
+     printf '80\r\n81\r\n98\r\n' > /tmp/readings; \
+     test "$(tide run /apps/report.tide --inputs '{"limit":80}' --read input=/tmp/readings)" = '{"above":2,"peak":{"some":98}}'; \
+     test "$(tide test /apps/report_packages/stream_report.tide)" = '{"passed":7}'; \
+-    printf '\377' > /tmp/bad-source.tide; \
+-    if tide test /tmp/bad-source.tide >/tmp/out 2>/tmp/error; then exit 1; else test "$?" = 1; fi; \
+-    test ! -s /tmp/out; grep -Fxq '{"file":"/tmp/bad-source.tide","code":"E_UTF8","message":"Expected UTF-8 source"}' /tmp/error; \
+     test "$(/tmp/stream-report-aot --inputs '{"bytes":12,"limit":80}' --read input=/tmp/readings)" = '{"above":2,"peak":{"some":98}}'; \
+     test "$(tide test /apps/report_packages/report.tide)" = '{"passed":6}'; \
+     tide modules /apps/report_packages/report.tide --json > /tmp/packages; \
+--- a/native/catalog/query.tide
++++ b/native/catalog/query.tide
+@@ -1,4 +1,10 @@
+-use lookup
++lookup source:t key:t > ?t
++let prefix concat key "\t"
++let size text_len prefix
++fold (lines source) (nil t) found row line
++  if (text_eq (text_slice line 0 size) prefix)
++    (case found (some (text_slice line size (text_len line))) previous (fail "duplicate_catalog_key"))
++    found
+ 
+ help_lines source:t entry:t > t
+ let prefix concat entry "\t"
+--- a/native/catalog/lookup.tide
++++ /dev/null
+@@ -1,7 +0,0 @@
+-lookup source:t key:t > ?t
+-let prefix concat key "\t"
+-let size text_len prefix
+-fold (lines source) (nil t) found row line
+-  if (text_eq (text_slice line 0 size) prefix)
+-    (case found (some (text_slice line size (text_len line))) previous (fail "duplicate_catalog_key"))
+-    found

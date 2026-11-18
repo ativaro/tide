@@ -1,0 +1,1194 @@
+{
+  "date": "2026-11-17",
+  "platform": "Linux x86-64",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "logical_cpu": 2,
+  "cxx": "GCC 16.2.1",
+  "cpython": "Python 3.14.10",
+  "public_source_sha256": {
+    "apps/cursor.tide": "6a05068d3acd48ed0e6e74f506074719220de6e2073e8cdc0579b5359e9211eb",
+    "workbench/source_layout.tide": "f201b8b943a77f4eb707b7bf67d309b0a4fd2b5e2e57b1909fdae031f271538a",
+    "native/bootstrap/fixtures/functions/text.tide": "5b37ffe80a2044426f4c45d6fc9f3629abd0e5ef8ee7fcad491fdac3f8e2753a",
+    "apps/balance.tide": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25",
+    "Makefile": "a3e7bf2521074cf2b48e324ec6d985dd3002970961069ad97f73b03799033642",
+    "apps/nano.tide": "0c798baa86193afe4a2d4bc3f67eb1db3f4ed13da36efd6f530f0db9faa556dd",
+    "native/bootstrap/checks.tide": "5d7cde17f29476591c54a3f40fcddf74e7db41d6f038d2ebf786b1797090ca70",
+    "native/bootstrap/functions.tide": "45ae2d4f5a16405bd2c678cd87df9b58cd3e8ea7a30469c4f0aed678ba5b99e7",
+    "native/bootstrap/function_run.tide": "73c6801db83c9c331b26e4a9915d5bdd07bf7c1c9f70aad02549964b54f71b13",
+    "native/bootstrap/samples.tide": "1b4b72abf568e65bc253723817592645fd3a3a75df4c50ad198ba8e814731e93",
+    "native/bootstrap/scalar_json.tide": "11f2b6585a448a49ddc63b4f21267a7f79cd4b5c6e8e93bd4df68dff70b8fa65",
+    "native/bootstrap/nodes.tide": "46d5d9e15a6a32b6f6ebe59f4b5669a91b31fb64e70987b7791d6356f8035a68",
+    "native/bootstrap/node_edits.tide": "23271f6bf7155da90c1d4b7a7f38243c62628aa4e9504164254f7943b4d59f5c",
+    "native/bootstrap/schema.tide": "fd9b229d2022518d7d8054ad0a5153b4bf732859f902d82550eb5cf58d7b7dc3",
+    "native/bootstrap/project_model.tide": "cf3aab63e1879a819ae55aba356431b1357e8161bd35774878da493ec5bb5529",
+    "native/bootstrap/project.tide": "d3bc52a2f7edbc0f34ca87078097752c527b5ac9dd92f56c81c26eb89dc57340",
+    "native/bootstrap/edit_json.tide": "392a394b12e259bbcc44146379c4a60910bf1cdb0ed7ce474d198213d2909e28",
+    "native/bootstrap/json_text.tide": "834ac85d06fb213a4b3eecdb64c30aaede0804f669fdc2e9710101de019f3282"
+  },
+  "python_free_build": {
+    "environment": "Empty build directory. Mount namespace with no Python executable, no Python standard library, no usable libpython, no experiments. Linux system and C++ build tools available.",
+    "targets": [
+      "check-native",
+      "install"
+    ],
+    "installed_tool_sha256": {
+      "catalog": "70d00d40cb6498d8da987646e6ac6f32ecfad490a70b773858b0d7733abcf583",
+      "checker": "fbcb46f52a54fa6a51d8c8101469b60c145bcd6182adc607d644d8b8f0f1d17e",
+      "editor": "5f3e5010ade0b4e7761107924f1fb596603fae1f323562e243bb4f45ef7a2337",
+      "forms": "327debd121e772572a1f23ea59a569b5b7985fb630a3b67ebcba7926cbf1c361",
+      "inspector": "5f3e8347c07d516b7af950137124ea4b814d830aa1471d11f2e2972d716f2d4b",
+      "tidec": "28434b5c447db866441716c5780a78112510cc4ea313c68039233590201b530b"
+    },
+    "executable_image_sha256": {
+      "balance-main": "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2",
+      "balance-balance": "76f3622f0c23257d3fea205b9edce9b17d92ce891534505feccd0cdd19f3c11a",
+      "heating-main": "af64ce9bd1f97ca0694c2b4c2b05c02d0502ecb0e9663d7160647d50cb6a8319",
+      "heating-degree_hours": "0458d9a324a9dfd40165604734409b4595def92eb187d8379970cd349b5c2b1c",
+      "cartons-main": "58a2e228480f601fafb3b0769db8e3539455f111ffe6be6b04efa11e0c18c032",
+      "cartons-carton_balance": "2bc2c80ba31ca8eeedf934eac49628006926fd362939f84fc58d7db792c5b362",
+      "heat-main": "b422ab6e0ce04aca22c51b97b43fba488f9407ef0722fc8b46420f80cb19d456",
+      "heat-simulate": "cebe4a57fbac5a701a87adcc5aa784561ea9459408aaeae97eace91a7bf39bfa",
+      "pump-main": "cd6bb713a33f27aac69eefd230e2ea421cb6dec12a2ab71c8717b969501b89c9",
+      "pump-simulate": "6bcd46a906700ccbce0f9bce492cff0d74e8a55a211bb654696c54cedcd8de0f",
+      "light-main": "03a713a2ed3ef09ebfb70dcf90efbfa66884025137a03fb33b4fe77fe040828f",
+      "light-simulate": "6acd26c019763d8e52298942324a4a5e3e57ad9ea3f8dd597fa261ead0582e10"
+    },
+    "saldo_output": 97,
+    "upgrade_removed": {
+      "old_modules": 11,
+      "bytecode_files": 11,
+      "legacy_launchers": 2
+    },
+    "foreign_file_preserved": true,
+    "play": "E_BACKEND"
+  },
+  "comparisons": {
+    "text": {
+      "count": 553,
+      "by_command": {
+        "check": 3,
+        "fmt": 3,
+        "test": 3,
+        "context": 15,
+        "selection": 86,
+        "hole": 86,
+        "cursor": 120,
+        "text_find": 75,
+        "text_rfind": 75,
+        "int": 11,
+        "text list": 10,
+        "wire option": 11,
+        "input JSON": 12,
+        "syntax and branches": 19,
+        "lines": 9,
+        "memory": 5,
+        "text work": 7,
+        "rule time": 1,
+        "long example": 1,
+        "long contract": 1
+      },
+      "by_result": {
+        "ok": 507,
+        "E_INPUT": 18,
+        "E_LIMIT": 10,
+        "E_JSON": 5,
+        "E_SYNTAX": 4,
+        "E_TYPE": 8,
+        "E_DATA": 1
+      },
+      "differences": []
+    },
+    "resources": {
+      "count": 77,
+      "observations": [
+        [
+          "+ a x",
+          0,
+          "ok"
+        ],
+        [
+          "+ x a",
+          0,
+          "ok"
+        ],
+        [
+          "+ outer row",
+          0,
+          "ok"
+        ],
+        [
+          "+ row outer",
+          0,
+          "ok"
+        ],
+        [
+          "+ -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "+ outer x",
+          0,
+          "ok"
+        ],
+        [
+          "+ x x",
+          0,
+          "ok"
+        ],
+        [
+          "- a x",
+          0,
+          "ok"
+        ],
+        [
+          "- x a",
+          0,
+          "ok"
+        ],
+        [
+          "- outer row",
+          0,
+          "ok"
+        ],
+        [
+          "- row outer",
+          0,
+          "ok"
+        ],
+        [
+          "- -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "- outer x",
+          0,
+          "ok"
+        ],
+        [
+          "- x x",
+          0,
+          "ok"
+        ],
+        [
+          "* a x",
+          0,
+          "ok"
+        ],
+        [
+          "* x a",
+          0,
+          "ok"
+        ],
+        [
+          "* outer row",
+          0,
+          "ok"
+        ],
+        [
+          "* row outer",
+          0,
+          "ok"
+        ],
+        [
+          "* -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "* outer x",
+          0,
+          "ok"
+        ],
+        [
+          "* x x",
+          0,
+          "ok"
+        ],
+        [
+          "div a x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "div x a",
+          1,
+          "E_DATA"
+        ],
+        [
+          "div outer row",
+          0,
+          "ok"
+        ],
+        [
+          "div row outer",
+          0,
+          "ok"
+        ],
+        [
+          "div -2 x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "div outer x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "div x x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "mod a x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "mod x a",
+          1,
+          "E_DATA"
+        ],
+        [
+          "mod outer row",
+          0,
+          "ok"
+        ],
+        [
+          "mod row outer",
+          0,
+          "ok"
+        ],
+        [
+          "mod -2 x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "mod outer x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "mod x x",
+          1,
+          "E_DATA"
+        ],
+        [
+          "eq outer row",
+          0,
+          "ok"
+        ],
+        [
+          "eq row outer",
+          0,
+          "ok"
+        ],
+        [
+          "eq -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "eq outer x",
+          0,
+          "ok"
+        ],
+        [
+          "eq x x",
+          0,
+          "ok"
+        ],
+        [
+          "> outer row",
+          0,
+          "ok"
+        ],
+        [
+          "> row outer",
+          0,
+          "ok"
+        ],
+        [
+          "> -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "> outer x",
+          0,
+          "ok"
+        ],
+        [
+          "> x x",
+          0,
+          "ok"
+        ],
+        [
+          "< outer row",
+          0,
+          "ok"
+        ],
+        [
+          "< row outer",
+          0,
+          "ok"
+        ],
+        [
+          "< -2 x",
+          0,
+          "ok"
+        ],
+        [
+          "< outer x",
+          0,
+          "ok"
+        ],
+        [
+          "< x x",
+          0,
+          "ok"
+        ],
+        [
+          "fold -1",
+          0,
+          "ok"
+        ],
+        [
+          "fold -1",
+          0,
+          "ok"
+        ],
+        [
+          "fold 0",
+          0,
+          "ok"
+        ],
+        [
+          "fold 0",
+          0,
+          "ok"
+        ],
+        [
+          "fold 1",
+          0,
+          "ok"
+        ],
+        [
+          "fold 1",
+          0,
+          "ok"
+        ],
+        [
+          "fold 2",
+          0,
+          "ok"
+        ],
+        [
+          "fold 2",
+          0,
+          "ok"
+        ],
+        [
+          "fold 5",
+          0,
+          "ok"
+        ],
+        [
+          "fold 5",
+          0,
+          "ok"
+        ],
+        [
+          "fold 7",
+          0,
+          "ok"
+        ],
+        [
+          "fold 7",
+          0,
+          "ok"
+        ],
+        [
+          "strings memory 510",
+          0,
+          "ok"
+        ],
+        [
+          "strings memory 511",
+          0,
+          "ok"
+        ],
+        [
+          "strings memory 512",
+          1,
+          "E_LIMIT"
+        ],
+        [
+          "strings memory 513",
+          1,
+          "E_LIMIT"
+        ],
+        [
+          "work edge 0",
+          0,
+          "ok"
+        ],
+        [
+          "work edge 1",
+          0,
+          "ok"
+        ],
+        [
+          "work edge 2",
+          1,
+          "E_LIMIT"
+        ],
+        [
+          "work edge 3",
+          1,
+          "E_LIMIT"
+        ],
+        [
+          "diagnostic ",
+          0,
+          "ok"
+        ],
+        [
+          "diagnostic ✓\n",
+          1,
+          "E_EXAMPLE"
+        ],
+        [
+          "diagnostic wrong",
+          1,
+          "E_EXAMPLE"
+        ],
+        [
+          "example json",
+          1,
+          "E_JSON"
+        ],
+        [
+          "example json",
+          1,
+          "E_JSON"
+        ],
+        [
+          "example json",
+          1,
+          "E_JSON"
+        ],
+        [
+          "example json",
+          1,
+          "E_INPUT"
+        ]
+      ],
+      "differences": []
+    },
+    "node_edits": {
+      "counts": {
+        "replace": 473,
+        "op": 473,
+        "emptyArray": 2,
+        "emptyString": 2,
+        "scalar": 2,
+        "bool": 2,
+        "object": 2,
+        "nonStringId": 2,
+        "nested": 2,
+        "extra": 2,
+        "extra2": 2,
+        "missingOp": 2,
+        "unknownId": 2,
+        "unknownFile": 2,
+        "unknownOp": 2,
+        "badType": 2,
+        "badArity": 2,
+        "unknownName": 2,
+        "wrongScope": 2,
+        "overlap": 2,
+        "duplicate": 2,
+        "two": 2,
+        "operatorAndChild": 2,
+        "wrongExample": 2,
+        "badReplace": 2,
+        "blankReplace": 2,
+        "newline": 2,
+        "escaped": 2,
+        "over256": 2,
+        "JSON": 18,
+        "staleJSON": 18,
+        "imported write": 4,
+        "256 disjoint": 1
+      },
+      "outcomes": {
+        "ok": 652,
+        "E_EDIT": 340,
+        "E_NODE": 5,
+        "E_TYPE": 2,
+        "E_SYNTAX": 2,
+        "E_NAME": 4,
+        "E_EXAMPLE": 3,
+        "E_JSON": 30,
+        "E_REVISION": 3
+      },
+      "independently_verified_source_ranges": [
+        {
+          "target": "balance.tide",
+          "node": "2:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "4:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "11:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "12:3"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "list_ops.tide:2:1"
+        },
+        {
+          "target": "text.tide",
+          "node": "8:1"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "5:11"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "13:1"
+        },
+        {
+          "target": "source_layout.tide",
+          "node": "17:1"
+        }
+      ],
+      "differences": []
+    },
+    "whole_source_edits": 176,
+    "previous_groups": {
+      "functions": 466,
+      "lists": 176,
+      "rules": 333,
+      "inspection": 595,
+      "large_projects": 8,
+      "queries": 218,
+      "diagnostics": 45,
+      "fingerprints": 26,
+      "arrays": 83
+    },
+    "previous_cli_change": "One previously unsupported malformed JSON argument now yields the same E_JSON and char position 4106 as the historical language reference. 82/83 array argument probes match the previous native CLI exactly."
+  },
+  "clock": "Process startup through exit. Monotonic elapsed time, milliseconds. JSON results compared on every repetition. Rotating order, 2 warm-ups + 9 samples for TIDE versions, alternating order, 3 warm-ups + 21 samples for direct CPython.",
+  "historical_reference": "experimente/referenzsystem/reference-tide",
+  "tide_versions": [
+    {
+      "name": "cursor line",
+      "input_bytes": 29,
+      "median_ms": {
+        "native": 5.46,
+        "reference": 29.131,
+        "pilot": 5.518
+      },
+      "samples": {
+        "native": [
+          6.773,
+          6.6,
+          6.192,
+          5.914,
+          5.434,
+          5.429,
+          5.458,
+          5.46,
+          5.413
+        ],
+        "reference": [
+          34.931,
+          34.802,
+          34.704,
+          29.131,
+          28.677,
+          28.748,
+          29.4,
+          28.771,
+          28.904
+        ],
+        "pilot": [
+          6.955,
+          6.645,
+          6.402,
+          6.13,
+          5.488,
+          5.458,
+          5.475,
+          5.518,
+          5.491
+        ]
+      }
+    },
+    {
+      "name": "header",
+      "input_bytes": 62,
+      "median_ms": {
+        "native": 6.46,
+        "reference": 29.343,
+        "pilot": 6.515
+      },
+      "samples": {
+        "native": [
+          6.511,
+          6.491,
+          6.434,
+          6.51,
+          6.455,
+          6.439,
+          6.425,
+          6.475,
+          6.46
+        ],
+        "reference": [
+          29.343,
+          29.384,
+          29.308,
+          29.35,
+          29.287,
+          29.251,
+          29.373,
+          29.345,
+          29.327
+        ],
+        "pilot": [
+          6.515,
+          6.539,
+          6.515,
+          6.532,
+          6.484,
+          6.484,
+          6.541,
+          6.512,
+          6.498
+        ]
+      }
+    },
+    {
+      "name": "long lookup",
+      "input_bytes": 40039,
+      "median_ms": {
+        "native": 7.692,
+        "reference": 29.25,
+        "pilot": 18.111
+      },
+      "samples": {
+        "native": [
+          7.714,
+          7.69,
+          7.699,
+          7.685,
+          7.685,
+          7.697,
+          7.692,
+          7.671,
+          7.734
+        ],
+        "reference": [
+          29.376,
+          29.259,
+          29.459,
+          29.321,
+          29.25,
+          29.148,
+          29.218,
+          29.179,
+          29.151
+        ],
+        "pilot": [
+          18.346,
+          17.999,
+          18.255,
+          18.095,
+          18.111,
+          18.144,
+          18.155,
+          18.079,
+          18.111
+        ]
+      }
+    },
+    {
+      "name": "short slice of long input",
+      "input_bytes": 60038,
+      "median_ms": {
+        "native": 8.314,
+        "reference": 29.228,
+        "pilot": 12.103
+      },
+      "samples": {
+        "native": [
+          8.364,
+          8.314,
+          8.31,
+          8.334,
+          8.283,
+          8.283,
+          8.344,
+          8.293,
+          8.338
+        ],
+        "reference": [
+          29.257,
+          29.171,
+          29.22,
+          29.24,
+          29.405,
+          29.228,
+          29.382,
+          29.179,
+          29.154
+        ],
+        "pilot": [
+          12.1,
+          12.112,
+          12.075,
+          12.098,
+          12.114,
+          12.046,
+          12.16,
+          12.107,
+          12.103
+        ]
+      }
+    },
+    {
+      "name": "256 pieces",
+      "input_bytes": 1437,
+      "median_ms": {
+        "native": 6.694,
+        "reference": 29.291,
+        "pilot": 6.992
+      },
+      "samples": {
+        "native": [
+          6.782,
+          6.655,
+          6.649,
+          6.742,
+          6.752,
+          6.694,
+          7.57,
+          6.665,
+          6.687
+        ],
+        "reference": [
+          29.344,
+          29.169,
+          29.221,
+          29.357,
+          29.322,
+          29.24,
+          29.291,
+          29.242,
+          29.429
+        ],
+        "pilot": [
+          7.016,
+          6.97,
+          6.965,
+          7.026,
+          6.986,
+          6.992,
+          6.958,
+          6.996,
+          7.212
+        ]
+      }
+    },
+    {
+      "name": "ten contracts",
+      "input_bytes": 9,
+      "median_ms": {
+        "native": 5.694,
+        "reference": 28.982,
+        "pilot": 5.787
+      },
+      "samples": {
+        "native": [
+          5.903,
+          5.712,
+          5.653,
+          5.657,
+          5.699,
+          5.662,
+          5.722,
+          5.694,
+          5.68
+        ],
+        "reference": [
+          29.123,
+          28.967,
+          29.007,
+          28.982,
+          28.975,
+          28.999,
+          29.068,
+          28.911,
+          28.862
+        ],
+        "pilot": [
+          5.779,
+          5.788,
+          5.787,
+          5.874,
+          5.793,
+          5.815,
+          5.779,
+          5.779,
+          5.767
+        ]
+      }
+    },
+    {
+      "name": "scalar balance",
+      "input_bytes": 40,
+      "median_ms": {
+        "native": 5.179,
+        "reference": 28.903,
+        "pilot": 5.382,
+        "previous": 5.297
+      },
+      "samples": {
+        "native": [
+          5.154,
+          5.141,
+          5.173,
+          5.155,
+          5.179,
+          5.184,
+          5.259,
+          5.435,
+          5.505
+        ],
+        "reference": [
+          28.94,
+          28.701,
+          28.838,
+          28.728,
+          28.903,
+          28.857,
+          28.942,
+          28.907,
+          29.052
+        ],
+        "pilot": [
+          5.169,
+          5.56,
+          5.262,
+          5.253,
+          5.197,
+          5.382,
+          5.565,
+          5.547,
+          5.575
+        ],
+        "previous": [
+          5.281,
+          5.32,
+          5.133,
+          5.175,
+          5.297,
+          5.212,
+          5.42,
+          5.396,
+          5.375
+        ]
+      }
+    },
+    {
+      "name": "4096 entries",
+      "input_bytes": 8217,
+      "median_ms": {
+        "native": 6.467,
+        "reference": 33.349,
+        "pilot": 14.048,
+        "previous": 11.554
+      },
+      "samples": {
+        "native": [
+          6.406,
+          6.467,
+          6.635,
+          6.608,
+          6.832,
+          6.44,
+          6.444,
+          6.45,
+          6.499
+        ],
+        "reference": [
+          33.552,
+          33.58,
+          33.363,
+          33.349,
+          33.408,
+          33.066,
+          33.072,
+          33.277,
+          33.054
+        ],
+        "pilot": [
+          14.037,
+          14.128,
+          14.212,
+          14.499,
+          13.993,
+          14.014,
+          14.102,
+          14.035,
+          14.048
+        ],
+        "previous": [
+          11.51,
+          11.656,
+          11.596,
+          11.554,
+          11.515,
+          11.534,
+          11.494,
+          11.578,
+          11.613
+        ]
+      }
+    },
+    {
+      "name": "large text contract",
+      "input_bytes": 4,
+      "median_ms": {
+        "native": 68.888,
+        "reference": 29.176,
+        "pilot": 72.342
+      },
+      "samples": {
+        "native": [
+          68.767,
+          68.811,
+          68.97,
+          68.997,
+          68.888,
+          68.953,
+          68.932,
+          68.711,
+          68.837
+        ],
+        "reference": [
+          29.204,
+          29.068,
+          29.24,
+          29.176,
+          29.127,
+          29.15,
+          29.261,
+          29.117,
+          29.396
+        ],
+        "pilot": [
+          72.138,
+          72.401,
+          72.376,
+          72.349,
+          72.155,
+          72.41,
+          71.834,
+          72.342,
+          72.159
+        ]
+      }
+    }
+  ],
+  "direct_cpython": [
+    {
+      "name": "cursor",
+      "median_ms": {
+        "tide": 5.502,
+        "cpython": 9.064
+      },
+      "samples": {
+        "tide": [
+          5.808,
+          5.509,
+          5.538,
+          5.467,
+          5.524,
+          5.508,
+          5.519,
+          5.485,
+          5.496,
+          5.535,
+          5.502,
+          5.455,
+          5.51,
+          5.452,
+          5.505,
+          5.458,
+          5.488,
+          5.446,
+          5.458,
+          5.414,
+          5.518
+        ],
+        "cpython": [
+          9.064,
+          9.069,
+          9.078,
+          8.98,
+          9.131,
+          9.171,
+          9.251,
+          8.921,
+          9.42,
+          9.064,
+          9.054,
+          8.976,
+          9.113,
+          8.933,
+          9.071,
+          9.023,
+          9.088,
+          8.987,
+          9.18,
+          8.959,
+          9.043
+        ]
+      }
+    },
+    {
+      "name": "long lookup",
+      "median_ms": {
+        "tide": 7.689,
+        "cpython": 9.229
+      },
+      "samples": {
+        "tide": [
+          7.766,
+          7.676,
+          7.715,
+          7.67,
+          7.727,
+          7.701,
+          7.672,
+          7.685,
+          7.695,
+          7.662,
+          7.67,
+          7.689,
+          7.689,
+          7.665,
+          7.726,
+          7.961,
+          7.693,
+          7.646,
+          7.71,
+          7.673,
+          7.744
+        ],
+        "cpython": [
+          9.274,
+          9.218,
+          9.24,
+          9.216,
+          9.208,
+          9.201,
+          9.188,
+          9.262,
+          9.249,
+          9.295,
+          9.239,
+          9.241,
+          9.204,
+          9.345,
+          9.229,
+          9.279,
+          9.223,
+          9.167,
+          9.223,
+          9.179,
+          9.231
+        ]
+      }
+    },
+    {
+      "name": "saldo 4096",
+      "median_ms": {
+        "tide": 6.422,
+        "cpython": 9.292
+      },
+      "samples": {
+        "tide": [
+          6.432,
+          6.373,
+          6.461,
+          6.391,
+          6.821,
+          6.436,
+          6.493,
+          6.422,
+          6.412,
+          6.456,
+          6.445,
+          6.406,
+          6.463,
+          6.381,
+          6.437,
+          6.367,
+          6.436,
+          6.354,
+          6.397,
+          6.402,
+          6.407
+        ],
+        "cpython": [
+          9.27,
+          9.279,
+          9.368,
+          9.33,
+          9.288,
+          9.358,
+          9.296,
+          9.457,
+          9.265,
+          9.285,
+          9.274,
+          9.292,
+          9.397,
+          9.283,
+          9.255,
+          9.26,
+          9.397,
+          9.225,
+          9.411,
+          9.35,
+          9.309
+        ]
+      }
+    }
+  ],
+  "external_cpython_baseline_source": "import json\nimport sys\n\ndef line_limit(body, pos):\n    end = body.find(\"\\n\", max(0, min(pos, len(body))))\n    if end < 0:\n        return len(body)\n    return end - 1 if end > 0 and body[end - 1] == \"\\r\" else end\n\ndef find_last(body, pattern, stop):\n    pos = body.rfind(pattern, 0, max(0, min(stop, len(body))))\n    return {\"none\": True} if pos < 0 else {\"some\": pos}\n\ndef balance(opening, entries):\n    for entry in entries:\n        opening += entry\n        if not -(1 << 63) <= opening < 1 << 63:\n            raise OverflowError(\"E_OVERFLOW\")\n    return opening\n\ncommands = {\"line_limit\": line_limit, \"find_last\": find_last, \"balance\": balance}\nargs = json.loads(sys.argv[2])\nprint(json.dumps(commands[sys.argv[1]](**args), ensure_ascii=False, separators=(\",\", \":\")))\n",
+  "profiling": {
+    "case": "context on 7000 repetitions of 🐈a in both example input and expectation",
+    "build": "separately instrumented inspector, -O1 -pg",
+    "processes": 12,
+    "sampled_seconds": 0.29,
+    "function": "sha_mask12",
+    "calls": 72103680,
+    "self_percent": 55.17
+  }
+}

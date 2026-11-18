@@ -1,0 +1,5064 @@
+{
+  "date": "2026-11-17",
+  "new_native_comparisons": 533,
+  "unique_entry_paths": 316,
+  "generated_operator_and_program_cases": 284,
+  "by_command": {
+    "check": 67,
+    "fmt": 66,
+    "run": 334,
+    "test": 66
+  },
+  "differences": [],
+  "checks": [
+    {
+      "file": "111.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "112.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "113.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "114.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "115.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "116.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "117.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "121.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "122.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "123.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "124.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "125.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "126.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "127.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "131.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "132.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "133.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "134.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "135.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "136.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "137.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "141.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "142.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "143.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "144.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "145.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "146.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "147.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "151.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "152.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "153.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "154.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "155.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "156.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "157.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "161.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "162.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "163.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "164.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "165.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "166.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "167.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "171.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "172.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "173.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "174.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "175.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "176.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "177.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "211.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "212.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "213.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "214.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "215.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "216.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "217.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "221.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "222.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "223.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "224.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "225.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "226.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "227.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "231.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "232.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "233.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "234.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "235.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "236.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "237.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "241.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "242.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "243.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "244.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "245.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "246.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "247.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "251.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "252.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "253.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "254.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "255.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "256.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "257.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "261.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "262.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "263.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "264.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "265.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "266.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "267.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "271.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "272.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "273.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "274.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "275.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "276.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "277.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "311.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "312.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "313.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "314.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "315.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "316.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "317.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "321.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "322.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "323.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "324.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "325.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "326.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "327.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "331.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "332.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "333.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "334.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "335.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "336.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "337.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "341.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "342.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "343.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "344.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "345.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "346.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "347.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "351.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "352.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "353.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "354.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "355.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "356.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "357.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "361.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "362.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "363.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "364.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "365.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "366.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "367.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "371.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "372.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "373.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "374.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "375.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "376.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "377.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "411.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "412.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "413.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "414.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "415.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "416.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "417.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "421.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "422.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "423.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "424.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "425.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "426.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "427.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "431.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "432.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "433.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "434.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "435.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "436.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "437.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "441.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "442.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "443.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "444.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "445.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "446.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "447.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "451.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "452.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "453.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "454.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "455.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "456.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "457.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "461.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "462.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "463.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "464.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "465.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "466.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "467.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "471.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "472.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "473.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "474.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "475.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "476.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "477.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "511.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "512.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "513.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "514.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "515.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "516.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "517.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "521.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "522.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "523.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "524.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "525.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "526.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "527.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "531.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "532.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "533.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "534.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "535.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "536.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "537.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "541.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "542.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "543.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "544.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "545.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "546.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "547.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "551.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "552.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "553.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "554.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "555.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "556.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "557.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "561.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "562.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "563.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "564.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "565.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "566.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "567.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "571.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "572.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "573.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "574.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "575.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "576.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "577.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression1.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression1.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression1.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression1.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression2.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression2.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression2.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression2.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression3.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression3.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression3.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression3.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression4.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression4.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression4.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression4.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression5.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression5.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression5.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression5.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression6.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression6.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression6.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression6.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression7.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression7.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression7.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression7.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression8.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression8.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression8.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression8.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression9.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression9.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression9.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression9.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression10.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression10.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression10.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression10.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression11.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression11.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression11.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression11.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression12.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression12.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression12.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression12.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression13.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_RANGE",
+      "native_code": "E_RANGE"
+    },
+    {
+      "file": "expression13.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_RANGE",
+      "native_code": "E_RANGE"
+    },
+    {
+      "file": "expression13.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_RANGE",
+      "native_code": "E_RANGE"
+    },
+    {
+      "file": "expression13.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_RANGE",
+      "native_code": "E_RANGE"
+    },
+    {
+      "file": "expression14.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression14.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression14.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression14.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression15.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression15.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression15.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression15.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_SYNTAX",
+      "native_code": "E_SYNTAX"
+    },
+    {
+      "file": "expression16.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression16.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression16.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression16.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression17.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression17.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression17.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression17.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression18.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression18.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression18.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression18.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression19.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression19.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression19.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression19.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression20.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression20.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression20.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression20.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "expression21.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression21.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression21.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression21.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "expression22.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression22.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression22.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression22.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression23.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression23.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression23.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression23.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression24.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression24.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "expression24.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "expression24.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project1.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project1.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project1.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project1.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project2.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project2.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project2.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project2.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project3.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project3.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project3.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project3.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_CYCLE",
+      "native_code": "E_CYCLE"
+    },
+    {
+      "file": "project4.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "project4.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "project4.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "project4.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "project5.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project5.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project5.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project5.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project6.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project6.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project6.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project6.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project7.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project7.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project7.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project7.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project8.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project8.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "project8.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project8.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project9.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project9.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project9.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project9.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project10.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project10.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project10.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project10.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "project11.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project11.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project11.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "project11.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project12.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project12.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "project12.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "project12.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project13.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project13.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project13.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "project13.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project14.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project14.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project14.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project14.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project15.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project15.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project15.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "project15.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_ENTRY",
+      "native_code": "E_ENTRY"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_min",
+        "--inputs",
+        "{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":false}"
+      ],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":7,\"current\":7,\"on_equal\":true}"
+      ],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":0,\"current\":0,\"on_equal\":false}"
+      ],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_min",
+        "--inputs",
+        "{\"candidate\":false,\"current\":3,\"on_equal\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_min",
+        "--inputs",
+        "{}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "unbound",
+        "--inputs",
+        "{}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_ENTRY",
+      "native_code": "E_ENTRY"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "ratio",
+        "--inputs",
+        "{}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "ratio",
+        "--inputs",
+        "{\"amount\":-9223372036854775808,\"count\":-1}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_OVERFLOW",
+      "native_code": "E_OVERFLOW"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "ratio",
+        "--inputs",
+        "{\"amount\":12,\"count\":0}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "ratio",
+        "--inputs",
+        "{\"amount\":-7,\"count\":2}"
+      ],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "ratio",
+        "--inputs",
+        "{\"amount\":1,\"count\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "nest46.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest46.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest46.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest46.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest47.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest47.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest47.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest47.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "nest48.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "nest48.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "nest48.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "nest48.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "calls47.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls47.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls47.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls47.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls48.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls48.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls48.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls48.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "calls49.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "calls49.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "calls49.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "calls49.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "module_example.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "module_example.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "module_example.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "module_example.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "crlf.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "crlf.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "crlf.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "crlf.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_input.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_input.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_input.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_input.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "param_conflict.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "param_conflict.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "param_conflict.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "param_conflict.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "binding_scope.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "binding_scope.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "binding_scope.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "binding_scope.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "step_limit.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "step_limit.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "budget99999.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "budget100000.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "budget100001.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "budget100002.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "step_limit.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "many_ties.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "unique.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_LIMIT",
+      "native_code": "E_LIMIT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":-9223372036854775809,\"current\":0,\"on_equal\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":9223372036854775808,\"current\":0,\"on_equal\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":0,\"current\":null,\"on_equal\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "ordering.tide",
+      "cmd": "run",
+      "flags": [
+        "--call",
+        "prefer_max",
+        "--inputs",
+        "{\"candidate\":1,\"candidate\":2,\"current\":0,\"on_equal\":true}"
+      ],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_JSON",
+      "native_code": "E_JSON"
+    },
+    {
+      "file": "example_extra0.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_JSON",
+      "native_code": "E_JSON"
+    },
+    {
+      "file": "example_extra0.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_JSON",
+      "native_code": "E_JSON"
+    },
+    {
+      "file": "example_extra0.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_JSON",
+      "native_code": "E_JSON"
+    },
+    {
+      "file": "example_extra0.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_JSON",
+      "native_code": "E_JSON"
+    },
+    {
+      "file": "example_extra1.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra1.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra1.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra1.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra2.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra2.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra2.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra2.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra3.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra3.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra3.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra3.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra4.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra4.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "example_extra4.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra4.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra5.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra5.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra5.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra5.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra6.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra6.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra6.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra6.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra7.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra7.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "example_extra7.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra7.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra8.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra8.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_DATA",
+      "native_code": "E_DATA"
+    },
+    {
+      "file": "example_extra8.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra8.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 0,
+      "native": 0,
+      "ref_code": 0,
+      "native_code": 0
+    },
+    {
+      "file": "example_extra9.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra9.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra9.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra9.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra10.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra10.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra10.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra10.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_INPUT",
+      "native_code": "E_INPUT"
+    },
+    {
+      "file": "example_extra11.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra11.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra11.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "example_extra11.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_EXAMPLE",
+      "native_code": "E_EXAMPLE"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_NAME",
+      "native_code": "E_NAME"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "check",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "run",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "test",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    },
+    {
+      "file": "modules/report.tide",
+      "cmd": "fmt",
+      "flags": [],
+      "ref": 1,
+      "native": 1,
+      "ref_code": "E_TYPE",
+      "native_code": "E_TYPE"
+    }
+  ],
+  "work_boundary": {
+    "99999": {
+      "exit": 0,
+      "result": 0
+    },
+    "100000": {
+      "exit": 0,
+      "result": 0
+    },
+    "100001": {
+      "exit": 1,
+      "result": {
+        "file": "budget100001.tide",
+        "code": "E_LIMIT",
+        "message": "Work budget exhausted",
+        "line": 2,
+        "column": 43
+      }
+    },
+    "100002": {
+      "exit": 1,
+      "result": {
+        "file": "budget100002.tide",
+        "code": "E_LIMIT",
+        "message": "Work budget exhausted",
+        "line": 5,
+        "column": 1
+      }
+    }
+  },
+  "previous_module_regression": {
+    "projects": 73,
+    "checks": 219,
+    "reference_equal": 216,
+    "unimplemented": 3,
+    "differences": 0
+  },
+  "previous_single_file": {
+    "check": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    },
+    "fmt": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 96
+    },
+    "test": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    }
+  },
+  "forms": {
+    "groups": 42,
+    "definitions": 1741,
+    "differences": []
+  },
+  "source_module_manifests": [
+    "apps/balance.tide",
+    "apps/cartons.tide",
+    "apps/first_peak.tide",
+    "apps/heat.tide",
+    "apps/heating.tide",
+    "apps/invaders_checks.tide",
+    "apps/invaders_game.tide",
+    "apps/light.tide",
+    "apps/maximum.tide",
+    "apps/nano.tide",
+    "apps/nano_checks.tide",
+    "apps/pump.tide",
+    "apps/readings.tide",
+    "apps/report.tide",
+    "apps/space_invaders.tide",
+    "lib/ordering.tide",
+    "lib/ordering_checks.tide",
+    "native/argv_i64.tide",
+    "native/bootstrap/checks.tide",
+    "native/bootstrap/fixtures/functions/adjustment.tide",
+    "native/bootstrap/fixtures/functions/report.tide",
+    "native/bootstrap/fixtures/modules/closing.tide",
+    "native/bootstrap/fixtures/modules/opening.tide",
+    "native/bootstrap/fixtures/modules/reading.tide",
+    "native/bootstrap/fixtures/modules/report.tide",
+    "native/bootstrap/forms.tide",
+    "native/bootstrap/function_cases.tide",
+    "native/bootstrap/function_run.tide",
+    "native/bootstrap/functions.tide",
+    "native/bootstrap/project.tide",
+    "native/bootstrap/scalar_json.tide",
+    "native/bootstrap/schema.tide",
+    "native/bootstrap/schema_cases.tide",
+    "native/bootstrap/seed.tide",
+    "native/catalog/query.tide",
+    "native/elf64.tide",
+    "native/fold_i64.tide",
+    "native/rule_scan.tide",
+    "native/scalar.tide",
+    "native/scan_image.tide",
+    "native/source.tide",
+    "workbench/function_body.tide",
+    "workbench/function_fragment.tide",
+    "workbench/grouped_view.tide",
+    "workbench/grouping.tide",
+    "workbench/project_context.tide",
+    "workbench/source_layout.tide",
+    "workbench/source_repair.tide"
+  ],
+  "reference_integration": "----------------------------------------------------------------------\nRan 35 tests in 6.141s\n\nOK",
+  "sanitizers": {
+    "undefined_behavior_checker": [
+      "{\"passed\":8}",
+      "{\"passed\":6}",
+      "0"
+    ],
+    "address_and_undefined_bootstrap": "true",
+    "instrumentation": "ASan+UBSan bootstrap test used a separate instrumented build without RLIMIT_AS because ASan reserves large virtual address ranges. CPU limit retained. UBSan checker and production packages retained both resource limits."
+  },
+  "cold_build": {
+    "native_binaries_sha256": {
+      "seed": "8c219c92f74a61da31264e6e4435e2984f197626ceb3b3a891abf24c3af16360",
+      "tidec": "57329464a3db533a25423116574c22eec19c59cfa7be4f28fe642b5f3ee59c07",
+      "checker": "35b57ee3d78778a8fd68980f5366bb6a822c8c519306397172db78c9357dc03f",
+      "catalog": "1f03b39c114052c397c55603afcf4c45a177a78e5d2edf642c8f364eace2a58a",
+      "forms": "a976d2a58773c80006f33b44ff13456f9d26a23678bcff3d630f7ade6177d2da"
+    },
+    "log": [
+      "true",
+      "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"3defda3d26aff38e3b1d070c898ec83999a04797a3cbe33181f79da435632e83\",\"modules\":[],\"records\":{},\"variants\":{},\"definitions\":{\"prefer_min\":{\"kind\":\"function\",\"params\":{\"candidate\":\"i\",\"current\":\"i\",\"on_equal\":\"b\"},\"returns\":\"b\",\"calls\":[],\"effects\":[],\"read_grants\":[],\"read_path\":[],\"may_fail\":[]},\"prefer_max\":{\"kind\":\"function\",\"params\":{\"candidate\":\"i\",\"current\":\"i\",\"on_equal\":\"b\"},\"returns\":\"b\",\"calls\":[],\"effects\":[],\"read_grants\":[],\"read_path\":[],\"may_fail\":[]}},\"examples\":8}",
+      "{\"passed\":8}",
+      "{\"passed\":6}",
+      "3",
+      "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"ca406049fbeb5ae9f72d95104018fd447bb671100ccededc3831419ec8830ab1\",\"modules\":[],\"records\":{\"Log\":{\"records\":\"*{Entry}\",\"initial\":\"?&i{Flag}\"},\"Entry\":{\"key\":\"t\",\"hits\":\"*i\"}},\"variants\":{\"Flag\":[\"Active\",\"warn\",\"z1\"]},\"definitions\":{},\"examples\":0}",
+      "{\"file\":\"/samples/bad.tide\",\"code\":\"E_TYPE\",\"message\":\"Cyclic or deeply nested record\",\"line\":1,\"column\":1}",
+      "{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\", \"operation\": \"fold\", \"syntax\": \"fold *A B accumulator row element body:B\", \"returns\": \"B\", \"example\": \"fold list i 2 3 4 0 acc row x + acc x\", \"requires\": \"\", \"effect\": \"pure\", \"may_fail\": [], \"arity\": 6, \"semantics\": \"Left fold in input order. Bind the accumulator, one-based row and element. Empty list returns start.\"}",
+      "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"bdf928b22f04dc3129d332c7635ba17a12ca870d281bc89c9f5e9ed286b93b83\",\"modules\":[\"opening.tide\",\"reading.tide\",\"closing.tide\"],\"imports\":[{\"file\":\"native/bootstrap/fixtures/modules/report.tide\",\"module\":\"opening.tide\",\"line\":1,\"column\":1},{\"file\":\"native/bootstrap/fixtures/modules/report.tide\",\"module\":\"closing.tide\",\"line\":3,\"column\":1},{\"file\":\"opening.tide\",\"module\":\"reading.tide\",\"line\":1,\"column\":1},{\"file\":\"closing.tide\",\"module\":\"reading.tide\",\"line\":1,\"column\":1}]}",
+      "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"bdf928b22f04dc3129d332c7635ba17a12ca870d281bc89c9f5e9ed286b93b83\",\"modules\":[\"opening.tide\",\"reading.tide\",\"closing.tide\"],\"records\":{\"Report\":{\"start\":\"{Opening}\",\"finish\":\"{Closing}\"},\"Opening\":{\"value\":\"{Reading}\"},\"Reading\":{\"value\":\"i\"},\"Closing\":{\"value\":\"{Reading}\"}},\"variants\":{},\"definitions\":{},\"examples\":0}",
+      "use opening",
+      "",
+      "use closing",
+      "",
+      "record Report",
+      "start:{Opening} finish:{Closing}",
+      "{\"passed\":0}",
+      "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"3aaac23a3713e0ae8a522c697bb0bf98fe98cbe547c795f20b7aa3dc8ab4d7b6\",\"modules\":[\"invaders_game.tide\"],\"imports\":[{\"file\":\"apps/space_invaders.tide\",\"module\":\"invaders_game.tide\",\"line\":1,\"column\":1}]}",
+      "balance-main: OK",
+      "balance-balance: OK",
+      "heating-main: OK",
+      "heating-degree_hours: OK",
+      "cartons-main: OK",
+      "cartons-carton_balance: OK",
+      "heat-main: OK",
+      "heat-simulate: OK",
+      "pump-main: OK",
+      "pump-simulate: OK",
+      "light-main: OK",
+      "light-simulate: OK",
+      "97"
+    ],
+    "app_images_sha256": [
+      "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2  balance-main",
+      "76f3622f0c23257d3fea205b9edce9b17d92ce891534505feccd0cdd19f3c11a  balance-balance",
+      "af64ce9bd1f97ca0694c2b4c2b05c02d0502ecb0e9663d7160647d50cb6a8319  heating-main",
+      "0458d9a324a9dfd40165604734409b4595def92eb187d8379970cd349b5c2b1c  heating-degree_hours",
+      "58a2e228480f601fafb3b0769db8e3539455f111ffe6be6b04efa11e0c18c032  cartons-main",
+      "2bc2c80ba31ca8eeedf934eac49628006926fd362939f84fc58d7db792c5b362  cartons-carton_balance",
+      "b422ab6e0ce04aca22c51b97b43fba488f9407ef0722fc8b46420f80cb19d456  heat-main",
+      "cebe4a57fbac5a701a87adcc5aa784561ea9459408aaeae97eace91a7bf39bfa  heat-simulate",
+      "cd6bb713a33f27aac69eefd230e2ea421cb6dec12a2ab71c8717b969501b89c9  pump-main",
+      "6bcd46a906700ccbce0f9bce492cff0d74e8a55a211bb654696c54cedcd8de0f  pump-simulate",
+      "03a713a2ed3ef09ebfb70dcf90efbfa66884025137a03fb33b4fe77fe040828f  light-main",
+      "6acd26c019763d8e52298942324a4a5e3e57ad9ea3f8dd597fa261ead0582e10  light-simulate"
+    ]
+  },
+  "native_regression_build": "true",
+  "reference_bootstrap_examples": 26
+}

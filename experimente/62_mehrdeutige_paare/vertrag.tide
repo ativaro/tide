@@ -1,0 +1,59 @@
+record Input
+a:i b:i
+
+record Check
+inputs:{Input} expect:i
+
+input a:i b:i > {Input}
+make Input a a b b
+
+expected task:t a:i b:i > i
+if (text_eq task "versandetiketten") (if (> a b) -99 (+ (* a b) (* 2 a)))
+if (text_eq task "nettogewicht") (if (> a b) -99 (- a b))
+if (text_eq task "taktfenster") (if (>= a b) -99 a)
+if (text_eq task "lackbedarf") (* a (* b b))
+if (text_eq task "restladung") (* 3 (- a (* b (div a b))))
+fail "unknown repair family"
+
+check task:t values:{Input} > {Check}
+make Check inputs values expect (expected task (get a values) (get b values))
+
+visible task:t > *{Input}
+if (text_eq task "versandetiketten") (list {Input} 2 (input 6 6) (input 8 8))
+if (text_eq task "nettogewicht") (list {Input} 2 (input 6 6) (input 7 7))
+if (text_eq task "taktfenster") (list {Input} 3 (input 0 5) (input 0 6) (input 0 7))
+if (text_eq task "lackbedarf") (list {Input} 1 (input 2 2))
+if (text_eq task "restladung") (list {Input} 3 (input 12 5) (input 21 6) (input 32 7))
+fail "unknown repair family"
+
+public_cases task:t > *{Check}
+map {Check} (visible task) row (check task row)
+
+hidden_cases task:t > *{Check}
+fold (list i 12 9 10 11 12 13 14 15 16 17 18 19 20) (list {Check} 0) cases row a
+  fold (list i 6 8 9 10 11 12 13) cases group col b
+    append group (check task (input a b))
+
+probe_pool task:t > *{Input}
+let declared visible task
+let boundary list i 4 1 2 3 4
+fold boundary (list {Input} 0) pool row b
+  fold boundary pool choices col a
+    let duplicate fold declared false seen pos sample
+      or seen (and (eq (get a sample) a) (eq (get b sample) b))
+    if duplicate choices (append choices (input a b))
+
+example labels_below_capacity expected
+{"inputs":{"task":"versandetiketten","a":3,"b":5},"expect":21}
+
+example signed_net expected
+{"inputs":{"task":"nettogewicht","a":2,"b":4},"expect":-2}
+
+example cycle_boundary expected
+{"inputs":{"task":"taktfenster","a":3,"b":3},"expect":-99}
+
+example paint_square expected
+{"inputs":{"task":"lackbedarf","a":3,"b":4},"expect":48}
+
+example remaining_load expected
+{"inputs":{"task":"restladung","a":17,"b":5},"expect":6}

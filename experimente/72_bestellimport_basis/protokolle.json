@@ -1,0 +1,2372 @@
+{
+  "W01": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zeilenwert in Cent als Menge mal Stückpreis. Nichtnegative Ganzzahlen bis 1 Mio.",
+          "signature": "qty:i cents:i",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "qty": 2,
+                "cents": 125
+              },
+              "expect": 250
+            },
+            {
+              "inputs": {
+                "qty": 0,
+                "cents": 10
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "qty": 3,
+                "cents": 0
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "def main(qty: int, cents: int) -> int:\n    return qty * cents\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "def main(qty: int, cents: int) -> int:\n    return qty * cents\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zeilenwert in Cent als Menge mal Stückpreis. Nichtnegative Ganzzahlen bis 1 Mio.",
+          "signature": "qty:i cents:i",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "qty": 2,
+                "cents": 125
+              },
+              "expect": 250
+            },
+            {
+              "inputs": {
+                "qty": 0,
+                "cents": 10
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "qty": 3,
+                "cents": 0
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "main qty:i cents:i > i\n* qty cents\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "main qty:i cents:i > i\n* qty cents\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "W02": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die heute zuteilbare Menge als kleinere Zahl aus Anforderung und Bestand aus, beide nichtnegativ.",
+          "signature": "requested:i stock:i",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "requested": 4,
+                "stock": 9
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "requested": 8,
+                "stock": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "requested": 0,
+                "stock": 3
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            9,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "main requested:i stock:i > i\nif (< requested stock) requested stock\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "main requested:i stock:i > i\nif (< requested stock) requested stock\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die heute zuteilbare Menge als kleinere Zahl aus Anforderung und Bestand aus, beide nichtnegativ.",
+          "signature": "requested:i stock:i",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "requested": 4,
+                "stock": 9
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "requested": 8,
+                "stock": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "requested": 0,
+                "stock": 3
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            9,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "def main(requested: int, stock: int) -> int:\n    return min(requested, stock)\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "def main(requested: int, stock: int) -> int:\n    return min(requested, stock)\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "W03": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die Anzahl der UTF-8-Bytes des unveränderten Etiketts aus. Auch leere und kombinierte Unicode-Texte gelten.",
+          "signature": "label:t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "label": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "é"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "label": "ABC"
+              },
+              "expect": 3
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "def main(label: str) -> int:\n    return len(label.encode('utf-8'))\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "def main(label: str) -> int:\n    return len(label.encode('utf-8'))\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die Anzahl der UTF-8-Bytes des unveränderten Etiketts aus. Auch leere und kombinierte Unicode-Texte gelten.",
+          "signature": "label:t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "label": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "é"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "label": "ABC"
+              },
+              "expect": 3
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "source": "main label:t > i\nbyte_len (utf8_bytes label)\n"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "source": "main label:t > i\nbyte_len (utf8_bytes label)\n"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "W04": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Lies aus dem gültigen JSON-Objekt die ganzzahlige Menge qty; ignoriere unbekannte Felder. Eingabebereich umfasst JSON mit eindeutigen Schlüsseln und qty von 0 bis 1 Mio.",
+          "signature": "payload:t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "payload": "{\"qty\":3}"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "payload": "{\"text\":\"qty\",\"qty\":0}"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "payload": "{\"qty\":12,\"x\":1}"
+              },
+              "expect": 12
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Lies aus dem gültigen JSON-Objekt die ganzzahlige Menge qty; ignoriere unbekannte Felder. Eingabebereich umfasst JSON mit eindeutigen Schlüsseln und qty von 0 bis 1 Mio.",
+          "signature": "payload:t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "payload": "{\"qty\":3}"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "payload": "{\"text\":\"qty\",\"qty\":0}"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "payload": "{\"qty\":12,\"x\":1}"
+              },
+              "expect": 12
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  },
+  "W05": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Registriere die IDs in der übergebenen leeren SQLite-Datenbank mit gebundenen Parametern und eindeutiger Spalte receipt(id TEXT PRIMARY KEY). Gib die Zahl verschiedener gespeicherter IDs zurück. Jede Abnahme startet mit einer frischen Datenbank.",
+          "signature": "db:d ids:*t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": []
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": [
+                  "a",
+                  "a"
+                ]
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": [
+                  "b",
+                  "A"
+                ]
+              },
+              "expect": 2
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Registriere die IDs in der übergebenen leeren SQLite-Datenbank mit gebundenen Parametern und eindeutiger Spalte receipt(id TEXT PRIMARY KEY). Gib die Zahl verschiedener gespeicherter IDs zurück. Jede Abnahme startet mit einer frischen Datenbank.",
+          "signature": "db:d ids:*t",
+          "sources": {},
+          "public": [
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": []
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": [
+                  "a",
+                  "a"
+                ]
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "db": ":memory:",
+                "ids": [
+                  "b",
+                  "A"
+                ]
+              },
+              "expect": 2
+            }
+          ],
+          "targets": [
+            "main"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": null,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  },
+  "E01": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rabattfreigabe einschliesslich der Grenze: gib 1 ab dem Mindestwert, sonst 0. Bisher galt nur ein Betrag über der Grenze.",
+          "signature": "amount:i threshold:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain amount:i threshold:i > i\nrelay amount threshold\n",
+            "route.tide": "use rulebook\n\nrelay amount:i threshold:i > i\npolicy amount threshold\n",
+            "rulebook.tide": "policy amount:i threshold:i > i\nif (> amount threshold) 1 0\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "amount": 2,
+                "threshold": 3
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "amount": 3,
+                "threshold": 3
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "amount": 4,
+                "threshold": 3
+              },
+              "expect": 1
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "amount": 3,
+              "threshold": 3
+            },
+            "actual": 0
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.tide:2:5",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:5",
+              "op": ">="
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rabattfreigabe einschliesslich der Grenze: gib 1 ab dem Mindestwert, sonst 0. Bisher galt nur ein Betrag über der Grenze.",
+          "signature": "amount:i threshold:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(amount: int, threshold: int) -> int:\n    return relay(amount, threshold)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(amount: int, threshold: int) -> int:\n    return policy(amount, threshold)\n",
+            "rulebook.py": "def policy(amount: int, threshold: int) -> int:\n    return int(amount > threshold)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "amount": 2,
+                "threshold": 3
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "amount": 3,
+                "threshold": 3
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "amount": 4,
+                "threshold": 3
+              },
+              "expect": 1
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "amount": 3,
+              "threshold": 3
+            },
+            "actual": 0
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.py:2:16:2:34",
+                "op": ">="
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:16:2:34",
+              "op": ">="
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "E02": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Der Versandpartner rechnet Etiketten von Zeichen auf UTF-8-Bytes um. ASCII bleibt unverändert.",
+          "signature": "label:t",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(label: str) -> int:\n    return relay(label)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(label: str) -> int:\n    return policy(label)\n",
+            "rulebook.py": "def policy(label: str) -> int:\n    return len(label)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "A"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "label": "猫"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": ""
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "label": "猫"
+            },
+            "actual": 1
+          },
+          "tested": [
+            1,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:22",
+                "replace": "len(label.encode('utf-8'))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:22",
+              "replace": "len(label.encode('utf-8'))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Der Versandpartner rechnet Etiketten von Zeichen auf UTF-8-Bytes um. ASCII bleibt unverändert.",
+          "signature": "label:t",
+          "sources": {
+            "panel.tide": "use route\n\nmain label:t > i\nrelay label\n",
+            "route.tide": "use rulebook\n\nrelay label:t > i\npolicy label\n",
+            "rulebook.tide": "policy label:t > i\ntext_len label\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "A"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "label": "猫"
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": ""
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "label": "猫"
+            },
+            "actual": 1
+          },
+          "tested": [
+            1,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "replace": "(byte_len (utf8_bytes label))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "replace": "(byte_len (utf8_bytes label))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "E03": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Erweitere die offene Menge (bestellt minus geliefert) auf Überlieferungen. Das Minimum der offenen Menge ist null.",
+          "signature": "ordered:i delivered:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain ordered:i delivered:i > i\nrelay ordered delivered\n",
+            "route.tide": "use rulebook\n\nrelay ordered:i delivered:i > i\npolicy ordered delivered\n",
+            "rulebook.tide": "policy ordered:i delivered:i > i\n- ordered delivered\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "ordered": 7,
+                "delivered": 2
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "ordered": 4,
+                "delivered": 6
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "ordered": 3,
+                "delivered": 3
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "ordered": 4,
+              "delivered": 6
+            },
+            "actual": -2
+          },
+          "tested": [
+            6,
+            9
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Erweitere die offene Menge (bestellt minus geliefert) auf Überlieferungen. Das Minimum der offenen Menge ist null.",
+          "signature": "ordered:i delivered:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(ordered: int, delivered: int) -> int:\n    return relay(ordered, delivered)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(ordered: int, delivered: int) -> int:\n    return policy(ordered, delivered)\n",
+            "rulebook.py": "def policy(ordered: int, delivered: int) -> int:\n    return ordered - delivered\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "ordered": 7,
+                "delivered": 2
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "ordered": 4,
+                "delivered": 6
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "ordered": 3,
+                "delivered": 3
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "ordered": 4,
+              "delivered": 6
+            },
+            "actual": -2
+          },
+          "tested": [
+            6,
+            9
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  },
+  "E04": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Summiere bei der Eingangszählung nur positive Buchungen. Negative Korrekturen wurden bisher ebenfalls summiert.",
+          "signature": "movements:*i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(movements: list[int]) -> int:\n    return relay(movements)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(movements: list[int]) -> int:\n    return policy(movements)\n",
+            "rulebook.py": "def policy(movements: list[int]) -> int:\n    return sum(movements)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "movements": [
+                  3,
+                  -2
+                ]
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "movements": []
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "movements": [
+                  2,
+                  4
+                ]
+              },
+              "expect": 6
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "movements": [
+                3,
+                -2
+              ]
+            },
+            "actual": 1
+          },
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Summiere bei der Eingangszählung nur positive Buchungen. Negative Korrekturen wurden bisher ebenfalls summiert.",
+          "signature": "movements:*i",
+          "sources": {
+            "panel.tide": "use route\n\nmain movements:*i > i\nrelay movements\n",
+            "route.tide": "use rulebook\n\nrelay movements:*i > i\npolicy movements\n",
+            "rulebook.tide": "policy movements:*i > i\nfold movements 0 total pos value (+ total value)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "movements": [
+                  3,
+                  -2
+                ]
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "movements": []
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "movements": [
+                  2,
+                  4
+                ]
+              },
+              "expect": 6
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "movements": [
+                3,
+                -2
+              ]
+            },
+            "actual": 1
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  },
+  "E05": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Tarifversion zwei übernimmt den Grundpreis plus genau die einmalige Grundgebühr. Bisher wurde die Gebühr pro Stück berechnet. Alle drei Eingaben sind nichtnegativ.",
+          "signature": "base:i fee:i units:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain base:i fee:i units:i > i\nrelay base fee units\n",
+            "route.tide": "use rulebook\n\nrelay base:i fee:i units:i > i\npolicy base fee units\n",
+            "rulebook.tide": "policy base:i fee:i units:i > i\n+ base (* fee units)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "base": 8,
+                "fee": 3,
+                "units": 2
+              },
+              "expect": 11
+            },
+            {
+              "inputs": {
+                "base": 0,
+                "fee": 5,
+                "units": 0
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "base": 3,
+                "fee": 0,
+                "units": 8
+              },
+              "expect": 3
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "base": 8,
+              "fee": 3,
+              "units": 2
+            },
+            "actual": 14
+          },
+          "tested": [
+            16,
+            64
+          ],
+          "truncated": [
+            false,
+            true
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Tarifversion zwei übernimmt den Grundpreis plus genau die einmalige Grundgebühr. Bisher wurde die Gebühr pro Stück berechnet. Alle drei Eingaben sind nichtnegativ.",
+          "signature": "base:i fee:i units:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(base: int, fee: int, units: int) -> int:\n    return relay(base, fee, units)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(base: int, fee: int, units: int) -> int:\n    return policy(base, fee, units)\n",
+            "rulebook.py": "def policy(base: int, fee: int, units: int) -> int:\n    return base + fee * units\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "base": 8,
+                "fee": 3,
+                "units": 2
+              },
+              "expect": 11
+            },
+            {
+              "inputs": {
+                "base": 0,
+                "fee": 5,
+                "units": 0
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "base": 3,
+                "fee": 0,
+                "units": 8
+              },
+              "expect": 3
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "base": 8,
+              "fee": 3,
+              "units": 2
+            },
+            "actual": 14
+          },
+          "tested": [
+            16,
+            64
+          ],
+          "truncated": [
+            false,
+            true
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  },
+  "R01": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere den vorzeichenbehafteten Liefersaldo geliefert minus bestellt. Einstieg und Zwischenfunktion müssen denselben Vertrag erfüllen.",
+          "signature": "ordered:i delivered:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(ordered: int, delivered: int) -> int:\n    return relay(ordered, delivered)\n",
+            "route.py": "from rulebook import delta\n\n\ndef relay(ordered: int, delivered: int) -> int:\n    return delta(delivered, ordered)\n",
+            "rulebook.py": "def delta(from_qty: int, to_qty: int) -> int:\n    return to_qty - from_qty\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "ordered": 5,
+                "delivered": 8
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "ordered": 7,
+                "delivered": 1
+              },
+              "expect": -6
+            },
+            {
+              "inputs": {
+                "ordered": 0,
+                "delivered": 0
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "ordered": 5,
+              "delivered": 8
+            },
+            "actual": -3
+          },
+          "tested": [
+            6,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "route.py:5:12:5:37",
+                "replace": "delta(ordered, delivered)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:5:12:5:37",
+              "replace": "delta(ordered, delivered)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere den vorzeichenbehafteten Liefersaldo geliefert minus bestellt. Einstieg und Zwischenfunktion müssen denselben Vertrag erfüllen.",
+          "signature": "ordered:i delivered:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain ordered:i delivered:i > i\nrelay ordered delivered\n",
+            "route.tide": "use rulebook\n\nrelay ordered:i delivered:i > i\ndelta delivered ordered\n",
+            "rulebook.tide": "delta from_qty:i to_qty:i > i\n- to_qty from_qty\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "ordered": 5,
+                "delivered": 8
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "ordered": 7,
+                "delivered": 1
+              },
+              "expect": -6
+            },
+            {
+              "inputs": {
+                "ordered": 0,
+                "delivered": 0
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "ordered": 5,
+              "delivered": 8
+            },
+            "actual": -3
+          },
+          "tested": [
+            6,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "route.tide:4:1",
+                "replace": "(delta ordered delivered)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:4:1",
+              "replace": "(delta ordered delivered)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "R02": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere den Kontrollwert für ein Versandetikett: gebuchte minus stornierte Stückzahl plus UTF-8-Bytezahl des Etiketts. Prüfe auch die Zwischenfunktion direkt.",
+          "signature": "label:t booked:i cancelled:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain label:t booked:i cancelled:i > i\nrelay label booked cancelled\n",
+            "route.tide": "use rulebook\n\nrelay label:t booked:i cancelled:i > i\n+ (balance cancelled booked) (size label)\n",
+            "rulebook.tide": "balance added:i removed:i > i\n- added removed\n\nsize label:t > i\ntext_len label\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "猫",
+                "booked": 4,
+                "cancelled": 1
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "label": "A",
+                "booked": 2,
+                "cancelled": 5
+              },
+              "expect": -2
+            },
+            {
+              "inputs": {
+                "label": "",
+                "booked": 1,
+                "cancelled": 1
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "label": "猫",
+              "booked": 4,
+              "cancelled": 1
+            },
+            "actual": -2
+          },
+          "tested": [
+            11,
+            35
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "route.tide:4:4",
+                "replace": "(balance booked cancelled)"
+              },
+              {
+                "node": "rulebook.tide:5:1",
+                "replace": "(byte_len (utf8_bytes label))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:4:4",
+              "replace": "(balance booked cancelled)"
+            },
+            {
+              "node": "rulebook.tide:5:1",
+              "replace": "(byte_len (utf8_bytes label))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere den Kontrollwert für ein Versandetikett: gebuchte minus stornierte Stückzahl plus UTF-8-Bytezahl des Etiketts. Prüfe auch die Zwischenfunktion direkt.",
+          "signature": "label:t booked:i cancelled:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(label: str, booked: int, cancelled: int) -> int:\n    return relay(label, booked, cancelled)\n",
+            "route.py": "from rulebook import balance, size\n\n\ndef relay(label: str, booked: int, cancelled: int) -> int:\n    return balance(cancelled, booked) + size(label)\n",
+            "rulebook.py": "def balance(added: int, removed: int) -> int:\n    return added - removed\n\n\ndef size(label: str) -> int:\n    return len(label)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "猫",
+                "booked": 4,
+                "cancelled": 1
+              },
+              "expect": 6
+            },
+            {
+              "inputs": {
+                "label": "A",
+                "booked": 2,
+                "cancelled": 5
+              },
+              "expect": -2
+            },
+            {
+              "inputs": {
+                "label": "",
+                "booked": 1,
+                "cancelled": 1
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "label": "猫",
+              "booked": 4,
+              "cancelled": 1
+            },
+            "actual": -2
+          },
+          "tested": [
+            11,
+            35
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "route.py:5:12:5:38",
+                "replace": "balance(booked, cancelled)"
+              },
+              {
+                "node": "rulebook.py:6:12:6:22",
+                "replace": "len(label.encode('utf-8'))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:5:12:5:38",
+              "replace": "balance(booked, cancelled)"
+            },
+            {
+              "node": "rulebook.py:6:12:6:22",
+              "replace": "len(label.encode('utf-8'))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "R03": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere die Rechnungssumme aus Nettowert und einmaliger Gebühr. Beide Werte sind Centbeträge.",
+          "signature": "net:i fee:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(net: int, fee: int) -> int:\n    return relay(net, fee)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(net: int, fee: int) -> int:\n    return policy(net, fee)\n",
+            "rulebook.py": "def policy(net: int, fee: int) -> int:\n    return net - fee\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "net": 7,
+                "fee": 2
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "net": 0,
+                "fee": 8
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "net": 4,
+                "fee": 0
+              },
+              "expect": 4
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "net": 7,
+              "fee": 2
+            },
+            "actual": 5
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:21",
+                "op": "+"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:21",
+              "op": "+"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Repariere die Rechnungssumme aus Nettowert und einmaliger Gebühr. Beide Werte sind Centbeträge.",
+          "signature": "net:i fee:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain net:i fee:i > i\nrelay net fee\n",
+            "route.tide": "use rulebook\n\nrelay net:i fee:i > i\npolicy net fee\n",
+            "rulebook.tide": "policy net:i fee:i > i\n- net fee\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "net": 7,
+                "fee": 2
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "net": 0,
+                "fee": 8
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "net": 4,
+                "fee": 0
+              },
+              "expect": 4
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "net": 7,
+              "fee": 2
+            },
+            "actual": 5
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "op": "+"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "op": "+"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "R04": {
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die Anzahl loser Teile nach dem Füllen ganzer Kartons zurück. Menge ist nichtnegativ, Kartongrösse strikt positiv.",
+          "signature": "units:i capacity:i",
+          "sources": {
+            "panel.tide": "use route\n\nmain units:i capacity:i > i\nrelay units capacity\n",
+            "route.tide": "use rulebook\n\nrelay units:i capacity:i > i\npolicy units capacity\n",
+            "rulebook.tide": "policy units:i capacity:i > i\ndiv units capacity\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "units": 10,
+                "capacity": 4
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "units": 3,
+                "capacity": 7
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "units": 8,
+                "capacity": 4
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "units": 3,
+              "capacity": 7
+            },
+            "actual": 0
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "op": "mod"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "op": "mod"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ],
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Gib die Anzahl loser Teile nach dem Füllen ganzer Kartons zurück. Menge ist nichtnegativ, Kartongrösse strikt positiv.",
+          "signature": "units:i capacity:i",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(units: int, capacity: int) -> int:\n    return relay(units, capacity)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(units: int, capacity: int) -> int:\n    return policy(units, capacity)\n",
+            "rulebook.py": "def policy(units: int, capacity: int) -> int:\n    return units // capacity\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "units": 10,
+                "capacity": 4
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "units": 3,
+                "capacity": 7
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "units": 8,
+                "capacity": 4
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "units": 3,
+              "capacity": 7
+            },
+            "actual": 0
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:29",
+                "op": "%"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:29",
+              "op": "%"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted"
+        }
+      }
+    ]
+  },
+  "R05": {
+    "python": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Markiere die ASCII-Statuskennung OK unabhängig von Gross-/Kleinschreibung mit 1, alle übrigen Kennungen mit 0.",
+          "signature": "status:t",
+          "sources": {
+            "panel.py": "from route import relay\n\n\ndef main(status: str) -> int:\n    return relay(status)\n",
+            "route.py": "from rulebook import policy\n\n\ndef relay(status: str) -> int:\n    return policy(status)\n",
+            "rulebook.py": "def policy(status: str) -> int:\n    return int(status == \"OK\")\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "status": "OK"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "status": "ok"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "status": "no"
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "status": "ok"
+            },
+            "actual": 0
+          },
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ],
+    "tide": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Markiere die ASCII-Statuskennung OK unabhängig von Gross-/Kleinschreibung mit 1, alle übrigen Kennungen mit 0.",
+          "signature": "status:t",
+          "sources": {
+            "panel.tide": "use route\n\nmain status:t > i\nrelay status\n",
+            "route.tide": "use rulebook\n\nrelay status:t > i\npolicy status\n",
+            "rulebook.tide": "policy status:t > i\nif (text_eq status \"OK\") 1 0\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "status": "OK"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "status": "ok"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "status": "no"
+              },
+              "expect": 0
+            }
+          ],
+          "targets": [
+            "main",
+            "relay"
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "witness": {
+            "inputs": {
+              "status": "ok"
+            },
+            "actual": 0
+          },
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "options": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate"
+        }
+      }
+    ]
+  }
+}

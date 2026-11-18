@@ -1,0 +1,2947 @@
+{
+  "protocol_sha256": "5b26d279b5fa5df122a29ece9768edfaf68e68c4fff61642e75b4dfbe065c1c9",
+  "named_tool_sha256": "72f581b0a926dfd73351ac1d520bc1395555c700cb3b78b6b699be984882380d",
+  "prompts": [
+    {
+      "family": "dispatch",
+      "arm": "python-text",
+      "sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+      "prompt": "A router reports fast=4 and green=4 for routes (id 8, delay 2, watts 7) and (id 4, delay 6, watts 3), in that order. The fast profile must select route 8, and the green profile route 4. Fast minimizes delay, then watts. Green minimizes watts, then delay. If both values tie, the earlier input wins. Empty batches return zero IDs. All measurements are small nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":21,\"failed\":19,\"first_failure\":{\"input\":[{\"id\":8,\"delay\":2,\"watts\":7},{\"id\":4,\"delay\":6,\"watts\":3}],\"expected\":{\"fast\":8,\"green\":4},\"actual\":{\"fast\":4,\"green\":4}}}\n\n--- eco.py ---\nfrom routes import initial\n\n\ndef eco(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:\n            best = candidate\n    return best[\"id\"]\n\n\n--- interactive.py ---\nfrom routes import initial\n\n\ndef interactive(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:\n            best = candidate\n    return best[\"id\"]\n\n\n--- routes.py ---\ndef initial(routes):\n    return routes[0] if routes else {\"id\": 0, \"delay\": 0, \"watts\": 0}\n\n\n--- summary.py ---\nfrom eco import eco\nfrom interactive import interactive\n\n\ndef choose(routes):\n    return {\"fast\": interactive(routes), \"green\": eco(routes)}\n\n\ndef main(batches):\n    return [choose(batch) for batch in batches]\n\n",
+      "initial": {
+        "passed": 21,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 7
+            },
+            {
+              "id": 4,
+              "delay": 6,
+              "watts": 3
+            }
+          ],
+          "expected": {
+            "fast": 8,
+            "green": 4
+          },
+          "actual": {
+            "fast": 4,
+            "green": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 1,
+                "delay": 6,
+                "watts": 3
+              },
+              {
+                "id": 2,
+                "delay": 2,
+                "watts": 7
+              }
+            ],
+            "expected": {
+              "fast": 2,
+              "green": 1
+            },
+            "actual": {
+              "fast": 2,
+              "green": 2
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 8,
+                "delay": 2,
+                "watts": 7
+              },
+              {
+                "id": 4,
+                "delay": 6,
+                "watts": 3
+              }
+            ],
+            "expected": {
+              "fast": 8,
+              "green": 4
+            },
+            "actual": {
+              "fast": 4,
+              "green": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "dispatch",
+      "arm": "python-name",
+      "sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+      "prompt": "A router reports fast=4 and green=4 for routes (id 8, delay 2, watts 7) and (id 4, delay 6, watts 3), in that order. The fast profile must select route 8, and the green profile route 4. Fast minimizes delay, then watts. Green minimizes watts, then delay. If both values tie, the earlier input wins. Empty batches return zero IDs. All measurements are small nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":21,\"failed\":19,\"first_failure\":{\"input\":[{\"id\":8,\"delay\":2,\"watts\":7},{\"id\":4,\"delay\":6,\"watts\":3}],\"expected\":{\"fast\":8,\"green\":4},\"actual\":{\"fast\":4,\"green\":4}}}\n\n--- eco.py ---\nfrom routes import initial\n\n\ndef eco(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:\n            best = candidate\n    return best[\"id\"]\n\n\n--- interactive.py ---\nfrom routes import initial\n\n\ndef interactive(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:\n            best = candidate\n    return best[\"id\"]\n\n\n--- routes.py ---\ndef initial(routes):\n    return routes[0] if routes else {\"id\": 0, \"delay\": 0, \"watts\": 0}\n\n\n--- summary.py ---\nfrom eco import eco\nfrom interactive import interactive\n\n\ndef choose(routes):\n    return {\"fast\": interactive(routes), \"green\": eco(routes)}\n\n\ndef main(batches):\n    return [choose(batch) for batch in batches]\n\n",
+      "initial": {
+        "passed": 21,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 7
+            },
+            {
+              "id": 4,
+              "delay": 6,
+              "watts": 3
+            }
+          ],
+          "expected": {
+            "fast": 8,
+            "green": 4
+          },
+          "actual": {
+            "fast": 4,
+            "green": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 1,
+                "delay": 6,
+                "watts": 3
+              },
+              {
+                "id": 2,
+                "delay": 2,
+                "watts": 7
+              }
+            ],
+            "expected": {
+              "fast": 2,
+              "green": 1
+            },
+            "actual": {
+              "fast": 2,
+              "green": 2
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 8,
+                "delay": 2,
+                "watts": 7
+              },
+              {
+                "id": 4,
+                "delay": 6,
+                "watts": 3
+              }
+            ],
+            "expected": {
+              "fast": 8,
+              "green": 4
+            },
+            "actual": {
+              "fast": 4,
+              "green": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "dispatch",
+      "arm": "tide-text",
+      "sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+      "prompt": "A router reports fast=4 and green=4 for routes (id 8, delay 2, watts 7) and (id 4, delay 6, watts 3), in that order. The fast profile must select route 8, and the green profile route 4. Fast minimizes delay, then watts. Green minimizes watts, then delay. If both values tie, the earlier input wins. Empty batches return zero IDs. All measurements are small nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":21,\"failed\":19,\"first_failure\":{\"input\":[{\"id\":8,\"delay\":2,\"watts\":7},{\"id\":4,\"delay\":6,\"watts\":3}],\"expected\":{\"fast\":8,\"green\":4},\"actual\":{\"fast\":4,\"green\":4}}}\n\n--- eco.tide ---\neco routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best\nget id chosen\n\n\n--- interactive.tide ---\ninteractive routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best\nget id chosen\n\n\n--- routes.tide ---\nrecord Route\nid:i delay:i watts:i\n\ninitial routes:*{Route} > {Route}\ncase (at routes 0) (make Route id 0 delay 0 watts 0) head head\n\n\n--- summary.tide ---\nrecord Choice\nfast:i green:i\n\nchoose routes:*{Route} > {Choice}\nmake Choice fast (interactive routes) green (eco routes)\n\nmain batches:**{Route} > *{Choice}\nfold batches (list {Choice} 0) acc row batch append acc (choose batch)\n\n",
+      "initial": {
+        "passed": 21,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 7
+            },
+            {
+              "id": 4,
+              "delay": 6,
+              "watts": 3
+            }
+          ],
+          "expected": {
+            "fast": 8,
+            "green": 4
+          },
+          "actual": {
+            "fast": 4,
+            "green": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 1,
+                "delay": 6,
+                "watts": 3
+              },
+              {
+                "id": 2,
+                "delay": 2,
+                "watts": 7
+              }
+            ],
+            "expected": {
+              "fast": 2,
+              "green": 1
+            },
+            "actual": {
+              "fast": 2,
+              "green": 2
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 8,
+                "delay": 2,
+                "watts": 7
+              },
+              {
+                "id": 4,
+                "delay": 6,
+                "watts": 3
+              }
+            ],
+            "expected": {
+              "fast": 8,
+              "green": 4
+            },
+            "actual": {
+              "fast": 4,
+              "green": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "dispatch",
+      "arm": "tide-name",
+      "sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+      "prompt": "A router reports fast=4 and green=4 for routes (id 8, delay 2, watts 7) and (id 4, delay 6, watts 3), in that order. The fast profile must select route 8, and the green profile route 4. Fast minimizes delay, then watts. Green minimizes watts, then delay. If both values tie, the earlier input wins. Empty batches return zero IDs. All measurements are small nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":21,\"failed\":19,\"first_failure\":{\"input\":[{\"id\":8,\"delay\":2,\"watts\":7},{\"id\":4,\"delay\":6,\"watts\":3}],\"expected\":{\"fast\":8,\"green\":4},\"actual\":{\"fast\":4,\"green\":4}}}\n\n--- eco.tide ---\neco routes:*{Route} > i\n(let chosen (fold routes (initial routes) best row next (if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best)) (get id chosen))\n\n\n--- interactive.tide ---\ninteractive routes:*{Route} > i\n(let chosen (fold routes (initial routes) best row next (if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best)) (get id chosen))\n\n\n--- routes.tide ---\nrecord Route\nid:i delay:i watts:i\n\ninitial routes:*{Route} > {Route}\n(case (at routes 0) (make Route id 0 delay 0 watts 0) head head)\n\n\n--- summary.tide ---\nrecord Choice\nfast:i green:i\n\nchoose routes:*{Route} > {Choice}\n(make Choice fast (interactive routes) green (eco routes))\n\nmain batches:**{Route} > *{Choice}\n(fold batches (list {Choice} 0) acc row batch (append acc (choose batch)))\n\n",
+      "initial": {
+        "passed": 21,
+        "failed": 19,
+        "first_failure": {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 7
+            },
+            {
+              "id": 4,
+              "delay": 6,
+              "watts": 3
+            }
+          ],
+          "expected": {
+            "fast": 8,
+            "green": 4
+          },
+          "actual": {
+            "fast": 4,
+            "green": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 1,
+                "delay": 6,
+                "watts": 3
+              },
+              {
+                "id": 2,
+                "delay": 2,
+                "watts": 7
+              }
+            ],
+            "expected": {
+              "fast": 2,
+              "green": 1
+            },
+            "actual": {
+              "fast": 2,
+              "green": 2
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "id": 8,
+                "delay": 2,
+                "watts": 7
+              },
+              {
+                "id": 4,
+                "delay": 6,
+                "watts": 3
+              }
+            ],
+            "expected": {
+              "fast": 8,
+              "green": 4
+            },
+            "actual": {
+              "fast": 4,
+              "green": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "press",
+      "arm": "python-text",
+      "sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+      "prompt": "A print order has two independent jobs. Job A contains colour page runs [1] and mono runs [1,1]. Job B contains colour runs [1] and mono runs [2,1]. The stock report gives 1 colour sheet and 4 mono sheets; the customer expects 2 of each. Within one job, runs of the same kind may share sheets. A colour sheet holds four pages; a mono sheet holds three. Sheets cannot be shared between jobs or kinds. Empty runs and jobs use no sheets. Counts are nonnegative small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":14,\"failed\":26,\"first_failure\":{\"input\":[{\"colour\":[1],\"mono\":[1,1]},{\"colour\":[1],\"mono\":[2,1]}],\"expected\":{\"colour_sheets\":2,\"mono_sheets\":2},\"actual\":{\"colour_sheets\":1,\"mono_sheets\":4}}}\n\n--- colour.py ---\nfrom job import pages, sheets\n\n\ndef colour_total(jobs):\n    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)\n\n\n--- job.py ---\ndef pages(runs):\n    return sum(runs)\n\n\ndef sheets(n, capacity):\n    return (n + capacity - 1) // capacity\n\n\n--- mono.py ---\nfrom job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])\n\n\n--- summary.py ---\nfrom colour import colour_total\nfrom mono import mono_total\n\n\ndef stock(jobs):\n    return {\"colour_sheets\": colour_total(jobs), \"mono_sheets\": mono_total(jobs)}\n\n\ndef main(batches):\n    return [stock(jobs) for jobs in batches]\n\n",
+      "initial": {
+        "passed": 14,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                1,
+                1
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                2,
+                1
+              ]
+            }
+          ],
+          "expected": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          },
+          "actual": {
+            "colour_sheets": 1,
+            "mono_sheets": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 18,
+          "failed": 22,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 2,
+              "mono_sheets": 4
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 1,
+              "mono_sheets": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "press",
+      "arm": "python-name",
+      "sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+      "prompt": "A print order has two independent jobs. Job A contains colour page runs [1] and mono runs [1,1]. Job B contains colour runs [1] and mono runs [2,1]. The stock report gives 1 colour sheet and 4 mono sheets; the customer expects 2 of each. Within one job, runs of the same kind may share sheets. A colour sheet holds four pages; a mono sheet holds three. Sheets cannot be shared between jobs or kinds. Empty runs and jobs use no sheets. Counts are nonnegative small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":14,\"failed\":26,\"first_failure\":{\"input\":[{\"colour\":[1],\"mono\":[1,1]},{\"colour\":[1],\"mono\":[2,1]}],\"expected\":{\"colour_sheets\":2,\"mono_sheets\":2},\"actual\":{\"colour_sheets\":1,\"mono_sheets\":4}}}\n\n--- colour.py ---\nfrom job import pages, sheets\n\n\ndef colour_total(jobs):\n    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)\n\n\n--- job.py ---\ndef pages(runs):\n    return sum(runs)\n\n\ndef sheets(n, capacity):\n    return (n + capacity - 1) // capacity\n\n\n--- mono.py ---\nfrom job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])\n\n\n--- summary.py ---\nfrom colour import colour_total\nfrom mono import mono_total\n\n\ndef stock(jobs):\n    return {\"colour_sheets\": colour_total(jobs), \"mono_sheets\": mono_total(jobs)}\n\n\ndef main(batches):\n    return [stock(jobs) for jobs in batches]\n\n",
+      "initial": {
+        "passed": 14,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                1,
+                1
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                2,
+                1
+              ]
+            }
+          ],
+          "expected": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          },
+          "actual": {
+            "colour_sheets": 1,
+            "mono_sheets": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 18,
+          "failed": 22,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 2,
+              "mono_sheets": 4
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 1,
+              "mono_sheets": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "press",
+      "arm": "tide-text",
+      "sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+      "prompt": "A print order has two independent jobs. Job A contains colour page runs [1] and mono runs [1,1]. Job B contains colour runs [1] and mono runs [2,1]. The stock report gives 1 colour sheet and 4 mono sheets; the customer expects 2 of each. Within one job, runs of the same kind may share sheets. A colour sheet holds four pages; a mono sheet holds three. Sheets cannot be shared between jobs or kinds. Empty runs and jobs use no sheets. Counts are nonnegative small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\n\n{\"passed\":14,\"failed\":26,\"first_failure\":{\"input\":[{\"colour\":[1],\"mono\":[1,1]},{\"colour\":[1],\"mono\":[2,1]}],\"expected\":{\"colour_sheets\":2,\"mono_sheets\":2},\"actual\":{\"colour_sheets\":1,\"mono_sheets\":4}}}\n\n--- colour.tide ---\ncolour_total jobs:*{Job} > i\nlet count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4\n\n\n--- job.tide ---\nrecord Job\ncolour:*i mono:*i\n\npages runs:*i > i\nfold runs 0 total row n + total n\n\nsheets n:i capacity:i > i\ndiv (+ n (- capacity 1)) capacity\n\n\n--- mono.tide ---\nmono_total jobs:*{Job} > i\nfold jobs 0 total row job\n  + total (fold (get mono job) 0 used run n + used (sheets n 3))\n\n\n--- summary.tide ---\nrecord Stock\ncolour_sheets:i mono_sheets:i\n\nstock jobs:*{Job} > {Stock}\nmake Stock colour_sheets (colour_total jobs) mono_sheets (mono_total jobs)\n\nmain batches:**{Job} > *{Stock}\nfold batches (list {Stock} 0) acc row jobs append acc (stock jobs)\n\n",
+      "initial": {
+        "passed": 14,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                1,
+                1
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                2,
+                1
+              ]
+            }
+          ],
+          "expected": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          },
+          "actual": {
+            "colour_sheets": 1,
+            "mono_sheets": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 18,
+          "failed": 22,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 2,
+              "mono_sheets": 4
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 1,
+              "mono_sheets": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "press",
+      "arm": "tide-name",
+      "sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+      "prompt": "A print order has two independent jobs. Job A contains colour page runs [1] and mono runs [1,1]. Job B contains colour runs [1] and mono runs [2,1]. The stock report gives 1 colour sheet and 4 mono sheets; the customer expects 2 of each. Within one job, runs of the same kind may share sheets. A colour sheet holds four pages; a mono sheet holds three. Sheets cannot be shared between jobs or kinds. Empty runs and jobs use no sheets. Counts are nonnegative small integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":14,\"failed\":26,\"first_failure\":{\"input\":[{\"colour\":[1],\"mono\":[1,1]},{\"colour\":[1],\"mono\":[2,1]}],\"expected\":{\"colour_sheets\":2,\"mono_sheets\":2},\"actual\":{\"colour_sheets\":1,\"mono_sheets\":4}}}\n\n--- colour.tide ---\ncolour_total jobs:*{Job} > i\n(let count (fold jobs 0 total row job (+ total (pages (get colour job)))) (sheets count 4))\n\n\n--- job.tide ---\nrecord Job\ncolour:*i mono:*i\n\npages runs:*i > i\n(fold runs 0 total row n (+ total n))\n\nsheets n:i capacity:i > i\n(div (+ n (- capacity 1)) capacity)\n\n\n--- mono.tide ---\nmono_total jobs:*{Job} > i\n(fold jobs 0 total row job (+ total (fold (get mono job) 0 used run n (+ used (sheets n 3)))))\n\n\n--- summary.tide ---\nrecord Stock\ncolour_sheets:i mono_sheets:i\n\nstock jobs:*{Job} > {Stock}\n(make Stock colour_sheets (colour_total jobs) mono_sheets (mono_total jobs))\n\nmain batches:**{Job} > *{Stock}\n(fold batches (list {Stock} 0) acc row jobs (append acc (stock jobs)))\n\n",
+      "initial": {
+        "passed": 14,
+        "failed": 26,
+        "first_failure": {
+          "input": [
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                1,
+                1
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                2,
+                1
+              ]
+            }
+          ],
+          "expected": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          },
+          "actual": {
+            "colour_sheets": 1,
+            "mono_sheets": 4
+          }
+        }
+      },
+      "single_changes": [
+        {
+          "passed": 18,
+          "failed": 22,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 2,
+              "mono_sheets": 4
+            }
+          }
+        },
+        {
+          "passed": 28,
+          "failed": 12,
+          "first_failure": {
+            "input": [
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "colour": [
+                  1
+                ],
+                "mono": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "expected": {
+              "colour_sheets": 2,
+              "mono_sheets": 2
+            },
+            "actual": {
+              "colour_sheets": 1,
+              "mono_sheets": 2
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "trials": [
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:36:19.613470645Z",
+      "monotonic_s": {
+        "start": "51103.593923654",
+        "packet_ready": "51103.728966645",
+        "end": "51120.249276566"
+      },
+      "seconds": 16.655352911999216,
+      "prepare_seconds": 0.13504299100168282,
+      "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+      "tokens": {
+        "total": 20099,
+        "uncached": 2179,
+        "output": 693,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-20d9-7050-840a-c7c34c9e9b18",
+          "answered_monotonic_s": "51120.183890949",
+          "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 693,
+            "reasoning_output_tokens": 511
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.tide",
+                "old": "if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best",
+                "replacement": "if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best))"
+              },
+              {
+                "file": "eco.tide",
+                "old": "if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best",
+                "replacement": "if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:36:36.282789189Z",
+      "monotonic_s": {
+        "start": "51120.255968721",
+        "packet_ready": "51120.287317063",
+        "end": "51128.270838054"
+      },
+      "seconds": 8.014869332997478,
+      "prepare_seconds": 0.03134834199590841,
+      "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+      "tokens": {
+        "total": 19735,
+        "uncached": 1815,
+        "output": 355,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-6108-7262-8fe1-c76af54c9243",
+          "answered_monotonic_s": "51128.232917240",
+          "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+          "usage": {
+            "input_tokens": 19380,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 355,
+            "reasoning_output_tokens": 197
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.py",
+                "old": "        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:",
+                "replacement": "        if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):"
+              },
+              {
+                "file": "eco.py",
+                "old": "        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:",
+                "replacement": "        if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:36:44.303435229Z",
+      "monotonic_s": {
+        "start": "51128.276989988",
+        "packet_ready": "51128.309305319",
+        "end": "51136.704697795"
+      },
+      "seconds": 8.427707807000843,
+      "prepare_seconds": 0.03231533100188244,
+      "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+      "tokens": {
+        "total": 19766,
+        "uncached": 19766,
+        "output": 378,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-80ec-7193-9ea0-7d5fa4cec88f",
+          "answered_monotonic_s": "51136.664611937",
+          "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+          "usage": {
+            "input_tokens": 19388,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 378,
+            "reasoning_output_tokens": 234
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "eco",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "interactive",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:36:52.736730958Z",
+      "monotonic_s": {
+        "start": "51136.709973131",
+        "packet_ready": "51137.319918961",
+        "end": "51147.660203446"
+      },
+      "seconds": 10.950230315000226,
+      "prepare_seconds": 0.6099458300013794,
+      "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+      "tokens": {
+        "total": 19929,
+        "uncached": 19929,
+        "output": 494,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-a297-7e83-ace9-a4cc29ad0b81",
+          "answered_monotonic_s": "51147.566800534",
+          "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+          "usage": {
+            "input_tokens": 19435,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 494,
+            "reasoning_output_tokens": 338
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best)))) (get id chosen))"
+              },
+              {
+                "name": "eco",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best)))) (get id chosen))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:03.692189268Z",
+      "monotonic_s": {
+        "start": "51147.665413771",
+        "packet_ready": "51148.317454818",
+        "end": "51155.417240615"
+      },
+      "seconds": 7.751826844003517,
+      "prepare_seconds": 0.6520410470038769,
+      "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+      "tokens": {
+        "total": 19639,
+        "uncached": 19639,
+        "output": 203,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-cefc-75f3-afcf-f490cf7d7d61",
+          "answered_monotonic_s": "51155.323490716",
+          "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+          "usage": {
+            "input_tokens": 19436,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 203,
+            "reasoning_output_tokens": 123
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get colour job)) 4)))"
+              },
+              {
+                "name": "mono_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get mono job)) 3)))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:11.449320979Z",
+      "monotonic_s": {
+        "start": "51155.422324328",
+        "packet_ready": "51155.457602988",
+        "end": "51162.458579850"
+      },
+      "seconds": 7.0362555219981004,
+      "prepare_seconds": 0.035278659997857176,
+      "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+      "tokens": {
+        "total": 19647,
+        "uncached": 19647,
+        "output": 274,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64a-e97d-7661-9fd7-9afc03ac8791",
+          "answered_monotonic_s": "51162.417966182",
+          "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+          "usage": {
+            "input_tokens": 19373,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 274,
+            "reasoning_output_tokens": 201
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "name": "mono_total",
+                "body": "return sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:18.490427539Z",
+      "monotonic_s": {
+        "start": "51162.463571951",
+        "packet_ready": "51162.493873481",
+        "end": "51169.917285630"
+      },
+      "seconds": 7.453713679002249,
+      "prepare_seconds": 0.030301530001452193,
+      "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+      "tokens": {
+        "total": 19688,
+        "uncached": 1768,
+        "output": 323,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-04fa-7af0-9242-0bee774839eb",
+          "answered_monotonic_s": "51169.871934456",
+          "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+          "usage": {
+            "input_tokens": 19365,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 323,
+            "reasoning_output_tokens": 144
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.py",
+                "old": "def colour_total(jobs):\n    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)",
+                "replacement": "def colour_total(jobs):\n    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "file": "mono.py",
+                "old": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])",
+                "replacement": "from job import pages, sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(pages(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:25.948915004Z",
+      "monotonic_s": {
+        "start": "51169.921821701",
+        "packet_ready": "51170.068508506",
+        "end": "51177.253657380"
+      },
+      "seconds": 7.3318356790041435,
+      "prepare_seconds": 0.14668680500471964,
+      "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+      "tokens": {
+        "total": 19703,
+        "uncached": 1783,
+        "output": 297,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-23d9-7d23-a292-a0552738064c",
+          "answered_monotonic_s": "51177.191491657",
+          "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 297,
+            "reasoning_output_tokens": 171
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.tide",
+                "old": "let count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4",
+                "replacement": "fold jobs 0 total row job\n  + total (sheets (pages (get colour job)) 4)"
+              },
+              {
+                "file": "mono.tide",
+                "old": "+ total (fold (get mono job) 0 used run n + used (sheets n 3))",
+                "replacement": "+ total (sheets (pages (get mono job)) 3)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:33.286242024Z",
+      "monotonic_s": {
+        "start": "51177.259389395",
+        "packet_ready": "51177.292086564",
+        "end": "51184.754041370"
+      },
+      "seconds": 7.494651974993758,
+      "prepare_seconds": 0.032697168993763626,
+      "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+      "tokens": {
+        "total": 19632,
+        "uncached": 19632,
+        "output": 259,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-3fbc-72b1-9901-0fa0254db897",
+          "answered_monotonic_s": "51184.711201777",
+          "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+          "usage": {
+            "input_tokens": 19373,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 259,
+            "reasoning_output_tokens": 153
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "name": "mono_total",
+                "body": "return sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:40.786780877Z",
+      "monotonic_s": {
+        "start": "51184.760094742",
+        "packet_ready": "51184.890941378",
+        "end": "51194.996750078"
+      },
+      "seconds": 10.236655335997057,
+      "prepare_seconds": 0.13084663599875057,
+      "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+      "tokens": {
+        "total": 19863,
+        "uncached": 1943,
+        "output": 457,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-5e31-7560-91fc-d36b9a2dab9e",
+          "answered_monotonic_s": "51194.933330781",
+          "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 457,
+            "reasoning_output_tokens": 286
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.tide",
+                "old": "let count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4",
+                "replacement": "fold jobs 0 total row job\n  + total (sheets (pages (get colour job)) 4)"
+              },
+              {
+                "file": "mono.tide",
+                "old": "+ total (fold (get mono job) 0 used run n + used (sheets n 3))",
+                "replacement": "+ total (sheets (pages (get mono job)) 3)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:51.028575797Z",
+      "monotonic_s": {
+        "start": "51195.002125427",
+        "packet_ready": "51195.705410684",
+        "end": "51203.353526189"
+      },
+      "seconds": 8.351400761996047,
+      "prepare_seconds": 0.7032852569973329,
+      "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+      "tokens": {
+        "total": 19661,
+        "uncached": 1741,
+        "output": 225,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-86b0-7760-8226-f216977c65c5",
+          "answered_monotonic_s": "51203.259491495",
+          "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+          "usage": {
+            "input_tokens": 19436,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 225,
+            "reasoning_output_tokens": 145
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get colour job)) 4)))"
+              },
+              {
+                "name": "mono_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get mono job)) 3)))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:37:59.385595292Z",
+      "monotonic_s": {
+        "start": "51203.358977099",
+        "packet_ready": "51203.389727298",
+        "end": "51213.489129405"
+      },
+      "seconds": 10.130152306002856,
+      "prepare_seconds": 0.030750199002795853,
+      "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+      "tokens": {
+        "total": 19808,
+        "uncached": 1888,
+        "output": 443,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-a4ad-7003-8c6a-f15be0673324",
+          "answered_monotonic_s": "51213.450408545",
+          "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+          "usage": {
+            "input_tokens": 19365,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 443,
+            "reasoning_output_tokens": 280
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.py",
+                "old": "    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)",
+                "replacement": "    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "file": "mono.py",
+                "old": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])",
+                "replacement": "from job import pages, sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(pages(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:38:09.521294011Z",
+      "monotonic_s": {
+        "start": "51213.494648306",
+        "packet_ready": "51213.529024899",
+        "end": "51222.020947569"
+      },
+      "seconds": 8.52629926300142,
+      "prepare_seconds": 0.03437659300107043,
+      "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+      "tokens": {
+        "total": 19756,
+        "uncached": 556,
+        "output": 376,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-cd25-77e2-84a2-7ca77cbb9527",
+          "answered_monotonic_s": "51221.981332191",
+          "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+          "usage": {
+            "input_tokens": 19380,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 376,
+            "reasoning_output_tokens": 218
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.py",
+                "old": "        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:",
+                "replacement": "        if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):"
+              },
+              {
+                "file": "eco.py",
+                "old": "        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:",
+                "replacement": "        if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:38:18.053507713Z",
+      "monotonic_s": {
+        "start": "51222.026920230",
+        "packet_ready": "51222.657755856",
+        "end": "51237.880247275"
+      },
+      "seconds": 15.853327045006154,
+      "prepare_seconds": 0.6308356260051369,
+      "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+      "tokens": {
+        "total": 19967,
+        "uncached": 2047,
+        "output": 532,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64b-f0f5-72d3-9b7b-e78dde6b90fd",
+          "answered_monotonic_s": "51237.780866233",
+          "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+          "usage": {
+            "input_tokens": 19435,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 532,
+            "reasoning_output_tokens": 376
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best)))) (get id chosen))"
+              },
+              {
+                "name": "eco",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best)))) (get id chosen))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:38:33.912559473Z",
+      "monotonic_s": {
+        "start": "51237.885510721",
+        "packet_ready": "51238.019741545",
+        "end": "51255.252982372"
+      },
+      "seconds": 17.36747165100678,
+      "prepare_seconds": 0.13423082400549902,
+      "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+      "tokens": {
+        "total": 20191,
+        "uncached": 2271,
+        "output": 785,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64c-2cfc-73b3-8c50-5b9dd312d92d",
+          "answered_monotonic_s": "51255.187295613",
+          "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 785,
+            "reasoning_output_tokens": 599
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.tide",
+                "old": "  if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best",
+                "replacement": "  if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best))"
+              },
+              {
+                "file": "eco.tide",
+                "old": "  if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best",
+                "replacement": "  if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:38:51.285522706Z",
+      "monotonic_s": {
+        "start": "51255.258860567",
+        "packet_ready": "51255.291465201",
+        "end": "51263.443148622"
+      },
+      "seconds": 8.184288054995704,
+      "prepare_seconds": 0.03260463399783475,
+      "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+      "tokens": {
+        "total": 19732,
+        "uncached": 19732,
+        "output": 344,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64c-6f76-7e22-8639-904f14c140c0",
+          "answered_monotonic_s": "51263.395433525",
+          "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+          "usage": {
+            "input_tokens": 19388,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 344,
+            "reasoning_output_tokens": 200
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "eco",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:38:59.476439603Z",
+      "monotonic_s": {
+        "start": "51263.449719042",
+        "packet_ready": "51264.085116705",
+        "end": "51274.339927964"
+      },
+      "seconds": 10.890208921999147,
+      "prepare_seconds": 0.6353976629980025,
+      "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+      "tokens": {
+        "total": 19891,
+        "uncached": 1971,
+        "output": 456,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64c-92c4-7e72-a079-b2dd2c79f826",
+          "answered_monotonic_s": "51274.237407243",
+          "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+          "usage": {
+            "input_tokens": 19435,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 456,
+            "reasoning_output_tokens": 300
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best)))) (get id chosen))"
+              },
+              {
+                "name": "eco",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best)))) (get id chosen))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:39:10.372291054Z",
+      "monotonic_s": {
+        "start": "51274.345316257",
+        "packet_ready": "51274.379008383",
+        "end": "51286.181536006"
+      },
+      "seconds": 11.836219748998701,
+      "prepare_seconds": 0.03369212600227911,
+      "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+      "tokens": {
+        "total": 19753,
+        "uncached": 1833,
+        "output": 365,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64c-ba05-7e20-87bd-9ad7e7e4256e",
+          "answered_monotonic_s": "51286.134887198",
+          "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+          "usage": {
+            "input_tokens": 19388,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 365,
+            "reasoning_output_tokens": 221
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "eco",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:39:22.214271144Z",
+      "monotonic_s": {
+        "start": "51286.187676186",
+        "packet_ready": "51286.221518634",
+        "end": "51296.302195859"
+      },
+      "seconds": 10.114519673006725,
+      "prepare_seconds": 0.033842448006907944,
+      "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+      "tokens": {
+        "total": 19779,
+        "uncached": 19779,
+        "output": 399,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64c-e926-79b1-a58d-bc0744dac773",
+          "answered_monotonic_s": "51296.260366772",
+          "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+          "usage": {
+            "input_tokens": 19380,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 399,
+            "reasoning_output_tokens": 229
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.py",
+                "old": "        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:",
+                "replacement": "        if (candidate[\"delay\"], candidate[\"watts\"]) < (\n            best[\"delay\"], best[\"watts\"]\n        ):"
+              },
+              {
+                "file": "eco.py",
+                "old": "        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:",
+                "replacement": "        if (candidate[\"watts\"], candidate[\"delay\"]) < (\n            best[\"watts\"], best[\"delay\"]\n        ):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:39:32.335055949Z",
+      "monotonic_s": {
+        "start": "51296.308429000",
+        "packet_ready": "51296.450431576",
+        "end": "51324.095305494"
+      },
+      "seconds": 27.786876493999443,
+      "prepare_seconds": 0.14200257600168698,
+      "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+      "tokens": {
+        "total": 60827,
+        "uncached": 2075,
+        "output": 1113,
+        "cached": 58752
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64d-1122-7bd1-9848-b1180ecf307b",
+          "answered_monotonic_s": "51324.026699129",
+          "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+          "usage": {
+            "input_tokens": 59714,
+            "cached_input_tokens": 58752,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1113,
+            "reasoning_output_tokens": 813
+          },
+          "tools": [
+            {
+              "command": "/usr/bin/bash -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"'\"",
+              "status": 0,
+              "output": "routes.tide\nsummary.tide\ninteractive.tide\neco.tide\n"
+            },
+            {
+              "command": "/usr/bin/bash -lc 'ls -la'",
+              "status": 0,
+              "output": "total 16\ndrwxr-xr-x  2 ativaro ativaro 140 Nov 16 22:39 .\ndrwx------ 17 ativaro ativaro 660 Nov 16 22:38 ..\n-rw-r--r--  1 ativaro ativaro 200 Nov 16 22:39 eco.tide\n-rw-r--r--  1 ativaro ativaro 208 Nov 16 22:39 interactive.tide\n-rw-r--r--  1 ativaro ativaro 132 Nov 16 22:39 routes.tide\n-rw-r--r--  1 ativaro ativaro 254 Nov 16 22:39 summary.tide\nlrwxrwxrwx  1 ativaro ativaro  51 Nov 16 22:39 verify -> /tmp/grouped-study-YZjx0DIK/control/dispatch/verify\n"
+            }
+          ],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.tide",
+                "old": "  if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best",
+                "replacement": "  if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best))"
+              },
+              {
+                "file": "eco.tide",
+                "old": "  if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best",
+                "replacement": "  if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:00.127695873Z",
+      "monotonic_s": {
+        "start": "51324.100663755",
+        "packet_ready": "51324.252654799",
+        "end": "51336.365057592"
+      },
+      "seconds": 12.264393836994714,
+      "prepare_seconds": 0.15199104399653152,
+      "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+      "tokens": {
+        "total": 19907,
+        "uncached": 1987,
+        "output": 501,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64d-7e04-7f90-8df9-fecad2d0a2c4",
+          "answered_monotonic_s": "51336.276551013",
+          "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 501,
+            "reasoning_output_tokens": 326
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.tide",
+                "old": "let count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4",
+                "replacement": "fold jobs 0 total row job\n  + total (sheets (pages (get colour job)) 4)"
+              },
+              {
+                "file": "mono.tide",
+                "old": "  + total (fold (get mono job) 0 used run n + used (sheets n 3))",
+                "replacement": "  + total (sheets (pages (get mono job)) 3)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:12.401343759Z",
+      "monotonic_s": {
+        "start": "51336.374972515",
+        "packet_ready": "51336.423512016",
+        "end": "51346.851500380"
+      },
+      "seconds": 10.476527865001117,
+      "prepare_seconds": 0.0485395010036882,
+      "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+      "tokens": {
+        "total": 19844,
+        "uncached": 1924,
+        "output": 479,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64d-ade4-7702-b549-87ed2f69c738",
+          "answered_monotonic_s": "51346.806659794",
+          "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+          "usage": {
+            "input_tokens": 19365,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 479,
+            "reasoning_output_tokens": 316
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.py",
+                "old": "    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)",
+                "replacement": "    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "file": "mono.py",
+                "old": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])",
+                "replacement": "from job import pages, sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(pages(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:22.885942915Z",
+      "monotonic_s": {
+        "start": "51346.859246714",
+        "packet_ready": "51346.894638818",
+        "end": "51354.662909144"
+      },
+      "seconds": 7.803662430000259,
+      "prepare_seconds": 0.03539210400049342,
+      "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+      "tokens": {
+        "total": 19656,
+        "uncached": 19656,
+        "output": 283,
+        "cached": 0
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64d-d546-7dd2-96af-c90f52d0a6b3",
+          "answered_monotonic_s": "51354.532064462",
+          "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+          "usage": {
+            "input_tokens": 19373,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 283,
+            "reasoning_output_tokens": 210
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "name": "mono_total",
+                "body": "return sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:30.701080182Z",
+      "monotonic_s": {
+        "start": "51354.675487815",
+        "packet_ready": "51355.784820948",
+        "end": "51362.386799301"
+      },
+      "seconds": 7.711311485996703,
+      "prepare_seconds": 1.1093331329975626,
+      "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+      "tokens": {
+        "total": 19692,
+        "uncached": 1772,
+        "output": 256,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64d-f81a-7733-8621-c36aad3eef2e",
+          "answered_monotonic_s": "51362.255829881",
+          "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+          "usage": {
+            "input_tokens": 19436,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 256,
+            "reasoning_output_tokens": 176
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get colour job)) 4)))"
+              },
+              {
+                "name": "mono_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get mono job)) 3)))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:38.424524889Z",
+      "monotonic_s": {
+        "start": "51362.398586585",
+        "packet_ready": "51362.437768192",
+        "end": "51371.494467308"
+      },
+      "seconds": 9.095880723005394,
+      "prepare_seconds": 0.03918160700413864,
+      "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+      "tokens": {
+        "total": 19741,
+        "uncached": 541,
+        "output": 376,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-1211-7b82-a365-81899424e441",
+          "answered_monotonic_s": "51371.447891957",
+          "prompt_sha256": "0d4319a6422b301c41084e8165e0ed96f4381b34725e467a42861644659d1f97",
+          "usage": {
+            "input_tokens": 19365,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 376,
+            "reasoning_output_tokens": 213
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.py",
+                "old": "    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)",
+                "replacement": "    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "file": "mono.py",
+                "old": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])",
+                "replacement": "from job import pages, sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(pages(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:47.528971024Z",
+      "monotonic_s": {
+        "start": "51371.502828875",
+        "packet_ready": "51372.247363227",
+        "end": "51378.769088797"
+      },
+      "seconds": 7.266259921998426,
+      "prepare_seconds": 0.7445343519939343,
+      "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+      "tokens": {
+        "total": 19683,
+        "uncached": 483,
+        "output": 247,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-3965-7cb1-bfbe-400b1372fea1",
+          "answered_monotonic_s": "51378.668930073",
+          "prompt_sha256": "9a1f98728183ca3db83b8fd436ed3ebb9d8ddca495ff65566a8f3c32c3653804",
+          "usage": {
+            "input_tokens": 19436,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 247,
+            "reasoning_output_tokens": 167
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get colour job)) 4)))"
+              },
+              {
+                "name": "mono_total",
+                "body": "(fold jobs 0 total row job (+ total (sheets (pages (get mono job)) 3)))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:40:54.802049968Z",
+      "monotonic_s": {
+        "start": "51378.775349457",
+        "packet_ready": "51378.914003931",
+        "end": "51388.897225631"
+      },
+      "seconds": 10.121876174001954,
+      "prepare_seconds": 0.13865447400166886,
+      "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+      "tokens": {
+        "total": 19862,
+        "uncached": 1942,
+        "output": 456,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-5387-78b3-b215-c8ab4be30b2b",
+          "answered_monotonic_s": "51388.829128644",
+          "prompt_sha256": "a7258fcca2d08184ef49b0bd2337646b8dc4c503ba77f0780082d1eab8b9a9a5",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 456,
+            "reasoning_output_tokens": 284
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "colour.tide",
+                "old": "let count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4",
+                "replacement": "fold jobs 0 total row job\n  + total (sheets (pages (get colour job)) 4)"
+              },
+              {
+                "file": "mono.tide",
+                "old": "+ total (fold (get mono job) 0 used run n + used (sheets n 3))",
+                "replacement": "+ total (sheets (pages (get mono job)) 3)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:41:04.929623779Z",
+      "monotonic_s": {
+        "start": "51388.902836395",
+        "packet_ready": "51388.938294065",
+        "end": "51395.094037891"
+      },
+      "seconds": 6.191201496003487,
+      "prepare_seconds": 0.035457670004689135,
+      "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+      "tokens": {
+        "total": 19601,
+        "uncached": 401,
+        "output": 228,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-7a7a-71b0-b64b-13ab530565a0",
+          "answered_monotonic_s": "51395.049671664",
+          "prompt_sha256": "cc52989e1dcb5b30b660109fef9c6bd0dc086ea90a6bed9da1a4f6ecc31aa65a",
+          "usage": {
+            "input_tokens": 19373,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 228,
+            "reasoning_output_tokens": 155
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "colour_total",
+                "body": "return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+              },
+              {
+                "name": "mono_total",
+                "body": "return sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "language": "python",
+      "arm": "python-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:41:11.126816508Z",
+      "monotonic_s": {
+        "start": "51395.099934562",
+        "packet_ready": "51395.133988230",
+        "end": "51402.663310622"
+      },
+      "seconds": 7.5633760600030655,
+      "prepare_seconds": 0.034053668001433834,
+      "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+      "tokens": {
+        "total": 19696,
+        "uncached": 496,
+        "output": 308,
+        "cached": 19200
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-92a1-73e2-9a45-57d80015b19d",
+          "answered_monotonic_s": "51402.620659244",
+          "prompt_sha256": "515b42d66abc06552c5d157ddd8103e5e72609747faed16874ab9e16e0a4feca",
+          "usage": {
+            "input_tokens": 19388,
+            "cached_input_tokens": 19200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 308,
+            "reasoning_output_tokens": 164
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "eco",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "interactive",
+                "body": "best = initial(routes)\nfor candidate in routes:\n    if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "language": "tide",
+      "arm": "tide-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:41:18.695631728Z",
+      "monotonic_s": {
+        "start": "51402.668883216",
+        "packet_ready": "51402.814200486",
+        "end": "51418.295857312"
+      },
+      "seconds": 15.626974095997866,
+      "prepare_seconds": 0.14531726999848615,
+      "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+      "tokens": {
+        "total": 20050,
+        "uncached": 2130,
+        "output": 644,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-afae-7460-9455-3c1fb36b2fe7",
+          "answered_monotonic_s": "51418.230565704",
+          "prompt_sha256": "d7c182160a9f0e5d174d8aa524b91a2706c68a3a7ccbaef12e38b22e1d438e05",
+          "usage": {
+            "input_tokens": 19406,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 644,
+            "reasoning_output_tokens": 458
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.tide",
+                "old": "  if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best",
+                "replacement": "  if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best))"
+              },
+              {
+                "file": "eco.tide",
+                "old": "  if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best",
+                "replacement": "  if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "language": "tide",
+      "arm": "tide-name",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:41:34.328574397Z",
+      "monotonic_s": {
+        "start": "51418.301685101",
+        "packet_ready": "51418.885386703",
+        "end": "51430.633574465"
+      },
+      "seconds": 12.331889363995288,
+      "prepare_seconds": 0.5837016019941075,
+      "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+      "tokens": {
+        "total": 20017,
+        "uncached": 2097,
+        "output": 582,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64e-ef91-7b82-93a2-5f737de64be8",
+          "answered_monotonic_s": "51430.233129923",
+          "prompt_sha256": "1e081d79c59e10df44551548260adc1359ca43cef5274aebff3ec7e7be74ee27",
+          "usage": {
+            "input_tokens": 19435,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 582,
+            "reasoning_output_tokens": 426
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "name": "interactive",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get delay next) (get delay best)) next (if (< (get delay best) (get delay next)) best (if (< (get watts next) (get watts best)) next best)))) (get id chosen))"
+              },
+              {
+                "name": "eco",
+                "body": "(let chosen (fold routes (initial routes) best row next (if (< (get watts next) (get watts best)) next (if (< (get watts best) (get watts next)) best (if (< (get delay next) (get delay best)) next best)))) (get id chosen))"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "language": "python",
+      "arm": "python-text",
+      "status": "passed",
+      "start_utc": "2026-11-16T21:41:46.762200482Z",
+      "monotonic_s": {
+        "start": "51430.774254298",
+        "packet_ready": "51431.401748474",
+        "end": "51443.638211368"
+      },
+      "seconds": 12.86395707000338,
+      "prepare_seconds": 0.6274941760057118,
+      "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+      "tokens": {
+        "total": 19730,
+        "uncached": 1810,
+        "output": 350,
+        "cached": 17920
+      },
+      "attempts": [
+        {
+          "process_exit": 0,
+          "thread_id": "01a1e64f-265c-74f0-98c5-56fbd8503545",
+          "answered_monotonic_s": "51443.588324756",
+          "prompt_sha256": "8c61e0fae743dfb8b693bcad573907c6073297e29f68dcdf3e220411101da8b6",
+          "usage": {
+            "input_tokens": 19380,
+            "cached_input_tokens": 17920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 350,
+            "reasoning_output_tokens": 153
+          },
+          "tools": [],
+          "answer": {
+            "edits": [
+              {
+                "file": "interactive.py",
+                "old": "        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:",
+                "replacement": "        if (candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"]):"
+              },
+              {
+                "file": "eco.py",
+                "old": "        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:",
+                "replacement": "        if (candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"]):"
+              }
+            ]
+          },
+          "diagnostic": "",
+          "acceptance": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          }
+        }
+      ],
+      "replay": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 30,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+rule exchange value:i > i
+state left:i=2 right:i=-5
+when eq value 0 -> right=set left, left=set right
+when < value 0 -> right=reset, left=reset
+else -> right=set (+ left right), left=set value
+out + (* 10 left) right
+
+main xs:*i > *i
+scan exchange xs
+
+example simultaneous exchange
+{"events":[0,1,0,-1],"expect":[-48,7,-29,15]}
+
+example no_events main
+{"inputs":{"xs":[]},"expect":[]}

@@ -1,0 +1,35 @@
+count input:r bytes:i > i
+fold_lines input bytes 0 total row line + total 1
+
+main input:r bytes:i > i
++ (count input bytes) (count input bytes)
+
+nested outer:r inner:r > i
+fold_lines outer 20 0 n pos text + n (fold_lines inner 15 0 total row line + total (text_len line))
+
+same input:r > i
+nested input input
+
+snapshot input:r > i
++ (count input 64) (text_len (read input))
+
+join input:r > t
+fold_lines input 64 "" prefix row line concat prefix line
+
+example two_passes main
+{"inputs":{"input":"a\n\nb","bytes":4},"expect":6}
+
+example independent_grants nested
+{"inputs":{"outer":"a\nb\n","inner":"é\r\n漢字"},"expect":6}
+
+example nested_same_grant same
+{"inputs":{"input":"é\r\n漢字"},"expect":6}
+
+example mixed_snapshot snapshot
+{"inputs":{"input":"a\r\nb\n"},"expect":7}
+
+example bare_cr_and_unicode join
+{"inputs":{"input":"é\r\n漢\n\n字\r"},"expect":"é漢字\r"}
+
+example utf8_byte_budget count
+{"inputs":{"input":"é\n漢","bytes":5},"expect_error":{"code":"E_LIMIT","input_line":2}}

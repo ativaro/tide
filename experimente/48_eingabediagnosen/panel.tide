@@ -1,0 +1,4 @@
+use types
+
+main opening:{Ledger} > i
+length (get rows opening)

@@ -1,0 +1,473 @@
+use project_model
+
+aot_text text:t > t
+cat3 "literal<U" (json_string text) ">()"
+
+aot_site site:{Site} > t
+cat3 "R_Site{" (aot_text (get word site))
+  (cat3 "," (decimal (get line site)) (cat3 "," (decimal (get column site)) "}"))
+
+aot_record_name name:t > t
+let space namespace_of name
+if (text_eq space "") (concat "ReportType_" name)
+cat3 "ReportPackageType_" (decimal (text_len space)) (cat3 "_" space (concat "_" (local_name name)))
+
+aot_type kind:t issue:t boxed:b > t
+if (or (text_eq kind "i") (text_eq kind "r")) "I"
+if (text_eq kind "b") "bool"
+if (text_eq kind "t") "Text"
+if (text_eq kind "*t") "Seq<Text>"
+if (text_eq kind "?i") "Opt<I>"
+if (and boxed (text_eq kind "!")) "AotNever"
+if boxed
+  (if (text_eq (text_slice kind 0 1) "?") (cat3 "Opt<" (aot_type (text_slice kind 1 (text_len kind)) issue true) ">") "R_EvalValue")
+if (named_kind kind) (aot_record_name (text_slice kind 1 (- (text_len kind) 1)))
+fail issue
+
+aot_field field:t > t
+concat "field_" field
+
+aot_binding key:t > t
+concat "local_" key
+
+aot_symbol index:i > t
+concat "compiled_" (decimal index)
+
+aot_child parts:*t slot:i > t
+need (at parts slot) "aot_child" slot
+
+aot_var index:i > t
+concat "value_" (decimal index)
+
+aot_operands parts:*t > t
+fold parts "" code row expr
+cat3 code "const auto& " (cat3 (aot_var (- row 1)) "=" (concat expr ";\n"))
+
+aot_values count:i > t
+fold (indices count) "" args row unused
+cat3 args (if (eq row 1) "" ",") (aot_var (- row 1))
+
+aot_budget cost:t location:t > t
+cat3 "gas.v_memory=f_aot_memory(gas.v_memory-(" cost (concat ")," (concat location ");\n"))
+
+aot_work_code cost:t location:t > t
+cat3 "if(tide_service_cancelled())throw Failure{\"E_CANCELLED\",0};gas.v_work-=(" cost (cat3 ");if(gas.v_work<0)f_aot_work(gas.v_work," location ");\n")
+
+aot_bytes typ:t value:t issue:t > t
+if (or (text_eq typ "i") (text_eq typ "b")) "8"
+if (text_eq typ "?i") "24"
+if (text_eq typ "t") (cat3 "(8+4*I(" value ".size()))")
+fail issue
+
+aot_slot node:{FunctionNode} slot:i > t
+aot_binding (need (at (get binders node) slot) "aot_binding" slot)
+
+aot_simple node:{FunctionNode} parts:*t location:t issue:t > t
+let site get site node
+let op get word site
+let kind get typ node
+let n length parts
+if (text_eq op "recur")
+  (let err cat3 "f_diagnosis(" location ",U\"E_LIMIT\",U\"Recursion depth limit\")"
+   cat3 (cat3 "if(gas.v_recursions==48)throw Failure{" err ",0};++gas.v_recursions;struct Drop{I& n;~Drop(){--n;}} drop{gas.v_recursions};return ")
+     (aot_symbol (get target node)) (cat3 "(gas" (if (eq n 0) "" (concat "," (aot_values n))) ");"))
+if (not (< (get target node) 0))
+  (cat3 "return " (aot_symbol (get target node)) (cat3 "(gas" (if (eq n 0) "" (concat "," (aot_values n))) ");"))
+if (text_eq op "nil") "return {};"
+if (text_eq op "some") (cat3 (aot_budget "24" location) "return Opt<I>{value_0};" "")
+if (eq n 0)
+  (let value if (not (< (get slot node) 0)) (aot_binding op)
+     if (text_eq kind "t") (aot_text (get literal node))
+     if (text_eq kind "b") (if (eq (get value node) 0) "false" "true")
+     if (text_eq kind "i")
+       (if (eq (get value node) -9223372036854775808) "INT64_MIN" (cat3 "I(" (signed_text (get value node)) "LL)"))
+     (fail issue)
+   cat3 "return " value ";")
+if (or (text_eq op "read") (text_eq op "read_bytes"))
+  (cat3 "auto snapshot=f_aot_read(gas,value_0," location (concat ");\ngas=std::move(snapshot.first);return " (if (text_eq op "read") "std::move(snapshot.second);" "f_text_value(snapshot.second);")))
+if (text_eq op "text_len") "return t_text_len(value_0);"
+if (text_eq op "text_eq") (concat (aot_work_code "1+I(std::min(value_0.size(),value_1.size())/32)" location) "return t_text_eq(value_0,value_1);")
+if (or (text_eq op "int") (text_eq op "lines"))
+  (let work aot_work_code "1+I(value_0.size())/32" location
+   if (text_eq op "int") (concat work "return t_int(value_0);")
+   cat3 work (cat3 "auto result=f_aot_lines(value_0," location ");\n")
+     (concat (aot_budget "f_string_list_bytes(result)" location) "return result;"))
+if (text_eq op "get") (cat3 "return value_0." (aot_field (get literal node)) ";")
+if (integer_comparison op)
+  (cat3 "return value_0" (if (text_eq op "eq") "==" op) "value_1;")
+if (text_eq op "not") "return !value_0;"
+if (case (entry_at (list t 5 "+" "-" "*" "div" "mod") op) false found true)
+  (cat3 "return f_aot_arithmetic(" location ",value_0,value_1);")
+fail issue
+
+aot_body node:{FunctionNode} parts:*t fn:{Signature} location:t issue:t nodes:{NodeBuffer} boxed:b > t
+if boxed
+  (case (aot_data_body node parts fn location issue nodes) (aot_common_body node parts fn location issue) code code)
+aot_common_body node parts fn location issue
+
+aot_common_body node:{FunctionNode} parts:*t fn:{Signature} location:t issue:t > t
+let op get word (get site node)
+let kind get typ node
+if (text_eq op "while")
+  (let state aot_slot node 0
+   let setup cat3 "auto " state (cat3 "=" (aot_child parts 0) ";")
+   let loop cat3 "while(" (aot_child parts 1) (cat3 "){" state "=")
+   cat3 setup loop (cat3 (aot_child parts 2) ";}return " (concat state ";")))
+if (text_eq op "let")
+  (cat3 "const auto& " (aot_slot node 0)
+    (cat3 "=" (aot_child parts 0) (cat3 ";\nreturn " (aot_child parts 1) ";")))
+if (text_eq op "if")
+  (cat3 "if(" (aot_child parts 0) (cat3 ")return " (aot_child parts 1) (cat3 ";\nreturn " (aot_child parts 2) ";")))
+if (or (text_eq op "and") (text_eq op "or"))
+  (cat3 "return " (aot_child parts 0) (cat3 (if (text_eq op "and") "&&" "||") (aot_child parts 1) ";"))
+if (text_eq op "case")
+  (cat3 "const auto& opt=" (aot_child parts 0)
+    (cat3 ";\nif(!opt)return " (aot_child parts 1)
+      (cat3 ";\nconst auto& " (aot_slot node 0) (cat3 "=*opt;\nreturn " (aot_child parts 2) ";"))))
+if (text_eq op "need")
+  (cat3 "const auto& opt=" (aot_child parts 0)
+    (cat3 ";\nif(opt)return *opt;\nconst auto& why=" (aot_child parts 1)
+      (cat3 ";\nI row=" (aot_child parts 2) (cat3 ";\nthrow Failure{f_aot_required(" location ",why,row),0};"))))
+if (text_eq op "fold_lines")
+  (let acc aot_slot node 0
+   let row aot_slot node 1
+   let item aot_slot node 2
+   let code list t 15
+     (cat3 "I fd=" (aot_child parts 0) ";")
+     (cat3 "I budget=" (aot_child parts 1) ";")
+     (cat3 "auto " acc (cat3 "=" (aot_child parts 2) ";"))
+     (cat3 "I pos=0," row "=0;for(;;){")
+     "I left=f_stream_remaining(budget,pos,gas.v_stream_left);"
+     (cat3 "if(left<0)throw Failure{f_stream_failure(-5," location (cat3 "," row "+1).v_detail,0};"))
+     "const auto input=t_bootstrap_line(fd,Text{},pos,left);I status=input.first;const auto& data=input.second;"
+     "I bytes=data.first;pos+=bytes;gas.v_stream_left-=bytes;"
+     (cat3 "if(status<0)throw Failure{f_stream_failure(status," location (cat3 "," row "+1).v_detail,0};"))
+     (cat3 "if(status==0)break;++" row ";")
+     (cat3 "const auto& " item "=data.second;")
+     "gas.v_work=f_stream_credit(gas.v_work,bytes,32,100000);"
+     (cat3 "gas.v_memory=f_aot_memory(f_stream_credit(gas.v_memory,bytes,128,4194304)-8-4*I(data.second.size())," location ");")
+     (cat3 acc "=" (concat (aot_child parts 3) ";}"))
+     (cat3 "return " acc ";")
+   fold code "" out idx line cat3 out line "\n")
+if (text_eq op "fold")
+  (let acc aot_slot node 0
+   let row aot_slot node 1
+   let item aot_slot node 2
+   let initial cat3 "const auto& sequence=" (aot_child parts 0) (cat3 ";\nauto " acc (cat3 "=" (aot_child parts 1) ";\n"))
+   let loop cat3 "I " row (cat3 "=0;\nfor(const auto& " item (cat3 ":sequence){++" row ";\n"))
+   let step cat3 acc "=" (cat3 (aot_child parts 2) ";}\nreturn " (concat acc ";"))
+   cat3 initial loop step)
+if (text_eq op "make")
+  (let decl need (at (get entries (get schemas fn)) (get value node)) "aot_record" 0
+   let types get types decl
+   let cost fold types "16" acc row typ cat3 acc "+" (aot_bytes typ (aot_var (- row 1)) issue)
+   cat3 (aot_operands parts) (aot_budget cost location)
+     (cat3 "return " (aot_type kind issue false) (cat3 "{" (aot_values (length parts)) "};")))
+concat (aot_operands parts) (aot_simple node parts location issue)
+
+aot_node node:{FunctionNode} parts:*t fn:{Signature} index:i nodes:{NodeBuffer} boxed:b > t
+let site get site node
+let location cat3 "file,k" (decimal index) ""
+let issue diagnosis (get file fn) site "E_BACKEND" (concat "AOT does not support " (get word site))
+cat3 "([&]()->" (aot_type (get typ node) issue boxed)
+  (cat3 "{\n" (aot_work_code "1" location) (concat (aot_body node parts fn location issue nodes boxed) "\n}())"))
+
+aot_head fn:{Signature} index:i boxed:b > t
+if (rule_signature fn) (cat3 "R_EvalValue " (aot_symbol index) "(R_AotRun& gas,const R_EvalValue& events)")
+let issue diagnosis (get file fn) (get loc fn) "E_BACKEND" "Unsupported AOT signature"
+let params fold (get params fn) "" args row key
+  let typ need (at (get types fn) (- row 1)) "aot_type" 0
+  cat3 args ",const " (cat3 (aot_type typ issue boxed) "& " (aot_binding key))
+cat3 (aot_type (get result fn) issue boxed) " " (cat3 (aot_symbol index) "(R_AotRun& gas" (concat params ")"))
+
+aot_function fn:{Signature} tree:{FunctionTree} index:i boxed:b > t
+let nodes get nodes tree
+let count node_count nodes
+if (> count 4096) fail (diagnosis (get file fn) (get loc fn) "E_BACKEND" "AOT expression node limit")
+let code fold (indices count) (list t 0) texts row unused
+  let node node_at nodes (- row 1)
+  let parts map t (get children node) child (aot_child texts child)
+  append texts (aot_node node parts fn (- row 1) nodes boxed)
+let sites fold (indices count) "" text row unused
+  let site get site (node_at nodes (- row 1))
+  cat3 text "static const R_Site k" (cat3 (decimal (- row 1)) "=" (concat (aot_site site) ";\n"))
+let body if (rule_signature fn) (aot_rule fn tree code) (cat3 "return " (aot_child code (- count 1)) ";")
+cat3 (aot_head fn index boxed) "{\nstatic const Text file="
+  (cat3 (aot_text (get file fn)) ";\n" (cat3 sites body "\n}\n"))
+
+aot_rule fn:{Signature} tree:{FunctionTree} code:*t > t
+let plan get plan tree
+let loc concat "file," (aot_site (get loc fn))
+let starts fold (get fields plan) "" text row key
+  let init aot_child code (need (at (get starts plan) (- row 1)) "rule_init" 0)
+  let field aot_binding key
+  cat3 text (cat3 "const auto init_" key (cat3 "=" init ";")) (cat3 "auto " field (cat3 "=init_" key ";"))
+let name aot_binding (need (at (get params fn) 0) "event_param" 0)
+let loop cat3 "Seq<I> outputs;I idx=0;for(auto " name ":events.v_items){++idx;try{"
+let time aot_work_code "1" loc
+let branches fold (get branches plan) "" text row branch
+  let guard get guard branch
+  let test if (< guard 0) "{" (cat3 "if(" (aot_child code guard) "){")
+  let prefix if (eq row 1) test (concat "else " test)
+  let calculate fold (get actions branch) "" out pos action
+    let field need (at (get fields plan) (- pos 1)) "rule_field" 0
+    let value if (eq action -1) (aot_binding field) (if (eq action -2) (concat "init_" field) (aot_child code action))
+    cat3 out time (cat3 "auto next_" field (cat3 "=" value ";"))
+  let update fold (get fields plan) "" out pos field cat3 out (aot_binding field) (cat3 "=next_" field ";")
+  cat3 text prefix (cat3 calculate update "}")
+let emit cat3 "I result=" (aot_child code (last_node tree)) (concat ";" (aot_budget "8" loc))
+let finish "outputs.push_back(result);}catch(const Failure& e){throw Failure{f_aot_index(e.reason,U\"event\",idx),0};}}return f_list_value(std::move(outputs));"
+concat starts (concat loop (concat time (cat3 branches emit finish)))
+
+aot_wire typ:t expr:t issue:t > t
+if (text_eq typ "i") (cat3 "f_signed_text(" expr ")")
+if (text_eq typ "b") (cat3 "(" expr "?Text(U\"true\"):Text(U\"false\"))")
+if (text_eq typ "?i") (cat3 "f_aot_option_wire(" expr ")")
+if (text_eq typ "t") (cat3 "f_json_string(" expr ")")
+if (named_kind typ) (cat3 "wire_" (aot_type typ issue false) (cat3 "(" expr ")"))
+fail issue
+
+aot_schema decl:{SchemaType} > t
+let issue diagnosis (get file decl) (get loc decl) "E_BACKEND" "Unsupported AOT record field"
+if (get tagged decl) fail issue
+let name aot_record_name (get name decl)
+let fields get fields decl
+let definitions fold fields "" code row field
+  let typ need (at (get types decl) (- row 1)) "aot_field" 0
+  let width aot_bytes typ "x" issue
+  if (text_eq width "") fail issue
+  cat3 code (aot_type typ issue false) (cat3 " " (aot_field field) ";\n")
+let wire fold fields "Text(U\"{\")" code row field
+  let typ need (at (get types decl) (- row 1)) "aot_field" 0
+  let key cat3 (if (eq row 1) "" ",") (json_string field) ":"
+  cat3 code "+" (cat3 (aot_text key) "+" (aot_wire typ (concat "record." (aot_field field)) issue))
+cat3 "struct " name (cat3 "{\n" definitions (cat3 "};\nText wire_" name
+  (cat3 "(const " name (cat3 "& record){return " wire "+Text(U\"}\");}\n"))))
+
+aot_texts items:*t > t
+let values fold items "" code row item
+  cat3 code (if (eq row 1) "" ",") (aot_text item)
+cat3 "Seq<Text>{" values "}"
+
+aot_entry fn:{Signature} index:i boxed:b > t
+let issue diagnosis (get file fn) (get loc fn) "E_BACKEND" "Unsupported AOT entry type"
+let args fold (get types fn) "" code row typ
+  let item cat3 "bound[" (decimal (- row 1)) "].v_"
+  let value if boxed (aot_unpack typ (cat3 "bound[" (decimal (- row 1)) "]") issue)
+    if (or (text_eq typ "i") (text_eq typ "r")) (concat item "num")
+    if (text_eq typ "b") (cat3 "(" item "num!=0)")
+    if (text_eq typ "t") (concat item "text")
+    if (text_eq typ "*t") (concat item "texts")
+    fail issue
+  cat3 code "," value
+let initializer cat3 "R_Signature fn{};\nfn.v_file=" (aot_text (get file fn))
+  (cat3 ";\nfn.v_loc=" (aot_site (get loc fn))
+    (cat3 ";\nfn.v_params=" (aot_texts (get params fn))
+      (cat3 ";\nfn.v_types=" (aot_texts (get types fn)) ";\n")))
+let args_in "f_run_arguments(options.v_inputs,fn,options.v_reads,fn.v_file)"
+let bound if (eq (+ (length (typed_grants fn "d")) (length (typed_grants fn "p"))) 0) args_in (cat3 "f_sql_connect(" args_in ",fn)")
+let run cat3 "auto result=" (aot_symbol index) (cat3 "(gas" args ");\n")
+let output if boxed (cat3 "f_scalar_wire(" (aot_pack (get result fn) "result") (cat3 "," (aot_text (get result fn)) ")")) (aot_wire (get result fn) "result" issue)
+cat3 "Text compiled_entry(const Seq<Text>& args){\n" (concat initializer (if boxed "fn.v_schemas=compiled_schemas();\n" ""))
+  (cat3 (cat3 "try{\nauto options=f_aot_options(args,fn.v_file);\nauto bound=" bound ";\nauto gas=f_aot_start();\n") run
+    (cat3 "return " output "+Text(U\"\\n\");\n}catch(const Failure& e){throw Failure{f_aot_failure(fn.v_file,e.reason),0};}\n}\n"))
+
+aot_reachable program:{CheckedFunctions} root:i > *i
+let names get names program
+fold names (list i 1 root) visited row unused
+  case (at visited (- row 1)) visited index
+  let tree need (at (get trees program) index) "aot_tree" 0
+  fold (get calls tree) visited found pos call
+    let next need (entry_at names call) "aot_callee" 0
+    if (fold found false yes slot old or yes (eq next old)) found (append found next)
+
+aot_program compiled:{CompiledProject} call:t blocked:t file:t units:*{SourceUnit} service:b > t
+if (fold units false found row unit or found (text_eq blocked (get name unit)))
+  fail (root_diagnostic file "E_INPUT" "Output is a project source file")
+let book get declarations compiled
+let program get program compiled
+let fns get signatures program
+let index project_entry_index compiled call file
+if (rule_signature (need (at fns index) "aot_entry" 0)) fail (root_diagnostic file "E_ENTRY" (concat "Expected function: " call))
+let reachable aot_reachable program index
+let data_fields fold (get entries (get types book)) false active row decl
+  fold (get types decl) active used slot typ or used (extended_data_type typ)
+let boxed fold reachable data_fields found row id
+  if found true
+  let fn need (at fns id) "aot_signature" 0
+  if (or (rule_signature fn) (fold (get types fn) false used slot typ or used (extended_data_type typ))) true
+  let tree need (at (get trees program) id) "aot_tree" 0
+  fold (append (get pages (get nodes tree)) (get tail (get nodes tree))) false seen page batch
+    fold batch seen active slot node
+      let op get word (get site node)
+      or active (or (or (text_eq op "map") (text_eq op "list")) (or (database_op op) (or (public_data_op op) (extended_data_type (get typ node)))))
+let records if boxed (aot_declarations (get types book)) (fold (get entries (get types book)) "" code row decl concat code (aot_schema decl))
+let forwards fold reachable "" code row id
+  let fn need (at fns id) "aot_function" 0
+  cat3 code (aot_head fn id boxed) ";\n"
+let defs fold reachable "" code row id
+  let fn need (at fns id) "aot_function" 0
+  let tree need (at (get trees program) id) "aot_tree" 0
+  concat code (aot_function fn tree id boxed)
+let entry need (at fns index) "aot_entry" 0
+cat3 (concat records forwards) defs (if service (aot_service entry index) (aot_entry entry index boxed))
+
+extended_data_type typ:t > b
+if (or (text_eq (text_slice typ 0 2) "**") (or (text_eq (text_slice typ 0 2) "?*") (text_eq (text_slice typ 0 2) "*?"))) true
+if (grant_kind typ) (not (text_eq typ "r"))
+let chars fold (indices (text_len typ)) (pair false false) state row unused
+  let ch text_slice typ (- row 1) row
+  if (text_eq ch "{") (pair true (second state))
+  if (text_eq ch "}") (pair false (second state))
+  pair (first state) (or (second state) (and (not (first state)) (or (measurement_type ch) (or (text_eq ch "y") (text_eq ch "%")))))
+second chars
+
+aot_declarations schemas:{Declarations} > t
+let entries fold (get entries schemas) "" code row decl
+  let fields cat3 (aot_texts (get fields decl)) "," (aot_texts (get types decl))
+  let item cat3 "R_SchemaType{" (aot_text (get name decl)) (cat3 ",{}," (if (get tagged decl) "true" "false") (cat3 ",{}," fields ",{}}"))
+  json_item code item
+cat3 "struct AotNever{template<class T> operator T() const{std::terminate();}};\nconst R_Declarations& compiled_schemas(){static const R_Declarations schemas{" (aot_texts (get names schemas))
+  (cat3 ",{" entries "}};return schemas;}\n")
+
+aot_unpack kind:t expr:t issue:t > t
+let ref cat3 "(" expr ")"
+if (or (text_eq kind "i") (text_eq kind "r")) (concat ref ".v_num")
+if (text_eq kind "b") (cat3 "(" ref ".v_num!=0)")
+if (text_eq kind "t") (concat ref ".v_text")
+if (text_eq kind "*t") (concat ref ".v_texts")
+if (text_eq (text_slice kind 0 1) "?")
+  (let inner text_slice kind 1 (text_len kind)
+   let native_type aot_type kind issue true
+   cat3 "([&]()->" native_type (cat3 "{const auto& option_value=" expr
+     (cat3 ";if(!option_value.v_present)return {};return " (aot_unpack inner "option_value" issue) ";}())")))
+expr
+
+aot_pack kind:t expr:t > t
+if (or (text_eq kind "i") (or (text_eq kind "r") (text_eq kind "b"))) (cat3 "f_number_value(" expr ")")
+if (text_eq kind "t") (cat3 "f_text_value(" expr ")")
+if (text_eq kind "*t") (cat3 "f_text_list_value(" expr ")")
+if (text_eq (text_slice kind 0 1) "?")
+  (cat3 "([&](){const auto& opt=" expr (cat3 ";if(!opt)return f_number_value(0);auto item="
+    (aot_pack (text_slice kind 1 (text_len kind)) "(*opt)") ";item.v_present=true;return item;}())"))
+expr
+
+aot_child_type node:{FunctionNode} nodes:{NodeBuffer} slot:i > t
+get typ (node_at nodes (need (at (get children node) slot) "aot_operand" 0))
+
+aot_data_body node:{FunctionNode} parts:*t fn:{Signature} location:t issue:t nodes:{NodeBuffer} > ?t
+let op get word (get site node)
+let kind get typ node
+let pre aot_operands parts
+if (text_eq op "transaction")
+  (let enter cat3 "auto db=*(" (aot_child parts 0) (cat3 ").v_handle;f_aot_data_result(f_sql_begin(db," location "));try{auto result=")
+   let finish cat3 ";f_aot_data_result(f_sql_commit(db," location "));return result;}catch(...){if(f_sql_rollback(db)!=0)throw Failure{"
+   some (cat3 enter (aot_child parts 1) (cat3 finish (aot_text (diagnosis (get file fn) (get site node) "E_TRANSACTION" "SQLite rollback failed")) ",0};throw;}")))
+if (text_eq op "has_reason") (some (concat pre "return f_diagnostic_has_reason(value_0,value_1);"))
+if (text_eq op "input_line") (some (concat pre "return value_0.v_present?Opt<I>{value_0.v_num}:Opt<I>{};"))
+if (text_eq op "fail") (some (cat3 pre "throw Failure{f_data_rejected(" (concat location ",value_0).v_detail,0};")))
+if (text_eq op "raise") (some (concat pre "throw Failure{value_0.v_text,0};"))
+if (text_eq op "catch")
+  (let label aot_text (get literal node)
+   let check cat3 ";}catch(const Failure& e){auto fault=f_aot_caught(e.reason," label ");if(!fault)throw;const auto& "
+   some (cat3 "try{return " (aot_child parts 0) (cat3 check (aot_slot node 0) (cat3 "=*fault;return " (aot_child parts 1) ";}"))))
+if (text_eq op "fold_rows")
+  (let binding aot_slot node 0
+   let row aot_slot node 1
+   let item aot_slot node 2
+   let setup cat3 "auto grant=" (aot_child parts 0) (cat3 ";auto sql=" (aot_child parts 1) (cat3 ";auto params=" (aot_child parts 2) (cat3 ";auto " binding (cat3 "=" (aot_child parts 3) ";"))))
+   let decl cat3 "const auto decl=*f_named_schema(compiled_schemas()," (aot_text (get literal node)) ");"
+   let open cat3 "auto stream=f_aot_data_result(f_sql_stream_open(grant,sql,params,decl," location "));"
+   let next cat3 "auto output=f_aot_data_result(f_sql_stream_next(stream,decl," row (cat3 "-1," location "));if(!output.v_present)break;output.v_present=false;")
+   let step cat3 (aot_budget "output.v_num" location) "const auto& " (cat3 item "=output;" (cat3 binding "=" (concat (aot_child parts 4) ";}")))
+   some (concat setup (concat decl (concat open (cat3 "for(I " row (cat3 "=1;;++" row (cat3 "){" next (cat3 step "return " (concat binding ";")))))))))
+if (text_eq op "write_bytes") (some (cat3 pre "return f_aot_data_result(f_write_action(value_0,value_1," (concat location ")).v_num;")))
+if (https_op op)
+  (let tail if (text_eq op "https_post") ",value_5}," "},"
+   let call cat3 "auto action=f_https_action({value_0,f_text_value(value_1),value_2,f_number_value(value_3),f_number_value(value_4)" tail (concat location ");")
+   some (cat3 pre call (concat (aot_budget "action.v_bytes" location) "return f_aot_data_result(action.v_result);")))
+if (or (or (text_eq op "pg_query") (text_eq op "pg_exec")) (or (text_eq op "sql_exec") (text_eq op "sql_query")))
+  (let backend if (text_eq (text_slice op 0 3) "pg_") "pg" "sql"
+   let call cat3 (cat3 "const auto action=f_" backend "_action({value_0,f_text_value(value_1),value_2},") (aot_text kind) (cat3 ",compiled_schemas()," location ",gas.v_memory);")
+   some (cat3 pre call (cat3 (aot_budget "action.v_bytes" location) "return " (concat (aot_unpack kind "f_aot_data_result(action.v_result)" issue) ";"))))
+if (public_data_op op)
+  (let args fold parts "" code row unused
+     let slot - row 1
+     json_item code (aot_pack (aot_child_type node nodes slot) (aot_var slot))
+   let action cat3 "const auto action=f_data_operation(" (aot_text op) (cat3 "," (aot_text (if (text_eq op "json_encode") (get literal node) kind)) (cat3 ",{" args (cat3 "},compiled_schemas()," location ");\n")))
+   let charge concat (aot_work_code "action.v_work" location) (aot_budget "action.v_bytes" location)
+   some (cat3 pre action (cat3 charge "return " (concat (aot_unpack kind "f_aot_data_result(action.v_result)" issue) ";"))))
+if (or (text_eq op "list") (text_eq op "append"))
+  (let element text_slice kind 1 (text_len kind)
+   let initial if (text_eq op "list") "f_number_value(8)" (aot_pack kind "value_0")
+   let add fold parts "" code row unused
+     if (and (text_eq op "append") (eq row 1)) code
+     cat3 code "items=f_aot_list_item(items," (cat3 (aot_pack element (aot_var (- row 1))) "," (cat3 (aot_text element) "," (concat location ");")))
+   let charge aot_budget (cat3 "f_field_bytes(items," (aot_text kind) ")") location
+   some (cat3 pre (cat3 "auto items=" initial ";") (cat3 add charge (cat3 "return " (aot_unpack kind "items" issue) ";"))))
+if (text_eq op "get") (some (cat3 pre "return " (concat (aot_unpack kind (cat3 "f_member_value(value_0," (decimal (get value node)) ")") issue) ";")))
+if (text_eq op "make")
+  (let decl need (at (get entries (get schemas fn)) (get value node)) "aot_record" 0
+   let fields fold (get fields decl) "" code row key
+     let slot - row 1
+     let typ aot_child_type node nodes slot
+     let stored cat3 "f_aot_field(record," (aot_text key) (cat3 "," (aot_text typ) (cat3 "," (aot_pack typ (aot_var slot)) ");\n"))
+     concat code (concat "record=" stored)
+   some (cat3 pre "auto record=f_number_value(16);\n" (cat3 fields (aot_budget "record.v_num" location) "return record;")))
+if (text_eq op "some")
+  (some (cat3 pre (aot_budget (cat3 "f_option_bytes(" (aot_pack (aot_child_type node nodes 0) "value_0") (cat3 "," (aot_text kind) ")")) location) "return value_0;"))
+if (text_eq op "map")
+  (let sequence_type aot_child_type node nodes 0
+   let element text_slice sequence_type 1 (text_len sequence_type)
+   let result_type text_slice kind 1 (text_len kind)
+   let code list t 10
+     (cat3 "const auto seq=" (aot_pack sequence_type (aot_child parts 0)) ";auto items=f_number_value(8);")
+     (aot_budget "8" location)
+     "for(I index=0;index<f_sequence_size(seq);++index){try{"
+     (cat3 "const auto " (aot_slot node 0) (cat3 "=" (aot_unpack element "f_aot_item(seq,index)" issue) ";"))
+     (cat3 "const auto value=" (aot_child parts 1) ";")
+     (cat3 "const auto packed=" (aot_pack result_type "value") ";")
+     (aot_budget (cat3 "8+f_field_bytes(packed," (aot_text result_type) ")") location)
+     (cat3 "items=f_aot_list_item(items,packed," (aot_text result_type) (cat3 "," location ");"))
+     "}catch(const Failure& e){throw Failure{f_aot_index(e.reason,U\"map_index\",index),0};}}"
+     (cat3 "return " (aot_unpack kind "items" issue) ";")
+   some (fold code "" out line fragment concat out fragment))
+if (and (text_eq op "fold") (not (text_eq (aot_child_type node nodes 0) "*t")))
+  (let seqkind aot_child_type node nodes 0
+   let element text_slice seqkind 1 (text_len seqkind)
+   let acc aot_slot node 0
+   let row aot_slot node 1
+   let item aot_slot node 2
+   let init cat3 "const auto& seq=" (aot_child parts 0) (cat3 ";auto " acc (cat3 "=" (aot_child parts 1) ";"))
+   let loop cat3 "for(I " row (cat3 "=1;" row (cat3 "<=f_sequence_size(seq);++" row "){"))
+   let take aot_unpack element (cat3 "f_aot_item(seq," row "-1)") issue
+   some (cat3 init loop (cat3 "const auto& " item (cat3 "=" take (cat3 ";" acc (cat3 "=" (aot_child parts 2) (cat3 ";}return " acc ";")))))))
+if (text_eq op "length") (some (cat3 pre "return f_sequence_size(" (concat (aot_pack (aot_child_type node nodes 0) "value_0") ");")))
+if (text_eq op "at")
+  (let seq aot_pack (aot_child_type node nodes 0) "value_0"
+   let inner text_slice kind 1 (text_len kind)
+   some (cat3 pre (cat3 "const auto& seq=" seq ";if(value_1<0||value_1>=f_sequence_size(seq))return {};return ")
+     (concat (aot_unpack inner "f_aot_item(seq,value_1)" issue) ";")))
+nil t
+
+aot_service fn:{Signature} index:i > t
+let kinds get types fn
+let names get params fn
+let result get result fn
+let invalid diagnosis (get file fn) (get loc fn) "E_TYPE" "Service requires method:t path:t headers:%t body:y followed by grants and returns status:i headers:%t body:y"
+let decl need (named_schema (get schemas fn) result) invalid 0
+if (not (and (text_eq (json_labels (get fields decl)) "[\"status\",\"headers\",\"body\"]") (text_eq (json_labels (get types decl)) "[\"i\",\"%t\",\"y\"]"))) fail invalid
+if (< (length kinds) 4) fail invalid
+let fixed list t 4 "t" "t" "%t" "y"
+let expected list t 4 "method" "path" "headers" "body"
+let valid fold kinds true ok row typ
+  if (> row 4) (and ok (and (grant_kind typ) (not (text_eq typ "r"))))
+  and ok (and (text_eq typ (need (at fixed (- row 1)) "service_type" 0)) (text_eq (need (at names (- row 1)) "service_name" 0) (need (at expected (- row 1)) "service_expected" 0)))
+if (not valid) fail invalid
+let keylist fold names (list t 0) acc row n if (> row 4) (append acc n) acc
+let grants fold kinds (list t 0) acc row typ if (> row 4) (append acc typ) acc
+let params fold grants "" out row typ cat3 out ",bound[" (concat (decimal (- row 1)) "]")
+let head cat3 "Text compiled_entry(const Seq<Text>& args){auto opts=f_service_options(args);R_Signature fn{};fn.v_file=" (aot_text (get file fn)) ";"
+let setup cat3 "fn.v_params=" (aot_texts keylist) (cat3 ";fn.v_types=" (aot_texts grants) (cat3 ";fn.v_loc=" (aot_site (get loc fn)) ";"))
+let handler "auto base=f_run_arguments(U\"{}\",fn,opts.v_grants,fn.v_file);return tide_serve(opts,[&](const Text& method,const Text& path,const Text& raw,const Text& body){auto headers=f_http_headers(raw);if(!headers)throw Failure{\"Header limit\",0};auto gas=f_aot_start();auto bound=f_sql_connect(base,fn);return f_service_reply("
+cat3 service_abi head (concat setup (cat3 handler (aot_symbol index) (cat3 "(gas,method,path,*headers,f_text_value(body)" params "));});}\n")))

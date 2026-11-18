@@ -1,0 +1,39 @@
+use schema
+
+named n:i > t
+concat "N" (decimal n)
+
+record_chain n:i > t
+fold (indices n) "" acc row unused
+  let target if (eq row n) "i" (cat3 "{" (named (+ row 1)) "}")
+  concat acc (cat3 "record " (named row) (cat3 "\nvalue:" target "\n\n"))
+
+type_cases > *t
+let atoms list t 9 "i" "b" "t" "{Flag}" "{Node}" "r" "{Missing}" "&i?{Flag}" "?*{Node}"
+let heads list t 6 "" "?" "*" "&i" "&t?" "&*i"
+let basic fold heads (list t 0) acc row prefix
+  fold atoms acc found pos leaf_type
+    let typ concat prefix leaf_type
+    append found (cat3 "record Root\nvalue:" typ "\n\nvariant Flag\nBeta Alpha\n\nrecord Node\nid:i\n")
+let malformed list t 16 "" "&" "&i" "&iiX" "{1}" "{X" "{A}}" "{}" "&ii?" "*r" "??" "tt" "{Ä}" "{a-b}" "!" "?{}"
+let bad fold malformed basic found pos typ append found (concat "record Root\na:" typ)
+let labels list t 13 "a" "A" "Z0" "A_b" "cat9" "_x" "when" "first" "text_rfind" "end" "rule" "make" "true"
+let bindings fold labels bad acc row label
+  append (append (append acc (cat3 "record " label "\nx:i"))
+     (cat3 "record Point\n" label ":b")) (cat3 "variant Mode\na0 " label "")
+let nested fold (indices 18) bindings acc pos unused
+  let prefix fold (indices (- pos 1)) "" text idx item concat text "?"
+  append (append acc (cat3 "record R\nx:" prefix "i")) (record_chain pos)
+let cases list t 22 "" "\n\t" "record X" "variant A extra\nA" "record Pair\nx:i x:t" "variant K\na a"
+  "record Two\na:t\n z:r" "record Dup\na:b\n\nvariant Dup\ny" "variant A\na\n\nvariant B\na"
+  "record A\nx:{A}" "record A\nx:?*{B}\n\nrecord B\nx:{C}\n\nrecord C\nx:{A}"
+  "record A\nleft:{B} right:{C}\n\nrecord B\nx:{C} y:{D}\n\nrecord C\nx:{D}\n\nvariant D\ngood bad"
+  "\u00a0record\u3000Box\r\nlabel:t\tchoice:&{Pick}?i\r\n\r\nvariant Pick\r\nz Z a A A0 A_b aa\r\n"
+  "record A\nx:{Z}\n\nrecord B\ny:{B}" "record A\nx:i,y:i" "record R\na:i\n\nvariant V"
+  "variant K\n a\n\nrecord No\n\tz:{New}" "record X\nfield\u3000:t"
+  "record X\u2028a:b\u0085\u000bvariant StateX\rOK" "variant Q\na \"two tags\""
+  "record Blank\r\r\nrecord R\nx:i" "record P\na:{Unknown}\n\nvariant Q\n\"tag\"" 
+fold cases nested acc pos item append acc item
+
+generate_cases > t
+fold type_cases "" buffer row source concat buffer (concat (json_string source) "\n")

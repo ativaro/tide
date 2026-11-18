@@ -1,0 +1,30 @@
+{
+  "tasks": [
+    "timecode",
+    "rowgroup",
+    "flood",
+    "wire",
+    "mosaic",
+    "reserve",
+    "spread",
+    "suffix"
+  ],
+  "public_ids": [
+    0,
+    1,
+    33,
+    512,
+    8159,
+    16007,
+    20044,
+    49553
+  ],
+  "hidden_per_task": 64,
+  "rounds": 12,
+  "untimed_warmup_pairs": 1,
+  "seed": "32 random bytes after hashing the fixtures, oracle and runner; rank integers [0,65535] by SHA256(seed:task:id), discard duplicate inputs and the public inputs.",
+  "search": "Unmodified repair tools. First failing public example determines visited functions. Up to 32 candidate edits, then up to 64 two-file combinations if no single passes. Same eight public tests, no new labels/probes or hidden feedback. Stop if no public candidate. If several pass, prefer a single, then choose by sorted (module, source position, normalized edit text) in source order. Stop after the first independent acceptance, including if rejected. Keep budget truncations and all eight tasks in the denominator.",
+  "timing": "From cold repair tool invocation on a fresh copy through diagnosis, all candidate checks, candidate selection, source update, fresh independent acceptance, or decision to abstain. Excludes tool build, copy setup, offline dataset generation and offline tokenization. Warm OS cache. One pinned CPU, alternating arm order for each task across 12 rounds, rotating task order. Public and held-out fixtures are identical across arms. Pin both arms to the same core.",
+  "tokens": "Actual input and output model tokens in measured runs are zero. Secondary: sum of offline token lengths of each compact UTF-8 JSON message, without chat framing or internal reasoning. Input: brief, unmodified 3 source files, public examples; public diagnostic with witness, cap status, candidate node IDs and changes; final status and counts. Output: edit or abstention. No hidden input values. Same schema in both arms. BPE SHA256 036b3f4da1a2ad75e829debed3e96393998c97b386c0a288f6f7431d5908432b. Preserve every transcript. Report solved-only paired sums and all attempted tokens divided by solved tasks.",
+  "environment": "Only local processes, no additional model calls. CPython is the external comparison arm. The dataset, labels and executable examples are TIDE. Timing harness only invokes tools, selects the common deterministic policy, records measurements and stages data."
+}

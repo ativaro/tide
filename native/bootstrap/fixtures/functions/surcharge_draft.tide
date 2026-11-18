@@ -1,0 +1,8 @@
+main units:i rate:i > i
++ (* units rate) 2
+
+example per_unit main
+{"inputs":{"units":3,"rate":5},"expect":21}
+
+example empty main
+{"inputs":{"units":0,"rate":4},"expect":0}

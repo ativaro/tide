@@ -1,0 +1,13 @@
+use summary
+
+main input:r limit:i > {Summary}
+summarize (lines (read input)) limit
+
+example threshold main
+{"inputs":{"input":"80\n81\n98\n","limit":80},"expect":{"above":2,"peak":{"some":98}}}
+
+example empty main
+{"inputs":{"input":"","limit":80},"expect":{"above":0,"peak":{"none":true}}}
+
+example invalid main
+{"inputs":{"input":"80\nx","limit":80},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}

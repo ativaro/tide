@@ -1,0 +1,4157 @@
+{
+  "environment": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": "24",
+    "kernel": "7.3.4-1-cachyos",
+    "node": "v24.18.0",
+    "tide": "TIDE 0.6.5",
+    "python": "Python 3.14.10",
+    "builds": {
+      "checker": "cc262613fc6bd41ab54f2114583d7b28f0a13b6bfbb7a35d148a4f1c0410c753",
+      "editor": "bd936374e0c51e95266def0511fe77ba0b0a6bcc4dcf3931208f3415f906a04c",
+      "inspector": "baa22207b4e2e294f6347e15a09dd1f5f95ff48ac9ca7b2ae20b439236f28d8e"
+    },
+    "network": [
+      "lo"
+    ]
+  },
+  "seed": "20c7fa3dad18eed72418e0b58d55e296627fcbfb927e5db814e2f13757fdd183",
+  "inputs_sha256": "c6745e2b7cee0a2cd48409aa67f38ec9965f1bf66777e945cd5ed1206fb2abfe",
+  "audits": {
+    "cut": {
+      "public_red": 6,
+      "hidden_red": 63,
+      "outputs_sha256": "992ceb8a6c67b8d8683edfc5b11d574ca462888e084e705be5e0bb25c378070a"
+    },
+    "tape": {
+      "public_red": 7,
+      "hidden_red": 60,
+      "outputs_sha256": "f88aa404f1946768274ce75b137dd6552054e49ca9aefd570edce69e3cc51421"
+    },
+    "page": {
+      "public_red": 2,
+      "hidden_red": 8,
+      "outputs_sha256": "ee3566648d5eeaf24751526f03f7010c7e2a156a4a534b58195267a2157d845f"
+    },
+    "ticket": {
+      "public_red": 8,
+      "hidden_red": 64,
+      "outputs_sha256": "81a955afab56483f47f75bcdede29017838807802b2c9f95f5aa02fcd508e73c"
+    },
+    "namespace": {
+      "public_red": 3,
+      "hidden_red": 30,
+      "outputs_sha256": "b20e9334272752a950b8766171bf2c3325127da56f073a744de8d63758a388b8"
+    },
+    "annotation": {
+      "public_red": 3,
+      "hidden_red": 22,
+      "outputs_sha256": "06a111052fbc8dabaee0152ca577b0e65c0294bcee0710f37d696cda4bab5ee9"
+    },
+    "telemetry": {
+      "public_red": 7,
+      "hidden_red": 63,
+      "outputs_sha256": "81e605f7a2e741a1678bd2dda36eb47e00485dc63789923e538e4d96ef84ce65"
+    },
+    "trailer": {
+      "public_red": 6,
+      "hidden_red": 45,
+      "outputs_sha256": "6f3131964ec7b3e0d44267b41e96db751ca94e57cb0b816f3aa52899ab88c28f"
+    },
+    "thermal": {
+      "public_red": 7,
+      "hidden_red": 64,
+      "outputs_sha256": "c191193c3af29bc1b4e57a00b25c8690ed9cbf0195a5ee87080935a0264b3685"
+    },
+    "flag": {
+      "public_red": 5,
+      "hidden_red": 31,
+      "outputs_sha256": "7828f25c76287d80c52f86633cc324395f9cfcb4e742501887818ac43013d8d9"
+    }
+  },
+  "model_runs": 0,
+  "model_input_tokens": 0,
+  "model_output_tokens": 0,
+  "blocks": [
+    {
+      "round": 0,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.619234000000006,
+        "through_apply_ms": 11.517499000000043,
+        "accept_ms": 4.101734999999962,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 29.95939199999998,
+        "through_apply_ms": 19.625816999999984,
+        "accept_ms": 10.333574999999996,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 28.919741000000045,
+        "through_apply_ms": 18.464433999999983,
+        "accept_ms": 10.455307000000062,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 17.413201000000072,
+        "through_apply_ms": 13.312636000000111,
+        "accept_ms": 4.1005649999999605,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 34.68303100000003,
+        "through_apply_ms": 23.895676999999978,
+        "accept_ms": 10.78735400000005,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 20.648128999999926,
+        "through_apply_ms": 15.775507999999945,
+        "accept_ms": 4.872620999999981,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 17.92045200000007,
+        "through_apply_ms": 13.5400810000001,
+        "accept_ms": 4.380370999999968,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 31.48462399999994,
+        "through_apply_ms": 20.68999000000008,
+        "accept_ms": 10.79463399999986,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.1420149999999,
+        "through_apply_ms": 12.277204999999867,
+        "accept_ms": 3.864810000000034,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.982923000000028,
+        "through_apply_ms": 19.271621000000096,
+        "accept_ms": 10.711301999999932,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.644306000000142,
+        "through_apply_ms": 18.989545000000135,
+        "accept_ms": 10.654761000000008,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.082533000000012,
+        "through_apply_ms": 11.089199999999892,
+        "accept_ms": 3.9933330000001206,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.15103699999986,
+        "through_apply_ms": 19.126357999999982,
+        "accept_ms": 11.024678999999878,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.601514999999836,
+        "through_apply_ms": 12.293105999999852,
+        "accept_ms": 4.308408999999983,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.675066000000015,
+        "through_apply_ms": 12.33733600000005,
+        "accept_ms": 4.337729999999965,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.238507000000027,
+        "through_apply_ms": 18.920082999999977,
+        "accept_ms": 10.31842400000005,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.641085000000203,
+        "through_apply_ms": 11.74648400000001,
+        "accept_ms": 3.8946010000001934,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.815209000000095,
+        "through_apply_ms": 18.494014000000107,
+        "accept_ms": 10.321194999999989,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.404449999999997,
+        "through_apply_ms": 18.05149499999993,
+        "accept_ms": 10.352955000000065,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.423219999999901,
+        "through_apply_ms": 11.581480000000056,
+        "accept_ms": 3.841739999999845,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.839698999999882,
+        "through_apply_ms": 18.98565399999984,
+        "accept_ms": 10.854045000000042,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.739917000000105,
+        "through_apply_ms": 12.022339000000102,
+        "accept_ms": 3.717578000000003,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.178044,
+        "through_apply_ms": 10.482968000000028,
+        "accept_ms": 3.695075999999972,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.28367900000012,
+        "through_apply_ms": 18.840642000000116,
+        "accept_ms": 10.443037000000004,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 28.204304999999977,
+        "through_apply_ms": 23.329964000000018,
+        "accept_ms": 4.8743409999999585,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.385422000000062,
+        "through_apply_ms": 19.982295000000022,
+        "accept_ms": 10.40312700000004,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.33637900000008,
+        "through_apply_ms": 18.933682999999974,
+        "accept_ms": 10.402696000000105,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 21.451115999999956,
+        "through_apply_ms": 16.992792999999892,
+        "accept_ms": 4.458323000000064,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 0,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.326788999999962,
+        "through_apply_ms": 19.826051000000007,
+        "accept_ms": 10.500737999999956,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.706949000000122,
+        "through_apply_ms": 13.666304999999966,
+        "accept_ms": 5.040644000000157,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.229719999999816,
+        "through_apply_ms": 15.268346999999949,
+        "accept_ms": 4.961372999999867,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.891241000000036,
+        "through_apply_ms": 19.45741399999997,
+        "accept_ms": 10.433827000000065,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.930230000000165,
+        "through_apply_ms": 10.788684000000103,
+        "accept_ms": 4.141546000000062,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.019813000000113,
+        "through_apply_ms": 18.60670600000003,
+        "accept_ms": 10.413107000000082,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.471510999999964,
+        "through_apply_ms": 18.213418000000047,
+        "accept_ms": 10.258092999999917,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.831638999999996,
+        "through_apply_ms": 11.730612999999948,
+        "accept_ms": 4.101026000000047,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 0,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 18.016274000000067,
+        "through_apply_ms": 18.015734000000066,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.4906049999999595,
+        "through_apply_ms": 5.490094999999883,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.017763999999943,
+        "through_apply_ms": 5.017333999999892,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.984844000000066,
+        "through_apply_ms": 17.984304000000066,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 1,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 19.726899999999887,
+        "through_apply_ms": 15.014911999999867,
+        "accept_ms": 4.711988000000019,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.81817000000001,
+        "through_apply_ms": 20.332883000000038,
+        "accept_ms": 10.485286999999971,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.878660999999965,
+        "through_apply_ms": 19.607467000000042,
+        "accept_ms": 10.271193999999923,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 17.636565999999902,
+        "through_apply_ms": 13.35322700000006,
+        "accept_ms": 4.283338999999842,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 1,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.09010400000011,
+        "through_apply_ms": 18.751788999999917,
+        "accept_ms": 10.338315000000193,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.638903999999911,
+        "through_apply_ms": 10.807303999999931,
+        "accept_ms": 3.8315999999999804,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 14.90598,
+        "through_apply_ms": 11.055659999999989,
+        "accept_ms": 3.8503200000000106,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.11818500000004,
+        "through_apply_ms": 18.748409000000038,
+        "accept_ms": 10.369776000000002,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.155545000000075,
+        "through_apply_ms": 10.955167999999958,
+        "accept_ms": 4.200377000000117,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.01453300000003,
+        "through_apply_ms": 18.572525999999925,
+        "accept_ms": 10.442007000000103,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.422529999999824,
+        "through_apply_ms": 18.230258999999933,
+        "accept_ms": 10.192270999999892,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.582194999999956,
+        "through_apply_ms": 11.806644999999662,
+        "accept_ms": 4.775550000000294,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.03320399999984,
+        "through_apply_ms": 19.270480000000134,
+        "accept_ms": 10.762723999999707,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.061983000000055,
+        "through_apply_ms": 12.063170999999784,
+        "accept_ms": 3.998812000000271,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.57847300000003,
+        "through_apply_ms": 10.692191999999977,
+        "accept_ms": 3.8862810000000536,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.792758999999933,
+        "through_apply_ms": 18.923723000000336,
+        "accept_ms": 10.869035999999596,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.854029000000082,
+        "through_apply_ms": 12.078751000000011,
+        "accept_ms": 3.775278000000071,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.347949999999855,
+        "through_apply_ms": 18.902072999999746,
+        "accept_ms": 10.44587700000011,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.27267699999993,
+        "through_apply_ms": 17.95891299999994,
+        "accept_ms": 10.313763999999992,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.641853999999967,
+        "through_apply_ms": 10.9402070000001,
+        "accept_ms": 3.7016469999998662,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.169856999999865,
+        "through_apply_ms": 19.683678999999756,
+        "accept_ms": 10.486178000000109,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 21.850564000000304,
+        "through_apply_ms": 17.321620000000166,
+        "accept_ms": 4.528944000000138,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 25.896827999999914,
+        "through_apply_ms": 21.22023100000024,
+        "accept_ms": 4.676596999999674,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.44970199999989,
+        "through_apply_ms": 20.01967599999989,
+        "accept_ms": 10.430025999999998,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 1,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 18.37104199999976,
+        "through_apply_ms": 13.347537000000102,
+        "accept_ms": 5.023504999999659,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.140286000000287,
+        "through_apply_ms": 19.565536000000066,
+        "accept_ms": 10.574750000000222,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.0583630000001,
+        "through_apply_ms": 18.710407999999916,
+        "accept_ms": 10.347955000000184,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.560907000000043,
+        "through_apply_ms": 15.302337999999963,
+        "accept_ms": 5.2585690000000795,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 28.92831100000012,
+        "through_apply_ms": 18.537264999999934,
+        "accept_ms": 10.391046000000188,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.67904499999986,
+        "through_apply_ms": 11.541699999999764,
+        "accept_ms": 4.137345000000096,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.437130000000252,
+        "through_apply_ms": 10.41844600000013,
+        "accept_ms": 4.018684000000121,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.607324999999946,
+        "through_apply_ms": 19.039694999999938,
+        "accept_ms": 10.567630000000008,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 1,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 6.251659999999902,
+        "through_apply_ms": 6.251119999999901,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 18.31871000000001,
+        "through_apply_ms": 18.317849999999908,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 18.169077000000016,
+        "through_apply_ms": 18.168106999999964,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.863882000000103,
+        "through_apply_ms": 5.863292000000001,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 1,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.27893899999981,
+        "through_apply_ms": 19.508276000000023,
+        "accept_ms": 10.770662999999786,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 18.06157499999972,
+        "through_apply_ms": 13.80316700000003,
+        "accept_ms": 4.25840799999969,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.295718999999735,
+        "through_apply_ms": 12.05006000000003,
+        "accept_ms": 4.245658999999705,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.67776700000013,
+        "through_apply_ms": 19.79492100000016,
+        "accept_ms": 10.882845999999972,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.536103000000367,
+        "through_apply_ms": 11.572601000000304,
+        "accept_ms": 3.9635020000000623,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.816159999999854,
+        "through_apply_ms": 19.71518900000001,
+        "accept_ms": 11.100970999999845,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.598025000000234,
+        "through_apply_ms": 18.299511000000166,
+        "accept_ms": 10.298514000000068,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.811487999999827,
+        "through_apply_ms": 11.995208999999704,
+        "accept_ms": 3.8162790000001223,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.31592899999987,
+        "through_apply_ms": 18.74483999999984,
+        "accept_ms": 10.571089000000029,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.50415299999986,
+        "through_apply_ms": 12.328755999999885,
+        "accept_ms": 4.175396999999975,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.134913999999753,
+        "through_apply_ms": 10.906846999999743,
+        "accept_ms": 4.22806700000001,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.24731699999984,
+        "through_apply_ms": 18.808889999999792,
+        "accept_ms": 10.438427000000047,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.815397999999732,
+        "through_apply_ms": 11.989558999999645,
+        "accept_ms": 3.8258390000000873,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.979151999999885,
+        "through_apply_ms": 18.691698000000088,
+        "accept_ms": 10.287453999999798,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.08046299999978,
+        "through_apply_ms": 17.912281999999777,
+        "accept_ms": 10.168181000000004,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.198315999999977,
+        "through_apply_ms": 11.047349000000395,
+        "accept_ms": 4.150966999999582,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 28.693515999999818,
+        "through_apply_ms": 18.304160000000138,
+        "accept_ms": 10.38935599999968,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.278866999999991,
+        "through_apply_ms": 10.624910999999884,
+        "accept_ms": 3.6539560000001075,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 14.73936599999979,
+        "through_apply_ms": 11.156942000000072,
+        "accept_ms": 3.582423999999719,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.222847,
+        "through_apply_ms": 18.81666099999984,
+        "accept_ms": 10.406186000000162,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 21.802602999999635,
+        "through_apply_ms": 17.036373999999796,
+        "accept_ms": 4.766228999999839,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.84429,
+        "through_apply_ms": 20.116078000000016,
+        "accept_ms": 10.728211999999985,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 29.765547999999853,
+        "through_apply_ms": 19.333110999999917,
+        "accept_ms": 10.432436999999936,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 26.242705000000115,
+        "through_apply_ms": 21.541067000000112,
+        "accept_ms": 4.701638000000003,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.75630799999999,
+        "through_apply_ms": 19.219410000000153,
+        "accept_ms": 10.536897999999837,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.497206000000006,
+        "through_apply_ms": 15.401900000000296,
+        "accept_ms": 5.0953059999997095,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 17.96091400000023,
+        "through_apply_ms": 12.93898900000022,
+        "accept_ms": 5.02192500000001,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.364939999999933,
+        "through_apply_ms": 19.711049000000003,
+        "accept_ms": 10.65389099999993,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.881189000000177,
+        "through_apply_ms": 11.771704000000227,
+        "accept_ms": 4.10948499999995,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.35551899999973,
+        "through_apply_ms": 18.76207899999963,
+        "accept_ms": 10.5934400000001,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.492891999999756,
+        "through_apply_ms": 18.218858000000182,
+        "accept_ms": 10.274033999999574,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.98674099999971,
+        "through_apply_ms": 10.878056000000015,
+        "accept_ms": 4.108684999999696,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 2,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 18.026094000000285,
+        "through_apply_ms": 18.025664000000234,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.198038000000452,
+        "through_apply_ms": 5.197648000000299,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.153447000000142,
+        "through_apply_ms": 5.153047000000242,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 18.26857999999993,
+        "through_apply_ms": 18.268099999999777,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 2,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 17.298819000000094,
+        "through_apply_ms": 13.210405000000264,
+        "accept_ms": 4.08841399999983,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.659635999999864,
+        "through_apply_ms": 19.243958999999904,
+        "accept_ms": 10.41567699999996,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.587314000000333,
+        "through_apply_ms": 18.70351800000026,
+        "accept_ms": 10.883796000000075,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 16.11659499999996,
+        "through_apply_ms": 11.97901899999988,
+        "accept_ms": 4.137576000000081,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 2,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.089724999999817,
+        "through_apply_ms": 19.718839000000116,
+        "accept_ms": 10.3708859999997,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 17.636986999999863,
+        "through_apply_ms": 13.29308600000013,
+        "accept_ms": 4.3439009999997324,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 19.36788200000001,
+        "through_apply_ms": 14.905079999999998,
+        "accept_ms": 4.462802000000011,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 31.012235000000146,
+        "through_apply_ms": 20.404504000000088,
+        "accept_ms": 10.607731000000058,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 3,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.266327000000274,
+        "through_apply_ms": 12.070130000000063,
+        "accept_ms": 4.196197000000211,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.197995999999875,
+        "through_apply_ms": 18.561795000000075,
+        "accept_ms": 10.6362009999998,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.303338000000167,
+        "through_apply_ms": 18.03398500000003,
+        "accept_ms": 10.269353000000137,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.016571999999996,
+        "through_apply_ms": 11.12641100000019,
+        "accept_ms": 4.890160999999807,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 28.834679999999935,
+        "through_apply_ms": 18.492475000000013,
+        "accept_ms": 10.342204999999922,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.91368999999986,
+        "through_apply_ms": 11.025829000000158,
+        "accept_ms": 3.8878609999997025,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.388989000000038,
+        "through_apply_ms": 11.444367000000057,
+        "accept_ms": 3.944621999999981,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.013723000000027,
+        "through_apply_ms": 18.673287999999957,
+        "accept_ms": 10.34043500000007,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.52042100000017,
+        "through_apply_ms": 10.86933500000032,
+        "accept_ms": 3.65108599999985,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.29617899999994,
+        "through_apply_ms": 18.75054,
+        "accept_ms": 10.545638999999937,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.40590999999995,
+        "through_apply_ms": 18.030694999999923,
+        "accept_ms": 10.375215000000026,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.391669000000093,
+        "through_apply_ms": 11.729824000000008,
+        "accept_ms": 3.661845000000085,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.83302999999978,
+        "through_apply_ms": 19.46390399999973,
+        "accept_ms": 10.369126000000051,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 26.488080000000082,
+        "through_apply_ms": 21.582698000000164,
+        "accept_ms": 4.905381999999918,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 20.908433999999943,
+        "through_apply_ms": 16.533642999999756,
+        "accept_ms": 4.374791000000187,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.718368000000282,
+        "through_apply_ms": 20.123587999999927,
+        "accept_ms": 10.594780000000355,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 20.483625000000302,
+        "through_apply_ms": 15.480021000000306,
+        "accept_ms": 5.003603999999996,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.518584000000374,
+        "through_apply_ms": 19.167409000000134,
+        "accept_ms": 10.35117500000024,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.95486099999971,
+        "through_apply_ms": 18.661086999999952,
+        "accept_ms": 10.293773999999758,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.451673000000483,
+        "through_apply_ms": 13.42080900000019,
+        "accept_ms": 5.030864000000292,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.163824999999633,
+        "through_apply_ms": 18.618795999999747,
+        "accept_ms": 10.545028999999886,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.067512999999963,
+        "through_apply_ms": 10.845204999999623,
+        "accept_ms": 4.222308000000339,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.310187000000042,
+        "through_apply_ms": 11.20393199999944,
+        "accept_ms": 4.106255000000601,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.64702599999964,
+        "through_apply_ms": 18.998014999999214,
+        "accept_ms": 10.649011000000428,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 5.3666910000001735,
+        "through_apply_ms": 5.366101000000526,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.925631999999496,
+        "through_apply_ms": 17.924901999999747,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.777189000000362,
+        "through_apply_ms": 17.776708999999755,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.649348000000828,
+        "through_apply_ms": 5.6489080000001195,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 3,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.006612000000132,
+        "through_apply_ms": 18.753089000000728,
+        "accept_ms": 10.253522999999404,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.87641000000076,
+        "through_apply_ms": 11.823336000000381,
+        "accept_ms": 4.053074000000379,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 16.812967999999273,
+        "through_apply_ms": 12.704423000000133,
+        "accept_ms": 4.10854499999914,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.770548999999846,
+        "through_apply_ms": 19.265551000000414,
+        "accept_ms": 10.504997999999432,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 3,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 17.551303999999618,
+        "through_apply_ms": 13.189323999999942,
+        "accept_ms": 4.361979999999676,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.290369000000283,
+        "through_apply_ms": 19.813100999999733,
+        "accept_ms": 10.47726800000055,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.240287999999964,
+        "through_apply_ms": 19.622198000000026,
+        "accept_ms": 10.618089999999938,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.210070000000087,
+        "through_apply_ms": 15.588313999999627,
+        "accept_ms": 4.62175600000046,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 3,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.683987000000343,
+        "through_apply_ms": 19.246730000000753,
+        "accept_ms": 10.43725699999959,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.65507499999967,
+        "through_apply_ms": 11.824344999999994,
+        "accept_ms": 3.830729999999676,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.426250000000437,
+        "through_apply_ms": 10.563549000000421,
+        "accept_ms": 3.8627010000000155,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.132464999999684,
+        "through_apply_ms": 18.850900999999794,
+        "accept_ms": 10.28156399999989,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.661693999999443,
+        "through_apply_ms": 10.801473999999871,
+        "accept_ms": 3.860219999999572,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.854788999999982,
+        "through_apply_ms": 18.53275500000018,
+        "accept_ms": 10.322033999999803,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.235155999999733,
+        "through_apply_ms": 17.962351999999555,
+        "accept_ms": 10.272804000000178,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.689996000000065,
+        "through_apply_ms": 11.806075999999848,
+        "accept_ms": 3.8839200000002165,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.357919999999467,
+        "through_apply_ms": 18.665217999999186,
+        "accept_ms": 10.692702000000281,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.274107000000186,
+        "through_apply_ms": 11.613631000000169,
+        "accept_ms": 3.660476000000017,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.235564999999951,
+        "through_apply_ms": 10.408856000000014,
+        "accept_ms": 3.826708999999937,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.02584300000035,
+        "through_apply_ms": 18.601865999999973,
+        "accept_ms": 10.423977000000377,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 26.036729999999807,
+        "through_apply_ms": 21.335092999999688,
+        "accept_ms": 4.701637000000119,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.6171860000004,
+        "through_apply_ms": 20.00302499999998,
+        "accept_ms": 10.614161000000422,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.712806999999884,
+        "through_apply_ms": 19.29975099999956,
+        "accept_ms": 10.413056000000324,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 21.590917999999874,
+        "through_apply_ms": 17.06023400000049,
+        "accept_ms": 4.530683999999383,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 4,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.513522999999623,
+        "through_apply_ms": 19.148707999999715,
+        "accept_ms": 10.364814999999908,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.4349229999998,
+        "through_apply_ms": 13.390448000000106,
+        "accept_ms": 5.044474999999693,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 19.993466000000808,
+        "through_apply_ms": 14.92019000000073,
+        "accept_ms": 5.073276000000078,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.981653000000733,
+        "through_apply_ms": 19.557866000000104,
+        "accept_ms": 10.42378700000063,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.200064999999995,
+        "through_apply_ms": 11.111590000000433,
+        "accept_ms": 4.088474999999562,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.353799999999865,
+        "through_apply_ms": 18.92865299999994,
+        "accept_ms": 11.425146999999924,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 32.1337080000003,
+        "through_apply_ms": 21.40843500000028,
+        "accept_ms": 10.725273000000016,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.035963000000265,
+        "through_apply_ms": 11.874966999999742,
+        "accept_ms": 4.160996000000523,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 18.000793999999587,
+        "through_apply_ms": 18.000123999999232,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.378991999999926,
+        "through_apply_ms": 5.378601999999773,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 4.9587830000000395,
+        "through_apply_ms": 4.9583730000003925,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.780698999999913,
+        "through_apply_ms": 17.780179000000317,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 4,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 16.039012999999613,
+        "through_apply_ms": 11.964977999999974,
+        "accept_ms": 4.07403499999964,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 29.8068889999995,
+        "through_apply_ms": 19.416653000000224,
+        "accept_ms": 10.390235999999277,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 28.91465100000005,
+        "through_apply_ms": 18.53796499999953,
+        "accept_ms": 10.376686000000518,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 17.351990000000114,
+        "through_apply_ms": 13.273255000000063,
+        "accept_ms": 4.0787350000000515,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 31.57193599999937,
+        "through_apply_ms": 20.610247999999956,
+        "accept_ms": 10.961687999999413,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 20.367433000000347,
+        "through_apply_ms": 15.713106000000153,
+        "accept_ms": 4.654327000000194,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.111456000000544,
+        "through_apply_ms": 13.611641999999847,
+        "accept_ms": 4.499814000000697,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.89846200000011,
+        "through_apply_ms": 20.16211899999962,
+        "accept_ms": 10.736343000000488,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.2668079999994,
+        "through_apply_ms": 12.359396999999262,
+        "accept_ms": 3.9074110000001383,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.03156399999989,
+        "through_apply_ms": 19.2787900000003,
+        "accept_ms": 10.75277399999959,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.118835000000217,
+        "through_apply_ms": 18.562705999999707,
+        "accept_ms": 10.55612900000051,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.717815999999402,
+        "through_apply_ms": 11.756523999999445,
+        "accept_ms": 3.9612919999999576,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 4,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.355489999999918,
+        "through_apply_ms": 19.31481100000019,
+        "accept_ms": 11.040678999999727,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.254308000000492,
+        "through_apply_ms": 11.989309000000503,
+        "accept_ms": 4.264998999999989,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.42507100000057,
+        "through_apply_ms": 12.096451000000343,
+        "accept_ms": 4.328620000000228,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.406272000000172,
+        "through_apply_ms": 19.116547000000537,
+        "accept_ms": 11.289724999999635,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.371830000000045,
+        "through_apply_ms": 12.522509999999784,
+        "accept_ms": 3.8493200000002616,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.628614999999627,
+        "through_apply_ms": 19.09839600000032,
+        "accept_ms": 10.530218999999306,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.375669000000016,
+        "through_apply_ms": 17.886132000000543,
+        "accept_ms": 10.489536999999473,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.863218999999845,
+        "through_apply_ms": 11.167461999999432,
+        "accept_ms": 3.6957570000004125,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.286669000000074,
+        "through_apply_ms": 19.7890010000001,
+        "accept_ms": 10.497667999999976,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 21.583597999999256,
+        "through_apply_ms": 17.12578499999927,
+        "accept_ms": 4.457812999999987,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 26.035031000000345,
+        "through_apply_ms": 21.428665000000365,
+        "accept_ms": 4.60636599999998,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.220836999999847,
+        "through_apply_ms": 19.74359000000004,
+        "accept_ms": 10.477246999999807,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 5,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 18.588506000000052,
+        "through_apply_ms": 13.522840000000542,
+        "accept_ms": 5.06566599999951,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.29388899999958,
+        "through_apply_ms": 19.60252700000001,
+        "accept_ms": 10.691361999999572,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.29092799999944,
+        "through_apply_ms": 18.877371999999923,
+        "accept_ms": 10.413555999999517,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.626398999999765,
+        "through_apply_ms": 15.507421999999679,
+        "accept_ms": 5.118977000000086,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 28.94412099999954,
+        "through_apply_ms": 18.619157000000087,
+        "accept_ms": 10.324963999999454,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.639234999999644,
+        "through_apply_ms": 11.496468999999706,
+        "accept_ms": 4.142765999999938,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.643543000000136,
+        "through_apply_ms": 10.468497000000752,
+        "accept_ms": 4.175045999999384,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.535963000000265,
+        "through_apply_ms": 19.094716000000517,
+        "accept_ms": 10.441246999999748,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 5.616855999999643,
+        "through_apply_ms": 5.616485999999895,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.643466000000444,
+        "through_apply_ms": 17.642956000000595,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.681117000000086,
+        "through_apply_ms": 17.680656999999883,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.3087900000000445,
+        "through_apply_ms": 5.308430000000044,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 5,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.21405700000014,
+        "through_apply_ms": 18.663997999999992,
+        "accept_ms": 10.550059000000147,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 17.311988999999812,
+        "through_apply_ms": 13.23492399999941,
+        "accept_ms": 4.0770650000004025,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.780657999999676,
+        "through_apply_ms": 11.775034999999662,
+        "accept_ms": 4.005623000000014,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.95252299999993,
+        "through_apply_ms": 20.07442699999956,
+        "accept_ms": 10.878096000000369,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 20.050535999999738,
+        "through_apply_ms": 15.460551000000123,
+        "accept_ms": 4.589984999999615,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.708096999999725,
+        "through_apply_ms": 20.080095999999685,
+        "accept_ms": 10.62800100000004,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.203486999999768,
+        "through_apply_ms": 19.628107000000455,
+        "accept_ms": 10.575379999999313,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 18.273279000000002,
+        "through_apply_ms": 13.640333000000282,
+        "accept_ms": 4.63294599999972,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 5,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 28.909920000000056,
+        "through_apply_ms": 18.5848960000003,
+        "accept_ms": 10.325023999999758,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.55550200000016,
+        "through_apply_ms": 10.758192999999665,
+        "accept_ms": 3.797309000000496,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.12708400000065,
+        "through_apply_ms": 11.400846000000456,
+        "accept_ms": 3.726238000000194,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.4007500000007,
+        "through_apply_ms": 19.017815000000155,
+        "accept_ms": 10.382935000000543,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.717275999999401,
+        "through_apply_ms": 11.04370899999958,
+        "accept_ms": 4.673566999999821,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.24269700000059,
+        "through_apply_ms": 18.86895100000038,
+        "accept_ms": 10.37374600000021,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.651754999999866,
+        "through_apply_ms": 18.19992700000057,
+        "accept_ms": 10.451827999999296,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.336339000000407,
+        "through_apply_ms": 12.126432000000023,
+        "accept_ms": 4.209907000000385,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 5,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 28.81974799999989,
+        "through_apply_ms": 18.523874000000433,
+        "accept_ms": 10.295873999999458,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.315267999999378,
+        "through_apply_ms": 11.471576999999343,
+        "accept_ms": 3.8436910000000353,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.268716000000495,
+        "through_apply_ms": 10.504117000000406,
+        "accept_ms": 3.7645990000000893,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.544733000000633,
+        "through_apply_ms": 18.977834000000257,
+        "accept_ms": 10.566899000000376,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 21.88975399999981,
+        "through_apply_ms": 17.316130000000157,
+        "accept_ms": 4.573623999999654,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.05923399999938,
+        "through_apply_ms": 19.612726999999722,
+        "accept_ms": 10.446506999999656,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 29.564133999999285,
+        "through_apply_ms": 19.14695699999993,
+        "accept_ms": 10.417176999999356,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 26.20628299999953,
+        "through_apply_ms": 21.516665999999532,
+        "accept_ms": 4.689616999999998,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.86029899999994,
+        "through_apply_ms": 19.416803000000073,
+        "accept_ms": 10.443495999999868,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.330242999999427,
+        "through_apply_ms": 15.29197799999929,
+        "accept_ms": 5.038265000000138,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.298639999999978,
+        "through_apply_ms": 13.142832999999882,
+        "accept_ms": 5.155807000000095,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.8837910000002,
+        "through_apply_ms": 19.933042999999998,
+        "accept_ms": 10.950748000000203,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.297248000000764,
+        "through_apply_ms": 12.12155200000052,
+        "accept_ms": 4.175696000000244,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.30134799999996,
+        "through_apply_ms": 18.954602999999224,
+        "accept_ms": 10.346745000000737,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.219364999999925,
+        "through_apply_ms": 17.93322199999966,
+        "accept_ms": 10.286143000000266,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.032662000000528,
+        "through_apply_ms": 10.918586000000687,
+        "accept_ms": 4.114075999999841,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 17.91312199999993,
+        "through_apply_ms": 17.91247199999998,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.274510000000191,
+        "through_apply_ms": 5.274089999999887,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.195607999999993,
+        "through_apply_ms": 5.195187999999689,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.91945300000043,
+        "through_apply_ms": 17.919002999999975,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 6,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.982162000000244,
+        "through_apply_ms": 12.920157999999901,
+        "accept_ms": 4.062004000000343,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.474311999999372,
+        "through_apply_ms": 19.14835799999946,
+        "accept_ms": 10.32595399999991,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.050192000000607,
+        "through_apply_ms": 18.670576999999867,
+        "accept_ms": 10.37961500000074,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 16.034112999999707,
+        "through_apply_ms": 11.959617999999864,
+        "accept_ms": 4.0744949999998425,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 6,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.35443000000032,
+        "through_apply_ms": 19.80239100000017,
+        "accept_ms": 10.55203900000015,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 17.55321499999991,
+        "through_apply_ms": 13.24458500000037,
+        "accept_ms": 4.308629999999539,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 19.19445899999937,
+        "through_apply_ms": 14.650823999999375,
+        "accept_ms": 4.543634999999995,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 31.118625999999495,
+        "through_apply_ms": 20.641537999999855,
+        "accept_ms": 10.47708799999964,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 6,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.576952000000347,
+        "through_apply_ms": 10.777573000000302,
+        "accept_ms": 3.7993790000000445,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.045862999999372,
+        "through_apply_ms": 18.541344999999637,
+        "accept_ms": 10.504517999999734,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.65804399999979,
+        "through_apply_ms": 18.296149999999216,
+        "accept_ms": 10.361894000000575,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.512152000000242,
+        "through_apply_ms": 11.651412000000164,
+        "accept_ms": 3.860740000000078,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 28.97232199999962,
+        "through_apply_ms": 18.669248000000152,
+        "accept_ms": 10.30307399999947,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.87742999999955,
+        "through_apply_ms": 11.7297839999992,
+        "accept_ms": 4.14764600000035,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.794996999999967,
+        "through_apply_ms": 10.690652000000227,
+        "accept_ms": 4.104344999999739,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.469111999999768,
+        "through_apply_ms": 18.756470000000263,
+        "accept_ms": 10.712641999999505,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.829788000000008,
+        "through_apply_ms": 11.93193699999938,
+        "accept_ms": 3.897851000000628,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.282768000000033,
+        "through_apply_ms": 18.877392000000327,
+        "accept_ms": 10.405375999999706,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.255055999999968,
+        "through_apply_ms": 18.020824000000175,
+        "accept_ms": 10.234231999999793,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.928189000000202,
+        "through_apply_ms": 11.068538999999873,
+        "accept_ms": 3.859650000000329,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 6,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.710455999999795,
+        "through_apply_ms": 18.90172199999961,
+        "accept_ms": 10.808734000000186,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.848369000000275,
+        "through_apply_ms": 11.181343000000197,
+        "accept_ms": 3.667026000000078,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.153825000000325,
+        "through_apply_ms": 11.515578999999889,
+        "accept_ms": 3.6382460000004357,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.592774000000645,
+        "through_apply_ms": 19.106936000000132,
+        "accept_ms": 10.485838000000513,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 20.472294999999576,
+        "through_apply_ms": 15.414459999999963,
+        "accept_ms": 5.0578349999996135,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.719826999999896,
+        "through_apply_ms": 19.27212999999938,
+        "accept_ms": 10.447697000000517,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.074493999999504,
+        "through_apply_ms": 18.54818499999965,
+        "accept_ms": 10.526308999999856,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 19.043045000000347,
+        "through_apply_ms": 13.849747000000207,
+        "accept_ms": 5.193298000000141,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.317118999999366,
+        "through_apply_ms": 18.93589299999985,
+        "accept_ms": 10.381225999999515,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.104064000000108,
+        "through_apply_ms": 10.970838000000185,
+        "accept_ms": 4.133225999999922,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.26072699999986,
+        "through_apply_ms": 11.159821999999622,
+        "accept_ms": 4.100905000000239,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.08395399999972,
+        "through_apply_ms": 18.740718999999444,
+        "accept_ms": 10.343235000000277,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 5.297370000000228,
+        "through_apply_ms": 5.296949999999924,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.925282000000152,
+        "through_apply_ms": 17.9245719999999,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.9168209999998,
+        "through_apply_ms": 17.91627100000005,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.755748999999923,
+        "through_apply_ms": 5.755339000000276,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 7,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.37025900000026,
+        "through_apply_ms": 18.962843000000248,
+        "accept_ms": 10.407416000000012,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.870420000000195,
+        "through_apply_ms": 11.819746000000123,
+        "accept_ms": 4.050674000000072,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 16.818559000000278,
+        "through_apply_ms": 12.71743400000014,
+        "accept_ms": 4.101125000000138,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.458292000000256,
+        "through_apply_ms": 19.130247000000054,
+        "accept_ms": 10.328045000000202,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 7,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 17.573945000000094,
+        "through_apply_ms": 13.310456999999587,
+        "accept_ms": 4.263488000000507,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.30141899999944,
+        "through_apply_ms": 19.779781000000185,
+        "accept_ms": 10.521637999999257,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.284638000000086,
+        "through_apply_ms": 19.743249000000105,
+        "accept_ms": 10.541388999999981,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 21.41307500000039,
+        "through_apply_ms": 16.694487000000663,
+        "accept_ms": 4.718587999999727,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.598084999999628,
+        "through_apply_ms": 18.988844999999856,
+        "accept_ms": 10.609239999999772,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.172786000000087,
+        "through_apply_ms": 12.26671499999975,
+        "accept_ms": 3.9060710000003382,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.16644499999984,
+        "through_apply_ms": 11.339046000000053,
+        "accept_ms": 3.8273989999997866,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.150085999999646,
+        "through_apply_ms": 19.435113999999885,
+        "accept_ms": 10.714971999999761,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.797598999999536,
+        "through_apply_ms": 12.41360799999984,
+        "accept_ms": 4.383990999999696,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.206106999999975,
+        "through_apply_ms": 19.289530000000013,
+        "accept_ms": 10.916576999999961,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.650593999999728,
+        "through_apply_ms": 18.32009999999991,
+        "accept_ms": 10.330493999999817,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.490630999999667,
+        "through_apply_ms": 11.241982999999891,
+        "accept_ms": 4.2486479999997755,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 28.97685199999978,
+        "through_apply_ms": 18.553264999999556,
+        "accept_ms": 10.423587000000225,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.74896600000011,
+        "through_apply_ms": 10.905416999999943,
+        "accept_ms": 3.8435490000001664,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.082774000000427,
+        "through_apply_ms": 11.183902000000671,
+        "accept_ms": 3.8988719999997556,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.928090999999768,
+        "through_apply_ms": 18.530854999999974,
+        "accept_ms": 10.397235999999793,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.550322000000051,
+        "through_apply_ms": 10.810263999999734,
+        "accept_ms": 3.7400580000003174,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.967420999999376,
+        "through_apply_ms": 18.500943999999436,
+        "accept_ms": 10.46647699999994,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.37047900000016,
+        "through_apply_ms": 18.092255999999907,
+        "accept_ms": 10.278223000000253,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.287986999999703,
+        "through_apply_ms": 11.626811000000089,
+        "accept_ms": 3.661175999999614,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 7,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.103604999999334,
+        "through_apply_ms": 19.67388799999935,
+        "accept_ms": 10.429716999999982,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 26.734735,
+        "through_apply_ms": 21.987677000000076,
+        "accept_ms": 4.7470579999999245,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 21.02040600000055,
+        "through_apply_ms": 16.618274999999812,
+        "accept_ms": 4.402131000000736,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.379251000000295,
+        "through_apply_ms": 19.900712999999996,
+        "accept_ms": 10.478538000000299,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.028481999999713,
+        "through_apply_ms": 10.8998160000001,
+        "accept_ms": 4.128665999999612,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.39969999999994,
+        "through_apply_ms": 18.79849000000013,
+        "accept_ms": 10.60120999999981,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.80135799999971,
+        "through_apply_ms": 18.2835299999997,
+        "accept_ms": 10.517828000000009,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.328088999998727,
+        "through_apply_ms": 12.182972999999038,
+        "accept_ms": 4.145115999999689,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 18.37072099999932,
+        "through_apply_ms": 18.370450999998866,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.575094999998328,
+        "through_apply_ms": 5.574804999998378,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.1288169999988895,
+        "through_apply_ms": 5.128547000000253,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.890011000001323,
+        "through_apply_ms": 17.889721000001373,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 8,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 16.024272000000565,
+        "through_apply_ms": 11.946637999999439,
+        "accept_ms": 4.077634000001126,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 29.758037999999942,
+        "through_apply_ms": 19.16023800000039,
+        "accept_ms": 10.597799999999552,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 29.305309000001216,
+        "through_apply_ms": 18.967873999999938,
+        "accept_ms": 10.337435000001278,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 17.39354099999946,
+        "through_apply_ms": 13.239025000000765,
+        "accept_ms": 4.154515999998694,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.364960000000792,
+        "through_apply_ms": 19.93143400000008,
+        "accept_ms": 10.433526000000711,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 19.774520000000848,
+        "through_apply_ms": 15.154943999999887,
+        "accept_ms": 4.619576000000961,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 17.07627499999944,
+        "through_apply_ms": 12.86389699999927,
+        "accept_ms": 4.212378000000172,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.541363000000274,
+        "through_apply_ms": 20.15136799999891,
+        "accept_ms": 10.389995000001363,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.41791000000012,
+        "through_apply_ms": 11.602230999998937,
+        "accept_ms": 3.8156790000011824,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.057823999999528,
+        "through_apply_ms": 18.60574699999961,
+        "accept_ms": 11.452076999999917,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 33.71750999999858,
+        "through_apply_ms": 22.77244299999984,
+        "accept_ms": 10.945066999998744,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.122143000000506,
+        "through_apply_ms": 11.289013999999952,
+        "accept_ms": 3.833129000000554,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.0218619999996,
+        "through_apply_ms": 18.61997599999995,
+        "accept_ms": 10.40188599999965,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.784696999999142,
+        "through_apply_ms": 11.558539999999994,
+        "accept_ms": 4.226156999999148,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.72357700000066,
+        "through_apply_ms": 11.475029000001086,
+        "accept_ms": 4.248547999999573,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.33358799999951,
+        "through_apply_ms": 18.88738100000046,
+        "accept_ms": 10.446206999999049,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.1227429999999,
+        "through_apply_ms": 11.215883000000758,
+        "accept_ms": 3.906859999999142,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.2857469999999,
+        "through_apply_ms": 18.886920999999347,
+        "accept_ms": 10.398826000000554,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.376459000000978,
+        "through_apply_ms": 18.08185500000036,
+        "accept_ms": 10.294604000000618,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.662844999998924,
+        "through_apply_ms": 11.803524999999354,
+        "accept_ms": 3.8593199999995704,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 28.81840799999918,
+        "through_apply_ms": 18.53246499999841,
+        "accept_ms": 10.28594300000077,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.276677000001655,
+        "through_apply_ms": 11.584141000001182,
+        "accept_ms": 3.692536000000473,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.165503000000172,
+        "through_apply_ms": 10.47017699999924,
+        "accept_ms": 3.6953260000009323,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.132455000000846,
+        "through_apply_ms": 18.726779000000533,
+        "accept_ms": 10.405676000000312,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 8,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 25.912877000000663,
+        "through_apply_ms": 21.23342000000048,
+        "accept_ms": 4.679457000000184,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.498023000000103,
+        "through_apply_ms": 19.702048999999533,
+        "accept_ms": 10.79597400000057,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.62715600000047,
+        "through_apply_ms": 19.519625999999334,
+        "accept_ms": 11.107530000001134,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 22.37220399999933,
+        "through_apply_ms": 17.808219999998983,
+        "accept_ms": 4.563984000000346,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 8,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.487941999999748,
+        "through_apply_ms": 19.69525799999974,
+        "accept_ms": 10.792684000000008,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 19.482624000000214,
+        "through_apply_ms": 14.307327000000441,
+        "accept_ms": 5.175296999999773,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.034406000000672,
+        "through_apply_ms": 14.971870999999737,
+        "accept_ms": 5.062535000000935,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.1116949999996,
+        "through_apply_ms": 19.541074999999182,
+        "accept_ms": 10.570620000000417,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 5.47217400000045,
+        "through_apply_ms": 5.471903999999995,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.784558999999717,
+        "through_apply_ms": 17.784249000000273,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.540584000000308,
+        "through_apply_ms": 17.540313999999853,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.4335119999996095,
+        "through_apply_ms": 5.433231999999407,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 9,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.73222700000042,
+        "through_apply_ms": 19.286951000000045,
+        "accept_ms": 10.445276000000376,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 17.370890000000145,
+        "through_apply_ms": 13.220613999999841,
+        "accept_ms": 4.150276000000304,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.539221999999427,
+        "through_apply_ms": 11.545759000000544,
+        "accept_ms": 3.993462999998883,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.09032400000069,
+        "through_apply_ms": 19.497564999999668,
+        "accept_ms": 10.592759000001024,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 20.480964999998832,
+        "through_apply_ms": 15.70920599999954,
+        "accept_ms": 4.771758999999292,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 31.563154999999824,
+        "through_apply_ms": 20.61034699999982,
+        "accept_ms": 10.952808000000005,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.939141999999265,
+        "through_apply_ms": 20.174258999999438,
+        "accept_ms": 10.764882999999827,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 18.438062000001082,
+        "through_apply_ms": 13.944289000000936,
+        "accept_ms": 4.493773000000147,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 9,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.308978999999454,
+        "through_apply_ms": 19.390362000000096,
+        "accept_ms": 10.918616999999358,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.391029000000344,
+        "through_apply_ms": 11.527339000000211,
+        "accept_ms": 3.8636900000001333,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.662743999999293,
+        "through_apply_ms": 11.840084999999817,
+        "accept_ms": 3.822658999999476,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.091515000000072,
+        "through_apply_ms": 19.273219999999128,
+        "accept_ms": 10.818295000000944,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.72842700000001,
+        "through_apply_ms": 11.456358000001273,
+        "accept_ms": 4.272068999998737,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.56067299999995,
+        "through_apply_ms": 18.985763999999108,
+        "accept_ms": 10.574909000000844,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.459682000000612,
+        "through_apply_ms": 18.23247900000024,
+        "accept_ms": 11.227203000000372,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 17.134244999999282,
+        "through_apply_ms": 12.799365999999281,
+        "accept_ms": 4.334879000000001,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.763779000000795,
+        "through_apply_ms": 20.00317499999983,
+        "accept_ms": 10.760604000000967,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.797338000000309,
+        "through_apply_ms": 11.885167000000365,
+        "accept_ms": 3.912170999999944,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.557403000000704,
+        "through_apply_ms": 10.628241000000344,
+        "accept_ms": 3.9291620000003604,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.3047889999998,
+        "through_apply_ms": 18.77469000000019,
+        "accept_ms": 10.530098999999609,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 15.391529999998966,
+        "through_apply_ms": 11.651152000000366,
+        "accept_ms": 3.7403779999986,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.14051500000096,
+        "through_apply_ms": 18.763738999999987,
+        "accept_ms": 10.376776000000973,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.30103699999927,
+        "through_apply_ms": 18.013903999999457,
+        "accept_ms": 10.287132999999812,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.887878999999884,
+        "through_apply_ms": 11.165591999999378,
+        "accept_ms": 3.722287000000506,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 31.206567999999606,
+        "through_apply_ms": 20.27780100000018,
+        "accept_ms": 10.928766999999425,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 21.92871500000001,
+        "through_apply_ms": 17.362919999999576,
+        "accept_ms": 4.565795000000435,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 25.625742000000173,
+        "through_apply_ms": 20.96253500000057,
+        "accept_ms": 4.663206999999602,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.40230100000008,
+        "through_apply_ms": 19.891123000001244,
+        "accept_ms": 10.511177999998836,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 9,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 18.713728999999148,
+        "through_apply_ms": 13.409357999998974,
+        "accept_ms": 5.304371000000174,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.559284000000844,
+        "through_apply_ms": 19.6921080000011,
+        "accept_ms": 10.867175999999745,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.53058299999975,
+        "through_apply_ms": 19.10346700000082,
+        "accept_ms": 10.427115999998932,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.808090999998967,
+        "through_apply_ms": 15.678425000000061,
+        "accept_ms": 5.129665999998906,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 9,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.27086699999927,
+        "through_apply_ms": 18.664096999998947,
+        "accept_ms": 10.606770000000324,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.033032000001185,
+        "through_apply_ms": 11.845205999999962,
+        "accept_ms": 4.187826000001223,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.670274000000063,
+        "through_apply_ms": 10.48320700000113,
+        "accept_ms": 4.187066999998933,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.445810999999594,
+        "through_apply_ms": 18.881852000000436,
+        "accept_ms": 10.563958999999159,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 17.244957999999315,
+        "through_apply_ms": 13.14740299999903,
+        "accept_ms": 4.097555000000284,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 32.2420689999999,
+        "through_apply_ms": 20.22541900000033,
+        "accept_ms": 12.016649999999572,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 31.620726999999533,
+        "through_apply_ms": 20.168478999999934,
+        "accept_ms": 11.4522479999996,
+        "status": "failed_route"
+      },
+      "tide_before": {
+        "ms": 18.564604999999574,
+        "through_apply_ms": 14.037811000000147,
+        "accept_ms": 4.526793999999427,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 10,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 31.622456000000966,
+        "through_apply_ms": 20.935333999999784,
+        "accept_ms": 10.687122000001182,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.17913799999951,
+        "through_apply_ms": 13.84806799999933,
+        "accept_ms": 4.331070000000182,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 19.529805000000124,
+        "through_apply_ms": 14.961890999999014,
+        "accept_ms": 4.56791400000111,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 30.466183000000456,
+        "through_apply_ms": 19.896323000000848,
+        "accept_ms": 10.569859999999608,
+        "status": "failed_route"
+      }
+    },
+    {
+      "round": 10,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 14.964890999999625,
+        "through_apply_ms": 11.108491000000868,
+        "accept_ms": 3.8563999999987573,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.495372000001225,
+        "through_apply_ms": 18.908972000001086,
+        "accept_ms": 10.58640000000014,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.64815400000043,
+        "through_apply_ms": 18.27429899999879,
+        "accept_ms": 10.37385500000164,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.186255999999048,
+        "through_apply_ms": 12.210573000000295,
+        "accept_ms": 3.975682999998753,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.93902100000014,
+        "through_apply_ms": 19.126046999999744,
+        "accept_ms": 10.812974000000395,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 17.523063999999067,
+        "through_apply_ms": 13.046750999999858,
+        "accept_ms": 4.476312999999209,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.36586999999963,
+        "through_apply_ms": 11.953197999999247,
+        "accept_ms": 4.412672000000384,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.310718999999153,
+        "through_apply_ms": 19.57945599999948,
+        "accept_ms": 10.731262999999672,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.75601800000004,
+        "through_apply_ms": 12.716373999999632,
+        "accept_ms": 4.039644000000408,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.43249199999991,
+        "through_apply_ms": 19.55305600000065,
+        "accept_ms": 10.87943599999926,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.790748999999778,
+        "through_apply_ms": 18.735499000000345,
+        "accept_ms": 11.055249999999432,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.058592999999746,
+        "through_apply_ms": 12.051180000000386,
+        "accept_ms": 4.00741299999936,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 30.952241999999387,
+        "through_apply_ms": 19.76735000000008,
+        "accept_ms": 11.184891999999309,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.066303999999946,
+        "through_apply_ms": 12.178603000000294,
+        "accept_ms": 3.8877009999996517,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 16.267837999999756,
+        "through_apply_ms": 12.533260000000155,
+        "accept_ms": 3.734577999999601,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.800798000000214,
+        "through_apply_ms": 19.006524000000354,
+        "accept_ms": 10.79427399999986,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 22.087399000000005,
+        "through_apply_ms": 17.561635000000024,
+        "accept_ms": 4.525763999999981,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.375850000000355,
+        "through_apply_ms": 19.844191000000137,
+        "accept_ms": 10.531659000000218,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 29.869620000001305,
+        "through_apply_ms": 19.420333000000028,
+        "accept_ms": 10.449287000001277,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 26.34256599999935,
+        "through_apply_ms": 21.61406799999895,
+        "accept_ms": 4.7284980000004,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.517072999999073,
+        "through_apply_ms": 19.860591999999087,
+        "accept_ms": 10.656480999999985,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 21.238730000000942,
+        "through_apply_ms": 16.075863000000027,
+        "accept_ms": 5.162867000000915,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 19.686337999999523,
+        "through_apply_ms": 14.547131999999692,
+        "accept_ms": 5.139205999999831,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 31.196406999999454,
+        "through_apply_ms": 20.33143200000086,
+        "accept_ms": 10.864974999998594,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.27560799999992,
+        "through_apply_ms": 12.088380999999572,
+        "accept_ms": 4.187227000000348,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.59703400000035,
+        "through_apply_ms": 18.98245400000087,
+        "accept_ms": 10.614579999999478,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 28.81022800000028,
+        "through_apply_ms": 18.347050999998828,
+        "accept_ms": 10.463177000001451,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.475451000000248,
+        "through_apply_ms": 11.299114000001282,
+        "accept_ms": 4.176336999998966,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 10,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 18.110946000000695,
+        "through_apply_ms": 18.110656000000745,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_before": {
+        "ms": 5.580605999999534,
+        "through_apply_ms": 5.580296000000089,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.568965000000389,
+        "through_apply_ms": 5.568685000000187,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 18.45251300000018,
+        "through_apply_ms": 18.45219300000099,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 11,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 17.969672999999602,
+        "through_apply_ms": 13.502489999998943,
+        "accept_ms": 4.467183000000659,
+        "status": "failed_route"
+      },
+      "python_before": {
+        "ms": 30.15405500000088,
+        "through_apply_ms": 19.691678000001048,
+        "accept_ms": 10.462376999999833,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 29.682725000000573,
+        "through_apply_ms": 19.325661000000764,
+        "accept_ms": 10.35706399999981,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 20.198569000000134,
+        "through_apply_ms": 15.609354000000167,
+        "accept_ms": 4.589214999999967,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 29.613264999999956,
+        "through_apply_ms": 19.04046500000004,
+        "accept_ms": 10.572799999999916,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.859309000001304,
+        "through_apply_ms": 12.049539999999979,
+        "accept_ms": 3.8097690000013245,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 14.53005099999973,
+        "through_apply_ms": 10.792112999999517,
+        "accept_ms": 3.737938000000213,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.431420999999318,
+        "through_apply_ms": 18.87760200000048,
+        "accept_ms": 10.553818999998839,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 16.628015000000232,
+        "through_apply_ms": 12.194953000000169,
+        "accept_ms": 4.433062000000064,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 29.2967179999996,
+        "through_apply_ms": 18.851900999999998,
+        "accept_ms": 10.444816999999603,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.547672999999122,
+        "through_apply_ms": 18.536145000000033,
+        "accept_ms": 11.011527999999089,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.122753999999986,
+        "through_apply_ms": 11.772313999999824,
+        "accept_ms": 4.350440000000162,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.524231999999756,
+        "through_apply_ms": 18.925852000000305,
+        "accept_ms": 10.598379999999452,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 15.31717799999933,
+        "through_apply_ms": 11.384675999999672,
+        "accept_ms": 3.9325019999996584,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.545223000000988,
+        "through_apply_ms": 11.602511000000959,
+        "accept_ms": 3.9427120000000286,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.577793000000383,
+        "through_apply_ms": 18.978162999999768,
+        "accept_ms": 10.599630000000616,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 15.027532000000065,
+        "through_apply_ms": 11.309033999999883,
+        "accept_ms": 3.7184980000001815,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.37079900000026,
+        "through_apply_ms": 18.87282100000084,
+        "accept_ms": 10.49797799999942,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 28.435999999999694,
+        "through_apply_ms": 18.157907000000705,
+        "accept_ms": 10.27809299999899,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.822667999998885,
+        "through_apply_ms": 12.084720999999263,
+        "accept_ms": 3.7379469999996218,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "ms": 30.485012000001007,
+        "through_apply_ms": 20.0077250000013,
+        "accept_ms": 10.477286999999706,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 26.427417999999307,
+        "through_apply_ms": 21.673118999999133,
+        "accept_ms": 4.754299000000174,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 21.188640000000305,
+        "through_apply_ms": 16.698887000000468,
+        "accept_ms": 4.489752999999837,
+        "status": "failed_route"
+      },
+      "python_after": {
+        "ms": 30.518003000001045,
+        "through_apply_ms": 19.94842400000016,
+        "accept_ms": 10.569579000000886,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "ms": 20.403362999999445,
+        "through_apply_ms": 15.328487999999197,
+        "accept_ms": 5.074875000000247,
+        "status": "accepted"
+      },
+      "python_after": {
+        "ms": 30.76426800000081,
+        "through_apply_ms": 19.55983600000036,
+        "accept_ms": 11.204432000000452,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.413910000001124,
+        "through_apply_ms": 18.98427400000037,
+        "accept_ms": 10.429636000000755,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 18.828700000000026,
+        "through_apply_ms": 13.71996399999989,
+        "accept_ms": 5.108736000000135,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.60029399999985,
+        "through_apply_ms": 18.717859000000317,
+        "accept_ms": 10.882434999999532,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.053643000001102,
+        "through_apply_ms": 11.840076000000408,
+        "accept_ms": 4.213567000000694,
+        "status": "accepted"
+      },
+      "tide_after": {
+        "ms": 15.37478899999951,
+        "through_apply_ms": 11.237972999999329,
+        "accept_ms": 4.136816000000181,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.481471999999485,
+        "through_apply_ms": 19.104137000000264,
+        "accept_ms": 10.37733499999922,
+        "status": "accepted"
+      }
+    },
+    {
+      "round": 11,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "ms": 5.462374000000636,
+        "through_apply_ms": 5.461944000000585,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_before": {
+        "ms": 17.974592999999004,
+        "through_apply_ms": 17.974222999999256,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "python_after": {
+        "ms": 17.74938800000018,
+        "through_apply_ms": 17.74910799999998,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      },
+      "tide_after": {
+        "ms": 5.627786999999444,
+        "through_apply_ms": 5.627496999999494,
+        "accept_ms": 0,
+        "status": "no_candidate"
+      }
+    },
+    {
+      "round": 11,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "ms": 29.46013099999982,
+        "through_apply_ms": 18.989364000000933,
+        "accept_ms": 10.470766999998887,
+        "status": "accepted"
+      },
+      "tide_before": {
+        "ms": 16.086944000000585,
+        "through_apply_ms": 12.011658999999781,
+        "accept_ms": 4.075285000000804,
+        "status": "failed_route"
+      },
+      "tide_after": {
+        "ms": 16.987992999998824,
+        "through_apply_ms": 12.878877999999531,
+        "accept_ms": 4.109114999999292,
+        "status": "accepted"
+      },
+      "python_before": {
+        "ms": 29.91671000000133,
+        "through_apply_ms": 19.367471000001387,
+        "accept_ms": 10.549238999999943,
+        "status": "failed_route"
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+use space_invaders
+
+invaders_checks > b
+let idle_keys make Keys left false right false fire false start false pause false
+let playing_world tick main (with start idle_keys true)
+if (not (eq (length (get aliens playing_world)) 21)) fail "new_formation"
+let moving tick playing_world (with fire (with right idle_keys true) true)
+if (not (eq (get ship moving) 32)) fail "ship_move"
+if (case (get shot moving) true bolt false) fail "missing_shot"
+let paused_world tick moving (with pause idle_keys true)
+let screen draw paused_world
+let banner_seen fold screen false visible row mark or visible (text_eq (get text mark) "P A U S E")
+if (not banner_seen) fail "pause_banner"
+let resumed tick paused_world (with start idle_keys true)
+match (get mode resumed) ready false playing true paused false won false lost false respawn false end
+
+example movement_pause_resume invaders_checks
+{"inputs":{},"expect":true}

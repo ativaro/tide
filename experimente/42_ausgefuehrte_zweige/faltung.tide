@@ -1,0 +1,5 @@
+debits entries:*i > i
+fold entries 0 total row amount (if (< amount 0) (+ total amount) total)
+
+example statement debits
+{"inputs":{"entries":[-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0]},"expect":11}

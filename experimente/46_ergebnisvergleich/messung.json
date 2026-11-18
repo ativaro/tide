@@ -1,0 +1,2233 @@
+{
+  "date": "2026-11-17",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "logical_cpu": 2,
+  "os": "Linux 7.3.4-1-cachyos x86_64 GNU/Linux",
+  "method": "Each installed CLI started fresh, wall time through exit and pipes drained. One process at a time, CPU affinity 2 inherited. Three warmup rounds and 21 measured rounds. Workload order and first arm rotated each round. Output tokens = gpt-tokenizer 3.4.0 o200k_base on the entire answer including its terminating newline. No model runs. TIDE projects inherit the repository tide.lock. CPython reference runs use -IBS in a temporary directory. The observed Python collector replays the example using setprofile and checks that the visited project functions are branch-free. The revision also covers the external Python examples.",
+  "python": "Python 3.14.10",
+  "external_python_context_builder": "import ast, hashlib, importlib, json, os, resource, sys, textwrap\nresource.setrlimit(resource.RLIMIT_AS,(512*1024*1024,512*1024*1024))\nresource.setrlimit(resource.RLIMIT_CPU,(10,10))\nsys.path.insert(0,os.getcwd())\nop,target=sys.argv[1:]\ntests=json.load(sys.stdin)\nfiles={name:open(name,encoding=\"utf-8\").read() for name in sorted(os.listdir()) if name.endswith(\".py\")}\ndefs={n.name:(f,n) for f,src in files.items() for n in ast.parse(src).body if isinstance(n,ast.FunctionDef)}\n\ndef first_difference(expected, actual, path=''):\n    if isinstance(expected, dict):\n        for key in expected:\n            if expected[key] != actual[key]:\n                return first_difference(expected[key], actual[key], path + '/' + key)\n    elif isinstance(expected, list):\n        if len(expected) != len(actual):\n            return dict(path=path, aspect='length', expected=len(expected), actual=len(actual))\n        for i, (a, b) in enumerate(zip(expected, actual)):\n            if a != b:\n                return first_difference(a, b, path + '/' + str(i))\n    return dict(path=path, expected=expected, actual=actual)\n\nif op==\"apply\":\n    staged=dict(files)\n    pending={}\n    for edit in tests:\n        f,n=defs[edit[\"function\"]]\n        pending.setdefault(f,[]).append((n.body[0].lineno-1,n.end_lineno,textwrap.indent(textwrap.dedent(edit['body']).strip(),'    ')+'\\n'))\n    for f,patches in pending.items():\n        lines=files[f].splitlines(True)\n        for start,end,body in sorted(patches,reverse=True):\n            lines[start:end]=[body]\n        staged[f]=''.join(lines)\n        ast.parse(staged[f])\n    print(json.dumps({f:staged[f] for f in pending}))\nelse:\n    fn=getattr(importlib.import_module(\"panel\"),target)\n    if op==\"run\":\n        print(json.dumps([fn(**item) for item in tests]))\n    elif op in (\"packet\",\"diff\",\"observed\"):\n        fail=next(((q,got) for q in tests if (got:=fn(**q[\"inputs\"]))!=q[\"expect\"]),None)\n        if not fail: raise RuntimeError(\"expected a failing case\")\n        q,got=fail\n        seen=[target]; definitions=[]\n        extra={}\n        payload=dict(inputs=q[\"inputs\"])\n        if op==\"observed\":\n            seen=[]\n            def on_call(frame,event,arg):\n                if event==\"call\":\n                    name=frame.f_code.co_name\n                    if name in defs and os.path.basename(frame.f_code.co_filename)==defs[name][0] and name not in seen:\n                        seen.append(name)\n            sys.setprofile(on_call)\n            try:\n                replay=fn(**q[\"inputs\"])\n            finally:\n                sys.setprofile(None)\n            assert replay==got\n            for name in seen:\n                assert not any(isinstance(n,(ast.If,ast.IfExp,ast.BoolOp,ast.For,ast.While,ast.Try,ast.Match,ast.comprehension)) for n in ast.walk(defs[name][1]))\n            extra=dict(execution=dict(complete=True,branches={}))\n            if len('\"inputs\":'+json.dumps(q[\"inputs\"],ensure_ascii=False,separators=(',',':')))>1024:\n                payload=dict(input_example=q[\"name\"])\n        for name in seen:\n            f,n=defs[name]\n            for call in ast.walk(n):\n                if op!=\"observed\" and isinstance(call,ast.Call) and isinstance(call.func,ast.Name) and call.func.id in defs and call.func.id not in seen: seen.append(call.func.id)\n            lines=files[f].splitlines()\n            definitions.append(dict(node=f+\":\"+str(n.body[0].lineno)+\":\"+str(n.body[0].col_offset+1),signature=lines[n.lineno-1],body=textwrap.dedent('\\n'.join(lines[n.body[0].lineno-1:n.end_lineno]))))\n        types={}\n        trees=[n for src in files.values() for n in ast.parse(src).body]\n        decls={n.name:n for n in trees if isinstance(n,ast.ClassDef)}\n        decls.update({n.targets[0].id:n for n in trees if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)})\n        def used_types(node):\n            for ref in ast.walk(node):\n                if isinstance(ref,ast.Name) and ref.id in decls and ref.id not in types:\n                    decl=decls[ref.id]\n                    types[ref.id]=ast.unparse(decl)\n                    used_types(decl)\n        for name in seen: used_types(defs[name][1])\n        rev=hashlib.sha256(json.dumps([sorted(files.items()),tests],separators=(',',':')).encode()).hexdigest()\n        print(json.dumps(dict(file=\"panel.py\",code=\"E_EXAMPLE\",message=\"Wrong output\",example=q[\"name\"],**(dict(difference=first_difference(q[\"expect\"],got)) if op!=\"packet\" else dict(expected=q[\"expect\"],actual=got)),repair=dict(revision=rev,entry=\"panel.py\",target=target,**payload,**extra,types=types,definitions=definitions)),separators=(\",\",\":\")))\n",
+  "commands": {
+    "game": {
+      "prior": [
+        "tide",
+        "test",
+        "space_invaders.tide"
+      ],
+      "current_full": [
+        "tide",
+        "test",
+        "space_invaders.tide"
+      ],
+      "current_diff": [
+        "tide",
+        "test",
+        "space_invaders.tide",
+        "--diff"
+      ],
+      "prior_executed": [
+        "tide",
+        "test",
+        "space_invaders.tide",
+        "--explain=executed"
+      ],
+      "diff_executed": [
+        "tide",
+        "test",
+        "space_invaders.tide",
+        "--diff",
+        "--explain=executed"
+      ]
+    },
+    "ledger": {
+      "prior": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current_full": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current_diff": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff"
+      ],
+      "prior_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--explain=executed"
+      ],
+      "diff_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain=executed"
+      ],
+      "prototype_diff_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain=executed"
+      ],
+      "prior_static": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--explain"
+      ],
+      "diff_static": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain"
+      ],
+      "python_diff_executed": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "observed",
+        "main"
+      ],
+      "python_static": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "packet",
+        "main"
+      ],
+      "python_diff_static": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "diff",
+        "main"
+      ]
+    },
+    "tail": {
+      "prior": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current_full": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current_diff": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff"
+      ],
+      "prior_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--explain=executed"
+      ],
+      "diff_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain=executed"
+      ],
+      "prototype_diff_executed": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain=executed"
+      ],
+      "prior_static": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--explain"
+      ],
+      "diff_static": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff",
+        "--explain"
+      ],
+      "python_diff_executed": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "observed",
+        "main"
+      ],
+      "python_static": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "packet",
+        "main"
+      ],
+      "python_diff_static": [
+        "python3",
+        "-IBS",
+        "prepared.py",
+        "diff",
+        "main"
+      ]
+    },
+    "passing_ledger": {
+      "prior": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "diff": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff"
+      ]
+    },
+    "passing_tail": {
+      "prior": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "current": [
+        "tide",
+        "test",
+        "panel.tide"
+      ],
+      "diff": [
+        "tide",
+        "test",
+        "panel.tide",
+        "--diff"
+      ]
+    },
+    "passing_game": {
+      "prior": [
+        "tide",
+        "test",
+        "apps/invaders_checks.tide"
+      ],
+      "current": [
+        "tide",
+        "test",
+        "apps/invaders_checks.tide"
+      ],
+      "diff": [
+        "tide",
+        "test",
+        "apps/invaders_checks.tide",
+        "--diff"
+      ]
+    },
+    "passing_balance": {
+      "prior": [
+        "tide",
+        "test",
+        "apps/balance.tide"
+      ],
+      "current": [
+        "tide",
+        "test",
+        "apps/balance.tide"
+      ],
+      "diff": [
+        "tide",
+        "test",
+        "apps/balance.tide",
+        "--diff"
+      ]
+    }
+  },
+  "sources": {
+    "ledger": {
+      "files": {
+        "panel.tide": "use posting\n\nmain opening:{Ledger} amount:i > {Ledger}\npost opening amount\n",
+        "posting.tide": "record Entry\nsequence:i balance:i\n\nrecord Ledger\nrows:*{Entry}\n\npost opening:{Ledger} amount:i > {Ledger}\nlet rows (get rows opening)\nlet entry (make Entry sequence (+ 1 (length rows)) balance (- amount 1))\nwith rows opening (append rows entry)\n",
+        "panel.py": "from posting import Ledger, post\n\ndef main(opening: Ledger, amount: int) -> Ledger:\n    return post(opening, amount)\n",
+        "posting.py": "from typing import TypedDict\n\nclass Entry(TypedDict):\n    sequence: int\n    balance: int\n\nclass Ledger(TypedDict):\n    rows: list[Entry]\n\ndef post(opening: Ledger, amount: int) -> Ledger:\n    rows = opening[\"rows\"]\n    entry = Entry(sequence=len(rows) + 1, balance=amount - 1)\n    return Ledger(rows=[*rows, entry])\n"
+      },
+      "example": "closing",
+      "bug": {
+        "tide": [
+          "(- amount 1)",
+          "amount"
+        ],
+        "python": [
+          "amount - 1",
+          "amount"
+        ]
+      },
+      "recipe": "opening.rows has 383 records, sequence=i+1 and balance=i%20 for i=0..382, amount=27; expect {rows:[...opening.rows,{sequence:384,balance:27}]}.",
+      "hashes": {
+        "panel.tide": "954adbca8eb6722b2357562d4799c02c6a6a64312f87c2607852c0ea151dc96d",
+        "posting.tide": "b2613bef6b6763327c975b4c43e21088c4e9c6cea43a9b2cc5fe34d33fc83641",
+        "panel.py": "68b4083f535a9666c498f6e311dff1ccf07998bf41253cfd72a686758b6c3d1c",
+        "posting.py": "e4769e1acda96faed71ecd25833321c734123a96c068e64df226176a20759557"
+      }
+    },
+    "tail": {
+      "files": {
+        "panel.tide": "use posting\n\nmain history:*i reading:i > *i\nstore history reading\n",
+        "posting.tide": "store history:*i reading:i > *i\nappend history (mod reading 10)\n",
+        "panel.py": "from posting import store\n\ndef main(history: list[int], reading: int) -> list[int]:\n    return store(history, reading)\n",
+        "posting.py": "def store(history: list[int], reading: int) -> list[int]:\n    return [*history, reading % 10]\n"
+      },
+      "example": "complete_reading",
+      "bug": {
+        "tide": [
+          "(mod reading 10)",
+          "reading"
+        ],
+        "python": [
+          "reading % 10",
+          "reading"
+        ]
+      },
+      "recipe": "history has 4095 values i%7 for i=0..4094, reading=82; expect [...history,82].",
+      "hashes": {
+        "panel.tide": "0b43ad1f9c43e5c0fc997ea34c8c1dbc1a17588507d990906ae594fa56cd0344",
+        "posting.tide": "a18597751a0bf629a0abd0fc400e22cddb4ad91abb1b41584386a80190dcb91f",
+        "panel.py": "f01bf19983666b8d6e1fe7b2c9f9369512a8ddf5c84d6278b56cab3c32f6e848",
+        "posting.py": "e979c085c5b3144aa6c02dcabd33ab4da3b0876fbcd059f5efe335ee7de98414"
+      }
+    }
+  },
+  "game": {
+    "entry": "apps/space_invaders.tide",
+    "module": "apps/invaders_game.tide",
+    "fault": [
+      "if hurt (tag Phase respawn)",
+      "if hurt (tag Phase paused)"
+    ],
+    "hashes": [
+      "3ed26d64cb8338ea62b31f97cd094434eaadb315b84878088d273ae09aa5dee6",
+      "e19efce2332b4efeeeb186e09e60f1f797d29ec581f69913c5810e6bd7c44ad4"
+    ]
+  },
+  "tools": {
+    "before": {
+      "checker": "e49e829400768ed3c9179c9eb75af39d8a8abf72b4d20ae48201b003c547993c",
+      "inspector": "28b38cb5730575a92c3e723947edd0a2bb0e450733298237ee597f5f70ee188c"
+    },
+    "prototype": {
+      "checker": "5bb601e63e869d27152c8124e28ef531bbfeb8eecb04852d535ef356040d1b67",
+      "inspector": "596e0b3d1a346d68b52b4e4cb12762414e1c46ae315c184c3e9b2af9dd7b30ac"
+    },
+    "after": {
+      "checker": "26942dd17d5ba817f1449d3dd2ce7a70200f6d07d230dac6cd6b9901d5284c44",
+      "inspector": "52808d38105c33d83f9c2322f57ff0c57bf05b42520b2f5dfe535325769aff8a"
+    }
+  },
+  "validation": [
+    {
+      "name": "typed mismatch and matching controls vs prior full diagnostics",
+      "cases": 64,
+      "types": [
+        "i",
+        "b",
+        "t",
+        "{Mood}",
+        "&ii",
+        "?&ii",
+        "&it",
+        "?&it",
+        "&ib",
+        "?&ib",
+        "&ti",
+        "?&ti",
+        "&tt",
+        "?&tt",
+        "&tb",
+        "?&tb",
+        "&bi",
+        "?&bi",
+        "&bt",
+        "?&bt",
+        "&bb",
+        "?&bb",
+        "*i",
+        "?i",
+        "*b",
+        "?b",
+        "*t",
+        "?t",
+        "*{Mood}",
+        "?{Mood}",
+        "{Box}",
+        "?{Box}",
+        "*{Box}"
+      ]
+    },
+    {
+      "name": "unexpected error, missing error, mismatching error detail",
+      "cases": 3
+    },
+    {
+      "name": "rule retains one-based event and leaf values",
+      "cases": 1
+    },
+    {
+      "name": "public revision-bound repair, public check and separate inputs on both repaired implementations",
+      "project": "ledger",
+      "node": "posting.tide:9:61",
+      "extra_inputs": 24
+    },
+    {
+      "name": "public revision-bound repair, public check and separate inputs on both repaired implementations",
+      "project": "tail",
+      "node": "posting.tide:2:17",
+      "extra_inputs": 24
+    },
+    {
+      "name": "forms with 4,097 leading CRLF lines and final function",
+      "cases": 1
+    },
+    {
+      "records": [
+        2047,
+        2048,
+        2049,
+        4096
+      ],
+      "encoded_input_sizes": [
+        517,
+        519,
+        520,
+        521,
+        527,
+        528,
+        529,
+        530,
+        1016,
+        1020,
+        1022,
+        1023,
+        1024,
+        1025,
+        1027,
+        1028,
+        1029,
+        1036,
+        1038,
+        1040,
+        1041,
+        1042,
+        2028,
+        2030,
+        2032,
+        2036,
+        2038,
+        2040,
+        2062,
+        2064,
+        2066
+      ]
+    },
+    {
+      "build": "make test install and make check-no-python completed on Linux x86-64. Container verifies the installed --diff --explain=executed on the imported game fault without an interpreter.",
+      "bootstrap": "forms on 4,097 leading CRLF lines and a final function returned line_limit in the prior package and main<TAB>7 in the current package."
+    }
+  ],
+  "benchmarks": {
+    "game": {
+      "prior": {
+        "sha256": "79c985ca7578c849dba341948176077e175e1e0916a905f0092cb19eec5f7cce",
+        "bytes": 505,
+        "tokens_o200k": 178,
+        "samples_ms": [
+          19.53542,
+          19.64417,
+          20.01628,
+          19.88854,
+          19.51503,
+          19.70628,
+          19.50562,
+          19.57381,
+          19.43559,
+          19.36618,
+          19.52041,
+          19.47976,
+          19.66899,
+          19.50823,
+          19.54515,
+          19.51597,
+          19.43847,
+          19.52414,
+          19.4453,
+          19.59316,
+          19.48461
+        ],
+        "median_ms": 19.52041
+      },
+      "current_full": {
+        "sha256": "79c985ca7578c849dba341948176077e175e1e0916a905f0092cb19eec5f7cce",
+        "bytes": 505,
+        "tokens_o200k": 178,
+        "samples_ms": [
+          19.59077,
+          19.52097,
+          19.81445,
+          19.81189,
+          19.56873,
+          19.53516,
+          19.47863,
+          19.43769,
+          19.58213,
+          19.47747,
+          19.59259,
+          19.64046,
+          19.72489,
+          19.68505,
+          19.56996,
+          19.46026,
+          19.37536,
+          19.47899,
+          19.64894,
+          19.50377,
+          19.6322
+        ],
+        "median_ms": 19.56996
+      },
+      "current_diff": {
+        "sha256": "996d2cc78e9bccbdff57a03830cf7576b9f4de5eb96fdb8101771e38fb47d24d",
+        "bytes": 191,
+        "tokens_o200k": 52,
+        "samples_ms": [
+          19.71319,
+          19.59589,
+          19.70122,
+          23.04041,
+          19.49668,
+          19.50632,
+          19.60924,
+          19.6394,
+          19.58039,
+          19.57999,
+          19.68461,
+          19.56638,
+          19.70347,
+          19.65737,
+          19.80627,
+          19.70946,
+          19.49183,
+          20.22571,
+          19.53927,
+          19.79373,
+          19.76156
+        ],
+        "median_ms": 19.65737
+      },
+      "prior_executed": {
+        "sha256": "bd30883a91a217225fc8aa959cbfff87211a75428ccdba9aca00c8ab3fd25602",
+        "bytes": 7904,
+        "tokens_o200k": 2616,
+        "samples_ms": [
+          22.73967,
+          22.80163,
+          22.64138,
+          23.19216,
+          22.61082,
+          22.50397,
+          22.50874,
+          22.4353,
+          22.63165,
+          22.59286,
+          23.01618,
+          22.65614,
+          22.75431,
+          22.63272,
+          22.63654,
+          22.75818,
+          22.51824,
+          22.7458,
+          22.49279,
+          22.69972,
+          23.03034
+        ],
+        "median_ms": 22.64138
+      },
+      "diff_executed": {
+        "sha256": "e669bb4fa0de1576dbc076dd890f27fed78b5b239103964333472111270c9de3",
+        "bytes": 7590,
+        "tokens_o200k": 2490,
+        "samples_ms": [
+          22.73456,
+          23.45775,
+          22.58483,
+          23.06727,
+          22.593,
+          22.67977,
+          22.62019,
+          22.53745,
+          22.60654,
+          22.55784,
+          22.57139,
+          22.49555,
+          22.62105,
+          22.60676,
+          22.45355,
+          22.33688,
+          22.3698,
+          22.88349,
+          22.44961,
+          22.47213,
+          22.70228
+        ],
+        "median_ms": 22.593,
+        "tokens_with_common_revision": 2460
+      }
+    },
+    "ledger": {
+      "prior": {
+        "sha256": "8ffb25c7e321d086a0a1529c8bbf5a37f1a46467d83fd133f5dca99994159da5",
+        "bytes": 22586,
+        "tokens_o200k": 6187,
+        "samples_ms": [
+          22.58139,
+          22.60114,
+          22.9427,
+          22.97682,
+          22.60312,
+          22.48196,
+          22.41047,
+          22.47485,
+          22.54971,
+          22.57614,
+          22.50081,
+          22.54478,
+          22.44037,
+          22.54453,
+          22.46184,
+          22.5513,
+          22.49102,
+          22.75767,
+          22.36817,
+          22.60181,
+          22.45743
+        ],
+        "median_ms": 22.54478
+      },
+      "current_full": {
+        "sha256": "8ffb25c7e321d086a0a1529c8bbf5a37f1a46467d83fd133f5dca99994159da5",
+        "bytes": 22586,
+        "tokens_o200k": 6187,
+        "samples_ms": [
+          23.08232,
+          22.96424,
+          23.47016,
+          23.23716,
+          23.03286,
+          22.84811,
+          22.93106,
+          22.89779,
+          23.0678,
+          22.98234,
+          23.04022,
+          22.99234,
+          22.88208,
+          23.03612,
+          23.07908,
+          22.91947,
+          22.98721,
+          22.94698,
+          22.85347,
+          23.0494,
+          23.11871
+        ],
+        "median_ms": 22.99234
+      },
+      "current_diff": {
+        "sha256": "dbde9f814a3ac6a1293d668af1190ebe409bf6e755bc3b43d901e3ddbd896e5a",
+        "bytes": 174,
+        "tokens_o200k": 49,
+        "samples_ms": [
+          19.4976,
+          19.49256,
+          19.88405,
+          19.77643,
+          19.5443,
+          19.59025,
+          19.31103,
+          19.96549,
+          19.52165,
+          19.5424,
+          19.66833,
+          19.51811,
+          19.58972,
+          19.53205,
+          19.44542,
+          19.57271,
+          19.60786,
+          19.49797,
+          19.57947,
+          19.5611,
+          19.52612
+        ],
+        "median_ms": 19.5443
+      },
+      "prior_executed": {
+        "sha256": "905c445e96df20e0715d5f7ab1c0723cd389c6a6b9cc1dc5a73d96f73690b905",
+        "bytes": 23218,
+        "tokens_o200k": 6374,
+        "samples_ms": [
+          29.12804,
+          28.97406,
+          29.37976,
+          29.02106,
+          29.15394,
+          28.97203,
+          28.92833,
+          29.13918,
+          28.96665,
+          28.99243,
+          28.99532,
+          29.04175,
+          29.24175,
+          29.05802,
+          29.05578,
+          29.17406,
+          28.85834,
+          29.14989,
+          28.81155,
+          29.20437,
+          28.9387
+        ],
+        "median_ms": 29.04175
+      },
+      "diff_executed": {
+        "sha256": "d68157962b576cb4900e590f191939eac59191e0eb50528862b6086a84f00508",
+        "bytes": 806,
+        "tokens_o200k": 235,
+        "samples_ms": [
+          21.60414,
+          21.71334,
+          21.85119,
+          21.62835,
+          21.53258,
+          21.4615,
+          21.32989,
+          21.71714,
+          21.40934,
+          21.46733,
+          21.4824,
+          21.49034,
+          21.67516,
+          21.50293,
+          21.39657,
+          21.39503,
+          21.48892,
+          21.47749,
+          21.40466,
+          21.54688,
+          21.65518
+        ],
+        "median_ms": 21.49034,
+        "tokens_with_common_revision": 202
+      },
+      "prototype_diff_executed": {
+        "sha256": "d68157962b576cb4900e590f191939eac59191e0eb50528862b6086a84f00508",
+        "bytes": 806,
+        "tokens_o200k": 235,
+        "samples_ms": [
+          23.52392,
+          23.16341,
+          23.88248,
+          23.50399,
+          23.2996,
+          23.19931,
+          23.15302,
+          23.29915,
+          23.23296,
+          23.06429,
+          23.32493,
+          23.16286,
+          23.26484,
+          23.52486,
+          23.4566,
+          23.11702,
+          23.17597,
+          23.24018,
+          23.09641,
+          23.29569,
+          23.32899
+        ],
+        "median_ms": 23.26484
+      },
+      "prior_static": {
+        "sha256": "396579d88fb3872d545cd3254f8dc2008de6f084ba5099d6a1120920a9cc23b1",
+        "bytes": 34381,
+        "tokens_o200k": 9435,
+        "samples_ms": [
+          25.41182,
+          25.64161,
+          27.19036,
+          25.49995,
+          25.21848,
+          25.22798,
+          25.16362,
+          25.22885,
+          25.20447,
+          25.22665,
+          25.22868,
+          25.23099,
+          25.363,
+          25.10189,
+          25.19819,
+          25.11946,
+          25.09584,
+          25.46525,
+          25.08896,
+          25.2349,
+          25.16259
+        ],
+        "median_ms": 25.22798
+      },
+      "diff_static": {
+        "sha256": "644656320cc303d149e1131604d9f7d558f54590541d37fb773b19534c54c2d7",
+        "bytes": 11969,
+        "tokens_o200k": 3296,
+        "samples_ms": [
+          22.27552,
+          22.15355,
+          23.28623,
+          22.60634,
+          22.13966,
+          22.03052,
+          22.07857,
+          22.32176,
+          22.098,
+          22.11711,
+          22.15682,
+          22.08038,
+          22.36789,
+          22.17348,
+          22.21038,
+          22.12268,
+          22.10686,
+          22.0981,
+          22.05916,
+          22.16267,
+          22.27464
+        ],
+        "median_ms": 22.15355
+      },
+      "python_diff_executed": {
+        "sha256": "669f37adab35d6c91afcb8a65bd1dab8e8d3f24de44793939600527e6e3eafcf",
+        "bytes": 848,
+        "tokens_o200k": 259,
+        "samples_ms": [
+          17.94258,
+          17.64673,
+          18.45236,
+          18.09579,
+          18.00615,
+          17.81775,
+          17.38762,
+          17.86442,
+          17.81125,
+          18.19311,
+          17.86526,
+          17.78633,
+          17.60914,
+          18.07915,
+          17.85518,
+          17.66086,
+          17.45678,
+          17.6207,
+          17.47371,
+          17.97611,
+          18.06035
+        ],
+        "median_ms": 17.85518,
+        "tokens_with_common_revision": 220
+      },
+      "python_static": {
+        "sha256": "cb5ff7a57040eccf4f948f73c2c4f6273e5c02fceb900ae489339079c557ef44",
+        "bytes": 34423,
+        "tokens_o200k": 9459,
+        "samples_ms": [
+          17.56962,
+          17.45595,
+          17.86209,
+          18.19351,
+          17.55533,
+          17.51157,
+          17.53769,
+          17.34502,
+          17.58544,
+          17.56576,
+          17.50269,
+          17.45161,
+          17.46984,
+          17.58922,
+          17.39598,
+          17.33189,
+          17.51887,
+          18.1104,
+          17.36885,
+          17.41253,
+          17.59885
+        ],
+        "median_ms": 17.51887
+      },
+      "python_diff_static": {
+        "sha256": "40c01825e0d4b07b88b46b54be5f09a454c8cb6d79cfbfd8a85bd289a223c1bb",
+        "bytes": 12011,
+        "tokens_o200k": 3320,
+        "samples_ms": [
+          17.33999,
+          17.32811,
+          17.62312,
+          17.50277,
+          17.39111,
+          17.30037,
+          17.33171,
+          17.77141,
+          17.33003,
+          17.31561,
+          17.43555,
+          17.40393,
+          17.34718,
+          17.37652,
+          17.32562,
+          17.27229,
+          17.3361,
+          17.48287,
+          17.54348,
+          17.27149,
+          17.40061
+        ],
+        "median_ms": 17.34718
+      }
+    },
+    "tail": {
+      "prior": {
+        "sha256": "b2da7c8265de20059894f4a7ff1a6c8613e43242f59bff724cd909c182ca92fd",
+        "bytes": 16524,
+        "tokens_o200k": 16420,
+        "samples_ms": [
+          10.17571,
+          10.4169,
+          10.11626,
+          10.05011,
+          10.06605,
+          10.07099,
+          10.04622,
+          10.39024,
+          10.21303,
+          10.23686,
+          10.1443,
+          10.40356,
+          10.68207,
+          10.2088,
+          10.01708,
+          10.03925,
+          10.04653,
+          10.09293,
+          9.97136,
+          9.97482,
+          9.95641
+        ],
+        "median_ms": 10.09293
+      },
+      "current_full": {
+        "sha256": "b2da7c8265de20059894f4a7ff1a6c8613e43242f59bff724cd909c182ca92fd",
+        "bytes": 16524,
+        "tokens_o200k": 16420,
+        "samples_ms": [
+          10.19383,
+          10.32305,
+          10.24024,
+          10.23812,
+          10.23176,
+          10.14448,
+          10.21802,
+          10.44434,
+          10.20617,
+          10.16464,
+          10.20152,
+          10.31156,
+          10.72143,
+          10.2289,
+          10.17075,
+          10.18314,
+          10.22791,
+          10.21264,
+          10.13367,
+          10.11482,
+          10.08528
+        ],
+        "median_ms": 10.21264
+      },
+      "current_diff": {
+        "sha256": "a46cfdf7ad62dd712b8af2128678f89b80438adccc5cb08229548bdf6aad1462",
+        "bytes": 170,
+        "tokens_o200k": 48,
+        "samples_ms": [
+          8.25094,
+          7.97604,
+          8.04104,
+          8.00606,
+          7.9724,
+          8.01684,
+          7.84785,
+          8.15676,
+          8.01738,
+          8.04746,
+          7.90081,
+          8.0473,
+          8.21037,
+          8.00149,
+          7.93078,
+          7.88644,
+          7.97222,
+          7.98726,
+          7.90736,
+          7.94895,
+          7.83916
+        ],
+        "median_ms": 7.98726
+      },
+      "prior_executed": {
+        "sha256": "46d21c645e4303c6b7b673de3d5ab03ffed45ba8f740ac47440b07cd3ccf2b9a",
+        "bytes": 16955,
+        "tokens_o200k": 16557,
+        "samples_ms": [
+          16.51449,
+          16.87252,
+          16.4668,
+          16.61591,
+          16.51926,
+          16.43039,
+          16.31574,
+          16.94649,
+          16.42288,
+          16.58964,
+          16.56174,
+          16.43229,
+          16.40665,
+          16.5104,
+          16.35189,
+          16.29218,
+          16.60115,
+          17.18944,
+          16.47284,
+          16.56877,
+          16.43888
+        ],
+        "median_ms": 16.5104
+      },
+      "diff_executed": {
+        "sha256": "6c80db7c88ffedc0312de1f7f93b0e5eeb898fbd6bbde12bb365248555bc6e33",
+        "bytes": 601,
+        "tokens_o200k": 185,
+        "samples_ms": [
+          8.52359,
+          8.42827,
+          8.53553,
+          8.57014,
+          8.49648,
+          8.52753,
+          8.46955,
+          8.76596,
+          8.4618,
+          8.56398,
+          8.54057,
+          8.67635,
+          9.68171,
+          8.55657,
+          8.46891,
+          8.49986,
+          8.66963,
+          8.48089,
+          8.49718,
+          8.4723,
+          8.3941
+        ],
+        "median_ms": 8.52359,
+        "tokens_with_common_revision": 148
+      },
+      "prototype_diff_executed": {
+        "sha256": "6c80db7c88ffedc0312de1f7f93b0e5eeb898fbd6bbde12bb365248555bc6e33",
+        "bytes": 601,
+        "tokens_o200k": 185,
+        "samples_ms": [
+          10.75545,
+          10.65157,
+          10.98349,
+          10.69802,
+          10.53597,
+          10.56756,
+          10.51362,
+          10.84338,
+          10.63951,
+          10.6578,
+          10.65353,
+          11.21884,
+          11.05799,
+          10.79291,
+          10.70739,
+          10.43143,
+          10.53801,
+          10.67416,
+          10.54798,
+          10.59225,
+          10.71917
+        ],
+        "median_ms": 10.6578
+      },
+      "prior_static": {
+        "sha256": "42997495685668231bb236f912c91a12399b5c3763b396192bd7b21405fed1d8",
+        "bytes": 25102,
+        "tokens_o200k": 24737,
+        "samples_ms": [
+          12.69071,
+          12.66682,
+          12.90202,
+          12.64684,
+          12.69147,
+          12.52661,
+          12.575,
+          12.66101,
+          12.57959,
+          12.73392,
+          12.7875,
+          12.85598,
+          12.99421,
+          12.62811,
+          12.4416,
+          12.63338,
+          12.77895,
+          12.59438,
+          12.48336,
+          12.56822,
+          12.58257
+        ],
+        "median_ms": 12.64684
+      },
+      "diff_static": {
+        "sha256": "1c2bd838fdbff886686aeddc55a18638e4bc74452359a85e4d4f2c58783bc0fb",
+        "bytes": 8748,
+        "tokens_o200k": 8365,
+        "samples_ms": [
+          10.44847,
+          10.79954,
+          10.67313,
+          10.64902,
+          10.39945,
+          10.56893,
+          10.41415,
+          10.4275,
+          10.43572,
+          10.41131,
+          10.48999,
+          10.7603,
+          10.99231,
+          10.51723,
+          10.54562,
+          10.39892,
+          10.53683,
+          10.43078,
+          10.53796,
+          10.46593,
+          10.46806
+        ],
+        "median_ms": 10.48999
+      },
+      "python_diff_executed": {
+        "sha256": "44305f5f139d8db0b67ba77c7bdb0bbfeb03c87090de35f5d04d00fdb39174a1",
+        "bytes": 652,
+        "tokens_o200k": 197,
+        "samples_ms": [
+          14.63809,
+          14.52202,
+          14.64063,
+          14.71586,
+          14.51348,
+          14.69384,
+          14.46672,
+          14.59213,
+          14.47999,
+          14.50925,
+          14.52373,
+          14.92234,
+          17.34493,
+          14.75419,
+          14.32091,
+          14.39962,
+          14.28551,
+          14.5255,
+          14.54605,
+          14.49894,
+          14.80856
+        ],
+        "median_ms": 14.5255,
+        "tokens_with_common_revision": 158
+      },
+      "python_static": {
+        "sha256": "8a9407a4da28f31bf9c1aac0af0c0af9058f5f9f89b173da0f4233c862529ecd",
+        "bytes": 25153,
+        "tokens_o200k": 24749,
+        "samples_ms": [
+          14.27996,
+          14.33404,
+          14.30733,
+          14.3355,
+          14.31198,
+          14.18672,
+          14.44907,
+          14.32246,
+          14.25703,
+          14.22627,
+          14.25761,
+          14.47825,
+          15.20937,
+          14.31472,
+          14.24934,
+          14.21402,
+          14.30437,
+          14.22919,
+          14.24641,
+          14.26351,
+          14.43032
+        ],
+        "median_ms": 14.30437
+      },
+      "python_diff_static": {
+        "sha256": "0459a855e134a93a51e787e5e4ca71c54ac4fe628a986edf32d04fdd160e7f05",
+        "bytes": 8799,
+        "tokens_o200k": 8377,
+        "samples_ms": [
+          14.22254,
+          14.32964,
+          14.88204,
+          14.27605,
+          14.21861,
+          14.22289,
+          14.22925,
+          14.3011,
+          14.19128,
+          14.24211,
+          14.25364,
+          14.29939,
+          14.61097,
+          14.26329,
+          14.15919,
+          14.15212,
+          14.17559,
+          14.28667,
+          14.1491,
+          14.21578,
+          14.16381
+        ],
+        "median_ms": 14.22925
+      }
+    },
+    "passing_ledger": {
+      "prior": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          22.14224,
+          22.15513,
+          22.31457,
+          22.24791,
+          22.08209,
+          22.19302,
+          22.1829,
+          22.1356,
+          22.18155,
+          22.36581,
+          22.19278,
+          22.18489,
+          22.46658,
+          22.13191,
+          22.19714,
+          21.97777,
+          22.34686,
+          22.10592,
+          22.14896,
+          22.2546,
+          21.99253
+        ],
+        "median_ms": 22.1829
+      },
+      "current": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          19.46431,
+          19.94166,
+          19.90407,
+          19.46554,
+          19.44365,
+          19.28139,
+          19.27626,
+          19.40588,
+          19.42871,
+          19.42699,
+          19.5385,
+          19.45997,
+          19.66379,
+          19.38737,
+          19.42296,
+          19.45515,
+          19.72118,
+          19.35008,
+          19.34205,
+          19.76768,
+          19.34359
+        ],
+        "median_ms": 19.44365
+      },
+      "diff": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          19.35779,
+          19.45567,
+          19.66005,
+          19.53252,
+          19.37947,
+          19.40738,
+          19.3665,
+          19.53058,
+          19.31435,
+          19.4023,
+          19.36972,
+          19.7091,
+          19.66019,
+          19.43794,
+          19.4398,
+          19.2684,
+          19.42551,
+          19.37721,
+          19.40712,
+          20.03412,
+          19.47355
+        ],
+        "median_ms": 19.42551
+      }
+    },
+    "passing_tail": {
+      "prior": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          9.70121,
+          9.81275,
+          9.81773,
+          9.74671,
+          9.69635,
+          9.74321,
+          9.68811,
+          9.93886,
+          9.77885,
+          9.80046,
+          9.75193,
+          9.70343,
+          10.02806,
+          10.03316,
+          9.80214,
+          9.77791,
+          9.87256,
+          9.68924,
+          9.73483,
+          9.97471,
+          9.77621
+        ],
+        "median_ms": 9.77791
+      },
+      "current": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          7.88218,
+          7.9535,
+          7.94443,
+          8.27473,
+          7.77267,
+          7.80461,
+          7.76497,
+          7.94626,
+          7.87669,
+          7.87381,
+          7.80707,
+          7.95062,
+          8.16834,
+          7.96008,
+          7.98682,
+          7.86507,
+          7.87332,
+          7.83917,
+          7.8592,
+          7.903,
+          7.81594
+        ],
+        "median_ms": 7.87669
+      },
+      "diff": {
+        "sha256": "eea3ccc29c55cf3ae352a24d73b56671ebeaf03b47483cf61fab217b08838838",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          7.81116,
+          7.79567,
+          7.80199,
+          7.78596,
+          7.67283,
+          7.67581,
+          7.71494,
+          7.94881,
+          7.72315,
+          7.76747,
+          7.68673,
+          7.74201,
+          7.93178,
+          7.86161,
+          7.82457,
+          7.71025,
+          7.71867,
+          7.67313,
+          7.64304,
+          8.09381,
+          7.69524
+        ],
+        "median_ms": 7.74201
+      }
+    },
+    "passing_game": {
+      "prior": {
+        "sha256": "a9c2373274457e437c88c78f984f0fbffa6971efacb4611396e11f43e4a9509f",
+        "bytes": 14,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          28.87922,
+          28.45825,
+          29.01959,
+          28.99647,
+          28.4801,
+          28.65919,
+          28.70071,
+          28.47408,
+          28.50365,
+          28.48761,
+          28.44736,
+          28.51031,
+          28.75685,
+          28.84095,
+          28.67868,
+          28.67757,
+          28.43814,
+          28.47224,
+          28.60507,
+          28.63831,
+          28.59005
+        ],
+        "median_ms": 28.60507
+      },
+      "current": {
+        "sha256": "a9c2373274457e437c88c78f984f0fbffa6971efacb4611396e11f43e4a9509f",
+        "bytes": 14,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          28.96852,
+          28.83557,
+          28.91923,
+          29.04115,
+          28.9026,
+          28.74537,
+          28.60362,
+          28.90387,
+          28.85201,
+          28.80982,
+          28.76631,
+          28.96962,
+          28.95418,
+          28.96197,
+          28.99824,
+          28.70006,
+          28.66871,
+          28.69239,
+          28.6847,
+          29.17251,
+          28.90134
+        ],
+        "median_ms": 28.90134
+      },
+      "diff": {
+        "sha256": "a9c2373274457e437c88c78f984f0fbffa6971efacb4611396e11f43e4a9509f",
+        "bytes": 14,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          28.67193,
+          28.78335,
+          28.58245,
+          28.64493,
+          28.64254,
+          28.92039,
+          28.71758,
+          28.70518,
+          28.86207,
+          28.62895,
+          28.62138,
+          28.84137,
+          28.86528,
+          28.74445,
+          29.17425,
+          28.63945,
+          28.51079,
+          28.72028,
+          28.70848,
+          28.98159,
+          28.77343
+        ],
+        "median_ms": 28.71758
+      }
+    },
+    "passing_balance": {
+      "prior": {
+        "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          6.1051,
+          6.03755,
+          6.43047,
+          6.22739,
+          6.29842,
+          6.01854,
+          6.06501,
+          6.01236,
+          6.04833,
+          6.0978,
+          6.21608,
+          6.0818,
+          6.20095,
+          6.18359,
+          6.0484,
+          6.06627,
+          6.13287,
+          5.96899,
+          6.31546,
+          6.11357,
+          6.43441
+        ],
+        "median_ms": 6.1051
+      },
+      "current": {
+        "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          6.02873,
+          5.99202,
+          6.39417,
+          6.29744,
+          6.12547,
+          6.08427,
+          6.03982,
+          6.1032,
+          6.10462,
+          6.14203,
+          6.16536,
+          6.19196,
+          6.1574,
+          6.24052,
+          6.1109,
+          6.0377,
+          6.08289,
+          6.42633,
+          6.12706,
+          6.22919,
+          6.14741
+        ],
+        "median_ms": 6.12706
+      },
+      "diff": {
+        "sha256": "996244061db6220dc407aed68eb0ae171fc3350d3d7db809adf31ef85f0e5877",
+        "bytes": 13,
+        "tokens_o200k": 5,
+        "samples_ms": [
+          6.07404,
+          6.09234,
+          6.37688,
+          6.2637,
+          6.14748,
+          6.19672,
+          6.11277,
+          6.0517,
+          6.24878,
+          6.19812,
+          6.24485,
+          6.31322,
+          6.33068,
+          6.31257,
+          6.22636,
+          6.15209,
+          6.03909,
+          6.32785,
+          6.45276,
+          6.24873,
+          6.3811
+        ],
+        "median_ms": 6.24485
+      }
+    }
+  },
+  "packet_samples": {
+    "game": {
+      "current_diff": {
+        "file": "invaders_game.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 178,
+        "column": 1,
+        "example": "surviving_hit",
+        "difference": {
+          "path": "/mode",
+          "expected": "respawn",
+          "actual": "paused"
+        }
+      },
+      "diff_executed": {
+        "file": "invaders_game.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 178,
+        "column": 1,
+        "example": "surviving_hit",
+        "difference": {
+          "path": "/mode",
+          "expected": "respawn",
+          "actual": "paused"
+        },
+        "repair": {
+          "revision": "ba577ce7ecd6d888d5544d12673414dcf64861563088b4788472465f99e8439a",
+          "entry": "space_invaders.tide",
+          "target": "tick",
+          "inputs": {
+            "world": {
+              "mode": "playing",
+              "age": 1,
+              "ship": 30,
+              "direction": 1,
+              "aliens": [
+                {
+                  "x": 10,
+                  "y": 4,
+                  "row": 0
+                }
+              ],
+              "shot": {
+                "none": true
+              },
+              "bomb": {
+                "some": [
+                  30,
+                  18
+                ]
+              },
+              "bunkers": [],
+              "lives": 3,
+              "score": 0,
+              "grace": 0,
+              "volley": 0
+            },
+            "keys": {
+              "left": false,
+              "right": false,
+              "fire": false,
+              "start": false,
+              "pause": false
+            }
+          },
+          "records": {
+            "Game": {
+              "mode": "{Phase}",
+              "age": "i",
+              "ship": "i",
+              "direction": "i",
+              "aliens": "*{Alien}",
+              "shot": "?&ii",
+              "bomb": "?&ii",
+              "bunkers": "*{Bunker}",
+              "lives": "i",
+              "score": "i",
+              "grace": "i",
+              "volley": "i"
+            },
+            "Keys": {
+              "left": "b",
+              "right": "b",
+              "fire": "b",
+              "start": "b",
+              "pause": "b"
+            },
+            "Alien": {
+              "x": "i",
+              "y": "i",
+              "row": "i"
+            },
+            "Bunker": {
+              "x": "i",
+              "hp": "i"
+            }
+          },
+          "variants": {
+            "Phase": [
+              "lost",
+              "paused",
+              "playing",
+              "ready",
+              "respawn",
+              "won"
+            ]
+          },
+          "execution": {
+            "complete": true,
+            "branches": {
+              "invaders_game.tide:140:1": [
+                "playing"
+              ],
+              "invaders_game.tide:142:9": [
+                "else"
+              ],
+              "invaders_game.tide:44:11": [
+                "else"
+              ],
+              "invaders_game.tide:44:35": [
+                "else"
+              ],
+              "invaders_game.tide:46:1": [
+                "else"
+              ],
+              "invaders_game.tide:46:31": [
+                "else"
+              ],
+              "invaders_game.tide:49:1": [
+                "then"
+              ],
+              "invaders_game.tide:110:10": [
+                "rhs"
+              ],
+              "invaders_game.tide:53:1": [
+                "rhs"
+              ],
+              "invaders_game.tide:53:11": [
+                "then"
+              ],
+              "invaders_game.tide:111:10": [
+                "then"
+              ],
+              "invaders_game.tide:57:15": [
+                "else"
+              ],
+              "invaders_game.tide:60:1": [
+                "none"
+              ],
+              "invaders_game.tide:60:16": [
+                "else"
+              ],
+              "invaders_game.tide:72:1": [
+                "some"
+              ],
+              "invaders_game.tide:74:19": [
+                "then"
+              ],
+              "invaders_game.tide:75:1": [
+                "else"
+              ],
+              "invaders_game.tide:114:16": [
+                "some"
+              ],
+              "invaders_game.tide:114:11": [
+                "short"
+              ],
+              "invaders_game.tide:117:11": [
+                "else"
+              ],
+              "invaders_game.tide:119:12": [
+                "else"
+              ],
+              "invaders_game.tide:93:1": [
+                "none"
+              ],
+              "invaders_game.tide:120:11": [
+                "else"
+              ],
+              "invaders_game.tide:121:13": [
+                "rhs"
+              ],
+              "invaders_game.tide:78:1": [
+                "some"
+              ],
+              "invaders_game.tide:78:19": [
+                "rhs"
+              ],
+              "invaders_game.tide:30:1": [
+                "rhs"
+              ],
+              "invaders_game.tide:122:10": [
+                "rhs"
+              ],
+              "invaders_game.tide:123:30": [
+                "then"
+              ],
+              "invaders_game.tide:125:10": [
+                "rhs"
+              ],
+              "invaders_game.tide:102:36": [
+                "rhs"
+              ],
+              "invaders_game.tide:125:7": [
+                "else"
+              ],
+              "invaders_game.tide:126:7": [
+                "else"
+              ],
+              "invaders_game.tide:127:7": [
+                "then"
+              ],
+              "invaders_game.tide:128:30": [
+                "else"
+              ],
+              "invaders_game.tide:129:10": [
+                "rhs"
+              ],
+              "invaders_game.tide:129:7": [
+                "else"
+              ],
+              "invaders_game.tide:130:10": [
+                "rhs"
+              ],
+              "invaders_game.tide:130:7": [
+                "then"
+              ],
+              "invaders_game.tide:131:10": [
+                "else"
+              ],
+              "invaders_game.tide:133:8": [
+                "then"
+              ],
+              "invaders_game.tide:134:28": [
+                "else"
+              ]
+            }
+          },
+          "definitions": [
+            {
+              "node": "invaders_game.tide:140:1",
+              "signature": "tick world:{Game} keys:{Keys} > {Game}",
+              "body": "(match (get mode world) ready (start_if_requested world keys) playing (if (get pause keys) (with mode world (tag Phase paused)) (battle world keys)) paused (if (or (get pause keys) (get start keys)) (with mode world (tag Phase playing)) world) won (start_if_requested world keys) lost (start_if_requested world keys) respawn (if (> (get grace world) (+ (shield_ticks) 1)) (with grace world (- (get grace world) 1)) (with mode (with grace world (shield_ticks)) (tag Phase playing))) end)"
+            },
+            {
+              "node": "invaders_game.tide:105:1",
+              "signature": "battle world:{Game} keys:{Keys} > {Game}",
+              "body": "(let age (+ (get age world) 1) (let ship (move_ship (get ship world) keys) (let old_army (get aliens world) (let dx (get direction world) (let moving (eq (mod age (formation_period (length old_army))) 0) (let drop (and moving (at_wall old_army dx)) (let army (if moving (march old_army dx drop) old_army) (let shot (advance_shot (get shot world) (get fire keys) ship) (let bomb (advance_bomb (get bomb world) army age (get volley world)) (let fired (and (case (get bomb world) true p false) (case bomb false p true)) (let old_forts (get bunkers world) (let shot_blocked (bunker_blocks old_forts shot) (let forts (if shot_blocked (damage_bunkers old_forts shot) old_forts) (let bomb_blocked (bunker_blocks forts bomb) (let points (if shot_blocked 0 (hit_points army shot)) (let alive (if (> points 0) (survivors army shot) army) (let contact (and (not bomb_blocked) (bolt_at bomb ship (ship_y) 1)) (let hurt (and contact (eq (get grace world) 0)) (let lives (- (get lives world) (if hurt 1 0)) (make Game mode (if (or (eq lives 0) (invaded alive)) (tag Phase lost) (if (eq (length alive) 0) (tag Phase won) (if hurt (tag Phase paused) (tag Phase playing)))) age age ship ship direction (if drop (- 0 dx) dx) aliens alive shot (if (or shot_blocked (> points 0)) (nil &ii) shot) bomb (if (or bomb_blocked contact) (nil &ii) bomb) bunkers (if bomb_blocked (damage_bunkers forts bomb) forts) lives lives score (+ (get score world) points) grace (if hurt (+ (respawn_ticks) (shield_ticks)) (if (> (get grace world) 0) (- (get grace world) 1) 0)) volley (+ (get volley world) (if fired 1 0))))))))))))))))))))))"
+            },
+            {
+              "node": "invaders_game.tide:44:1",
+              "signature": "move_ship x:i keys:{Keys} > i",
+              "body": "(let dx (- (if (get right keys) 2 0) (if (get left keys) 2 0)) (let dest (+ x dx) (if (< dest (left_edge)) (left_edge) (if (> dest (right_edge)) (right_edge) dest))))"
+            },
+            {
+              "node": "invaders_game.tide:18:1",
+              "signature": "left_edge > i",
+              "body": "2"
+            },
+            {
+              "node": "invaders_game.tide:21:1",
+              "signature": "right_edge > i",
+              "body": "58"
+            },
+            {
+              "node": "invaders_game.tide:49:1",
+              "signature": "formation_period count:i > i",
+              "body": "(if (< count 4) 2 (if (< count 11) 4 6))"
+            },
+            {
+              "node": "invaders_game.tide:52:1",
+              "signature": "at_wall army:*{Alien} dx:i > b",
+              "body": "(fold army false found index enemy (or found (if (> dx 0) (eq (get x enemy) (right_edge)) (eq (get x enemy) (left_edge)))))"
+            },
+            {
+              "node": "invaders_game.tide:56:1",
+              "signature": "march army:*{Alien} dx:i drop:b > *{Alien}",
+              "body": "(fold army (list {Alien} 0) moved index enemy (append moved (if drop (with y enemy (+ (get y enemy) 1)) (with x enemy (+ (get x enemy) dx)))))"
+            },
+            {
+              "node": "invaders_game.tide:60:1",
+              "signature": "advance_shot previous:?&ii fire:b ship:i > ?&ii",
+              "body": "(case previous (if fire (some (pair ship (- (ship_y) 1))) (nil &ii)) p (if (> (second p) 3) (some (pair (first p) (- (second p) 1))) (nil &ii)))"
+            },
+            {
+              "node": "invaders_game.tide:72:1",
+              "signature": "advance_bomb previous:?&ii army:*{Alien} age:i volley:i > ?&ii",
+              "body": "(case previous (if (and (> (length army) 0) (eq (mod age 13) 0)) (aim_bomb army volley) (nil &ii)) p (let y (+ (second p) (if (eq (mod age 2) 0) 1 0)) (if (> y (ship_y)) (nil &ii) (some (pair (first p) y)))))"
+            },
+            {
+              "node": "invaders_game.tide:24:1",
+              "signature": "ship_y > i",
+              "body": "19"
+            },
+            {
+              "node": "invaders_game.tide:81:1",
+              "signature": "bunker_blocks forts:*{Bunker} bolt:?&ii > b",
+              "body": "(fold forts false blocked index fort (or blocked (and (> (get hp fort) 0) (bolt_at bolt (get x fort) (bunker_y) 2))))"
+            },
+            {
+              "node": "invaders_game.tide:93:1",
+              "signature": "hit_points army:*{Alien} bolt:?&ii > i",
+              "body": "(case bolt 0 p (fold army 0 points index enemy (if (enemy_hit enemy bolt) (* 10 (- 3 (get row enemy))) points)))"
+            },
+            {
+              "node": "invaders_game.tide:78:1",
+              "signature": "bolt_at bolt:?&ii x:i y:i radius:i > b",
+              "body": "(case bolt false p (and (eq (second p) y) (within (first p) x radius)))"
+            },
+            {
+              "node": "invaders_game.tide:30:1",
+              "signature": "within x:i center:i radius:i > b",
+              "body": "(and (not (< x (- center radius))) (not (> x (+ center radius))))"
+            },
+            {
+              "node": "invaders_game.tide:102:1",
+              "signature": "invaded army:*{Alien} > b",
+              "body": "(fold army false landed index enemy (or landed (not (< (get y enemy) (ship_y)))))"
+            },
+            {
+              "node": "invaders_game.tide:155:1",
+              "signature": "respawn_ticks > i",
+              "body": "8"
+            },
+            {
+              "node": "invaders_game.tide:152:1",
+              "signature": "shield_ticks > i",
+              "body": "8"
+            }
+          ]
+        }
+      }
+    },
+    "ledger": {
+      "current_diff": {
+        "file": "panel.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 6,
+        "column": 1,
+        "example": "closing",
+        "difference": {
+          "path": "/rows/383/balance",
+          "expected": 27,
+          "actual": 26
+        }
+      },
+      "diff_executed": {
+        "file": "panel.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 6,
+        "column": 1,
+        "example": "closing",
+        "difference": {
+          "path": "/rows/383/balance",
+          "expected": 27,
+          "actual": 26
+        },
+        "repair": {
+          "revision": "a977b6ab52ca684f55de0aa39826417c8693ce8683a3fdc2d13b50bef5514036",
+          "entry": "panel.tide",
+          "target": "main",
+          "input_example": "closing",
+          "records": {
+            "Ledger": {
+              "rows": "*{Entry}"
+            },
+            "Entry": {
+              "sequence": "i",
+              "balance": "i"
+            }
+          },
+          "execution": {
+            "complete": true,
+            "branches": {}
+          },
+          "definitions": [
+            {
+              "node": "4:1",
+              "signature": "main opening:{Ledger} amount:i > {Ledger}",
+              "body": "(post opening amount)"
+            },
+            {
+              "node": "posting.tide:8:1",
+              "signature": "post opening:{Ledger} amount:i > {Ledger}",
+              "body": "(let rows (get rows opening) (let entry (make Entry sequence (+ 1 (length rows)) balance (- amount 1)) (with rows opening (append rows entry))))"
+            }
+          ]
+        }
+      },
+      "python_diff_executed": {
+        "file": "panel.py",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "example": "closing",
+        "difference": {
+          "path": "/rows/383/balance",
+          "expected": 27,
+          "actual": 26
+        },
+        "repair": {
+          "revision": "e309d030af0e02da531c711b8ea8a1d3b143ee51f9f2f0bc93bb08fb3e4c7693",
+          "entry": "panel.py",
+          "target": "main",
+          "input_example": "closing",
+          "execution": {
+            "complete": true,
+            "branches": {}
+          },
+          "types": {
+            "Ledger": "class Ledger(TypedDict):\n    rows: list[Entry]",
+            "Entry": "class Entry(TypedDict):\n    sequence: int\n    balance: int"
+          },
+          "definitions": [
+            {
+              "node": "panel.py:4:5",
+              "signature": "def main(opening: Ledger, amount: int) -> Ledger:",
+              "body": "return post(opening, amount)"
+            },
+            {
+              "node": "posting.py:11:5",
+              "signature": "def post(opening: Ledger, amount: int) -> Ledger:",
+              "body": "rows = opening[\"rows\"]\nentry = Entry(sequence=len(rows) + 1, balance=amount - 1)\nreturn Ledger(rows=[*rows, entry])"
+            }
+          ]
+        }
+      }
+    },
+    "tail": {
+      "current_diff": {
+        "file": "panel.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 6,
+        "column": 1,
+        "example": "complete_reading",
+        "difference": {
+          "path": "/4095",
+          "expected": 82,
+          "actual": 2
+        }
+      },
+      "diff_executed": {
+        "file": "panel.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 6,
+        "column": 1,
+        "example": "complete_reading",
+        "difference": {
+          "path": "/4095",
+          "expected": 82,
+          "actual": 2
+        },
+        "repair": {
+          "revision": "d9c7ccc6001dc3ccc2f6fb1535c4c4ca76981672f40df5ff6dd9c9cef7ee737b",
+          "entry": "panel.tide",
+          "target": "main",
+          "input_example": "complete_reading",
+          "execution": {
+            "complete": true,
+            "branches": {}
+          },
+          "definitions": [
+            {
+              "node": "4:1",
+              "signature": "main history:*i reading:i > *i",
+              "body": "(store history reading)"
+            },
+            {
+              "node": "posting.tide:2:1",
+              "signature": "store history:*i reading:i > *i",
+              "body": "(append history (mod reading 10))"
+            }
+          ]
+        }
+      },
+      "python_diff_executed": {
+        "file": "panel.py",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "example": "complete_reading",
+        "difference": {
+          "path": "/4095",
+          "expected": 82,
+          "actual": 2
+        },
+        "repair": {
+          "revision": "6e4f8b27c5349f12b83ae540dea10d29b7424361f2ddc3ad88c14cd0f4714b7d",
+          "entry": "panel.py",
+          "target": "main",
+          "input_example": "complete_reading",
+          "execution": {
+            "complete": true,
+            "branches": {}
+          },
+          "types": {},
+          "definitions": [
+            {
+              "node": "panel.py:4:5",
+              "signature": "def main(history: list[int], reading: int) -> list[int]:",
+              "body": "return store(history, reading)"
+            },
+            {
+              "node": "posting.py:2:5",
+              "signature": "def store(history: list[int], reading: int) -> list[int]:",
+              "body": "return [*history, reading % 10]"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "record_controls": {
+    "method": "Current installed tide test. Same imported Ledger and Entry schemas and same posting module, a fresh process per case, rotating serial order on CPU 2. Root returns constant 0 for input-only controls, or its unchanged argument for identity controls. Input is the prefix of the ledger workload with the indicated count. The identity example also specifies those records as expected output.",
+    "results": {
+      "empty": {
+        "count": 0,
+        "identity": false,
+        "samples_ms": [
+          6.08237,
+          5.86438,
+          5.80895,
+          5.84178,
+          5.99195,
+          5.81916,
+          5.73317,
+          5.81067,
+          5.98313,
+          5.80501,
+          5.98692,
+          6.11056,
+          5.71973,
+          5.68494,
+          5.95014,
+          5.90945,
+          5.8355,
+          5.80937,
+          5.84925,
+          5.84056,
+          5.96587
+        ],
+        "median_ms": 5.84178
+      },
+      "input_only": {
+        "count": 383,
+        "identity": false,
+        "samples_ms": [
+          12.08501,
+          12.07555,
+          12.1834,
+          12.05072,
+          11.96321,
+          12.04511,
+          12.1574,
+          12.11827,
+          12.20472,
+          12.11066,
+          12.40625,
+          11.9639,
+          12.01066,
+          12.0503,
+          12.09894,
+          12.13726,
+          12.02279,
+          12.04587,
+          12.18687,
+          12.21153,
+          12.06146
+        ],
+        "median_ms": 12.08501
+      },
+      "empty_identity": {
+        "count": 0,
+        "identity": true,
+        "samples_ms": [
+          6.20166,
+          5.86815,
+          5.79343,
+          5.76526,
+          5.76977,
+          5.84581,
+          5.85097,
+          5.68456,
+          5.75978,
+          6.0668,
+          5.68049,
+          5.98611,
+          6.07095,
+          5.8518,
+          5.78184,
+          5.79398,
+          5.90434,
+          5.94572,
+          5.89497,
+          5.83193,
+          6.02283
+        ],
+        "median_ms": 5.85097
+      },
+      "identity": {
+        "count": 383,
+        "identity": true,
+        "samples_ms": [
+          18.38253,
+          18.51017,
+          18.38429,
+          18.40154,
+          18.40351,
+          18.54127,
+          18.34027,
+          18.38451,
+          18.53013,
+          18.62101,
+          18.41938,
+          18.35556,
+          18.34943,
+          18.39462,
+          18.35755,
+          18.38027,
+          18.47059,
+          18.33697,
+          18.42127,
+          18.56697,
+          18.31137
+        ],
+        "median_ms": 18.39462
+      }
+    }
+  }
+}

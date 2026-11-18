@@ -1,0 +1,29 @@
+example given balance
+{"inputs":{"opening":100,"entries":[-20,15,-8,10]},"expect":97}
+
+example empty balance
+{"inputs":{"opening":-4,"entries":[]},"expect":-4}
+
+example mixed balance
+{"inputs":{"opening":-7,"entries":[0,3,-9,15]},"expect":2}
+
+example zero balance
+{"inputs":{"opening":0,"entries":[1,-1]},"expect":0}
+
+example high balance
+{"inputs":{"opening":9223372036854775806,"entries":[1]},"expect":9223372036854775807}
+
+example low balance
+{"inputs":{"opening":-9223372036854775807,"entries":[-1]},"expect":-9223372036854775808}
+
+example over balance
+{"inputs":{"opening":9223372036854775807,"entries":[1]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example under balance
+{"inputs":{"opening":-9223372036854775808,"entries":[-1]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example temporary_over balance
+{"inputs":{"opening":9223372036854775807,"entries":[1,-1]},"expect_error":{"code":"E_OVERFLOW"}}
+
+example temporary_under balance
+{"inputs":{"opening":-9223372036854775808,"entries":[-1,1]},"expect_error":{"code":"E_OVERFLOW"}}

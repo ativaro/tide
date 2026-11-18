@@ -1,0 +1,1183 @@
+{
+  "date": "2026-11-17",
+  "cpu": "AMD Ryzen 9 9950X3D",
+  "logical_cpu": 2,
+  "os": "Linux 7.3.4-1-cachyos x86_64 GNU/Linux",
+  "measurement": "Elapsed wall time of spawning the installed CLI through exit, including stdout/stderr. Three warmups and 21 measured rounds on CPU 2, task and implementation order rotated. One process at a time. No model sessions. CPython only in the separate prepared-context comparison.",
+  "versions": {
+    "before": "Prior package, experiment 44",
+    "prototype": "First working nested evaluator, before indexing JSON and sharing leaf updates",
+    "after": "Final package"
+  },
+  "checker_sha256": {
+    "before": "9448f725a5d86d6b15a4aba26f4d1f12aa09f280f04eec6198d3c3c0c044a4b3",
+    "prototype": "b7bd886f08cb411b3404288dfa99b9e31aa5a8f7886181c25b9d6b0f8f220562",
+    "after": "e49e829400768ed3c9179c9eb75af39d8a8abf72b4d20ae48201b003c547993c"
+  },
+  "generated_fixtures": {
+    "items.tide": "record Item\nn:i\n\nrecord Box\nrows:*{Item}\n\ncount_items rows:*{Item} > i\nlength rows\n\nlast_value box:{Box} > ?{Item}\nat (get rows box) (- (length (get rows box)) 1)\n\nrebuild box:{Box} > {Box}\nwith rows box (get rows box)\n\nexample sample last_value\n{\"inputs\":{\"box\":{\"rows\":[{\"n\":1}]}},\"expect\":{\"some\":{\"n\":1}}}\n",
+    "rows_4096": "Array of records {n:i}, i = 0..4095 in ascending order. For 512 use the first 512. Balance and flat-record controls use 4096 ones. Render input is the game main result.",
+    "contracts": "record Point\nx:i y:t\n\nmain rows:*{Point} > i\nlength rows\n\nexample rows main\n{\"inputs\":{\"rows\":[{\"x\":1,\"y\":\"🐈\"},{\"x\":2,\"y\":\"z\"}]},\"expect\":2}\n",
+    "contract_hash_order": [
+      "original",
+      "field reorder and equivalent Unicode escape",
+      "first x changed from 1 to 3",
+      "list elements reversed"
+    ],
+    "fault": "In apps/invaders_game.tide battle, replace if hurt (tag Phase respawn) with if hurt (tag Phase paused). Root is an unchanged copy of apps/space_invaders.tide. Both diagnostic timings use cwd of copies and a relative entry name."
+  },
+  "sources": {
+    "apps/space_invaders.tide": "3ed26d64cb8338ea62b31f97cd094434eaadb315b84878088d273ae09aa5dee6",
+    "apps/invaders_game.tide": "e19efce2332b4efeeeb186e09e60f1f797d29ec581f69913c5810e6bd7c44ad4",
+    "apps/invaders_checks.tide": "47629892a0fd536a636caad7861661f0bbddc28271d718202b9076daf841c8aa",
+    "apps/balance.tide": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25",
+    "experimente/43_native_records/project.tide": "4c5ed142070ffee8821f5bfb84e10bb2156e08fc9f479a64113e6aaaa3d78f49"
+  },
+  "validation": {
+    "tests": [
+      "Startwelt, Darstellung und sechs Spielphasen",
+      "4.096 Records lesen, letztes Element per Option, 4.097 verwerfen",
+      "append am Limit",
+      "Fehlende, zusätzliche, doppelte und falsch typisierte Felder",
+      "i64-Grenzen, JSON-Abstand und Zahlenlängen",
+      "Beispielvertrag invariant für Schlüsselreihenfolge und Unicode-Escapes; Inhalts- und Sequenzänderung erkannt",
+      "Verschachtelte Listen primitiver Werte bleiben als E_BACKEND gekennzeichnet",
+      "Fehler in importierter Spiellogik und unabhängige Prüfung der übrigen Zustandsfelder",
+      "Revisionsgebundene Reparatur über den Projekteinstieg"
+    ],
+    "contracts": {
+      "prototype": [
+        "682cc93815883d0723f1fc7b23c3d5ceb6de85fc067f7128fe11f6f1c4f1ba20",
+        "b1a5fc6f8c4323a7aefbc3567247c2671448e516ef856e93a2a5898d86909c9c",
+        "af3416d632b39c4f231ad78166c25169b43282a7bf045ba9814dd6c834b27c89",
+        "091be7c81727adf6a6a531429539c045965ae1cd97c5ff27220fe1005e1e590b"
+      ],
+      "after": [
+        "868f65ed0669234ef3d344dd57e5cce3c79f2c827fa314b86c690f48a6ed9e7a",
+        "868f65ed0669234ef3d344dd57e5cce3c79f2c827fa314b86c690f48a6ed9e7a",
+        "dc0409f7b8011fc78efad7cd32e70e4efc138f884e366623adf31f99a73c4a08",
+        "61e7a65f3f0666c795d76d13025fadcb35267faa639efdda064f6d7778399a1d"
+      ]
+    },
+    "diagnosis": {
+      "--explain": {
+        "definitions": 26,
+        "records": [
+          "Game",
+          "Keys",
+          "Alien",
+          "Bunker"
+        ],
+        "expected_mode": "respawn",
+        "actual_mode": "paused"
+      },
+      "--explain=executed": {
+        "definitions": 18,
+        "records": [
+          "Game",
+          "Keys",
+          "Alien",
+          "Bunker"
+        ],
+        "expected_mode": "respawn",
+        "actual_mode": "paused"
+      }
+    }
+  },
+  "previous_game_result": {
+    "code": "E_BACKEND",
+    "message": "This invocation is unavailable in the native TIDE package."
+  },
+  "benchmarks": {
+    "game_test": {
+      "argv": [
+        "test",
+        "apps/space_invaders.tide"
+      ],
+      "results": {
+        "prototype": {
+          "samples_ms": [
+            21.2545,
+            21.4118,
+            21.313,
+            21.2746,
+            21.5033,
+            22.0837,
+            21.4065,
+            21.5699,
+            21.6083,
+            21.078,
+            20.9612,
+            21.589,
+            21.0896,
+            21.2944,
+            20.1364,
+            20.0148,
+            20.0729,
+            20.5292,
+            20.0755,
+            20.3306,
+            19.8875
+          ],
+          "output_sha256": "c7b13a35e7531b2f6f9316f9471cafecd6610acf4ee6fe360ff662dd4717415f",
+          "output_bytes": 14,
+          "median_ms": 21.2545
+        },
+        "after": {
+          "samples_ms": [
+            20.6313,
+            20.38,
+            20.8874,
+            20.5223,
+            20.8949,
+            21.157,
+            20.343,
+            20.4528,
+            21.1586,
+            20.6658,
+            20.5518,
+            20.5052,
+            20.6093,
+            20.9368,
+            19.4298,
+            19.4202,
+            19.5186,
+            19.7442,
+            19.4466,
+            19.5537,
+            19.459
+          ],
+          "output_sha256": "c7b13a35e7531b2f6f9316f9471cafecd6610acf4ee6fe360ff662dd4717415f",
+          "output_bytes": 14,
+          "median_ms": 20.5052
+        }
+      }
+    },
+    "game_draw": {
+      "argv": [
+        "run",
+        "apps/space_invaders.tide",
+        "--call",
+        "draw",
+        "--inputs",
+        {
+          "json_bytes": 695,
+          "sha256": "f23fbf6dabbee20fd2ceaabf937b5a561ff4faf45b29ddc57de0c9af8978847e"
+        }
+      ],
+      "results": {
+        "prototype": {
+          "samples_ms": [
+            21.2477,
+            21.2583,
+            21.0164,
+            21.005,
+            21.3322,
+            21.9751,
+            21.6722,
+            21.5869,
+            21.0954,
+            21.1731,
+            21.0089,
+            21.3213,
+            21.2412,
+            20.4948,
+            20.3357,
+            20.1429,
+            20.3592,
+            20.2641,
+            20.0976,
+            20.3301,
+            20.0602
+          ],
+          "output_sha256": "779e2ebb4f6b528da9967093d206fa1f10531b131077e87bf6c14c4ebd2fed79",
+          "output_bytes": 2372,
+          "median_ms": 21.0164
+        },
+        "after": {
+          "samples_ms": [
+            19.9471,
+            20.1528,
+            20.2416,
+            20.3187,
+            20.5692,
+            20.4632,
+            20.0091,
+            20.1088,
+            19.9128,
+            20.0197,
+            20.3923,
+            20.0727,
+            20.2719,
+            18.9664,
+            19.3679,
+            19.0018,
+            19.4047,
+            19.006,
+            19.0095,
+            19.1856,
+            19.0771
+          ],
+          "output_sha256": "779e2ebb4f6b528da9967093d206fa1f10531b131077e87bf6c14c4ebd2fed79",
+          "output_bytes": 2372,
+          "median_ms": 20.0091
+        }
+      }
+    },
+    "items_512": {
+      "argv": [
+        "run",
+        "items.tide",
+        "--call",
+        "count_items",
+        "--inputs",
+        {
+          "json_bytes": 5020,
+          "sha256": "a5a5d30bd8ce2a13252f6b3edf0d86d149e20f3cd9327bb69d63f89da2285737"
+        }
+      ],
+      "results": {
+        "prototype": {
+          "samples_ms": [
+            30.2003,
+            29.9135,
+            29.4871,
+            29.5893,
+            29.9196,
+            30.218,
+            29.4381,
+            29.8766,
+            29.7092,
+            29.4794,
+            30.0244,
+            29.7986,
+            31.083,
+            27.9297,
+            28.5476,
+            28.0401,
+            28.0034,
+            28.1148,
+            28.0415,
+            28.1872,
+            29.0249
+          ],
+          "output_sha256": "240269e94afb4bbc4c643851e366bf4f0d870ff0753d250b854f748cf3516285",
+          "output_bytes": 4,
+          "median_ms": 29.4871
+        },
+        "after": {
+          "samples_ms": [
+            10.492,
+            10.4253,
+            10.8466,
+            10.7525,
+            11.8131,
+            10.5525,
+            10.2044,
+            10.3162,
+            10.2751,
+            10.1994,
+            10.6899,
+            10.5169,
+            10.3485,
+            9.9067,
+            9.8874,
+            9.8757,
+            10.1259,
+            9.8206,
+            9.8233,
+            9.8692,
+            9.8073
+          ],
+          "output_sha256": "240269e94afb4bbc4c643851e366bf4f0d870ff0753d250b854f748cf3516285",
+          "output_bytes": 4,
+          "median_ms": 10.2751
+        }
+      }
+    },
+    "items_4096": {
+      "argv": [
+        "run",
+        "items.tide",
+        "--call",
+        "count_items",
+        "--inputs",
+        {
+          "json_bytes": 43956,
+          "sha256": "9a2588a01048d84baa97358c1cbf12788483ae78d34c6d1215c79dacb12f48b6"
+        }
+      ],
+      "results": {
+        "prototype": {
+          "samples_ms": [
+            229.8268,
+            229.4379,
+            233.843,
+            227.6461,
+            231.7965,
+            229.0091,
+            230.5686,
+            230.4359,
+            229.0871,
+            228.2928,
+            227.7558,
+            227.9362,
+            229.3975,
+            217.3018,
+            216.129,
+            218.3962,
+            217.729,
+            217.338,
+            219.5589,
+            219.8094,
+            218.3702
+          ],
+          "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+          "output_bytes": 5,
+          "median_ms": 227.9362
+        },
+        "after": {
+          "samples_ms": [
+            42.8666,
+            42.8505,
+            42.888,
+            42.252,
+            42.7196,
+            42.4795,
+            42.2637,
+            44.4237,
+            42.3008,
+            42.2849,
+            42.6115,
+            41.9193,
+            42.1361,
+            41.2469,
+            40.4382,
+            40.3768,
+            40.4575,
+            40.5728,
+            41.1875,
+            40.4565,
+            40.7539
+          ],
+          "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+          "output_bytes": 5,
+          "median_ms": 42.252
+        }
+      }
+    },
+    "nested_last_4096": {
+      "argv": [
+        "run",
+        "items.tide",
+        "--call",
+        "last_value",
+        "--inputs",
+        {
+          "json_bytes": 43964,
+          "sha256": "97aa5bb2261c0c7a69d6f285441b1785a2cb45cd19b63bef1b92c7536f1ea37e"
+        }
+      ],
+      "results": {
+        "prototype": {
+          "samples_ms": [
+            236.3117,
+            236.0007,
+            234.089,
+            234.3062,
+            240.9048,
+            235.9253,
+            237.6731,
+            234.9813,
+            233.2332,
+            233.8263,
+            234.2485,
+            238.1227,
+            240.3411,
+            225.8532,
+            226.621,
+            221.986,
+            220.5671,
+            227.5335,
+            224.0613,
+            223.2076,
+            221.8489
+          ],
+          "output_sha256": "ba55e80099ec278eb35f3e16d9a58878bbf00bc602fdddea1359e4ea2bcb2601",
+          "output_bytes": 20,
+          "median_ms": 234.089
+        },
+        "after": {
+          "samples_ms": [
+            45.4769,
+            46.1834,
+            46.8659,
+            45.4329,
+            48.6124,
+            45.7105,
+            47.9059,
+            44.7796,
+            46.6815,
+            45.1556,
+            44.9037,
+            45.6807,
+            46.088,
+            43.6706,
+            43.25,
+            42.9978,
+            43.1362,
+            44.0172,
+            44.5366,
+            43.2177,
+            43.0025
+          ],
+          "output_sha256": "ba55e80099ec278eb35f3e16d9a58878bbf00bc602fdddea1359e4ea2bcb2601",
+          "output_bytes": 20,
+          "median_ms": 45.1556
+        }
+      }
+    },
+    "balance_4096": {
+      "argv": [
+        "run",
+        "apps/balance.tide",
+        "--call",
+        "balance",
+        "--inputs",
+        {
+          "json_bytes": 8217,
+          "sha256": "4a4ffd6467e4fed1304a005772f8bfb8ebc2ae9105e2c675792f327e74410064"
+        }
+      ],
+      "results": {
+        "before": {
+          "samples_ms": [
+            8.2592,
+            7.8453,
+            8.0741,
+            7.7976,
+            8.2639,
+            8.1996,
+            8.5184,
+            8.2444,
+            7.8776,
+            8.1698,
+            7.9456,
+            7.8172,
+            8.6529,
+            7.5653,
+            7.4026,
+            7.3746,
+            7.4703,
+            7.6238,
+            7.6632,
+            7.5833,
+            7.4057
+          ],
+          "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+          "output_bytes": 5,
+          "median_ms": 7.8453
+        },
+        "prototype": {
+          "samples_ms": [
+            7.6597,
+            7.7032,
+            8.0435,
+            8.8774,
+            8.1741,
+            8.1931,
+            7.7469,
+            8.1475,
+            7.9135,
+            7.7547,
+            10.2545,
+            7.8747,
+            8.4507,
+            7.5853,
+            7.3499,
+            7.2785,
+            7.4339,
+            7.5735,
+            7.535,
+            7.381,
+            7.3179
+          ],
+          "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+          "output_bytes": 5,
+          "median_ms": 7.7469
+        },
+        "after": {
+          "samples_ms": [
+            8.0071,
+            7.9611,
+            8.0756,
+            7.9642,
+            8.25,
+            8.2789,
+            8.1252,
+            7.8448,
+            8.1467,
+            8.0858,
+            7.6119,
+            7.4312,
+            8.2913,
+            7.5137,
+            7.8264,
+            7.3367,
+            7.444,
+            7.6639,
+            7.5047,
+            7.3673,
+            7.2875
+          ],
+          "output_sha256": "25ac87b7309b7946b51c32e824793ff48b56b735efa16875cf33e4ba67523d91",
+          "output_bytes": 5,
+          "median_ms": 7.8448
+        }
+      }
+    },
+    "flat_record_4096": {
+      "argv": [
+        "run",
+        "experimente/43_native_records/project.tide",
+        "--inputs",
+        {
+          "json_bytes": 8220,
+          "sha256": "fb17e2fc8d22a516dff05f19b69f21404d39e3a37a74f0e356dfe8d29e66584c"
+        }
+      ],
+      "results": {
+        "before": {
+          "samples_ms": [
+            19.3862,
+            19.4631,
+            19.4072,
+            19.3952,
+            19.6138,
+            19.5417,
+            19.473,
+            19.5055,
+            19.3167,
+            20.03,
+            18.9635,
+            19.2175,
+            19.716,
+            18.4003,
+            18.4546,
+            18.4945,
+            18.3414,
+            18.5392,
+            18.4762,
+            18.28,
+            18.3841
+          ],
+          "output_sha256": "ea465ae5d187e6d593a5111a97444ce372974f6b11d1aac6e71d8f922e9a9958",
+          "output_bytes": 6,
+          "median_ms": 19.3167
+        },
+        "prototype": {
+          "samples_ms": [
+            22.373,
+            20.4801,
+            21.247,
+            20.651,
+            20.8794,
+            20.5942,
+            20.3095,
+            20.794,
+            20.375,
+            20.9088,
+            20.4192,
+            20.8805,
+            20.7464,
+            19.6893,
+            19.1653,
+            19.6987,
+            19.491,
+            20.3291,
+            19.5174,
+            19.9153,
+            19.5004
+          ],
+          "output_sha256": "ea465ae5d187e6d593a5111a97444ce372974f6b11d1aac6e71d8f922e9a9958",
+          "output_bytes": 6,
+          "median_ms": 20.4192
+        },
+        "after": {
+          "samples_ms": [
+            20.1585,
+            20.6117,
+            20.9166,
+            20.6158,
+            21.163,
+            20.357,
+            20.2979,
+            20.1745,
+            20.2141,
+            20.7527,
+            20.1367,
+            20.2153,
+            20.6195,
+            19.277,
+            19.3851,
+            19.9765,
+            19.1262,
+            19.5038,
+            19.1866,
+            19.1788,
+            19.4642
+          ],
+          "output_sha256": "ea465ae5d187e6d593a5111a97444ce372974f6b11d1aac6e71d8f922e9a9958",
+          "output_bytes": 6,
+          "median_ms": 20.1745
+        }
+      }
+    },
+    "--explain": {
+      "argv": [
+        "test",
+        "space_invaders.tide",
+        "--explain"
+      ],
+      "results": {
+        "after": {
+          "samples_ms": [
+            22.1745,
+            21.8676,
+            22.6359,
+            22.4131,
+            22.4193,
+            22.6036,
+            22.288,
+            22.0588,
+            22.3174,
+            22.5393,
+            22.2674,
+            22.3356,
+            22.2079,
+            22.7127,
+            21.0604,
+            21.4522,
+            20.8914,
+            21.5115,
+            21.3244,
+            21.29,
+            21.1543
+          ],
+          "output_sha256": "24c8db0f7b6c488e4a54a9952505b93cd613c166713947b35e7089f76e9eaf60",
+          "output_bytes": 8216,
+          "output_tokens_o200k": 2695,
+          "median_ms": 22.2079
+        }
+      }
+    },
+    "--explain=executed": {
+      "argv": [
+        "test",
+        "space_invaders.tide",
+        "--explain=executed"
+      ],
+      "results": {
+        "after": {
+          "samples_ms": [
+            23.3425,
+            23.3552,
+            23.8212,
+            23.4798,
+            23.6062,
+            24.2244,
+            23.4031,
+            23.4137,
+            23.354,
+            23.5986,
+            23.1167,
+            23.8475,
+            23.4971,
+            23.7875,
+            22.3845,
+            22.6288,
+            22.2973,
+            22.9517,
+            22.2066,
+            22.3516,
+            22.2178
+          ],
+          "output_sha256": "bd30883a91a217225fc8aa959cbfff87211a75428ccdba9aca00c8ab3fd25602",
+          "output_bytes": 7904,
+          "output_tokens_o200k": 2616,
+          "median_ms": 23.3552
+        }
+      }
+    }
+  },
+  "prepared_context_comparison": {
+    "source": "experimente/44_native_varianten/messung.json",
+    "source_sha256": "6be942031d66098ce79de31e6156535e0db845e8f9d1cd3bdfeda468cc66dcfa",
+    "rounds": 21,
+    "warmups": 3,
+    "cpu": 2,
+    "python": "Python 3.14.10",
+    "checker_sha256": "e49e829400768ed3c9179c9eb75af39d8a8abf72b4d20ae48201b003c547993c",
+    "cases": {
+      "gleichstand": {
+        "static": {
+          "output_tokens_o200k": 277,
+          "output_sha256": "d5498397eb920b0857cbbbebc028b04d6a0476c4897d0651589b3f27239173bb",
+          "packet": {
+            "file": "panel.tide",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "line": 8,
+            "column": 1,
+            "example": "earlier_id",
+            "expected": 7,
+            "actual": 19,
+            "repair": {
+              "revision": "d9888030d259ed2c50bd02c0aec29ed8333ef0f81daaeaab82cfa49b74da5c7f",
+              "entry": "panel.tide",
+              "target": "winner",
+              "inputs": {
+                "data": {
+                  "mode": "oldest",
+                  "first_id": 19,
+                  "next_id": 7
+                }
+              },
+              "records": {
+                "Ranking": {
+                  "mode": "{Tie}",
+                  "first_id": "i",
+                  "next_id": "i"
+                }
+              },
+              "variants": {
+                "Tie": [
+                  "newest",
+                  "oldest"
+                ]
+              },
+              "definitions": [
+                {
+                  "node": "4:1",
+                  "signature": "winner data:{Ranking} > i",
+                  "body": "(let a (get first_id data) (let b (get next_id data) (match (get mode data) oldest (smaller a b) newest (larger a b) end)))"
+                },
+                {
+                  "node": "policies.tide:11:1",
+                  "signature": "larger left:i right:i > i",
+                  "body": "(if (> left right) left right)"
+                },
+                {
+                  "node": "policies.tide:8:1",
+                  "signature": "smaller left:i right:i > i",
+                  "body": "(if (> left right) left right)"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            6.0829,
+            5.9687,
+            6.0508,
+            6.0376,
+            5.9434,
+            5.9892,
+            5.9203,
+            5.9979,
+            6.0188,
+            5.9318,
+            5.9381,
+            5.9509,
+            5.8383,
+            5.9136,
+            5.9138,
+            5.9177,
+            6.0651,
+            6.1345,
+            5.944,
+            5.9256,
+            5.9344
+          ],
+          "median_ms": 5.944
+        },
+        "executed": {
+          "output_tokens_o200k": 272,
+          "output_sha256": "2b3178bd73d808c5066e114b701a52831b41914f5740211a6610ba246e5314cc",
+          "packet": {
+            "file": "panel.tide",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "line": 8,
+            "column": 1,
+            "example": "earlier_id",
+            "expected": 7,
+            "actual": 19,
+            "repair": {
+              "revision": "d9888030d259ed2c50bd02c0aec29ed8333ef0f81daaeaab82cfa49b74da5c7f",
+              "entry": "panel.tide",
+              "target": "winner",
+              "inputs": {
+                "data": {
+                  "mode": "oldest",
+                  "first_id": 19,
+                  "next_id": 7
+                }
+              },
+              "records": {
+                "Ranking": {
+                  "mode": "{Tie}",
+                  "first_id": "i",
+                  "next_id": "i"
+                }
+              },
+              "variants": {
+                "Tie": [
+                  "newest",
+                  "oldest"
+                ]
+              },
+              "execution": {
+                "complete": true,
+                "branches": {
+                  "6:1": [
+                    "oldest"
+                  ],
+                  "policies.tide:8:1": [
+                    "then"
+                  ]
+                }
+              },
+              "definitions": [
+                {
+                  "node": "4:1",
+                  "signature": "winner data:{Ranking} > i",
+                  "body": "(let a (get first_id data) (let b (get next_id data) (match (get mode data) oldest (smaller a b) newest (larger a b) end)))"
+                },
+                {
+                  "node": "policies.tide:8:1",
+                  "signature": "smaller left:i right:i > i",
+                  "body": "(if (> left right) left right)"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            6.1789,
+            6.04,
+            5.9547,
+            5.8945,
+            5.9717,
+            5.9151,
+            5.9661,
+            5.9806,
+            5.8816,
+            5.9529,
+            5.9858,
+            5.8702,
+            5.9305,
+            5.9296,
+            5.8897,
+            5.9164,
+            6.0896,
+            6.027,
+            5.9837,
+            5.9788,
+            5.8863
+          ],
+          "median_ms": 5.9547
+        },
+        "python_static": {
+          "output_tokens_o200k": 310,
+          "output_sha256": "aac5afe54535ee344b3f1c36ca3d7eaf1b1644fa66760c2e422104fa9ce270d6",
+          "packet": {
+            "file": "panel.py",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "example": "earlier_id",
+            "expected": 7,
+            "actual": 19,
+            "repair": {
+              "revision": "e284a5f757dd832b1eca19e37aa60228a6adb3cd3ac13c754b2b2b91fc6a426a",
+              "entry": "panel.py",
+              "target": "winner",
+              "inputs": {
+                "data": {
+                  "mode": "oldest",
+                  "first_id": 19,
+                  "next_id": 7
+                }
+              },
+              "types": {
+                "Ranking": "class Ranking(TypedDict):\n    mode: Tie\n    first_id: int\n    next_id: int",
+                "Tie": "Tie = Literal['newest', 'oldest']"
+              },
+              "definitions": [
+                {
+                  "node": "panel.py:4:5",
+                  "signature": "def winner(data: Ranking) -> int:",
+                  "body": "a, b = data[\"first_id\"], data[\"next_id\"]\nmatch data[\"mode\"]:\n    case \"oldest\": return smaller(a, b)\n    case \"newest\": return larger(a, b)\nraise ValueError(\"unknown mode\")"
+                },
+                {
+                  "node": "policies.py:11:5",
+                  "signature": "def smaller(left: int, right: int) -> int:",
+                  "body": "return left if left > right else right"
+                },
+                {
+                  "node": "policies.py:14:5",
+                  "signature": "def larger(left: int, right: int) -> int:",
+                  "body": "return left if left > right else right"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            16.7338,
+            16.6427,
+            16.5744,
+            16.8805,
+            16.7757,
+            16.5109,
+            16.793,
+            16.5772,
+            16.8335,
+            16.681,
+            16.7315,
+            16.6074,
+            16.7897,
+            16.7698,
+            16.6308,
+            16.6936,
+            16.5892,
+            16.6695,
+            16.7042,
+            16.566,
+            16.6911
+          ],
+          "median_ms": 16.6911
+        }
+      },
+      "rundung": {
+        "static": {
+          "output_tokens_o200k": 293,
+          "output_sha256": "faa811791a1bbd79497f24fbf9940a653042583c68501ab31785e417ddb5dd74",
+          "packet": {
+            "file": "panel.tide",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "line": 10,
+            "column": 1,
+            "example": "half_at_even",
+            "expected": 2,
+            "actual": 3,
+            "repair": {
+              "revision": "f0e58bd3e5e339c1018008b46d06c76649647eb0db1e329f83ce2411f8b0f1e0",
+              "entry": "panel.tide",
+              "target": "round_tenths",
+              "inputs": {
+                "value": 25,
+                "policy": "even_half"
+              },
+              "variants": {
+                "Rounding": [
+                  "even_half",
+                  "upper_half"
+                ]
+              },
+              "definitions": [
+                {
+                  "node": "4:1",
+                  "signature": "round_tenths value:i policy:{Rounding} > i",
+                  "body": "(if (< value 0) (fail \"negative\") (let whole (div value 10) (let rest (mod value 10) (if (< rest 5) whole (if (> rest 5) (+ whole 1) (match policy upper_half (upper_units whole) even_half (even_units whole) end))))))"
+                },
+                {
+                  "node": "policies.tide:5:1",
+                  "signature": "even_units whole:i > i",
+                  "body": "(if (eq (mod whole 2) 1) whole (+ whole 1))"
+                },
+                {
+                  "node": "policies.tide:8:1",
+                  "signature": "upper_units whole:i > i",
+                  "body": "(+ whole 1)"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            6.2291,
+            6.1113,
+            6.1088,
+            6.0501,
+            6.1759,
+            6.1172,
+            6.0829,
+            6.0802,
+            6.0859,
+            6.0587,
+            6.1094,
+            6.1084,
+            6.0893,
+            6.1482,
+            6.4579,
+            6.2103,
+            6.192,
+            6.886,
+            6.0995,
+            6.0988,
+            6.1078
+          ],
+          "median_ms": 6.1088
+        },
+        "executed": {
+          "output_tokens_o200k": 315,
+          "output_sha256": "fca15424f6b760f363adb36f802ca2ef7f07f492ffaa01e23aefb46c2fb45778",
+          "packet": {
+            "file": "panel.tide",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "line": 10,
+            "column": 1,
+            "example": "half_at_even",
+            "expected": 2,
+            "actual": 3,
+            "repair": {
+              "revision": "f0e58bd3e5e339c1018008b46d06c76649647eb0db1e329f83ce2411f8b0f1e0",
+              "entry": "panel.tide",
+              "target": "round_tenths",
+              "inputs": {
+                "value": 25,
+                "policy": "even_half"
+              },
+              "variants": {
+                "Rounding": [
+                  "even_half",
+                  "upper_half"
+                ]
+              },
+              "execution": {
+                "complete": true,
+                "branches": {
+                  "4:1": [
+                    "else"
+                  ],
+                  "7:1": [
+                    "else"
+                  ],
+                  "7:22": [
+                    "else"
+                  ],
+                  "8:4": [
+                    "even_half"
+                  ],
+                  "policies.tide:5:1": [
+                    "else"
+                  ]
+                }
+              },
+              "definitions": [
+                {
+                  "node": "4:1",
+                  "signature": "round_tenths value:i policy:{Rounding} > i",
+                  "body": "(if (< value 0) (fail \"negative\") (let whole (div value 10) (let rest (mod value 10) (if (< rest 5) whole (if (> rest 5) (+ whole 1) (match policy upper_half (upper_units whole) even_half (even_units whole) end))))))"
+                },
+                {
+                  "node": "policies.tide:5:1",
+                  "signature": "even_units whole:i > i",
+                  "body": "(if (eq (mod whole 2) 1) whole (+ whole 1))"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            6.3216,
+            6.1869,
+            6.0996,
+            6.1895,
+            6.1583,
+            6.0774,
+            6.0851,
+            6.1534,
+            6.0925,
+            6.2071,
+            6.1848,
+            6.0927,
+            6.5028,
+            6.2542,
+            6.2886,
+            6.254,
+            6.2983,
+            6.1767,
+            6.1927,
+            6.1463,
+            6.186
+          ],
+          "median_ms": 6.186
+        },
+        "python_static": {
+          "output_tokens_o200k": 315,
+          "output_sha256": "9b3f11ce05e54c6fa724627fccab14212bea9e3732e5aea6450053802b4c2e15",
+          "packet": {
+            "file": "panel.py",
+            "code": "E_EXAMPLE",
+            "message": "Wrong output",
+            "example": "half_at_even",
+            "expected": 2,
+            "actual": 3,
+            "repair": {
+              "revision": "d2d1ab84d27f0ad2b2faf2b7bb526e20fe3ebca5be81a2636ab77d1e424563f4",
+              "entry": "panel.py",
+              "target": "round_tenths",
+              "inputs": {
+                "value": 25,
+                "policy": "even_half"
+              },
+              "types": {
+                "Rounding": "Rounding = Literal['even_half', 'upper_half']"
+              },
+              "definitions": [
+                {
+                  "node": "panel.py:4:5",
+                  "signature": "def round_tenths(value: int, policy: Rounding) -> int:",
+                  "body": "if value < 0: raise ValueError(\"negative\")\nwhole, rest = divmod(value, 10)\nif rest < 5: return whole\nif rest > 5: return whole + 1\nmatch policy:\n    case \"upper_half\": return upper_units(whole)\n    case \"even_half\": return even_units(whole)\nraise ValueError(\"unknown policy\")"
+                },
+                {
+                  "node": "policies.py:9:5",
+                  "signature": "def upper_units(whole: int) -> int:",
+                  "body": "return whole + 1"
+                },
+                {
+                  "node": "policies.py:6:5",
+                  "signature": "def even_units(whole: int) -> int:",
+                  "body": "return whole if whole % 2 == 1 else whole + 1"
+                }
+              ]
+            }
+          },
+          "samples_ms": [
+            16.2067,
+            16.2089,
+            16.2426,
+            16.3068,
+            16.1482,
+            16.2195,
+            16.4884,
+            16.1663,
+            16.2911,
+            16.3375,
+            16.2264,
+            16.2367,
+            16.3704,
+            16.2845,
+            16.1327,
+            16.3649,
+            16.1451,
+            16.2142,
+            16.3047,
+            16.3783,
+            16.2273
+          ],
+          "median_ms": 16.2367
+        }
+      }
+    }
+  }
+}

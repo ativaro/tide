@@ -1,0 +1,4 @@
+use rulebook
+
+relay amount:i threshold:i > i
+policy amount threshold

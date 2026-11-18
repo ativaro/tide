@@ -1,0 +1,2 @@
+span start:i stop:i > i
+- stop start

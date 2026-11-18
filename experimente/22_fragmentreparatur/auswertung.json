@@ -1,0 +1,720 @@
+{
+  "messung": {
+    "all": {
+      "arms": {
+        "B": {
+          "time": 17.057748200000333,
+          "tokens": 80125.0,
+          "uncached": 3361.5,
+          "prep": 0.4253651860003629,
+          "visible": 304.0,
+          "thought": 265.5,
+          "out": 568.0,
+          "clis": 6,
+          "shells": 26,
+          "with_shell": 6,
+          "solved": 6,
+          "whole": 12,
+          "edits": 12
+        },
+        "F": {
+          "time": 18.169634381999913,
+          "tokens": 59914.5,
+          "uncached": 12106.5,
+          "prep": 0.43169953200003874,
+          "visible": 285.0,
+          "thought": 435.5,
+          "out": 723.5,
+          "clis": 6,
+          "shells": 21,
+          "with_shell": 6,
+          "solved": 6,
+          "whole": 0,
+          "edits": 12
+        },
+        "P": {
+          "time": 8.393940338000448,
+          "tokens": 19724.0,
+          "uncached": 19649.5,
+          "prep": 0.023113401499813335,
+          "visible": 127.0,
+          "thought": 261.0,
+          "out": 390.0,
+          "clis": 6,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 6,
+          "whole": 0,
+          "edits": 12
+        }
+      },
+      "pairs": {
+        "F-B": {
+          "time": {
+            "d": 1.029280009499871,
+            "wins": 2
+          },
+          "tokens": {
+            "d": -20210.5,
+            "wins": 4
+          },
+          "uncached": {
+            "d": -178.5,
+            "wins": 3
+          },
+          "visible": {
+            "d": -16.0,
+            "wins": 5
+          },
+          "out": {
+            "d": 150.0,
+            "wins": 2
+          },
+          "thought": {
+            "d": 166.0,
+            "wins": 2
+          },
+          "prep": {
+            "d": -0.00044844549938716227,
+            "wins": 3
+          },
+          "shell": {
+            "d": -1.0,
+            "wins": 3
+          }
+        },
+        "F-P": {
+          "time": {
+            "d": 9.099035939499572,
+            "wins": 0
+          },
+          "tokens": {
+            "d": 40217.5,
+            "wins": 0
+          },
+          "uncached": {
+            "d": -7555.5,
+            "wins": 3
+          },
+          "visible": {
+            "d": 139.5,
+            "wins": 0
+          },
+          "out": {
+            "d": 290.5,
+            "wins": 1
+          },
+          "thought": {
+            "d": 132.0,
+            "wins": 1
+          },
+          "prep": {
+            "d": 0.40897653249930954,
+            "wins": 0
+          },
+          "shell": {
+            "d": 3.5,
+            "wins": 0
+          }
+        }
+      }
+    },
+    "dispatch": {
+      "arms": {
+        "B": {
+          "time": 17.929824522000672,
+          "tokens": 59795,
+          "uncached": 2846,
+          "prep": 0.41322648000004847,
+          "visible": 321,
+          "thought": 240,
+          "out": 561,
+          "clis": 3,
+          "shells": 11,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 6,
+          "edits": 6
+        },
+        "F": {
+          "time": 14.119203845000811,
+          "tokens": 60216,
+          "uncached": 21304,
+          "prep": 0.41334439600086625,
+          "visible": 295,
+          "thought": 289,
+          "out": 584,
+          "clis": 3,
+          "shells": 11,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        },
+        "P": {
+          "time": 9.62056521300019,
+          "tokens": 19781,
+          "uncached": 19708,
+          "prep": 0.02328389700051048,
+          "visible": 157,
+          "thought": 260,
+          "out": 417,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        }
+      },
+      "pairs": {
+        "F-B": {
+          "time": {
+            "d": 0.37748021200059156,
+            "wins": 1
+          },
+          "tokens": {
+            "d": 666,
+            "wins": 1
+          },
+          "uncached": {
+            "d": 18458,
+            "wins": 1
+          },
+          "visible": {
+            "d": -23,
+            "wins": 3
+          },
+          "out": {
+            "d": 141,
+            "wins": 1
+          },
+          "thought": {
+            "d": 150,
+            "wins": 1
+          },
+          "prep": {
+            "d": 0.00011791600081778597,
+            "wins": 1
+          },
+          "shell": {
+            "d": 1,
+            "wins": 1
+          }
+        },
+        "F-P": {
+          "time": {
+            "d": 6.6245501090006655,
+            "wins": 0
+          },
+          "tokens": {
+            "d": 40508,
+            "wins": 0
+          },
+          "uncached": {
+            "d": 1596,
+            "wins": 1
+          },
+          "visible": {
+            "d": 138,
+            "wins": 0
+          },
+          "out": {
+            "d": 240,
+            "wins": 1
+          },
+          "thought": {
+            "d": 102,
+            "wins": 1
+          },
+          "prep": {
+            "d": 0.38887864899970737,
+            "wins": 0
+          },
+          "shell": {
+            "d": 4,
+            "wins": 0
+          }
+        }
+      }
+    },
+    "press": {
+      "arms": {
+        "B": {
+          "time": 16.185671877999994,
+          "tokens": 80131,
+          "uncached": 3392,
+          "prep": 0.4387638819998756,
+          "visible": 294,
+          "thought": 271,
+          "out": 575,
+          "clis": 3,
+          "shells": 15,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 6,
+          "edits": 6
+        },
+        "F": {
+          "time": 19.093913470999723,
+          "tokens": 59907,
+          "uncached": 2947,
+          "prep": 0.43883921899941924,
+          "visible": 278,
+          "thought": 465,
+          "out": 743,
+          "clis": 3,
+          "shells": 10,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        },
+        "P": {
+          "time": 7.750258146000306,
+          "tokens": 19654,
+          "uncached": 19645,
+          "prep": 0.022974556999542983,
+          "visible": 97,
+          "thought": 266,
+          "out": 363,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        }
+      },
+      "pairs": {
+        "F-B": {
+          "time": {
+            "d": 2.9082415929997296,
+            "wins": 1
+          },
+          "tokens": {
+            "d": -20224,
+            "wins": 3
+          },
+          "uncached": {
+            "d": -384,
+            "wins": 2
+          },
+          "visible": {
+            "d": -2,
+            "wins": 2
+          },
+          "out": {
+            "d": 168,
+            "wins": 1
+          },
+          "thought": {
+            "d": 205,
+            "wins": 1
+          },
+          "prep": {
+            "d": -0.0010148069995921105,
+            "wins": 2
+          },
+          "shell": {
+            "d": -2,
+            "wins": 2
+          }
+        },
+        "F-P": {
+          "time": {
+            "d": 11.385580230000414,
+            "wins": 0
+          },
+          "tokens": {
+            "d": 40182,
+            "wins": 0
+          },
+          "uncached": {
+            "d": -16707,
+            "wins": 2
+          },
+          "visible": {
+            "d": 181,
+            "wins": 0
+          },
+          "out": {
+            "d": 380,
+            "wins": 0
+          },
+          "thought": {
+            "d": 208,
+            "wins": 0
+          },
+          "prep": {
+            "d": 0.4158181290003995,
+            "wins": 0
+          },
+          "shell": {
+            "d": 3,
+            "wins": 0
+          }
+        }
+      }
+    }
+  },
+  "zusatzmessung": {
+    "all": {
+      "arms": {
+        "F": {
+          "time": 16.06090626050036,
+          "tokens": 59896.0,
+          "uncached": 3511.5,
+          "prep": 0.4249169734998759,
+          "visible": 270.0,
+          "thought": 314.0,
+          "out": 631.5,
+          "clis": 6,
+          "shells": 24,
+          "with_shell": 6,
+          "solved": 6,
+          "whole": 2,
+          "edits": 12
+        },
+        "D": {
+          "time": 9.637449828000172,
+          "tokens": 19812.0,
+          "uncached": 1870.5,
+          "prep": 0.42135658450024494,
+          "visible": 85.5,
+          "thought": 280.0,
+          "out": 364.5,
+          "clis": 6,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 6,
+          "whole": 0,
+          "edits": 12
+        },
+        "P": {
+          "time": 7.960945565999737,
+          "tokens": 19745.5,
+          "uncached": 1825.5,
+          "prep": 0.023317979499552166,
+          "visible": 111.0,
+          "thought": 236.0,
+          "out": 356.0,
+          "clis": 6,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 6,
+          "whole": 0,
+          "edits": 12
+        }
+      },
+      "pairs": {
+        "D-F": {
+          "time": {
+            "d": -6.821422641500249,
+            "wins": 6
+          },
+          "tokens": {
+            "d": -40073.0,
+            "wins": 6
+          },
+          "uncached": {
+            "d": -1623.0,
+            "wins": 6
+          },
+          "visible": {
+            "d": -183.0,
+            "wins": 6
+          },
+          "out": {
+            "d": -235.0,
+            "wins": 6
+          },
+          "thought": {
+            "d": -56.5,
+            "wins": 5
+          },
+          "prep": {
+            "d": 7.931150048534619e-05,
+            "wins": 3
+          },
+          "shell": {
+            "d": -3.5,
+            "wins": 6
+          }
+        },
+        "D-P": {
+          "time": {
+            "d": 1.612369064500399,
+            "wins": 2
+          },
+          "tokens": {
+            "d": 86.5,
+            "wins": 0
+          },
+          "uncached": {
+            "d": 56.0,
+            "wins": 1
+          },
+          "visible": {
+            "d": -11.5,
+            "wins": 5
+          },
+          "out": {
+            "d": 11.5,
+            "wins": 3
+          },
+          "thought": {
+            "d": 32.0,
+            "wins": 1
+          },
+          "prep": {
+            "d": 0.3971001095005704,
+            "wins": 0
+          },
+          "shell": {
+            "d": 0.0,
+            "wins": 0
+          }
+        }
+      }
+    },
+    "dispatch": {
+      "arms": {
+        "F": {
+          "time": 15.435324067000693,
+          "tokens": 101194,
+          "uncached": 3786,
+          "prep": 0.4100986049998028,
+          "visible": 355,
+          "thought": 250,
+          "out": 587,
+          "clis": 3,
+          "shells": 14,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        },
+        "D": {
+          "time": 7.633885556000678,
+          "tokens": 19780,
+          "uncached": 1831,
+          "prep": 0.409145503000218,
+          "visible": 84,
+          "thought": 204,
+          "out": 288,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        },
+        "P": {
+          "time": 8.236416310000095,
+          "tokens": 19747,
+          "uncached": 1827,
+          "prep": 0.023502743999415543,
+          "visible": 125,
+          "thought": 210,
+          "out": 338,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        }
+      },
+      "pairs": {
+        "D-F": {
+          "time": {
+            "d": -6.915901414000473,
+            "wins": 3
+          },
+          "tokens": {
+            "d": -81443,
+            "wins": 3
+          },
+          "uncached": {
+            "d": -1955,
+            "wins": 3
+          },
+          "visible": {
+            "d": -269,
+            "wins": 3
+          },
+          "out": {
+            "d": -328,
+            "wins": 3
+          },
+          "thought": {
+            "d": -59,
+            "wins": 3
+          },
+          "prep": {
+            "d": -0.003871429999890097,
+            "wins": 2
+          },
+          "shell": {
+            "d": -5,
+            "wins": 3
+          }
+        },
+        "D-P": {
+          "time": {
+            "d": -0.6025307539994174,
+            "wins": 2
+          },
+          "tokens": {
+            "d": 15,
+            "wins": 0
+          },
+          "uncached": {
+            "d": 7,
+            "wins": 1
+          },
+          "visible": {
+            "d": -41,
+            "wins": 3
+          },
+          "out": {
+            "d": -68,
+            "wins": 3
+          },
+          "thought": {
+            "d": 5,
+            "wins": 1
+          },
+          "prep": {
+            "d": 0.38564275900080247,
+            "wins": 0
+          },
+          "shell": {
+            "d": 0,
+            "wins": 0
+          }
+        }
+      }
+    },
+    "press": {
+      "arms": {
+        "F": {
+          "time": 16.686488454000028,
+          "tokens": 59721,
+          "uncached": 3237,
+          "prep": 0.4371458880004866,
+          "visible": 266,
+          "thought": 439,
+          "out": 676,
+          "clis": 3,
+          "shells": 10,
+          "with_shell": 3,
+          "solved": 3,
+          "whole": 2,
+          "edits": 6
+        },
+        "D": {
+          "time": 11.08524654499979,
+          "tokens": 19866,
+          "uncached": 1946,
+          "prep": 0.45040941199931694,
+          "visible": 86,
+          "thought": 358,
+          "out": 463,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        },
+        "P": {
+          "time": 7.685474821999378,
+          "tokens": 19704,
+          "uncached": 1784,
+          "prep": 0.02313321499968879,
+          "visible": 97,
+          "thought": 271,
+          "out": 368,
+          "clis": 3,
+          "shells": 0,
+          "with_shell": 0,
+          "solved": 3,
+          "whole": 0,
+          "edits": 6
+        }
+      },
+      "pairs": {
+        "D-F": {
+          "time": {
+            "d": -5.931011450999904,
+            "wins": 3
+          },
+          "tokens": {
+            "d": -39847,
+            "wins": 3
+          },
+          "uncached": {
+            "d": -1291,
+            "wins": 3
+          },
+          "visible": {
+            "d": -161,
+            "wins": 3
+          },
+          "out": {
+            "d": -205,
+            "wins": 3
+          },
+          "thought": {
+            "d": -54,
+            "wins": 2
+          },
+          "prep": {
+            "d": 0.010472909998497926,
+            "wins": 1
+          },
+          "shell": {
+            "d": -3,
+            "wins": 3
+          }
+        },
+        "D-P": {
+          "time": {
+            "d": 3.1436045930004184,
+            "wins": 0
+          },
+          "tokens": {
+            "d": 105,
+            "wins": 0
+          },
+          "uncached": {
+            "d": 105,
+            "wins": 0
+          },
+          "visible": {
+            "d": -11,
+            "wins": 2
+          },
+          "out": {
+            "d": 38,
+            "wins": 0
+          },
+          "thought": {
+            "d": 42,
+            "wins": 0
+          },
+          "prep": {
+            "d": 0.42727619699962816,
+            "wins": 0
+          },
+          "shell": {
+            "d": 0,
+            "wins": 0
+          }
+        }
+      }
+    }
+  }
+}

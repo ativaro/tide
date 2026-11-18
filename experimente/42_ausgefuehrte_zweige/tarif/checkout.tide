@@ -1,0 +1,7 @@
+use tariffs
+
+charge parcel:i grams:i > i
+if (< parcel 1) (letter grams) (if (eq parcel 1) (packet grams) (freight grams))
+
+example band charge
+{"inputs":{"parcel":1,"grams":500},"expect":6}

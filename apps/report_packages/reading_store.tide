@@ -1,0 +1,17 @@
+use json_readings
+
+record StoredReading
+sensor:t value:i note:?t threshold:i
+
+schema db:d > i
+sql_exec db "CREATE TABLE IF NOT EXISTS measurements (id INTEGER PRIMARY KEY, sensor TEXT NOT NULL CHECK(length(sensor)>0), value INTEGER NOT NULL, note TEXT, threshold INTEGER NOT NULL)" (dict i)
+
+summary db:d > {Summary}
+let rows sql_query {Summary} db "SELECT count(CASE WHEN value > threshold THEN 1 END) AS above, max(value) AS peak FROM measurements" (dict i)
+need (at rows 0) "missing_summary" 0
+
+by_sensor db:d sensor:t > *{Reading}
+sql_query {Reading} db "SELECT sensor,value,note FROM measurements WHERE sensor=:sensor ORDER BY id" (dict_put (dict t) "sensor" sensor)
+
+insert_reading db:d fields:{StoredReading} > i
+sql_exec db "INSERT INTO measurements(sensor,value,note,threshold) VALUES(:sensor,:value,:note,:threshold)" fields

@@ -1,0 +1,1712 @@
+{
+  "differential": {
+    "check": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    },
+    "fmt": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 96
+    },
+    "test": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    }
+  },
+  "fixture_generator": "native/bootstrap/schema_cases.tide, generate_cases; plus type declarations from apps/nano.tide, apps/space_invaders.tide and apps/invaders_game.tide",
+  "cases": [
+    {
+      "id": 0,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "37c9a19ddc44f9fd3b4ceca6681c5d57e3117938b338dcabb3c2222206091e0c",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 1,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "80c1f9cc4d142686467ad7a51f8b30601feedd668f25b21422e0c57b5ae9ea7f",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 2,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "3f75a9b7679261144fe80e7b6ec3e53a6b658c620127c27345b302a8871a9959",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 3,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "b3bf8c50c3e3332e32bf361b46f78c4691dd9df3a9d2fda45a741e98c93c0265",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 4,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "d44f93c84f3a7ec8a9313f30ddf904ffb77b5bb95fec3b5391825464f39366d6",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 5,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "572f5f38b2350d04aae93cd170f37c5961d870163b3614f5fdd8de8c3cdcc0b2",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 8,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "2856498c770afb4e16b5ffc2346897ff55072b59e3bb7c1292facf63b7501e9b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 9,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "9418f455c2d1f7b6edc3344740b4c98dcf0df6bcb1e50253e642a015cc6454e3",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 10,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "9cab3015a99b67ab40f9c7cf4761c4285dea03fc631340545bd5f2f9c2168861",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 11,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ea9768797afe9846097e2713eb4c8fa4b2acb192fd45bfdfaee92024e869eb83",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 12,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "039a412890953a7a503139460950625a1421d3d27acc99bc4303c195cb353a89",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 13,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "495923380b067be5193857d4fbcceb59a5ec1a8e76036c12ba05d5c6cc245f4d",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 14,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 15,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 16,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "322370174573d80fb4cb02273e35def0ade0bcda551938922f7876ae9e774269",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 17,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "539640187cfe619b88f1dc726c3fc1a786c4a5a36f75ee9075ddf4b49108b63b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 18,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "c90e8d9ac86c009de2e94459adca314ce6c0ef76b5e5f75a53a8b9d474832050",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 19,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "4c7df5f221c7decbfd3e7302dd83be8e4a7a0422d19ddd647ff528ff48e0955a",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 20,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "8c38d4c97760a75eb5dc032a178033a00fecc4bee147039817dca5b8c36cffb0",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 21,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ed8c1d7d1769b98dfcd8b951c8119008b2c26645f1e4a376ebdd047d63e49118",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 22,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "284c03e3f15d770f9a3151ab28860a8b086965c83dcc43bbb899cbf75e7091db",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 23,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 24,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 25,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "b462b3d6e2a5ba1ab3a372b01da520f3da60668e9da280edd717aec297e18c9b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 26,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "2ccad28a79ad2c931571a25d10c19c9f77fff75deda2842428a5875752b52e44",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 27,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "d57607d325fb96f367515c8f51ccabcecb1a39556bff28afd7ed8ad0323c3084",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 28,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ea4b2b5f007a474542378a6e94f6f9daa20eb9fd499040614596edb396dcc029",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 29,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "3a2f4438ed736d24d652432c9a8423ea4980625b8e8679f225b959882f624a6a",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 30,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "1bec869aed237cb1d26753b05f2e97be0c4108a1a6abec215100d6468d6ca3ba",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 31,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "89a1404e8b6b2f5fa9d3d5238ab0f88a9aa273a5fd3fccb5056686d7985419f4",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 32,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 33,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 34,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "66b890363c0d88151309c209021bf32ff61669d8c5bd56967528fd49aa15af02",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 35,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "b638d00f5ce0e1e3af9f3e529da9505da0fd3c40e9ee168ba9915652356dac2e",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 36,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "056567017863cce72b83eb86f84af6bd14d75a4757217ba6853bf5bb5af675e9",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 37,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "faa7bcf2fb7df251012577d2c184188512127ecde41ce4d3c0fb6af69ba1a1cf",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 38,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "13b90f2c16edec9ff564135057a9b0566da2ae4c03cf25d0eb03855fc7d7aa33",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 39,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "7aa50a1cec7ce5fd9a6af8b18c7423109767065f8e92ff0680a430f769bf3987",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 40,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "557c40964a246e23faf20371492bdb9d7b47c120a97cc118115d81a65e473cf6",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 41,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 42,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 43,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "994ac39ccdfc36fabaaf906ddcc510040acb0a9b0d83f3ada13dfc5285cc7cce",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 44,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "3b3faea9e4beabe938dcb5ac1ea7a3bc4dad8389a69f9a9b1ff19956dacacb46",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 45,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "c9aab436c2ec418b3f0f8cf6670c6c4710afe438c17e3fe3236189e1100e3790",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 46,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "74a5034f7b01977ffffe07e678bd546e01856b583a71218f513c82494a8f8acb",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 47,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "2250c4b55b90ab21fdd1c296d568204dcefcd7df3ba5e371d1a5d1f3bb2516a6",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 48,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ebaa05c2ff9084fbbbec52e0f4767b643195121f58e3c8a716afa8917a60d2c5",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 49,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "99dc1352382acd72a848991041ca76a836fc2f1953abef5484f162dcb80c49da",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 50,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 51,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 52,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "1d492386784c5981d35a1a4351b0f0ecd881c0a772b7284b37309f7af92ccd92",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 53,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "8fe45fb3c4b5b85899cc22bc872898c51c02c6253580ff454e4eae4a8de958cb",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 54,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 55,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 56,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 57,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 58,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 59,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 60,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 61,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 62,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 63,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 64,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 65,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 66,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 67,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 68,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 69,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 70,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "be3a4cd6f22c68a693c8241bedc06a62e972a1cf378c8add8c70bb3e2b859732",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 71,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "b4cbc1ec17683cd8ff323c5196610a89f20d6ca563aa1389117b6a8f50bb38d4",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 72,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "4f61d3cb7087d58ca8b3c0bce8787bab27d9e37161bcd4557de5581828b81cbf",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 73,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6aa57ee893a5226e4f74aaa44353f28012f8d47dacfcef175d3a102e77043774",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 74,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "a42533f0073ea3dd07ea58e51d171da9fd042cdd2d3621bed300d8bc6bd7bf32",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 75,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "98993867b20f619408104bd9d22599d4c39e276c0cec7057979c98bded5f29e7",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 76,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "7f434e66fd9fe4b2e27f05d5367d37630c6b2fa0306fec5ce33dcce2fccde3ad",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 77,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "1ab5c7f96b2a7253b303e0c418a35f21051aa13b667f1eb54a473166ab653224",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 78,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "1fe4797b7ba115146bc06ee3b85db8d6b9c75831e47c7eda25bbb04458cac490",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 79,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "f24925b361cb5f07ab5afe5cc2436606a93108e2bf281c3fd9b990c692b4c45a",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 80,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "75d145450a7400a6457a13b8fb60c5585f21e18e7866467a9e9799d462ae4226",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 81,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "cae18c72fac3a12888975a19f950e359e086c51b5b22323e8ccf93a55fab62a3",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 82,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "8e9f0743bbd7d8f09d891f2f75fd52f0c3078b0c4d1b441a799203327c5130ab",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 83,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "c11657584d4ee4d71790ce5bca716711554121cd5647504c547cf64d1bd334cf",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 84,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "7d68a09c69f1af94f4a498f77e15fccf0c6fd9301980aa8fecae6368cbb6fe20",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 85,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 86,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 87,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 88,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 89,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 90,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 91,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 92,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 93,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 94,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 95,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 96,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 97,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 98,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 99,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 100,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 101,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 102,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 103,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 104,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 105,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 106,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 1,
+      "column": 8
+    },
+    {
+      "id": 107,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 108,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 109,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "d50a1e6a5d455c09238045a06104c644e6ab9d91b056033185024c775a60f8c7",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 110,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "327e696afec12d2554697e6607f98a7daa821615bc48e6149d56b58941f0b49b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 111,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "809912b41665b77169bdcd575a8af2710ead4fd7a12b8dc85b055a73143f3ddb",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 112,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "44e3fff32cca32f6fb15966dacc212b96c5f0b8074ef3ad976e7989997f48893",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 113,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "c72ac47a45411acd2e5bf0f9da67d9d761ebe9553b1f0b3e4691deea851f385f",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 114,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ea676b126a97b8b8d0083e9a66abc57272e6fef5b90a5a9f238191ec1dbef465",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 115,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "d4b251926482ad0c103be4d3934f48b87afbcb83f00c1a45adcaff97b7f73b54",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 116,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "2f0476a395f69d5f3b8316edf8ea2f218b2cbfae48849a3020fa4fc87156f0d0",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 117,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "d4f0166b623f66710af0116d71a5225a219b700762ccd48b2234c7f66dc1a48b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 118,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "18e37a81bf29ef533b8fe4020d0b649c2fcad1798f2e4c891f40fc36e5f1d27d",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 119,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6b82110c95cf46a359010679ff136da2b2ca37e646941564d9329994944a149a",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 120,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "ed526d7b9070f80f5827228e75dd2021449015ba4d57dbef402f1a1deb34514a",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 121,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "81e45812e4705ac49991616f6304dbada5645a766a487782430744885e743e43",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 122,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "086e5c2f562352c3425575593b7e6c74b2e97b704a19b408b85849527c06eed6",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 123,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "4a64e40f4e5439222d82c7dca96df183fca2776b0dd217570779b0f94bc8d807",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 124,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6c3e21224b0813a3cc56d9d22e4da0ab8bd021f81ea1ecda352ed713c5fd2508",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 125,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "516c581b091a3568cb307f7ad210eff618c15478001c990f1ee760986999107c",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 126,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "037a88060aa7d93b1df43e58c5a6632a2b8f92adc3ce4808b65beafbb3e5ce41",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 127,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "58cfa7b556df64717948ae3944fdd5d6022e4393a4cdea82a6aa97158b3cf120",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 128,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "b9273e0694a14188fd85982f72854cf052d69e5d453fa941f6f2708cd492d14b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 129,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6dc5df422e9cc904463cfd4463505879538d90e0c74e7ca61e1211574a74c42f",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 130,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "e00dd7c0e6664332a7d5adad48bbe0687011dd571ce602f3184790a398cbe331",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 131,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "e061220b9d57753e0f95e718698adfd743bc44ba9e0fafa80484ea8ffac689e3",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 132,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "eef3530cc6c88fc7ff8eae8de77d50418b6c9f735bb94687863adbd3e4e99a38",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 133,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "08c260783a6abad391c24af3562cb050f1bb7d0578d53e09b3e12c625c648c7b",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 134,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "8ad250c323f8f88e8c4bdc3a1b609daaf6358b4228ae211a2f2841a90deac012",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 135,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "3f09b78158325e31fb3ae0e8f2d8fee5bff1fc67fcc5e5fc77b1bb5bd8454bcc",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 136,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "042fcb51b9c8cb8167a4fc79d340368dfe185f7fb8e64dafead0e9b827d1de67",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 137,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6f02a2ae9eeb1ade4639b14eae3bc5e0cf66ff699a636f484eacafdb24dc6c92",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 138,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "0d40fa18cdc4dd999d67c263cf5ac1ea0f73123c0a09d5af0d20257d40e6f014",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 139,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "6977e1d51c001094a4db39a69f9ed57cbef6cba4413d5c493f9053e2f6ce7e0f",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 140,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "5adf6bb6e54588cfc4476e1088cf30a73de3e42bf8b7b52ce6fa7e43efa27e0d",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 141,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 142,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 49,
+      "column": 1
+    },
+    {
+      "id": 143,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 144,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 49,
+      "column": 1
+    },
+    {
+      "id": 145,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 146,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 147,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 148,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 149,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 5
+    },
+    {
+      "id": 150,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 3
+    },
+    {
+      "id": 151,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 3,
+      "column": 2
+    },
+    {
+      "id": 152,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 4,
+      "column": 9
+    },
+    {
+      "id": 153,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "dfa52ad158e8beaa85b7343e583c962534e8c444015a44ccddc143335ed8b3cb",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 154,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 155,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 156,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "734caf865d6cbbbf7590cfe8399741c32610d02d671fd1fa9e65390ab98eae63",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 157,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "032accd63f9ce18ae576de74d8d6fd719d6efb3415943c4b6ce24b7c32c747ca",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 158,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 159,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 4
+    },
+    {
+      "id": 160,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 161,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 162,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_TYPE",
+      "revision": null,
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 163,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "874c6335eb0885d5b616375b966425e70a38cf1539db90ea70ec0ab54d3f30b4",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 164,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 2,
+      "column": 3
+    },
+    {
+      "id": 165,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_SYNTAX",
+      "revision": null,
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": 166,
+      "expected_status": 1,
+      "observed_status": 1,
+      "diagnosis": "E_NAME",
+      "revision": null,
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 167,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "92369fbc0af4475dc9262ea5798a940c0eabf8cad2b6c042811bf65ded46086e",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 168,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "4039b1d1349686ef68388ad653b5d21980f4011c504f879480c01b08f62b1a5f",
+      "line": null,
+      "column": null
+    },
+    {
+      "id": 169,
+      "expected_status": 0,
+      "observed_status": 0,
+      "diagnosis": "ok",
+      "revision": "64c44057b2df3942dd18dd74ac8fc1c10f5621dc522e934c9705cc2d122f4c26",
+      "line": null,
+      "column": null
+    }
+  ],
+  "edges": [
+    {
+      "title": "ancestor",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "foreign ancestor",
+      "reference": "E_VERSION",
+      "isolated": "E_VERSION"
+    },
+    {
+      "title": "nearest pin, reordered and escaped",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "describe same pin",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "explicit foreign pin",
+      "reference": "E_VERSION",
+      "isolated": "E_VERSION"
+    },
+    {
+      "title": "describe foreign pin",
+      "reference": "E_VERSION",
+      "isolated": "E_VERSION"
+    },
+    {
+      "title": "duplicate key",
+      "reference": "E_JSON",
+      "isolated": "E_BACKEND"
+    },
+    {
+      "title": "malformed lock",
+      "reference": "E_JSON",
+      "isolated": "E_BACKEND"
+    },
+    {
+      "title": "linked nearest pin",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "broken link",
+      "reference": "E_IO",
+      "isolated": "E_BACKEND"
+    },
+    {
+      "title": "nonregular pin",
+      "reference": "E_IO",
+      "isolated": "E_BACKEND"
+    },
+    {
+      "title": "utf8",
+      "reference": "E_UTF8",
+      "isolated": "E_UTF8"
+    },
+    {
+      "title": "size",
+      "reference": "E_LIMIT",
+      "isolated": "E_LIMIT"
+    },
+    {
+      "title": "-flag.tide",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "line\n",
+      "reference": "ok",
+      "isolated": "ok"
+    },
+    {
+      "title": "nonregular source",
+      "reference": "E_IO",
+      "isolated": "E_IO"
+    },
+    {
+      "title": "check non-schema",
+      "reference": "ok",
+      "isolated": "E_BACKEND"
+    },
+    {
+      "title": "test non-schema",
+      "reference": "ok",
+      "isolated": "E_BACKEND"
+    }
+  ],
+  "grouped_forms": {
+    "snapshots": 37,
+    "functions": 935,
+    "failures": 0
+  },
+  "isolated_environment": "New bwrap Linux mount namespace, empty build directory, no reference-tide, no checkout Python package. Allowlisted build utilities, no Python executable; masked Python libraries and gconv modules.",
+  "acceptance_log": [
+    "true",
+    "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"ca406049fbeb5ae9f72d95104018fd447bb671100ccededc3831419ec8830ab1\",\"modules\":[],\"records\":{\"Log\":{\"records\":\"*{Entry}\",\"initial\":\"?&i{Flag}\"},\"Entry\":{\"key\":\"t\",\"hits\":\"*i\"}},\"variants\":{\"Flag\":[\"Active\",\"warn\",\"z1\"]},\"definitions\":{},\"examples\":0}",
+    "{\"file\":\"/samples/bad.tide\",\"code\":\"E_TYPE\",\"message\":\"Cyclic or deeply nested record\",\"line\":1,\"column\":1}",
+    "{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\", \"operation\": \"fold\", \"syntax\": \"fold *A B accumulator row element body:B\", \"returns\": \"B\", \"example\": \"fold list i 2 3 4 0 acc row x + acc x\", \"requires\": \"\", \"effect\": \"pure\", \"may_fail\": [], \"arity\": 6, \"semantics\": \"Left fold in input order. Bind the accumulator, one-based row and element. Empty list returns start.\"}",
+    "record Log",
+    "records:*{Entry} initial:?&i{Flag}",
+    "variant Flag",
+    "warn Active z1",
+    "record Entry",
+    "key:t hits:*i",
+    "{\"passed\":0}",
+    "balance-main: OK",
+    "balance-balance: OK",
+    "heating-main: OK",
+    "heating-degree_hours: OK",
+    "cartons-main: OK",
+    "cartons-carton_balance: OK",
+    "heat-main: OK",
+    "heat-simulate: OK",
+    "pump-main: OK",
+    "pump-simulate: OK",
+    "light-main: OK",
+    "light-simulate: OK",
+    "97"
+  ],
+  "image_sha256": {
+    "balance/main": "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2",
+    "balance/balance": "76f3622f0c23257d3fea205b9edce9b17d92ce891534505feccd0cdd19f3c11a",
+    "heating/main": "af64ce9bd1f97ca0694c2b4c2b05c02d0502ecb0e9663d7160647d50cb6a8319",
+    "heating/degree_hours": "0458d9a324a9dfd40165604734409b4595def92eb187d8379970cd349b5c2b1c",
+    "cartons/main": "58a2e228480f601fafb3b0769db8e3539455f111ffe6be6b04efa11e0c18c032",
+    "cartons/carton_balance": "2bc2c80ba31ca8eeedf934eac49628006926fd362939f84fc58d7db792c5b362",
+    "heat/main": "b422ab6e0ce04aca22c51b97b43fba488f9407ef0722fc8b46420f80cb19d456",
+    "heat/simulate": "cebe4a57fbac5a701a87adcc5aa784561ea9459408aaeae97eace91a7bf39bfa",
+    "pump/main": "cd6bb713a33f27aac69eefd230e2ea421cb6dec12a2ab71c8717b969501b89c9",
+    "pump/simulate": "6bcd46a906700ccbce0f9bce492cff0d74e8a55a211bb654696c54cedcd8de0f",
+    "light/main": "03a713a2ed3ef09ebfb70dcf90efbfa66884025137a03fb33b4fe77fe040828f",
+    "light/simulate": "6acd26c019763d8e52298942324a4a5e3e57ad9ea3f8dd597fa261ead0582e10"
+  },
+  "native_application_checks": [
+    "apps/nano_checks.tide",
+    "apps/invaders_checks.tide"
+  ],
+  "reference_unittest": {
+    "tests": 35,
+    "result": "OK"
+  },
+  "nested_pair": {
+    "before": "bootstrap_scalar_type",
+    "after": 12
+  },
+  "incomplete_match": {
+    "missing_case": "C++ static assertion: incomplete TIDE match",
+    "complete_program": 2
+  },
+  "install_modes": {
+    "clean standard package": "no .py files, reference-tide or compat-interpreter",
+    "compat run apps/balance.tide": 97,
+    "standard reinstall over compat": "E_BACKEND, empty stdout on run apps/balance.tide",
+    "explicit compat reinstall": 97
+  }
+}

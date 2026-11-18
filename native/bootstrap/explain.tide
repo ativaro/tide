@@ -1,0 +1,525 @@
+use nodes
+
+use execution
+
+use sha256
+
+use probe_domain
+
+reachable_definitions program:{CheckedFunctions} start:t > *t
+let names get names program
+fold names (list t 1 start) reached pos unused
+  case (at reached (- pos 1)) reached parent
+  let idx need (entry_at names parent) "reachable_definition" 0
+  let tree need (at (get trees program) idx) "reachable_tree" 0
+  fold (get calls tree) reached seen row callee
+    case (entry_at seen callee) (append seen callee) already seen
+
+repair_definition project:{ProjectFiles} program:{CheckedFunctions} idx:i file:t > t
+let fn need (at (get signatures program) idx) "repair_definition" 0
+let owner get file fn
+if (rule_signature fn)
+  (let unit_index if (text_eq owner file) 0 (need (entry_at (get names project) owner) "rule_unit" 0)
+   let source get source (need (at (get units project) unit_index) "rule_source" 0)
+   let offsets line_offsets source
+   let line get line (get loc fn)
+   let body get body fn
+   let last site_at body (- (site_count body) 1)
+   let end + (source_offset offsets (pair (get line last) (get column last))) (text_len (get word last))
+   let code text_slice source (source_offset offsets (pair line 1)) end
+   cat3 "{\"file\":" (json_string owner) (cat3 ",\"line\":" (decimal line) (concat ",\"source\":" (concat (json_string code) "}"))))
+let tree need (at (get trees program) idx) "repair_tree" 0
+let root last_node tree
+let nodes get nodes tree
+let prefix if (text_eq owner file) "" (concat owner ":")
+let location node_key prefix (node_at nodes root)
+let heading fold (get params fn) (get name fn) acc row name
+  cat3 acc " " (cat3 name ":" (need (at (get types fn) (- row 1)) "param_type" 0))
+let sig cat3 heading " > " (get result fn)
+let body inspect_view nodes root (get names program) prefix "expanded"
+cat3 "{\"node\":" (json_string location) (cat3 ",\"signature\":" (json_string sig) (concat ",\"body\":" (concat (json_string body) "}")))
+
+include_record used:*t typ:t > *t
+fold (type_names typ) used acc row name case (entry_at acc name) (append acc name) prior acc
+
+repair_records program:{CheckedFunctions} schemas:{Declarations} names:*t > t
+if (eq (length (get entries schemas)) 0) ""
+let used fold names (list t 0) acc row name
+  let idx need (entry_at (get names program) name) "repair_definition" 0
+  let fn need (at (get signatures program) idx) "repair_signature" 0
+  let signature_types fold (get types fn) (include_record acc (get result fn)) keys slot kind include_record keys kind
+  let nodes get nodes (need (at (get trees program) idx) "repair_tree" 0)
+  fold (append (get pages nodes) (get tail nodes)) signature_types keys page group
+    fold group keys seen pos node include_record seen (get typ node)
+if (eq (length used) 0) ""
+let referenced fold (get entries schemas) used acc row unused
+  case (at acc (- row 1)) acc name
+  let decl need (at (get entries schemas) (need (entry_at (get names schemas) name) "schema_name" 0)) "type_schema" 0
+  fold (get types decl) acc keys pos kind include_record keys kind
+let fields fold referenced (pair "" "") acc row name
+  let decl need (at (get entries schemas) (need (entry_at (get names schemas) name) "record_name" 0)) "record_schema" 0
+  let item cat3 (json_string name) ":" (schema_members decl)
+  if (get tagged decl) (pair (first acc) (json_item (second acc) item)) (pair (json_item (first acc) item) (second acc))
+concat (if (text_eq (first fields) "") "" (cat3 ",\"records\":{" (first fields) "}"))
+  (if (text_eq (second fields) "") "" (cat3 ",\"variants\":{" (second fields) "}"))
+
+repair_context project:{ProjectFiles} program:{CheckedFunctions} sample:{SampleArgs} file:t names:*t execution:t example:t > t
+let fn need (at (get signatures program) (get target sample)) "example_signature" 0
+let args get args sample
+let observed not (text_eq execution "")
+let large and observed (fold args false hit row v or hit
+  (or (> (sequence_size v) 512) (or (> (get span v) 1024) (> (text_len (get text v)) 1024))))
+let input if large "" (if (rule_signature fn)
+  (concat "\"events\":" (scalar_wire (need (at args 0) "event_sequence" 0) (concat "*" (need (at (get types fn) 0) "event_type" 0))))
+  (let fields fold (get params fn) "" acc row key
+     let i - row 1
+     let v scalar_wire (need (at args i) "argument" 0) (need (at (get types fn) i) "param_type" 0)
+     json_item acc (cat3 (json_string key) ":" v)
+   cat3 "\"inputs\":{" fields "}"))
+let target get name fn
+let payload if (or large (and observed (> (text_len input) 1024))) (concat "\"input_example\":" (json_string example)) input
+let bodies fold names "" acc row name
+  let idx need (entry_at (get names program) name) "reachable_definition" 0
+  json_item acc (repair_definition project program idx file)
+let revision sha256_utf8 (project_snapshot project)
+let records repair_records program (get schemas fn) names
+cat3 "\"repair\":{\"revision\":" (json_string revision) (cat3 ",\"entry\":" (json_string file)
+  (cat3 ",\"target\":" (json_string target) (cat3 "," payload (cat3 (concat records execution) ",\"definitions\":[" (concat bodies "]}")))))
+
+arm_label op:t arm:i > t
+if (text_eq op "rule") (decimal arm)
+json_string (if (text_eq op "catch") (if (eq arm 0) "value" "handler")
+  (if (text_eq op "if") (if (eq arm 1) "then" "else")
+   (if (text_eq op "case") (if (eq arm 1) "none" "some")
+    (if (text_eq op "need") (if (< arm 0) "present" "missing") (if (< arm 0) "short" "rhs")))))
+
+branch_fields program:{CheckedFunctions} visits:*{BranchVisit} file:t > t
+let rendered fold visits (pair (list t 0) "") acc row item
+  let owner get owner item
+  let idx get node item
+  let fn need (at (get signatures program) owner) "witness_function" 0
+  let tree need (at (get trees program) owner) "witness_tree" 0
+  let prefix if (text_eq (get file fn) file) "" (concat (get file fn) ":")
+  let key if (< idx 0) (get name fn) (node_key prefix (node_at (get nodes tree) idx))
+  if (case (entry_at (first acc) key) false known true) acc
+  let op if (< idx 0) "rule" (get word (get site (node_at (get nodes tree) idx)))
+  let arms fold visits "" values pos visit
+    if (not (and (eq (get owner visit) owner) (eq (get node visit) idx))) values
+    let arm get arm visit
+    let label if (text_eq op "match") (json_string (need (at (get binders (node_at (get nodes tree) idx)) (- arm 1)) "match_label" 0)) (arm_label op arm)
+    json_item values label
+  pair (append (first acc) key) (json_item (second acc) (cat3 (json_string key) ":[" (concat arms "]")))
+second rendered
+
+patch_operators op:t > *t
+let group if (integer_comparison op) (list t 5 "<" ">" "eq" "<=" ">=")
+  if (case (entry_at (list t 5 "+" "-" "*" "div" "mod") op) false found true) (list t 5 "+" "-" "*" "div" "mod")
+  if (or (text_eq op "and") (text_eq op "or")) (list t 2 "and" "or") (list t 0)
+fold group (list t 0) alternatives row word
+if (text_eq word op) alternatives (append alternatives word)
+
+record PatchSite
+owner:i index:i alternatives:*t replacements:*t extended:b
+
+repair_operands source:t offsets:{LineOffsets} nodes:{NodeBuffer} kids:*i > *t
+map t kids index
+  let child node_at nodes index
+  let raw text_slice source (source_offset offsets (get start child)) (source_offset offsets (get stop child))
+  fold (lines raw) "" acc line part if (eq line 1) part (cat3 acc " " part)
+
+call_replacements source:t offsets:{LineOffsets} nodes:{NodeBuffer} node:{FunctionNode} > *t
+let empty list t 0
+let op get word (get site node)
+let kids get children node
+let swap and (>= (get target node) 0) (> (length kids) 1)
+if (not (or swap (or (text_eq op "text_len") (text_eq op "text_find")))) empty
+if (and (text_eq op "text_find") (not (text_eq (get word (get site (node_at nodes (need (at kids 2) "find_start" 0)))) "0"))) empty
+let args repair_operands source offsets nodes kids
+if (fold args false bad pos arg or bad (includes_break arg "\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029")) empty
+let first_arg need (at args 0) "first_operand" 0
+if (text_eq op "text_len") (list t 1 (cat3 "(byte_len (utf8_bytes " first_arg "))"))
+if (text_eq op "text_find")
+  (let needle need (at args 1) "delimiter" 0
+   let haystack node_at nodes (need (at kids 0) "haystack" 0)
+   let stop if (>= (get slot haystack) 0) (cat3 "(text_len " first_arg ")") "9223372036854775807"
+   list t 1 (cat3 "(text_rfind " first_arg (cat3 " " needle (cat3 " " stop ")"))))
+let types map t kids index (get typ (node_at nodes index))
+fold args empty prior left a
+  fold args prior edits right b
+    if (or (<= right left) (or (>= (length edits) 33) (text_eq a b))) edits
+    if (not (text_eq (need (at types (- left 1)) "left_type" 0) (need (at types (- right 1)) "right_type" 0))) edits
+    let swapped fold args (concat "(" op) text pos arg
+      cat3 text " " (if (eq pos left) b (if (eq pos right) a arg))
+    append edits (concat swapped ")")
+
+patch_sites project:{ProjectFiles} program:{CheckedFunctions} names:*t file:t > *{PatchSite}
+fold names (list {PatchSite} 0) acc row name
+  if (eq (length acc) 32) acc
+  let owner need (entry_at (get names program) name) "patch_definition" 0
+  let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
+  let fn need (at (get signatures program) owner) "patch_owner" 0
+  let unit if (text_eq (get file fn) file) 0 (need (entry_at (get names project) (get file fn)) "patch_unit" 0)
+  let source get source (need (at (get units project) unit) "patch_source" 0)
+  let offsets line_offsets source
+  fold (append (get pages nodes) (get tail nodes)) acc prior page group
+    fold group prior kept pos node
+      if (eq (length kept) 32) kept
+      let alternatives patch_operators (get word (get site node))
+      let extra call_replacements source offsets nodes node
+      let extended > (length extra) 0
+      let replacements if extended extra (small_replacements nodes node)
+      if (and (eq (length alternatives) 0) (eq (length replacements) 0)) kept
+      let index + (* 256 (- page 1)) (- pos 1)
+      append kept (make PatchSite owner owner index index alternatives alternatives replacements replacements extended extended)
+
+patch_node_id fn:{Signature} node:{FunctionNode} file:t > t
+node_key (if (text_eq (get file fn) file) "" (concat (get file fn) ":")) node
+
+repair_nodes project:{ProjectFiles} program:{CheckedFunctions} names:*t file:t > t
+let items fold (patch_sites project program names file) "" acc row patch
+  let owner get owner patch
+  let fn need (at (get signatures program) owner) "patch_signature" 0
+  let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
+  let index get index patch
+  let node node_at nodes index
+  let op get word (get site node)
+  let view if (< (- index (get subtree_start node)) 16) (inspect_view nodes index (get names program) "" "expanded") op
+  let expression if (> (text_len view) 160) op view
+  let info cat3 "{\"node\":" (json_string (patch_node_id fn node file))
+    (cat3 ",\"expr\":" (json_string expression) (cat3 ",\"type\":" (json_string (get typ node)) (cat3 ",\"ops\":" (json_labels (get alternatives patch)) "}")))
+  let options get replacements patch
+  let entry if (eq (length options) 0) info (cat3 (text_slice info 0 (- (text_len info) 1)) ",\"replacements\":" (concat (json_labels options) "}"))
+  json_item acc entry
+cat3 ",\"nodes\":[" items "]"
+
+replace_operator nodes:{NodeBuffer} index:i changed:{FunctionNode} > {NodeBuffer}
+let page div index 256
+let slot mod index 256
+let pages get pages nodes
+let group case (at pages page) (get tail nodes) full full
+let updated fold group (list {FunctionNode} 0) acc row node append acc (if (eq (- row 1) slot) changed node)
+if (eq page (length pages)) (with tail nodes updated)
+with pages nodes (fold pages (list *{FunctionNode} 0) acc row old append acc (if (eq (- row 1) page) updated old))
+
+public_examples_pass compiled:{CompiledProject} program:{CheckedFunctions} file:t > b
+fold (get examples (get declarations compiled)) true ok row ex
+and ok (text_eq (example_mismatch ex (need (at (get samples compiled) (- row 1)) "patch_example" 0) program file) "")
+
+record CandidateProgram
+edit:t program:{CheckedFunctions}
+
+record CandidateScan
+tested:i actions:t truncated:b programs:*{CandidateProgram}
+
+empty_candidate_scan > {CandidateScan}
+make CandidateScan tested 0 actions "" truncated false programs (list {CandidateProgram} 0)
+
+add_candidate scan:{CandidateScan} edit:t program:{CheckedFunctions} keep_programs:b > {CandidateScan}
+let next with actions scan (json_item (get actions scan) edit)
+if keep_programs (with programs next (append (get programs next) (make CandidateProgram edit edit program program))) next
+
+integer_atom node:{FunctionNode} > b
+and (text_eq (get typ node) "i")
+  (and (eq (length (get children node)) 0) (< (get target node) 0))
+
+small_replacements nodes:{NodeBuffer} node:{FunctionNode} > *t
+let empty list t 0
+let op get word (get site node)
+if (not (and (text_eq op "+") (eq (first (get start node)) (first (get stop node))))) empty
+let kids get children node
+let left node_at nodes (need (at kids 0) "addition_left" 0)
+let right node_at nodes (need (at kids 1) "addition_right" 0)
+let product_left text_eq (get word (get site left)) "*"
+let product if product_left left right
+let addend if product_left right left
+if (not (and (text_eq (get word (get site product)) "*") (integer_atom addend))) empty
+let operands get children product
+let a node_at nodes (need (at operands 0) "product_left" 0)
+let b node_at nodes (need (at operands 1) "product_right" 0)
+if (not (and (integer_atom a) (integer_atom b))) empty
+let x get word (get site a)
+let y get word (get site b)
+let c get word (get site addend)
+list t 2
+  (cat3 "(* " x (cat3 " (+ " y (cat3 " " c "))")))
+  (cat3 "(* (+ " x (cat3 " " c (cat3 ") " y ")")))
+
+variant_overlay project:{ProjectFiles} fn:{Signature} node:{FunctionNode} replacement:t operator:b file:t > {ProjectFiles}
+let owner get file fn
+let index if (text_eq owner file) 0 (need (entry_at (get names project) owner) "replacement_unit" 0)
+let units get units project
+let unit need (at units index) "replacement_source" 0
+let body get source unit
+let offsets line_offsets body
+let site get site node
+let start source_offset offsets (if operator (pair (get line site) (get column site)) (get start node))
+let stop if operator (+ start (text_len (get word site))) (source_offset offsets (get stop node))
+let original text_slice body start stop
+let bytes + (- (get total project) (text_len (bootstrap_utf8_octets original))) (text_len (bootstrap_utf8_octets replacement))
+let changed cat3 (text_slice body 0 start) replacement (text_slice body stop (text_len body))
+let updated with wire (with source unit changed) (ascii_string changed)
+with total (with units project
+  (fold units (list {SourceUnit} 0) acc row old append acc (if (eq (- row 1) index) updated old))) bytes
+
+operator_variant program:{CheckedFunctions} owner:i index:i op:t > {CheckedFunctions}
+let trees get trees program
+let tree need (at trees owner) "patch_tree" 0
+let nodes get nodes tree
+let node node_at nodes index
+let changed with nodes tree (replace_operator nodes index (with site node (with word (get site node) op)))
+with trees program (fold trees (list {FunctionTree} 0) seen n old append seen (if (eq (- n 1) owner) changed old))
+
+verify_replacements project:{ProjectFiles} program:{CheckedFunctions} sites:*{PatchSite} file:t initial:{CandidateScan} keep_programs:b extended:b > {CandidateScan}
+fold sites initial acc row patch
+  if (if extended (not (get extended patch)) (get extended patch)) acc
+  let owner get owner patch
+  let fn need (at (get signatures program) owner) "replacement_signature" 0
+  let nodes get nodes (need (at (get trees program) owner) "replacement_tree" 0)
+  let node node_at nodes (get index patch)
+  let id patch_node_id fn node file
+  fold (get replacements patch) acc kept pos replacement
+    if (eq (get tested kept) 32) (with truncated kept true)
+    let next with tested kept (+ (get tested kept) 1)
+    let candidate variant_overlay project fn node replacement false file
+    if (> (get total candidate) 131072) next
+    case (checked_overlay candidate file) next passed
+    let json cat3 "{\"node\":" (json_string id) (cat3 ",\"replace\":" (json_string replacement) "}")
+    add_candidate next json passed keep_programs
+
+scan_repair_candidates project:{ProjectFiles} compiled:{CompiledProject} names:*t file:t keep_programs:b > {CandidateScan}
+let program get program compiled
+let trees get trees program
+let sites patch_sites project program names file
+let operators fold sites empty_candidate_scan acc row patch
+  let idx get owner patch
+  let tree need (at trees idx) "patch_tree" 0
+  let fn need (at (get signatures program) idx) "patch_signature" 0
+  let index get index patch
+  let nodes get nodes tree
+  let node node_at nodes index
+  let site get site node
+  let id patch_node_id fn node file
+  fold (get alternatives patch) acc kept pos op
+    if (eq (get tested kept) 32) (with truncated kept true)
+    let next with tested kept (+ (get tested kept) 1)
+    if (> (+ (- (get total project) (text_len (get word site))) (text_len op)) 131072) next
+    let candidate operator_variant program idx index op
+    if (not (public_examples_pass compiled candidate file)) next
+    let json cat3 "{\"node\":" (json_string id) (cat3 ",\"op\":" (json_string op) "}")
+    add_candidate next json candidate keep_programs
+let classic verify_replacements project program sites file operators keep_programs false
+let scan if (text_eq (get actions classic) "") (verify_replacements project program sites file classic keep_programs true) classic
+if (eq (length sites) 32) (with truncated scan true) scan
+
+candidate_fields scan:{CandidateScan} > t
+cat3 ",\"candidate_checks\":{\"tested\":" (decimal (get tested scan))
+  (cat3 ",\"truncated\":" (if (get truncated scan) "true" "false") (cat3 "},\"candidates\":[" (get actions scan) "]"))
+
+verified_repair_candidates project:{ProjectFiles} compiled:{CompiledProject} names:*t file:t > t
+candidate_fields (scan_repair_candidates project compiled names file false)
+
+record PairVariant
+owner:i index:i unit:t operator:b extended:b value:t edit:t delta:i
+
+pair_variants program:{CheckedFunctions} sites:*{PatchSite} file:t > *{PairVariant}
+let kinds list b 2 true false
+fold kinds (list {PairVariant} 0) seen step operator
+  fold sites seen acc row patch
+    let owner get owner patch
+    let index get index patch
+    let fn need (at (get signatures program) owner) "patch_signature" 0
+    let nodes get nodes (need (at (get trees program) owner) "patch_tree" 0)
+    let node node_at nodes index
+    let id patch_node_id fn node file
+    let choices if operator (get alternatives patch) (get replacements patch)
+    fold choices acc kept pos value
+      let edit cat3 "{\"node\":" (json_string id) (cat3 (if operator ",\"op\":" ",\"replace\":") (json_string value) "}")
+      append kept (make PairVariant owner owner index index unit (get file fn) operator operator extended (get extended patch) value value edit edit
+        delta (- (text_len value) (text_len (get word (get site node)))))
+
+overlay_pair_variant project:{ProjectFiles} program:{CheckedFunctions} variant:{PairVariant} file:t > {ProjectFiles}
+let owner get owner variant
+let fn need (at (get signatures program) owner) "patch_signature" 0
+let tree need (at (get trees program) owner) "patch_tree" 0
+let node node_at (get nodes tree) (get index variant)
+variant_overlay project fn node (get value variant) (get operator variant) file
+
+verify_pair project:{ProjectFiles} compiled:{CompiledProject} left:{PairVariant} right:{PairVariant} file:t > ?{CheckedFunctions}
+let program get program compiled
+if (and (get operator left) (get operator right))
+  (let bytes + (get total project) (+ (get delta left) (get delta right))
+   if (> bytes 131072) (nil {CheckedFunctions})
+   let one_changed operator_variant program (get owner left) (get index left) (get value left)
+   let both operator_variant one_changed (get owner right) (get index right) (get value right)
+   if (public_examples_pass compiled both file) (some both) (nil {CheckedFunctions}))
+let overlay overlay_pair_variant (overlay_pair_variant project program left file) program right file
+if (> (get total overlay) 131072) (nil {CheckedFunctions})
+checked_overlay overlay file
+
+checked_overlay project:{ProjectFiles} file:t > ?{CheckedFunctions}
+let root need (at (get units project) 0) "replacement_root" 0
+let changed bootstrap_recover (some (compile_project project (schema_blocks (get source root) true))) (nil {CompiledProject})
+case changed (nil {CheckedFunctions}) compiled
+let candidate get program compiled
+if (public_examples_pass compiled candidate file) (some candidate) (nil {CheckedFunctions})
+
+scan_repair_pairs project:{ProjectFiles} compiled:{CompiledProject} names:*t file:t singles:{CandidateScan} keep_programs:b > {CandidateScan}
+if (or (get truncated singles) (not (text_eq (get actions singles) ""))) empty_candidate_scan
+let variants pair_variants (get program compiled) (patch_sites project (get program compiled) names file) file
+let classic verify_pair_group project compiled variants file keep_programs empty_candidate_scan false
+if (text_eq (get actions classic) "") (verify_pair_group project compiled variants file keep_programs classic true) classic
+
+verify_pair_group project:{ProjectFiles} compiled:{CompiledProject} variants:*{PairVariant} file:t keep_programs:b initial:{CandidateScan} extended:b > {CandidateScan}
+fold variants initial acc row left
+  fold variants acc kept col right
+    if (or (not (> col row)) (text_eq (get unit left) (get unit right))) kept
+    if (if extended (not (or (get extended left) (get extended right))) (or (get extended left) (get extended right))) kept
+    if (eq (get tested kept) 64) (with truncated kept true)
+    let next with tested kept (+ (get tested kept) 1)
+    case (verify_pair project compiled left right file) next candidate
+    let edits cat3 "[" (get edit left) (cat3 "," (get edit right) "]")
+    add_candidate next edits candidate keep_programs
+
+pair_fields scan:{CandidateScan} > t
+cat3 ",\"pair_checks\":{\"tested\":" (decimal (get tested scan))
+  (cat3 ",\"truncated\":" (if (get truncated scan) "true" "false") (cat3 "},\"pair_candidates\":[" (get actions scan) "]"))
+
+probe_offset mode:t > i
+if (text_eq (text_slice mode 0 7) "probes:") 7
+if (text_eq (text_slice mode 0 12) "pair-probes:") 12
+if (text_eq (text_slice mode 0 14) "pair-generate:") 14
+0
+
+record ProbeRun
+baseline:?{EvalValue} split:b valid:b items:t
+
+probe_choices candidates:*{CandidateProgram} args:*{EvalValue} target:i kind:t > {ProbeRun}
+fold candidates (make ProbeRun baseline (nil {EvalValue}) split false valid true items "") acc row candidate
+  if (not (get valid acc)) acc
+  let result scalar_eval (get program candidate) target args
+  if (not (text_eq (get code result) "")) (with valid acc false)
+  let actual get value result
+  let varies case (get baseline acc) false first_value
+    case (value_difference first_value actual kind) false difference true
+  let item cat3 "{\"edit\":" (get edit candidate) (cat3 ",\"actual\":" (scalar_wire actual kind) "}")
+  make ProbeRun baseline (if (eq row 1) (some actual) (get baseline acc))
+    split (or (get split acc) varies) valid true items (json_item (get items acc) item)
+
+record ProbeSearch
+witness:t checked:i seen:*t
+
+empty_probe_search > {ProbeSearch}
+make ProbeSearch witness "" checked 0 seen (list t 0)
+
+probe_witness candidates:*{CandidateProgram} args:*{EvalValue} target:i kind:t input:t > t
+let probe probe_choices candidates args target kind
+if (not (and (get valid probe) (get split probe))) ""
+cat3 "{\"inputs\":" input (cat3 ",\"outcomes\":[" (get items probe) "]}")
+
+fixed_probes candidates:*{CandidateProgram} source:t file:t fn:{Signature} target:i remember:b domain:{InputDomain} > {ProbeSearch}
+let error root_diagnostic file "E_INPUT" "Expected up to 32 JSON object lines for --probes"
+if (or (> (text_len (bootstrap_utf8_octets source)) 32768) (not (line_count_ok source))) fail error
+let pool lines source
+if (> (length pool) 32) fail error
+let count length candidates
+if (< count 2) empty_probe_search
+if (or (rule_signature fn) (> (length (grant_names fn)) 0))
+  fail (diagnosis file (get loc fn) "E_INPUT" "Probe target must be a function without read grants")
+let maximum div 128 count
+fold pool empty_probe_search acc row input
+  if (or (> row maximum) (not (text_eq (get witness acc) ""))) acc
+  let raw read_scalar_json input (json_origin file) true
+  let args scalar_inputs raw "" fn file (get loc fn)
+  if (not (probe_args_valid args domain)) (with checked acc row)
+  let wire probe_witness candidates args target (get result fn) (get compact raw)
+  let seen get seen acc
+  let keys if remember (append seen (probe_input (get params fn) (map i args value (get num value)))) seen
+  make ProbeSearch witness wire checked row seen keys
+
+render_probe_fields fixed:{ProbeSearch} generated:{ProbeSearch} adaptive:b > t
+let origin if (not (text_eq (get witness fixed) "")) "\"fixed\"" (if (not (text_eq (get witness generated) "")) "\"generated\"" "null")
+let chosen if (text_eq origin "\"fixed\"") (get witness fixed) (get witness generated)
+let base cat3 ",\"counterexample\":" (if (text_eq origin "null") "null" chosen) (concat ",\"probes_checked\":" (decimal (get checked fixed)))
+if (not adaptive) base
+cat3 base ",\"generated_probes_checked\":" (cat3 (decimal (get checked generated)) ",\"counterexample_source\":" origin)
+
+counterexample_fields scan:{CandidateScan} source:t file:t fn:{Signature} target:i > t
+render_probe_fields (fixed_probes (get programs scan) source file fn target false empty_input_domain) empty_probe_search false
+
+generated_probes candidates:*{CandidateProgram} axes:*{ProbeAxis} domain:{InputDomain} fn:{Signature} compiled:{CompiledProject} target:i seen:*t > {ProbeSearch}
+let count length candidates
+if (< count 2) empty_probe_search
+let names get params fn
+let excluded fold (get samples compiled) seen acc row sample
+  if (not (eq (get target sample) target)) acc
+  append acc (probe_input names (map i (get args sample) value (get num value)))
+let maximum if (> count 4) (div 128 count) 32
+fold (probe_axis_values axes) (with seen empty_probe_search excluded) acc row raw
+  if (or (>= (get checked acc) maximum) (not (text_eq (get witness acc) ""))) acc
+  fold (probe_projections raw (get orders domain)) acc checked col values
+    if (or (>= (get checked checked) maximum) (not (text_eq (get witness checked) ""))) checked
+    let key probe_input names values
+    let prior get seen checked
+    if (case (entry_at prior key) false idx true) checked
+    let wire probe_witness candidates (map {EvalValue} values value (number_value value)) target (get result fn) key
+    make ProbeSearch witness wire checked (+ (get checked checked) 1) seen (append prior key)
+
+adaptive_counterexample_fields scan:{CandidateScan} allow_pairs:b payload:t file:t fn:{Signature} sample:{SampleArgs} compiled:{CompiledProject} declared:{InputDomain} manual:b > t
+let sep if manual (need (text_find payload "\u001f" 0) (root_diagnostic file "E_INPUT" "Expected --probe-range") 0) -1
+let domain if manual (restricted_probe_domain (probe_limits (text_slice payload 0 sep) fn file) declared fn file) declared
+let limits get bounds domain
+let axes probe_axes limits sample
+let candidates get programs scan
+let target get target sample
+let fixed fixed_probes candidates (text_slice payload (+ sep 1) (text_len payload)) file fn target allow_pairs declared
+let generated if (and allow_pairs (text_eq (get witness fixed) ""))
+  (generated_probes candidates axes domain fn compiled target (get seen fixed)) empty_probe_search
+let fields render_probe_fields fixed generated true
+if (eq (length (get bounds declared)) 0) fields
+concat fields (concat ",\"probe_range\":" (probe_limits_json (get params fn) limits))
+
+failed_context project:{ProjectFiles} compiled:{CompiledProject} sample:{SampleArgs} file:t original:{ScalarResult} mode:t example:t > t
+let program get program compiled
+let fn need (at (get signatures program) (get target sample)) "repair_target" 0
+if (text_eq mode "explain") (repair_context project program sample file (reachable_definitions program (get name fn)) "" example)
+let call observe_sample program sample
+let observation get execution call
+let machine get machine call
+let kind if (rule_signature fn) (concat "*" (get result fn)) (get result fn)
+let reason if (> (length (get stack machine)) 0) "step_limit" (if (same_result original (get answer machine) kind) "" "replay_mismatch")
+let complete text_eq reason ""
+let names if complete (fold (get owners observation) (list t 0) acc pos id append acc (need (at (get names program) id) "observed_function" 0))
+  (reachable_definitions program (get name fn))
+let branches if (text_eq reason "replay_mismatch") "" (branch_fields program (get branches observation) file)
+let status if complete "true" (concat "false,\"reason\":" (json_string reason))
+let limit if (get limited observation) ",\"branches_truncated\":true" ""
+let info cat3 ",\"execution\":{\"complete\":" status (cat3 limit ",\"branches\":{" (concat branches "}}"))
+let offset probe_offset mode
+let pairing or (text_eq mode "pairs") (>= offset 12)
+let declared if (or pairing (> offset 0)) (target_domain (get samples compiled) (get target sample)) empty_input_domain
+let contract_range > (length (get bounds declared)) 0
+let nodes if (text_eq mode "nodes") (repair_nodes project program names file)
+  if (or pairing (> offset 0))
+    (let probing or (> offset 0) contract_range
+     let singles scan_repair_candidates project compiled names file probing
+     let pairs if pairing (scan_repair_pairs project compiled names file singles probing) empty_candidate_scan
+     let fields concat (candidate_fields singles) (if pairing (pair_fields pairs) "")
+     let active if (text_eq (get actions singles) "") pairs singles
+     let payload if (> offset 0) (text_slice mode offset (text_len mode)) ""
+     if (or (eq offset 14) contract_range)
+       (let allow_pairs and pairing (and (text_eq (get actions singles) "") (not (get truncated pairs)))
+        concat fields (adaptive_counterexample_fields active allow_pairs payload file fn sample compiled declared (eq offset 14)))
+     if probing (concat fields (counterexample_fields active payload file fn (get target sample))) fields)
+  if (text_eq mode "candidates") (verified_repair_candidates project compiled names file) ""
+repair_context project program sample file names (concat info nodes) example
+
+explained_tests project:{ProjectFiles} compiled:{CompiledProject} file:t mode:t compact:b > t
+let program get program compiled
+let passed fold (get examples (get declarations compiled)) 0 count row ex
+  let sample need (at (get samples compiled) (- row 1)) "sample" 0
+  let result scalar_eval program (get target sample) (get args sample)
+  let mismatch sample_mismatch ex sample program file result compact
+  if (text_eq mismatch "") (+ count 1)
+  if (text_eq mode "no") (fail mismatch)
+  fail (extra_fields mismatch (failed_context project compiled sample file result mode (get name ex)))
+cat3 "{\"passed\":" (decimal passed) "}\n"

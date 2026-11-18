@@ -1,0 +1,20 @@
+record Input
+a:i b:i
+
+record Case
+inputs:{Input} expect:i
+
+trial a:i b:i > {Case}
+make Case inputs (make Input a a b b) expect (mod a b)
+
+public_cases > *{Case}
+list {Case} 3 (trial 3 2) (trial 8 3) (trial 15 4)
+
+hidden_cases > *{Case}
+fold (list i 6 0 1 2 3 4 5) (list {Case} 0) cases batch group
+fold (list i 12 0 1 2 3 4 5 6 7 8 9 10 11) cases result row index
+let seed + (* group 12) index
+append result (trial (mod (* seed 17) 41) (+ 2 (mod seed 7)))
+
+example public_cannot_distinguish public_cases
+{"inputs":{},"expect":[{"inputs":{"a":3,"b":2},"expect":1},{"inputs":{"a":8,"b":3},"expect":2},{"inputs":{"a":15,"b":4},"expect":3}]}

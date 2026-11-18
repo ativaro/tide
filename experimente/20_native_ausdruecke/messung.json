@@ -1,0 +1,966 @@
+{
+  "cpu": 2,
+  "platform": "Linux-7.3.4-1-cachyos-x86_64-with-glibc2.44",
+  "python": "3.14.10",
+  "short": 32768,
+  "long": 131072,
+  "images": {
+    "1": {
+      "image_bytes": 621,
+      "sha256": "af64ce9bd1f97ca0694c2b4c2b05c02d0502ecb0e9663d7160647d50cb6a8319",
+      "kernel_start": 309,
+      "kernel_end": 493,
+      "kernel_sha256": "f9d1fc25b02519f6700e906b520b853f568b0a7eb7f59b97ced5f06b36971d49",
+      "data_sha256": "fd34bb55d2843dd28270a55e36518fa3d0687c464b67fdc85213e8220bbd7f6a"
+    },
+    "32768": {
+      "image_bytes": 636,
+      "sha256": "96272387a7b39013b57ce5cf4f9e3271f318ffb06d29adec90f07ab7d147b50d",
+      "kernel_start": 324,
+      "kernel_end": 508,
+      "kernel_sha256": "f9d1fc25b02519f6700e906b520b853f568b0a7eb7f59b97ced5f06b36971d49",
+      "data_sha256": "fd34bb55d2843dd28270a55e36518fa3d0687c464b67fdc85213e8220bbd7f6a"
+    },
+    "131072": {
+      "image_bytes": 636,
+      "sha256": "57f994d7c9166a0f9826a2f21e4b4029e5c552cede40977fa53da86441bc7466",
+      "kernel_start": 324,
+      "kernel_end": 508,
+      "kernel_sha256": "f9d1fc25b02519f6700e906b520b853f568b0a7eb7f59b97ced5f06b36971d49",
+      "data_sha256": "fd34bb55d2843dd28270a55e36518fa3d0687c464b67fdc85213e8220bbd7f6a"
+    }
+  },
+  "build_ns": [
+    84332057,
+    83017852,
+    82966460,
+    85311925,
+    86637842,
+    87332350,
+    87778282,
+    88513493,
+    84417271,
+    83235267
+  ],
+  "build_median_ns": 84864598.0,
+  "cold": [
+    {
+      "rep": -6,
+      "ns": {
+        "native": 170664,
+        "python": 6410146
+      }
+    },
+    {
+      "rep": -5,
+      "ns": {
+        "python": 6183040,
+        "native": 139454
+      }
+    },
+    {
+      "rep": -4,
+      "ns": {
+        "native": 106503,
+        "python": 6075817
+      }
+    },
+    {
+      "rep": -3,
+      "ns": {
+        "python": 6111178,
+        "native": 142864
+      }
+    },
+    {
+      "rep": -2,
+      "ns": {
+        "native": 94113,
+        "python": 6086977
+      }
+    },
+    {
+      "rep": -1,
+      "ns": {
+        "python": 6067106,
+        "native": 138314
+      }
+    },
+    {
+      "rep": 0,
+      "ns": {
+        "native": 97663,
+        "python": 6047846
+      }
+    },
+    {
+      "rep": 1,
+      "ns": {
+        "python": 6136269,
+        "native": 142334
+      }
+    },
+    {
+      "rep": 2,
+      "ns": {
+        "native": 98953,
+        "python": 6122788
+      }
+    },
+    {
+      "rep": 3,
+      "ns": {
+        "python": 6080557,
+        "native": 170415
+      }
+    },
+    {
+      "rep": 4,
+      "ns": {
+        "native": 126263,
+        "python": 6067747
+      }
+    },
+    {
+      "rep": 5,
+      "ns": {
+        "python": 6159329,
+        "native": 169775
+      }
+    },
+    {
+      "rep": 6,
+      "ns": {
+        "native": 127064,
+        "python": 6124018
+      }
+    },
+    {
+      "rep": 7,
+      "ns": {
+        "python": 6066167,
+        "native": 132054
+      }
+    },
+    {
+      "rep": 8,
+      "ns": {
+        "native": 86012,
+        "python": 6107388
+      }
+    },
+    {
+      "rep": 9,
+      "ns": {
+        "python": 6081507,
+        "native": 152734
+      }
+    },
+    {
+      "rep": 10,
+      "ns": {
+        "native": 99602,
+        "python": 6061397
+      }
+    },
+    {
+      "rep": 11,
+      "ns": {
+        "python": 6107718,
+        "native": 146414
+      }
+    },
+    {
+      "rep": 12,
+      "ns": {
+        "native": 90722,
+        "python": 6064727
+      }
+    },
+    {
+      "rep": 13,
+      "ns": {
+        "python": 6136429,
+        "native": 137084
+      }
+    },
+    {
+      "rep": 14,
+      "ns": {
+        "native": 100052,
+        "python": 6062257
+      }
+    },
+    {
+      "rep": 15,
+      "ns": {
+        "python": 6084747,
+        "native": 134694
+      }
+    },
+    {
+      "rep": 16,
+      "ns": {
+        "native": 95793,
+        "python": 6239261
+      }
+    },
+    {
+      "rep": 17,
+      "ns": {
+        "python": 6583211,
+        "native": 136924
+      }
+    },
+    {
+      "rep": 18,
+      "ns": {
+        "native": 93663,
+        "python": 6515719
+      }
+    },
+    {
+      "rep": 19,
+      "ns": {
+        "python": 6186860,
+        "native": 139694
+      }
+    },
+    {
+      "rep": 20,
+      "ns": {
+        "native": 87432,
+        "python": 6917750
+      }
+    },
+    {
+      "rep": 21,
+      "ns": {
+        "python": 6234241,
+        "native": 142254
+      }
+    },
+    {
+      "rep": 22,
+      "ns": {
+        "native": 100463,
+        "python": 6111288
+      }
+    },
+    {
+      "rep": 23,
+      "ns": {
+        "python": 6111308,
+        "native": 169805
+      }
+    },
+    {
+      "rep": 24,
+      "ns": {
+        "native": 112873,
+        "python": 6021095
+      }
+    },
+    {
+      "rep": 25,
+      "ns": {
+        "python": 6062397,
+        "native": 139204
+      }
+    },
+    {
+      "rep": 26,
+      "ns": {
+        "native": 97633,
+        "python": 6020255
+      }
+    },
+    {
+      "rep": 27,
+      "ns": {
+        "python": 6022286,
+        "native": 139164
+      }
+    },
+    {
+      "rep": 28,
+      "ns": {
+        "native": 100963,
+        "python": 6078927
+      }
+    },
+    {
+      "rep": 29,
+      "ns": {
+        "python": 6192960,
+        "native": 139554
+      }
+    }
+  ],
+  "warm": [
+    {
+      "rep": -4,
+      "ns": {
+        "python-131072": 66171529,
+        "native-131072": 2444347,
+        "native-32768": 558795,
+        "python-32768": 22023446
+      },
+      "ns_per_call": {
+        "native": 19.180826822916668,
+        "python": 449.09752400716144
+      }
+    },
+    {
+      "rep": -3,
+      "ns": {
+        "python-131072": 71015552,
+        "native-131072": 2357255,
+        "python-32768": 22224011,
+        "native-32768": 568816
+      },
+      "ns_per_call": {
+        "native": 18.192942301432293,
+        "python": 496.3332214355469
+      }
+    },
+    {
+      "rep": -2,
+      "ns": {
+        "python-131072": 64741139,
+        "python-32768": 20888314,
+        "native-32768": 579456,
+        "native-131072": 1783729
+      },
+      "ns_per_call": {
+        "native": 12.250498453776041,
+        "python": 446.09400431315106
+      }
+    },
+    {
+      "rep": -1,
+      "ns": {
+        "python-131072": 67894536,
+        "python-32768": 21320507,
+        "native-131072": 1858181,
+        "native-32768": 520034
+      },
+      "ns_per_call": {
+        "native": 13.612335205078125,
+        "python": 473.77552286783856
+      }
+    },
+    {
+      "rep": 0,
+      "ns": {
+        "native-32768": 506004,
+        "native-131072": 1766709,
+        "python-32768": 20981866,
+        "python-131072": 64806532
+      },
+      "ns_per_call": {
+        "native": 12.824554443359375,
+        "python": 445.80755615234375
+      }
+    },
+    {
+      "rep": 1,
+      "ns": {
+        "native-32768": 595116,
+        "native-131072": 1852361,
+        "python-131072": 64362479,
+        "python-32768": 20789072
+      },
+      "ns_per_call": {
+        "native": 12.789357503255209,
+        "python": 443.2516174316406
+      }
+    },
+    {
+      "rep": 2,
+      "ns": {
+        "native-32768": 571406,
+        "python-32768": 20676928,
+        "native-131072": 1840621,
+        "python-131072": 64476542
+      },
+      "ns_per_call": {
+        "native": 12.911122639973959,
+        "python": 445.55271402994794
+      }
+    },
+    {
+      "rep": 3,
+      "ns": {
+        "native-32768": 597866,
+        "python-32768": 21081130,
+        "python-131072": 64477382,
+        "native-131072": 1869362
+      },
+      "ns_per_call": {
+        "native": 12.934326171875,
+        "python": 441.4495035807292
+      }
+    },
+    {
+      "rep": 4,
+      "ns": {
+        "native-32768": 528684,
+        "python-131072": 65772028,
+        "native-131072": 1866142,
+        "python-32768": 21754667
+      },
+      "ns_per_call": {
+        "native": 13.605326334635416,
+        "python": 447.7677510579427
+      }
+    },
+    {
+      "rep": 5,
+      "ns": {
+        "native-32768": 584306,
+        "python-131072": 70022144,
+        "python-32768": 22173450,
+        "native-131072": 2366265
+      },
+      "ns_per_call": {
+        "native": 18.127024332682293,
+        "python": 486.74208577473956
+      }
+    },
+    {
+      "rep": 6,
+      "ns": {
+        "native-131072": 1841511,
+        "native-32768": 567855,
+        "python-32768": 21018668,
+        "python-131072": 64530214
+      },
+      "ns_per_call": {
+        "native": 12.956298828125,
+        "python": 442.62233479817706
+      }
+    },
+    {
+      "rep": 7,
+      "ns": {
+        "native-131072": 1842841,
+        "native-32768": 520284,
+        "python-131072": 64129203,
+        "python-32768": 20916155
+      },
+      "ns_per_call": {
+        "native": 13.453745524088541,
+        "python": 439.5858561197917
+      }
+    },
+    {
+      "rep": 8,
+      "ns": {
+        "native-131072": 2279163,
+        "python-32768": 22396015,
+        "native-32768": 583716,
+        "python-131072": 68136733
+      },
+      "ns_per_call": {
+        "native": 17.246978759765625,
+        "python": 465.29864501953125
+      }
+    },
+    {
+      "rep": 9,
+      "ns": {
+        "native-131072": 2516630,
+        "python-32768": 21249994,
+        "python-131072": 65154611,
+        "native-32768": 604166
+      },
+      "ns_per_call": {
+        "native": 19.45458984375,
+        "python": 446.62085978190106
+      }
+    },
+    {
+      "rep": 10,
+      "ns": {
+        "native-131072": 1795310,
+        "python-131072": 67995869,
+        "native-32768": 599146,
+        "python-32768": 22739265
+      },
+      "ns_per_call": {
+        "native": 12.168009440104166,
+        "python": 460.3739827473958
+      }
+    },
+    {
+      "rep": 11,
+      "ns": {
+        "native-131072": 2005866,
+        "python-131072": 71325350,
+        "python-32768": 20965487,
+        "native-32768": 591156
+      },
+      "ns_per_call": {
+        "native": 14.39117431640625,
+        "python": 512.2870178222656
+      }
+    },
+    {
+      "rep": 12,
+      "ns": {
+        "python-32768": 20857413,
+        "native-32768": 563986,
+        "native-131072": 1792179,
+        "python-131072": 65126190
+      },
+      "ns_per_call": {
+        "native": 12.493825276692709,
+        "python": 450.3252868652344
+      }
+    },
+    {
+      "rep": 13,
+      "ns": {
+        "python-32768": 20973796,
+        "native-32768": 573986,
+        "python-131072": 65200022,
+        "native-131072": 1973784
+      },
+      "ns_per_call": {
+        "native": 14.239481608072916,
+        "python": 449.89243570963544
+      }
+    },
+    {
+      "rep": 14,
+      "ns": {
+        "python-32768": 21590974,
+        "native-131072": 1887842,
+        "native-32768": 567445,
+        "python-131072": 64838853
+      },
+      "ns_per_call": {
+        "native": 13.431772867838541,
+        "python": 439.94017537434894
+      }
+    },
+    {
+      "rep": 15,
+      "ns": {
+        "python-32768": 20905824,
+        "native-131072": 1848781,
+        "python-131072": 65388348,
+        "native-32768": 575495
+      },
+      "ns_per_call": {
+        "native": 12.952534993489584,
+        "python": 452.4996337890625
+      }
+    },
+    {
+      "rep": 16,
+      "ns": {
+        "python-32768": 21096240,
+        "python-131072": 65615453,
+        "native-32768": 621887,
+        "native-131072": 2026936
+      },
+      "ns_per_call": {
+        "native": 14.292897542317709,
+        "python": 452.8728535970052
+      }
+    },
+    {
+      "rep": 17,
+      "ns": {
+        "python-32768": 21329887,
+        "python-131072": 67825934,
+        "native-131072": 2004735,
+        "native-32768": 543735
+      },
+      "ns_per_call": {
+        "native": 14.862060546875,
+        "python": 472.9822489420573
+      }
+    },
+    {
+      "rep": 18,
+      "ns": {
+        "python-131072": 66454517,
+        "native-32768": 649918,
+        "native-131072": 1801919,
+        "python-32768": 20928806
+      },
+      "ns_per_call": {
+        "native": 11.718760172526041,
+        "python": 463.1114807128906
+      }
+    },
+    {
+      "rep": 19,
+      "ns": {
+        "python-131072": 67067533,
+        "native-32768": 758470,
+        "python-32768": 22134418,
+        "native-131072": 1920693
+      },
+      "ns_per_call": {
+        "native": 11.822743733723959,
+        "python": 457.0832824707031
+      }
+    },
+    {
+      "rep": 20,
+      "ns": {
+        "python-131072": 67517346,
+        "native-131072": 1877761,
+        "native-32768": 528075,
+        "python-32768": 22286823
+      },
+      "ns_per_call": {
+        "native": 13.729715983072916,
+        "python": 460.1086730957031
+      }
+    },
+    {
+      "rep": 21,
+      "ns": {
+        "python-131072": 67859385,
+        "native-131072": 2528160,
+        "python-32768": 21876401,
+        "native-32768": 566546
+      },
+      "ns_per_call": {
+        "native": 19.954569498697918,
+        "python": 467.7631022135417
+      }
+    },
+    {
+      "rep": 22,
+      "ns": {
+        "python-131072": 68952235,
+        "python-32768": 22158389,
+        "native-32768": 688109,
+        "native-131072": 1844381
+      },
+      "ns_per_call": {
+        "native": 11.76220703125,
+        "python": 476.01161702473956
+      }
+    },
+    {
+      "rep": 23,
+      "ns": {
+        "python-131072": 64173334,
+        "python-32768": 20827713,
+        "native-131072": 1862191,
+        "native-32768": 525354
+      },
+      "ns_per_call": {
+        "native": 13.599009195963541,
+        "python": 440.93445841471356
+      }
+    }
+  ],
+  "cold_summary": {
+    "native_ns": 129559.0,
+    "python_ns": 6107553.0,
+    "median_paired_ratio": 48.06786038086649,
+    "ratio_range": [
+      35.680879030601766,
+      79.12148869978955
+    ],
+    "nonpositive_pairs": 0
+  },
+  "warm_summary": {
+    "native_ns": 13.442759195963541,
+    "python_ns": 451.41246032714844,
+    "median_paired_ratio": 33.820979639325316,
+    "ratio_range": [
+      22.95709461720587,
+      40.469583281442425
+    ],
+    "nonpositive_pairs": 0
+  },
+  "cpu_model": "AMD Ryzen 9 9950X3D",
+  "compiler_ran_on": "TIDE 0.5.0 reference",
+  "plan_sha256": "8a38bd184fa52c06201f73c39aa41e2427035fec114a0d8efeaf92244d2bd3a0",
+  "compiler_sha256": {
+    "native/elf64.tide": "116909b8ea9eb998ac0ffc1cba51cebc024208cdb628184316f6c662f1ce01f6",
+    "native/fold_i64.tide": "43811a4862a232ecde259e39401bc6e1c321ef5bdae8fb19178596de7c892352",
+    "native/scalar.tide": "057d655bf0745ef58b928656a9d3600168122a3a70e524fda46d5644d3c9ea45"
+  },
+  "source_sha256": "cd9814adc0e127b5ae9ba3dfa0456c06f07d32c7c7777adabb09fe7b47f55f44",
+  "case_source_sha256": "0bd866dc2eb664e2c25711aa5086a37877116cc65565d7b71ffa3387edabb017",
+  "cases": [
+    {
+      "name": "seed_empty",
+      "expected": "-7",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "b3a97f670ed5130fae77dca7b2359fe2690698793e6fc6ea1c66593701012556"
+    },
+    {
+      "name": "original_plus",
+      "expected": "97",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2"
+    },
+    {
+      "name": "original_minus",
+      "expected": "-11",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "89a32133e201274cdd3cd2e030a5891f1330eb66b30adec9840c0a6b019ca256"
+    },
+    {
+      "name": "original_times",
+      "expected": "42",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "6ad8c6cf19af047e6a73a2da60acb1140bc0636bf956f632b1e0d21b684b9f80"
+    },
+    {
+      "name": "row_index",
+      "expected": "9",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "3c6e135135923ed7eec99101dbd0ee3f003b336255cedef94939272f0439038e"
+    },
+    {
+      "name": "seed_binding",
+      "expected": "16",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "1c118a53f2bbf698bc3e703fe353e8d2906f0d75a1c80a989c5d8dff593a7b95"
+    },
+    {
+      "name": "reversed_minus",
+      "expected": "-5",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "cf203ddd2ad4e2cd422c06e9e689fafbf224a3224523deefdd84234703dbfd56"
+    },
+    {
+      "name": "signed_min",
+      "expected": "-9223372036854775808",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "ca43a39e6b40c96ed7d4b073d3c8c5329fc2e1ad7bccb76fcfe4594e100fe0e2"
+    },
+    {
+      "name": "signed_max",
+      "expected": "9223372036854775807",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "52b82683d73f96e95b8754e15264643e1f1fd0543c6ba0905012688de8f426f0"
+    },
+    {
+      "name": "equal",
+      "expected": "2",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "5a44a645e2bb7d9a670f8711f746e72388737113dc572725db8eb4ef5fc034a2"
+    },
+    {
+      "name": "if_true_skips_overflow",
+      "expected": "9223372036854775807",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "46d58ff212090dd443fe8bb0d6c2302ed0ac067c8727d2b398f72f8e72909fae"
+    },
+    {
+      "name": "if_false_skips_overflow",
+      "expected": "-43",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "3d7d81efe21531c84f25e43e5abfb232bbd6df6786d729343fbd0411e1c31146"
+    },
+    {
+      "name": "and_skips_overflow",
+      "expected": "4",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "3312685e3e6e36743cbfa5ee8cf4d85c156d138bff9b33ca3d57458440269e9d"
+    },
+    {
+      "name": "or_skips_overflow",
+      "expected": "7",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "5924a09207ebdb11502c3217e7ad5086d725f81ff54142e7adf31a48f7242401"
+    },
+    {
+      "name": "and_evaluates_rhs",
+      "expected": "E_OVERFLOW",
+      "exit": 1,
+      "native_matches_reference": true,
+      "image_sha256": "607f7f294cacddd149e844c319965e6bea5f76ca2967ffc12a1a3c4e38126333"
+    },
+    {
+      "name": "or_evaluates_rhs",
+      "expected": "E_OVERFLOW",
+      "exit": 1,
+      "native_matches_reference": true,
+      "image_sha256": "f439bd94552e6286202288ecf3897cf8c7e1b9737bc0e56ac000036e51ceb1d2"
+    },
+    {
+      "name": "not_and_equality",
+      "expected": "0",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "cb12d529f2a05bf67cd47e094e54ae7553dfafa7d6a95c71b435304226b80488"
+    },
+    {
+      "name": "boolean_if",
+      "expected": "3",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "9215ab3eb9443cd6e635f555a46a074c5e0e40ce2d039e8120f40291a3017637"
+    },
+    {
+      "name": "early_overflow",
+      "expected": "E_OVERFLOW",
+      "exit": 1,
+      "native_matches_reference": true,
+      "image_sha256": "2eca46a4ab1d15e86d6222f63edc101b30fc726bc716f688f629d0f5e5b3b119"
+    },
+    {
+      "name": "sub_overflow",
+      "expected": "E_OVERFLOW",
+      "exit": 1,
+      "native_matches_reference": true,
+      "image_sha256": "225b4bf35865e699a2c7101a10905826dba6d2986fc7bbce6bb03d792b0afcb1"
+    },
+    {
+      "name": "mul_value",
+      "expected": "-20",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "90c363f0e4bb015eaa8fb4c8ba4a228e4de1b052dd57aa23542806d397012bf6"
+    },
+    {
+      "name": "overflow_as_rhs",
+      "expected": "E_OVERFLOW",
+      "exit": 1,
+      "native_matches_reference": true,
+      "image_sha256": "372146cb124be921d708bbf7e5af90738108facfa8d27e1dba8f714561d44e1a"
+    },
+    {
+      "name": "literal_untaken",
+      "expected": "-9223372036854775808",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "1243a357aa4660b1beab4084298a8a49f5c3276cb24450cfd9d69a5286f6d434"
+    },
+    {
+      "name": "prefix",
+      "expected": "10",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "4193e4db9e3a5f39195c461c8a91340fb153d281d5bc31c244e26d4ef99f4b44"
+    },
+    {
+      "name": "near_skip",
+      "expected": "33",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "98b261ba24ceac1c7216ac2176daa72428620d35c1ccd12c069ce18b6d7e7067"
+    },
+    {
+      "name": "near_taken",
+      "expected": "42",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "0ce09d5815aa8c9dee97d31d065272fe349a89e48622f64efaefe1c8241e4ba3"
+    },
+    {
+      "name": "skipped_second_operand",
+      "expected": "2",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "7979fccb639621dc6767f76814fab2978ebea27d878255af094481ad8651b34d"
+    },
+    {
+      "name": "short_circuit_with_false",
+      "expected": "2",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "6ac4a39d9651a2c6fda5b9cbbb49f376463084240ec68a46ac580ca193ed714d"
+    },
+    {
+      "name": "main_extreme",
+      "expected": "-9223372036854775808",
+      "exit": 0,
+      "native_matches_reference": true,
+      "image_sha256": "491bd6830efc81636b4689cbaf711cca6ad9b7f52c446ed0bd21e8c4a90c296d"
+    }
+  ],
+  "heating_examples": [
+    {
+      "name": "mixed",
+      "inputs": {
+        "initial": 3,
+        "readings": [
+          20,
+          18,
+          12,
+          17
+        ]
+      },
+      "three_way_result": 10
+    },
+    {
+      "name": "empty",
+      "inputs": {
+        "initial": -7,
+        "readings": []
+      },
+      "three_way_result": -7
+    },
+    {
+      "name": "subtraction_overflows",
+      "inputs": {
+        "initial": -9223372036854775808,
+        "readings": [
+          -9223372036854775808
+        ]
+      },
+      "three_way_result": "E_OVERFLOW"
+    },
+    {
+      "name": "addition_overflows",
+      "inputs": {
+        "initial": 9223372036854775807,
+        "readings": [
+          17
+        ]
+      },
+      "three_way_result": "E_OVERFLOW"
+    },
+    {
+      "name": "skip_above_threshold",
+      "inputs": {
+        "initial": 9223372036854775807,
+        "readings": [
+          9223372036854775807,
+          18
+        ]
+      },
+      "three_way_result": 9223372036854775807
+    }
+  ],
+  "preserved_images": {
+    "balance": "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2",
+    "saldo_batch_1048576": "caa8bf028621f185df716fdf66e3083f64e6e18dd232eafa6adf948adaf7047e",
+    "saldo_batch_2097152": "22a04c2ba53461d7628332419cf4e7878b24d4219178a70f54fe40bb5633ef1a"
+  },
+  "elf_headers": "\nElf file type is EXEC (Executable file)\nEntry point 0x4000b0\nThere are 2 program headers, starting at offset 64\n\nProgram Headers:\n  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align\n  LOAD           0x000000 0x0000000000400000 0x0000000000400000 0x00026d 0x00026d R E 0x1000\n  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10\n",
+  "method": {
+    "cpython": "import sys\n\nMAX = 9223372036854775807\nREADINGS = (18, 20, 12, 14, 17, 21, 19, 18, 15, 11, 9, 18, 22, 14, 13, 19)\n\n\ndef degree_hours(initial, readings):\n    total = initial\n    for temperature in readings:\n        if temperature < 18:\n            deficit = 18 - temperature\n            if deficit > MAX:\n                raise OverflowError\n            total += deficit\n            if total > MAX:\n                raise OverflowError\n    return total\n\n\nif __name__ == \"__main__\":\n    repetitions = int(sys.argv[1]) if len(sys.argv) > 1 else 1\n    for _ in range(repetitions):\n        result = degree_hours(0, READINGS)\n    print(result)\n",
+    "performance": "import hashlib\nimport itertools\nimport json\nimport os\nfrom pathlib import Path\nimport platform\nfrom statistics import median\nimport struct\nimport subprocess\nimport sys\nimport time\n\nw = Path(sys.argv[1])\nrepo = Path.cwd()\nsource = repo / 'apps/heating.tide'\nexe = str(repo / 'tide')\ncpu = 2\nos.sched_setaffinity(0, {cpu})\ndef checked(cmd):\n    return subprocess.run(cmd, capture_output=True, check=True).stdout\ndef build(count):\n    checked([exe, 'check', str(source)])\n    if count == 1:\n        cmd = [exe, 'run', 'native/fold_i64.tide', '--read', 'source='+str(source)]\n    else:\n        cmd = [exe, 'run', 'native/fold_i64.tide', '--call', 'compile_repeated',\n               '--inputs', json.dumps({'source':source.read_text(), 'repetitions':count})]\n    path = w / ('heating-'+str(count))\n    path.write_bytes(bytes.fromhex(json.loads(checked(cmd))))\n    path.chmod(0o700)\n    return path\ndef timed(cmd):\n    start = time.perf_counter_ns()\n    data = checked(cmd)\n    duration = time.perf_counter_ns() - start\n    assert data == b'39\\n', (cmd,data)\n    return duration\n\nbuilds = []\nfor rep in range(-2,10):\n    start = time.perf_counter_ns()\n    binary = build(1)\n    elapsed = time.perf_counter_ns() - start\n    if rep >= 0: builds.append(elapsed)\nshort,long = 32768,131072\nbins = {1:binary,short:build(short),long:build(long)}\nimages = {}\nfor count,path in bins.items():\n    data=path.read_bytes()\n    # The wrapper loads RSI RIP-relative and calls the fold kernel immediately afterwards.\n    lea = data.index(bytes.fromhex('488d35'),176)\n    call = lea+7\n    assert data[call]==0xe8\n    start = call+5+struct.unpack_from('<i',data,call+1)[0]\n    stop = lea+7+struct.unpack_from('<i',data,lea+3)[0]\n    assert start<stop and stop==len(data)-16*8\n    images[count] = dict(image_bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),kernel_start=start,kernel_end=stop,\n                         kernel_sha256=hashlib.sha256(data[start:stop]).hexdigest(),data_sha256=hashlib.sha256(data[stop:]).hexdigest())\nassert len({i['kernel_sha256'] for i in images.values()})==1\nassert len({i['data_sha256'] for i in images.values()})==1\npy = [sys.executable,'-B',str(w/'comparator.py')]\ncommands = {'native':[binary], 'python':py}\ncold = []\nfor rep in range(-6,30):\n    order = list(commands)[::1 if rep%2==0 else -1]\n    values={k:timed(commands[k]) for k in order}\n    cold.append(dict(rep=rep,ns=values))\ncommands={f'{lang}-{n}':([bins[n]] if lang=='native' else py+[str(n)]) for lang in ('native','python') for n in (short,long)}\norders = list(itertools.permutations(commands))\nwarm = []\nfor rep in range(-4,24):\n    values={k:timed(commands[k]) for k in orders[rep%24]}\n    slope={lang:(values[f'{lang}-{long}']-values[f'{lang}-{short}'])/(long-short) for lang in ('native','python')}\n    warm.append(dict(rep=rep,ns=values,ns_per_call=slope))\ncs = [e['ns'] for e in cold if e['rep']>=0]\nws = [e['ns_per_call'] for e in warm if e['rep']>=0]\ndef stats(data):\n    ratios = [e['python']/e['native'] for e in data if e['native']!=0]\n    return dict(native_ns=median(e['native'] for e in data),python_ns=median(e['python'] for e in data),median_paired_ratio=median(ratios),\n                ratio_range=[min(ratios),max(ratios)],nonpositive_pairs=sum(min(e.values())<=0 for e in data))\nresult=dict(cpu=cpu,platform=platform.platform(),python=platform.python_version(),short=short,long=long,images=images,\n            build_ns=builds,build_median_ns=median(builds),cold=cold,warm=warm,cold_summary=stats(cs),warm_summary=stats(ws))\n(w/'performance.json').write_text(json.dumps(result,indent=2)+'\\n')\nprint(result['cold_summary'],result['warm_summary'],result['build_median_ns'])\n",
+    "differential_checks": "#!/usr/bin/env bash\nset -euo pipefail\nrepo=$PWD\nw=$(cd \"$(dirname \"$0\")\" && pwd)\n\"$repo/tide\" run experimente/20_native_ausdruecke/faelle.tide > \"$w/cases.json\"\njq -c '.[]' \"$w/cases.json\" | while read -r trial; do\n  name=$(jq -r .name <<< \"$trial\"); expected=$(jq -r .expected <<< \"$trial\")\n  d=\"$w/$name\"; mkdir -p \"$d\"; jq -jr .source <<< \"$trial\" > \"$d/source.tide\"\n  \"$repo/tide\" check \"$d/source.tide\" >/dev/null\n  \"$repo/tide\" run native/fold_i64.tide --read source=\"$d/source.tide\" | jq -ejr . | xxd -r -p > \"$d/main\"\n  chmod u+x \"$d/main\"\n  r=0; \"$repo/tide\" run \"$d/source.tide\" > \"$d/ref.out\" 2>\"$d/ref.err\" || r=$?\n  n=0; \"$d/main\" > \"$d/native.out\" 2>\"$d/native.err\" || n=$?\n  [[ $n == \"$r\" ]]; cmp \"$d/ref.out\" \"$d/native.out\"\n  if [[ $expected == E_OVERFLOW ]]; then\n     [[ $n == 1 && ! -s \"$d/native.out\" ]]\n     jq -e '.code==\"E_OVERFLOW\"' \"$d/native.err\" >/dev/null; jq -e '.code==\"E_OVERFLOW\"' \"$d/ref.err\" >/dev/null\n  else\n     [[ $n == 0 && ! -s \"$d/native.err\" && ! -s \"$d/ref.err\" ]]\n     if [[ $(cat \"$d/native.out\") != \"$expected\" ]]; then echo \"Expectation mismatch: $name expected $expected got $(cat \"$d/native.out\")\"; exit 1; fi\n  fi\n  jq -nc --arg name \"$name\" --arg expected \"$expected\" --arg hash \"$(sha256sum \"$d/main\"|cut -d' ' -f1)\" --argjson rc \"$n\" '{name:$name,expected:$expected,exit:$rc,native_matches_reference:true,image_sha256:$hash}' >> \"$w/case-results\"\ndone\n"
+  }
+}

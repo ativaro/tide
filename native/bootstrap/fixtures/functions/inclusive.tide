@@ -1,0 +1,39 @@
+main a:i b:i > i
+if (<= a b) (if (>= a b) 0 -1) 1
+
+bounded seed:i values:*i > i
+fold values seed total row point
+if (and (>= point -2) (<= point 2)) (+ total point) total
+
+rule range value:i > b
+state admitted:b=false
+when and (>= value -2) (<= value 2) -> admitted=set true
+else -> admitted=set false
+out admitted
+
+simulate events:*i > *b
+scan range events
+
+example equal main
+{"inputs":{"a":0,"b":0},"expect":0}
+
+example min_equal main
+{"inputs":{"a":-9223372036854775808,"b":-9223372036854775808},"expect":0}
+
+example max_equal main
+{"inputs":{"a":9223372036854775807,"b":9223372036854775807},"expect":0}
+
+example ascending main
+{"inputs":{"a":-9223372036854775808,"b":9223372036854775807},"expect":-1}
+
+example descending main
+{"inputs":{"a":9223372036854775807,"b":-9223372036854775808},"expect":1}
+
+example negative main
+{"inputs":{"a":-3,"b":-2},"expect":-1}
+
+example fold_window bounded
+{"inputs":{"seed":7,"values":[-3,-2,-1,2,2,3]},"expect":8}
+
+example rule_window simulate
+{"inputs":{"events":[-9223372036854775808,-2,-1,2,3,9223372036854775807]},"expect":[false,true,true,true,false,false]}

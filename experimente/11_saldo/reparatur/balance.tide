@@ -1,0 +1,2 @@
+balance opening:i entries:*i > i
+fold entries opening total row entry + total entry

@@ -1,0 +1,18 @@
+record Arguments
+initial:i readings:*i
+
+main seed:?t values:*t > ?{Arguments}
+case seed (nil {Arguments}) seed_text
+case (int seed_text) (nil {Arguments}) initial
+let parsed fold values (some (list i 0)) acc row token
+  case acc (nil *i) nums (case (int token) (nil *i) number (some (append nums number)))
+case parsed (nil {Arguments}) readings (some (make Arguments initial initial readings readings))
+
+example ascii_decimal main
+{"inputs":{"seed":{"some":"-00"},"values":["0018","-9223372036854775808"]},"expect":{"some":{"initial":0,"readings":[18,-9223372036854775808]}}}
+
+example sign_only main
+{"inputs":{"seed":{"some":"-"},"values":[]},"expect":{"none":true}}
+
+example plus_is_invalid main
+{"inputs":{"seed":{"some":"0"},"values":["+1"]},"expect":{"none":true}}

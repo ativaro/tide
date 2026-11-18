@@ -1,0 +1,4 @@
+main input:r > i
+fold (lines (read input)) 0 total row line
+let snapshot read input
++ total 1

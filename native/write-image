@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+compiler=$1
+source=$2
+output=$3
+entry=$4
+if [ -e "$output" ] && [ "$source" -ef "$output" ]; then
+    echo 'Output is the source file' >&2
+    exit 1
+fi
+tmp=$(mktemp -- "$output.XXXXXXXX")
+trap 'rm -f -- "$tmp"' EXIT
+hex=$(mktemp -- "${TMPDIR:-/tmp}/tide-image.XXXXXXXX")
+trap 'rm -f -- "$tmp" "$hex"' EXIT
+"$compiler" "$entry" < "$source" > "$hex"
+xxd -r -p "$hex" > "$tmp"
+chmod 755 "$tmp"
+mv -fT -- "$tmp" "$output"

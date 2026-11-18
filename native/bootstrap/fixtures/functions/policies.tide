@@ -1,0 +1,20 @@
+variant Tie
+newest oldest
+
+variant Rounding
+even_half upper_half
+
+record Ranking
+mode:{Tie} first_id:i next_id:i
+
+smaller left:i right:i > i
+if (< left right) left right
+
+larger left:i right:i > i
+if (> left right) left right
+
+even_units whole:i > i
+if (eq (mod whole 2) 0) whole (+ whole 1)
+
+upper_units whole:i > i
++ whole 1

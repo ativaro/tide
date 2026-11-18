@@ -1,0 +1,170 @@
+use public_data
+
+sql_allowed action:i > b
+fold (list i 14 1 2 9 10 11 18 20 21 23 26 27 28 31 33) false seen row code or seen (eq action code)
+
+sql_connect args:*{EvalValue} fn:{Signature} > *{EvalValue}
+if (eq (+ (length (typed_grants fn "d")) (length (typed_grants fn "p"))) 0) args
+fold args (list {EvalValue} 0) bound row arg
+  let typ need (at (get types fn) (- row 1)) "sql_argument" 0
+  if (text_eq typ "p")
+    (let db need (bootstrap_pg_open (get text arg)) (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot open granted PostgreSQL database") 0
+     append bound (with handle (number_value 0) (some db)))
+  if (not (text_eq typ "d")) (append bound arg)
+  let db need (bootstrap_sql_open (get text arg)) (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot open granted SQLite database") 0
+  if (not (eq (bootstrap_sql_guard db true) 0)) fail (diagnosis (get file fn) (get loc fn) "E_IO" "Cannot configure SQLite connection")
+  append bound (with handle (number_value 0) (some db))
+
+sql_error rc:i file:t site:{Site} > {ScalarResult}
+let code if (eq rc 9) "E_LIMIT" (if (or (eq rc 5) (or (eq rc 6) (or (eq rc 8) (or (eq rc 10) (eq rc 13))))) "E_IO" "E_DATA")
+let reason if (eq rc 19) "sqlite_constraint" (if (eq rc 23) "sqlite_denied" (if (eq rc 9) "sqlite_work_limit" "sqlite_statement"))
+let error scalar_failure file site code "SQLite statement failed" reason
+with detail error (extra_fields (get detail error) (concat "\"sqlite_code\":" (signed_text rc)))
+
+sql_control db:{NativeHandle} command:t > i
+let disabled bootstrap_sql_guard db false
+if (not (eq disabled 0)) disabled
+let rc bootstrap_sql_control db command
+let enabled bootstrap_sql_guard db true
+if (eq rc 0) enabled rc
+
+sql_rollback db:{NativeHandle} > i
+if (bootstrap_sql_autocommit db) 0 (sql_control db "ROLLBACK")
+
+sql_begin db:{NativeHandle} file:t site:{Site} > {ScalarResult}
+if (not (bootstrap_sql_autocommit db)) (scalar_failure file site "E_DATA" "Nested SQLite transaction" "sqlite_nested")
+let rc sql_control db "BEGIN IMMEDIATE"
+if (eq rc 0) (scalar_ok 0) (sql_error rc file site)
+
+sql_commit db:{NativeHandle} file:t site:{Site} > {ScalarResult}
+let rc sql_control db "COMMIT"
+if (eq rc 0) (scalar_ok 0)
+if (not (eq (sql_rollback db) 0)) (scalar_failure file site "E_TRANSACTION" "SQLite rollback failed" "")
+sql_error rc file site
+
+sql_bind stmt:{NativeHandle} index:i value:{EvalValue} kind:t > i
+let optional text_eq (text_slice kind 0 1) "?"
+if (and optional (not (get present value))) (bootstrap_sql_bind_null stmt index)
+let typ if optional (text_slice kind 1 (text_len kind)) kind
+if (or (text_eq typ "z") (text_eq typ "t")) (bootstrap_sql_bind_t stmt index (get text value))
+if (text_eq typ "y") (bootstrap_sql_bind_y stmt index (get text value))
+bootstrap_sql_bind_i stmt index (get num value)
+
+sql_parameters stmt:{NativeHandle} params:{EvalValue} > i
+let keys map t (get members params) offset (get name (tape_at (get tape params) (+ (get offset params) offset)))
+let n bootstrap_sql_params stmt
+if (not (eq n (length keys))) 25
+fold (indices n) 0 rc pos unused
+  if (not (eq rc 0)) rc
+  let name bootstrap_sql_name stmt pos
+  if (not (text_eq (text_slice name 0 1) ":")) 25
+  case (entry_at keys (text_slice name 1 (text_len name))) 25 slot
+  sql_bind stmt pos (member_value params slot) (get kind (member_cell params slot))
+
+sql_cell stmt:{NativeHandle} slot:i kind:t > ?{EvalValue}
+let storage bootstrap_sql_column_type stmt slot
+let optional text_eq (text_slice kind 0 1) "?"
+let typ if optional (text_slice kind 1 (text_len kind)) kind
+if (eq storage 5) (if optional (some (number_value 0)) (nil {EvalValue}))
+let value if (and (eq storage 1) (or (text_eq typ "q") (or (text_eq typ "i") (text_eq typ "b"))))
+  (let n bootstrap_sql_column_i stmt slot
+   if (or (not (text_eq typ "b")) (or (eq n 0) (eq n 1))) (some (number_value n)) (nil {EvalValue}))
+  if (and (eq storage 3) (text_eq typ "z"))
+    (case (bootstrap_octets_utf8 (bootstrap_sql_column_raw stmt slot)) (nil {EvalValue}) s (case (stamp_seconds s) (nil {EvalValue}) epoch (some (with num (text_value s) epoch))))
+  if (and (eq storage 3) (text_eq typ "t"))
+    (case (bootstrap_octets_utf8 (bootstrap_sql_column_raw stmt slot)) (nil {EvalValue}) decoded (some (text_value decoded)))
+  if (and (eq storage 4) (text_eq typ "y"))
+    (let raw bootstrap_sql_column_raw stmt slot
+     if (> (text_len raw) 131072) (nil {EvalValue}) (some (text_value raw)))
+  (nil {EvalValue})
+case value (nil {EvalValue}) v (some (with present v optional))
+
+sql_columns stmt:{NativeHandle} decl:{SchemaType} > ?*i
+let fields get fields decl
+if (not (eq (length fields) (bootstrap_sql_columns stmt))) (nil *i)
+let names fold fields (list t 0) acc row unused append acc (bootstrap_sql_column_name stmt (- row 1))
+fold fields (some (list i 0)) prior row key
+  case prior (nil *i) slots
+  case (entry_at names key) (nil *i) slot (some (append slots slot))
+
+record SqlRows
+result:{ScalarResult} count:i done:b
+
+sql_record stmt:{NativeHandle} decl:{SchemaType} slots:*i index:i file:t site:{Site} > {ScalarResult}
+fold slots (value_ok (number_value 16)) acc row slot
+  if (not (text_eq (get code acc) "")) acc
+  let key need (at (get fields decl) (- row 1)) "sql_field" 0
+  let kind need (at (get types decl) (- row 1)) "sql_type" 0
+  case (sql_cell stmt slot kind)
+    (let error scalar_failure file site "E_DATA" "Unexpected SQLite value" "sqlite_column"
+     with detail error (extra_fields (get detail error) (input_issue (pointer_child (concat "/" (decimal index)) key) kind "SQLite value"))) v
+  value_ok (add_member (get value acc) key kind v (field_bytes v kind))
+
+sql_row prior:{SqlRows} stmt:{NativeHandle} decl:{SchemaType} slots:*i typ:t file:t site:{Site} limit:i > {SqlRows}
+let rc bootstrap_sql_step stmt
+if (eq rc 101) (with done prior true)
+if (not (eq rc 100)) (with done (with result prior (sql_error rc file site)) true)
+let index get count prior
+if (eq index 4096) (with done (with result prior (scalar_failure file site "E_LIMIT" "SQLite row limit" "")) true)
+let built sql_record stmt decl slots index file site
+if (not (text_eq (get code built) "")) (with done (with result prior built) true)
+let rows get value (get result prior)
+let item get value built
+let size field_bytes item typ
+if (> (+ (get num rows) (+ 8 size)) limit) (with done (with result prior (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "")) true)
+make SqlRows result (value_ok (add_member rows "" typ item size)) count (+ index 1) done false
+
+sql_prepare db:{NativeHandle} sql:t params:{EvalValue} file:t site:{Site} > {ScalarResult}
+if (or (> (text_len sql) 131072) (case (text_find sql (bootstrap_character 0) 0) false pos true)) (scalar_failure file site "E_DATA" "Invalid SQLite statement" "sqlite_statement")
+case (bootstrap_sql_prepare db sql)
+  (let rc bootstrap_sql_error db
+   sql_error (if (eq rc 0) 1 rc) file site) stmt
+let bound sql_parameters stmt params
+if (eq bound 25) (scalar_failure file site "E_DATA" "Expected exactly the named SQL parameters" "sqlite_parameters")
+if (not (eq bound 0)) (sql_error bound file site)
+value_ok (with handle (number_value 0) (some stmt))
+
+sql_statement db:{NativeHandle} sql:t params:{EvalValue} row_type:t schemas:{Declarations} file:t site:{Site} limit:i > {ScalarResult}
+let prepared sql_prepare db sql params file site
+if (not (text_eq (get code prepared) "")) prepared
+let stmt need (get handle (get value prepared)) "sql_stmt" 0
+if (text_eq row_type "")
+  (if (not (eq (bootstrap_sql_columns stmt) 0)) (scalar_failure file site "E_DATA" "Use sql_query for returned columns" "sqlite_columns")
+   let before bootstrap_sql_changes db
+   let rc bootstrap_sql_step stmt
+   if (eq rc 101) (scalar_ok (- (bootstrap_sql_changes db) before)) (sql_error rc file site))
+if (not (bootstrap_sql_readonly stmt)) (scalar_failure file site "E_DATA" "sql_query requires a read-only statement" "sqlite_readonly")
+if (< limit 8) (scalar_failure file site "E_LIMIT" "Guest allocation budget exhausted" "")
+let decl need (named_schema schemas row_type) "sql_record" 0
+case (sql_columns stmt decl) (scalar_failure file site "E_DATA" "SQL columns must match the declared record" "sqlite_columns") slots
+let start make SqlRows result (value_ok (number_value 8)) count 0 done false
+get result (bootstrap_while start cursor (not (get done cursor)) (sql_row cursor stmt decl slots row_type file site limit))
+
+sql_stream_open grant:{EvalValue} sql:t params:{EvalValue} decl:{SchemaType} file:t site:{Site} > {ScalarResult}
+let prepared sql_prepare (need (get handle grant) "sql_connection" 0) sql params file site
+if (not (text_eq (get code prepared) "")) prepared
+let value get value prepared
+let stmt need (get handle value) "sql_stmt" 0
+if (not (bootstrap_sql_readonly stmt)) (scalar_failure file site "E_DATA" "sql_query requires a read-only statement" "sqlite_readonly")
+case (sql_columns stmt decl) (scalar_failure file site "E_DATA" "SQL columns must match the declared record" "sqlite_columns") slots
+value_ok (with items value slots)
+
+sql_stream_next stream:{EvalValue} decl:{SchemaType} index:i file:t site:{Site} > {ScalarResult}
+let stmt need (get handle stream) "sql_stream" 0
+let rc bootstrap_sql_step stmt
+if (eq rc 101) (scalar_ok 0)
+if (not (eq rc 100)) (sql_error rc file site)
+let result sql_record stmt decl (get items stream) index file site
+with value result (with present (get value result) true)
+
+sql_action values:*{EvalValue} kind:t schemas:{Declarations} file:t site:{Site} limit:i > {DataAction}
+let grant need (at values 0) "sql_grant" 0
+let db need (get handle grant) "sql_connection" 0
+let sql get text (need (at values 1) "sql_text" 0)
+let params need (at values 2) "sql_parameters" 0
+let row_type if (text_eq kind "i") "" (text_slice kind 1 (text_len kind))
+let active not (bootstrap_sql_autocommit db)
+let result sql_statement db sql params row_type schemas file site limit
+let checked if (and active (bootstrap_sql_autocommit db)) (scalar_failure file site "E_TRANSACTION" "SQLite aborted the enclosing transaction" "") result
+let size if (or (text_eq row_type "") (not (text_eq (get code checked) ""))) 0 (get num (get value checked))
+make DataAction result checked work 0 bytes size

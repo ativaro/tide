@@ -1,0 +1,4 @@
+use rulebook
+
+relay label:t booked:i cancelled:i > i
++ (balance cancelled booked) (size label)

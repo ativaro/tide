@@ -1,0 +1,37 @@
+use json_readings
+
+main input:r limit:i > {Summary}
+let document parse (read_bytes input)
+fold (get readings document) (make Summary above 0 peak (nil i)) result row reading
+let value get value reading
+let threshold case (dict_get (get limits document) (get sensor reading)) limit local_limit local_limit
+make Summary
+above (if (> value threshold) (+ (get above result) 1) (get above result))
+peak (some (case (get peak result) value old (if (> value old) value old)))
+
+example optional_and_unknown notes
+{"inputs":{"payload":"{\"readings\":[{\"value\":80,\"sensor\":\"A\",\"future\":{\"any\":[null,1.5]}},{\"sensor\":\"B\",\"value\":90,\"note\":null},{\"sensor\":\"C\",\"value\":82,\"note\":\"kühl\"}],\"limits\":{},\"version\":2}"},"expect":{"readings":[{"sensor":"A","value":80,"note":{"none":true}},{"sensor":"B","value":90,"note":{"none":true}},{"sensor":"C","value":82,"note":{"some":"kühl"}}],"limits":{}}}
+
+example thresholds main
+{"inputs":{"input":"{\"limits\":{\"A\":79},\"readings\":[{\"sensor\":\"A\",\"value\":80},{\"sensor\":\"B\",\"value\":80},{\"sensor\":\"C\",\"value\":98}]}","limit":80},"expect":{"above":2,"peak":{"some":98}}}
+
+example empty main
+{"inputs":{"input":"{\"limits\":{},\"readings\":[]}","limit":80},"expect":{"above":0,"peak":{"none":true}}}
+
+example missing main
+{"inputs":{"input":"{\"limits\":{},\"readings\":[{\"value\":1}]}","limit":80},"expect_error":{"code":"E_DATA","path":"/readings/0/sensor"}}
+
+example wrong_optional main
+{"inputs":{"input":"{\"limits\":{},\"readings\":[{\"value\":1,\"sensor\":\"A\"},{\"sensor\":\"B\",\"value\":2,\"note\":false}]}","limit":80},"expect_error":{"code":"E_DATA","reason":"invalid_json","path":"/readings/1/note"}}
+
+example escaped_key main
+{"inputs":{"input":"{\"readings\":[],\"limits\":{\"A~/B\":null}}","limit":80},"expect_error":{"code":"E_DATA","path":"/limits/A~0~1B"}}
+
+example invalid_unknown main
+{"inputs":{"input":"{\"readings\":[],\"limits\":{},\"future\":{\"bad\":[1,]}}","limit":80},"expect_error":{"code":"E_DATA","path":"/future/bad/1"}}
+
+example duplicate notes
+{"inputs":{"payload":"{\"readings\":[],\"limits\":{},\"limits\":{}}"},"expect_error":{"code":"E_DATA","path":"/limits"}}
+
+example invalid_utf8 parse
+{"inputs":{"payload":"c328"},"expect_error":{"code":"E_UTF8","path":""}}

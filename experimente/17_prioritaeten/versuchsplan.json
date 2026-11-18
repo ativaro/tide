@@ -1,0 +1,6532 @@
+{
+  "model": "gpt-6-astra",
+  "reasoning": "xhigh",
+  "tier": "priority",
+  "cli": "0.157.1",
+  "versions": {
+    "tide": "0.5.0",
+    "python": "3.14.10"
+  },
+  "arms": [
+    "tide-plain",
+    "tide-lib",
+    "python-native"
+  ],
+  "schedule": [
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "python-native"
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "python-native"
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "python-native"
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "python-native"
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "python-native"
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "python-native"
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "tide-lib"
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "tide-plain"
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "python-native"
+    }
+  ],
+  "design": "Identical defective TIDE sources, except the library variant adds use ordering to the entry and the unmodified ordering.tide module. All TIDE arms use the grouped compiler packet with named edits plus optional unused checked signatures. Python receives its entire source and named edits. Six blocks per family; all six arm permutations per family; serial isolated ephemeral sessions with identical project path and optional tools. The customer symptom, no location or advice, and verifier observation precede every packet. The new library is available, not required. Only unused callable signatures are delivered; no candidate repairs or library examples in the prompt.",
+  "outcomes": "Median within-block differences in whole-turn gross tokens and elapsed seconds to independent green. Report wins, range, cache-adjusted totals, output, reasoning, checkout/tool access and helper adoption in accepted patches. Time from before red verification and context prep. Count up to 3 attempts of 180s each, retaining failures. Reapply accepted edits on fresh copies and verify all 40 public and 40 separate holdouts per family. Independent offline runtime benchmark uses canonical repairs through the warm TIDE reference evaluator and CPython, verified outputs before measurement, equal input, separate from agent time.",
+  "families": {
+    "allocation": {
+      "sources": {
+        "tide/jobs.tide": "record Job\nid:i severity:i travel:i capacity:i\n\ninitial jobs:*{Job} > {Job}\ncase (at jobs 0) (make Job id 0 severity 0 travel 0 capacity 0) head head\n",
+        "python/jobs.py": "def initial(jobs):\n    return jobs[0] if jobs else {\"id\": 0, \"severity\": 0, \"travel\": 0, \"capacity\": 0}\n",
+        "tide/urgent.tide": "use jobs\n\nurgent jobs:*{Job} > i\nlet chosen fold jobs (initial jobs) best row candidate\n  if (> (get severity candidate) (get severity best)) candidate best\nget id chosen\n",
+        "python/urgent.py": "from jobs import initial\n\n\ndef urgent(jobs):\n    best = initial(jobs)\n    for candidate in jobs:\n        if candidate[\"severity\"] > best[\"severity\"]:\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/nearby.tide": "use jobs\n\nnearby jobs:*{Job} > i\nlet chosen fold jobs (initial jobs) best row candidate\n  if (< (get travel candidate) (get travel best)) candidate best\nget id chosen\n",
+        "python/nearby.py": "from jobs import initial\n\n\ndef nearby(jobs):\n    best = initial(jobs)\n    for candidate in jobs:\n        if candidate[\"travel\"] < best[\"travel\"]:\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/summary.tide": "use urgent\n\nuse nearby\n\nrecord Pick\nurgent_id:i nearby_id:i\n\npicks jobs:*{Job} > {Pick}\nmake Pick urgent_id (urgent jobs) nearby_id (nearby jobs)\n\nmain batches:**{Job} > *{Pick}\nfold batches (list {Pick} 0) acc row batch append acc (picks batch)\n",
+        "python/summary.py": "from urgent import urgent\nfrom nearby import nearby\n\n\ndef picks(jobs):\n    return {\"urgent_id\": urgent(jobs), \"nearby_id\": nearby(jobs)}\n\n\ndef main(batches):\n    return [picks(batch) for batch in batches]\n"
+      },
+      "fixes": {
+        "plain": [
+          {
+            "file": "urgent.tide",
+            "old": "(> (get severity candidate) (get severity best))",
+            "replacement": "(or (> (get severity candidate) (get severity best)) (and (eq (get severity candidate) (get severity best)) (or (< (get travel candidate) (get travel best)) (and (eq (get travel candidate) (get travel best)) (> (get capacity candidate) (get capacity best))))))"
+          },
+          {
+            "file": "nearby.tide",
+            "old": "(< (get travel candidate) (get travel best))",
+            "replacement": "(or (< (get travel candidate) (get travel best)) (and (eq (get travel candidate) (get travel best)) (or (> (get capacity candidate) (get capacity best)) (and (eq (get capacity candidate) (get capacity best)) (> (get severity candidate) (get severity best))))))"
+          }
+        ],
+        "library": [
+          {
+            "file": "urgent.tide",
+            "old": "(> (get severity candidate) (get severity best))",
+            "replacement": "(prefer_max (get severity candidate) (get severity best) (prefer_min (get travel candidate) (get travel best) (> (get capacity candidate) (get capacity best))))"
+          },
+          {
+            "file": "nearby.tide",
+            "old": "(< (get travel candidate) (get travel best))",
+            "replacement": "(prefer_min (get travel candidate) (get travel best) (prefer_max (get capacity candidate) (get capacity best) (> (get severity candidate) (get severity best))))"
+          }
+        ],
+        "python": [
+          {
+            "file": "urgent.py",
+            "old": "candidate[\"severity\"] > best[\"severity\"]",
+            "replacement": "(-candidate[\"severity\"], candidate[\"travel\"], -candidate[\"capacity\"]) < (-best[\"severity\"], best[\"travel\"], -best[\"capacity\"])"
+          },
+          {
+            "file": "nearby.py",
+            "old": "candidate[\"travel\"] < best[\"travel\"]",
+            "replacement": "(candidate[\"travel\"], -candidate[\"capacity\"], -candidate[\"severity\"]) < (best[\"travel\"], -best[\"capacity\"], -best[\"severity\"])"
+          }
+        ]
+      },
+      "task": "The allocation report returns urgent_id=7 and nearby_id=7 for jobs (id,severity,travel,capacity) (7,3,2,1), (4,3,2,6), (9,2,2,8). Expected: 4 and 9. Urgent selects highest severity, then shortest travel, then highest capacity. Nearby selects shortest travel, then highest capacity, then highest severity. An exact tie always keeps the earlier input. Return zero IDs for empty batches. Batches are independent.",
+      "cases": [
+        {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expect": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "urgent_id": 0,
+            "nearby_id": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 4,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 4,
+            "nearby_id": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 8,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 1,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 8,
+            "nearby_id": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2,
+              "severity": 0,
+              "travel": 4,
+              "capacity": 4
+            },
+            {
+              "id": 3,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 3,
+            "nearby_id": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 6,
+              "severity": 8,
+              "travel": 7,
+              "capacity": 1
+            },
+            {
+              "id": 3,
+              "severity": 0,
+              "travel": 7,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 6,
+            "nearby_id": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 150,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 149,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 148,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 147,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 146,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 145,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 150,
+            "nearby_id": 150
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 163,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 162,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 162,
+            "nearby_id": 162
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 176,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 175,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 174,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 173,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 172,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 171,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 170,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 176,
+            "nearby_id": 174
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 189,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 188,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 187,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 186,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 185,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 184,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 183,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 182,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 183,
+            "nearby_id": 183
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 202,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 201,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 200,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 199,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 199,
+            "nearby_id": 201
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 215,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 214,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 213,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 212,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 212,
+            "nearby_id": 212
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 228,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 227,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 226,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 225,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 224,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 223,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 226,
+            "nearby_id": 224
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 241,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 240,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 239,
+              "severity": 1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 238,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 237,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 236,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 236,
+            "nearby_id": 236
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 254,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 253,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 252,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 251,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 250,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 249,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 248,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 247,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 246,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 245,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 247,
+            "nearby_id": 247
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 267,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 266,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 267,
+            "nearby_id": 266
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 280,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 279,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 280,
+            "nearby_id": 279
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 293,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 292,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 291,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 290,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 289,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 288,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 287,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 286,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 291,
+            "nearby_id": 291
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 306,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 305,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 304,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 303,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 306,
+            "nearby_id": 306
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 319,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 318,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 317,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 316,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 315,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 314,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 313,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 315,
+            "nearby_id": 315
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 332,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 331,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 330,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 329,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 328,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 327,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 326,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 325,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 324,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 325,
+            "nearby_id": 332
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 345,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 344,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 343,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 344,
+            "nearby_id": 344
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 358,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 357,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 356,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 355,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 355,
+            "nearby_id": 357
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 371,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 370,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 369,
+              "severity": 2,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 369,
+            "nearby_id": 370
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 384,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 383,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 382,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 381,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 383,
+            "nearby_id": 381
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 397,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 396,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 395,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 394,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 393,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 392,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 391,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 390,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 389,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 388,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 387,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 396,
+            "nearby_id": 391
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 410,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 409,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 408,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 407,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 406,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 405,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 404,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 409,
+            "nearby_id": 410
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 423,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 422,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 421,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 420,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 419,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 418,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 417,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 416,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 418,
+            "nearby_id": 418
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 436,
+              "severity": -1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 435,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 434,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 433,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 432,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 431,
+              "severity": 2,
+              "travel": 3,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 433,
+            "nearby_id": 433
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 449,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 448,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 447,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 446,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 445,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 444,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 443,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 442,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 446,
+            "nearby_id": 449
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 462,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 461,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 460,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 459,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 458,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 460,
+            "nearby_id": 460
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 475,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 474,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 473,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 472,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 471,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 470,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 469,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 468,
+              "severity": 2,
+              "travel": 3,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 473,
+            "nearby_id": 474
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 488,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 487,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 486,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 485,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 484,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 483,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 482,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 481,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 488,
+            "nearby_id": 488
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 501,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 500,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 499,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 498,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 497,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 499,
+            "nearby_id": 500
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 514,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 513,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 514,
+            "nearby_id": 513
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 527,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 526,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 526,
+            "nearby_id": 527
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 540,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 539,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 538,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 537,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 536,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 535,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 534,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 533,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 532,
+              "severity": 2,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 531,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 533,
+            "nearby_id": 536
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 553,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 552,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 553,
+            "nearby_id": 553
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 566,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 565,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 564,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 563,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 562,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 561,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 560,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 559,
+              "severity": 2,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 558,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 565,
+            "nearby_id": 562
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 579,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 578,
+              "severity": 0,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 577,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 576,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 575,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 574,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 573,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 575,
+            "nearby_id": 575
+          }
+        }
+      ],
+      "holdout": [
+        {
+          "input": [
+            {
+              "id": 2150,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2149,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2148,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2147,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2146,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2146,
+            "nearby_id": 2148
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2163,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2162,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2161,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2160,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2159,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2158,
+              "severity": 2,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2157,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2163,
+            "nearby_id": 2162
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2176,
+              "severity": 2,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2175,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2174,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2173,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2172,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2171,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2170,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2169,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2168,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2167,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2166,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2171,
+            "nearby_id": 2166
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2189,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2188,
+              "severity": 1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2187,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2188,
+            "nearby_id": 2189
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2202,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2201,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2200,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2199,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2198,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2197,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2197,
+            "nearby_id": 2201
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2215,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2214,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2213,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2212,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2211,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2210,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2209,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2208,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2207,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2208,
+            "nearby_id": 2209
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2228,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2227,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2226,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2225,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2224,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2223,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2222,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2221,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2220,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2226,
+            "nearby_id": 2227
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2241,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2240,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2241,
+            "nearby_id": 2240
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2254,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2253,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2252,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2251,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2253,
+            "nearby_id": 2253
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2267,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2266,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2265,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2264,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2263,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2267,
+            "nearby_id": 2267
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2280,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2279,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2279,
+            "nearby_id": 2280
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2293,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2292,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2293,
+            "nearby_id": 2293
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2306,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2305,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2304,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2305,
+            "nearby_id": 2306
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2319,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2318,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2317,
+              "severity": 1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2316,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2316,
+            "nearby_id": 2319
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2332,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2331,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2330,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2329,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2328,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2327,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2326,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2325,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2324,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2323,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2323,
+            "nearby_id": 2331
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2345,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2344,
+              "severity": 1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2343,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2342,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2341,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2340,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2339,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2338,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2343,
+            "nearby_id": 2343
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2358,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2357,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2357,
+            "nearby_id": 2357
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2371,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2370,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2369,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2368,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2367,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2366,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2365,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2364,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2363,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2362,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2366,
+            "nearby_id": 2366
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2384,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2383,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2382,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2381,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2380,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2379,
+              "severity": 0,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2378,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2382,
+            "nearby_id": 2383
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2397,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2396,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2395,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2394,
+              "severity": 2,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2393,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2394,
+            "nearby_id": 2395
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2410,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2409,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2408,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2407,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2406,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2405,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2404,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2403,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2402,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2401,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2400,
+              "severity": 0,
+              "travel": 3,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2401,
+            "nearby_id": 2401
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2423,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2422,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2421,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2420,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2419,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2418,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2417,
+              "severity": 0,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2416,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2415,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2414,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2413,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2422,
+            "nearby_id": 2414
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2436,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2435,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2434,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2433,
+              "severity": 0,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2432,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2431,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2430,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2429,
+              "severity": -1,
+              "travel": 1,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2435,
+            "nearby_id": 2435
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2449,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2448,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2447,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2446,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2445,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2444,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2443,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2442,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2445,
+            "nearby_id": 2444
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2462,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2461,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2460,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2459,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2458,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2457,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2456,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2455,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2459,
+            "nearby_id": 2459
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2475,
+              "severity": 1,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2474,
+              "severity": -1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2473,
+              "severity": -1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2472,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2475,
+            "nearby_id": 2474
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2488,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2487,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2486,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2485,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2484,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2483,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2486,
+            "nearby_id": 2486
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2501,
+              "severity": 2,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2500,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2499,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2498,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2497,
+              "severity": 1,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2496,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2495,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2494,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2501,
+            "nearby_id": 2495
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2514,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2513,
+              "severity": 1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2512,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2511,
+              "severity": 2,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2510,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2509,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2508,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2507,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2506,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2505,
+              "severity": 0,
+              "travel": 2,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2511,
+            "nearby_id": 2511
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2527,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2526,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2525,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2524,
+              "severity": 2,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2523,
+              "severity": 0,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2522,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2521,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2520,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2519,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2518,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2524,
+            "nearby_id": 2522
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2540,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 1
+            },
+            {
+              "id": 2539,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2538,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2537,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2536,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2535,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 2534,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2538,
+            "nearby_id": 2540
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2553,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2552,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2551,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2550,
+              "severity": 0,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2549,
+              "severity": -1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2548,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2548,
+            "nearby_id": 2551
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2566,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2565,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2564,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2563,
+              "severity": -1,
+              "travel": 3,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2566,
+            "nearby_id": 2566
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2579,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2578,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2577,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2576,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2576,
+            "nearby_id": 2578
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2592,
+              "severity": 0,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2591,
+              "severity": -1,
+              "travel": 0,
+              "capacity": 2
+            },
+            {
+              "id": 2590,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2589,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2589,
+            "nearby_id": 2591
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2605,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2604,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2603,
+              "severity": 1,
+              "travel": 3,
+              "capacity": -1
+            },
+            {
+              "id": 2602,
+              "severity": 0,
+              "travel": 1,
+              "capacity": 2
+            },
+            {
+              "id": 2601,
+              "severity": 0,
+              "travel": 0,
+              "capacity": -1
+            },
+            {
+              "id": 2600,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2599,
+              "severity": 1,
+              "travel": 0,
+              "capacity": 1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2604,
+            "nearby_id": 2599
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2618,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 0
+            },
+            {
+              "id": 2617,
+              "severity": 0,
+              "travel": 0,
+              "capacity": 0
+            },
+            {
+              "id": 2616,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2615,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 0
+            },
+            {
+              "id": 2614,
+              "severity": 1,
+              "travel": 1,
+              "capacity": 0
+            },
+            {
+              "id": 2613,
+              "severity": 2,
+              "travel": 1,
+              "capacity": -1
+            },
+            {
+              "id": 2612,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 2
+            }
+          ],
+          "expect": {
+            "urgent_id": 2613,
+            "nearby_id": 2617
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2631,
+              "severity": 2,
+              "travel": 3,
+              "capacity": 2
+            },
+            {
+              "id": 2630,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2631,
+            "nearby_id": 2631
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2644,
+              "severity": -1,
+              "travel": 2,
+              "capacity": 2
+            },
+            {
+              "id": 2643,
+              "severity": 1,
+              "travel": 3,
+              "capacity": 1
+            },
+            {
+              "id": 2642,
+              "severity": 1,
+              "travel": 2,
+              "capacity": -1
+            },
+            {
+              "id": 2641,
+              "severity": -1,
+              "travel": 3,
+              "capacity": 0
+            }
+          ],
+          "expect": {
+            "urgent_id": 2642,
+            "nearby_id": 2644
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2657,
+              "severity": -1,
+              "travel": 1,
+              "capacity": 1
+            },
+            {
+              "id": 2656,
+              "severity": -1,
+              "travel": 0,
+              "capacity": -1
+            }
+          ],
+          "expect": {
+            "urgent_id": 2656,
+            "nearby_id": 2656
+          }
+        }
+      ]
+    },
+    "journal": {
+      "sources": {
+        "tide/event.tide": "record Event\nminute:i priority:i serial:i\n",
+        "tide/sequence.tide": "use event\n\nearlier incoming:{Event} prior:{Event} > b\n< (get minute incoming) (get minute prior)\n",
+        "tide/streak.tide": "use sequence\n\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\nlet backward case (get prior state_value) false previous (earlier incoming previous)\nlet count if backward 0 (+ (get current state_value) 1)\nlet peak get longest state_value\nmake Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0))\n  current count longest (if (> count peak) count peak)\n",
+        "tide/summary.tide": "use streak\n\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\nlet empty make Progress prior (nil {Event}) breaks 0 current 0 longest 0\nlet state_value fold events empty totals row item advance totals item\nmake Report breaks (get breaks state_value) longest (get longest state_value)\n\nmain batches:**{Event} > *{Report}\nfold batches (list {Report} 0) reports row batch append reports (journal batch)\n",
+        "python/event.py": "from typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n",
+        "python/sequence.py": "from event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return incoming[\"minute\"] < prior[\"minute\"]\n",
+        "python/streak.py": "from sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 0 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n",
+        "python/summary.py": "from streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, _, longest = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n"
+      },
+      "fixes": {
+        "plain": [
+          {
+            "file": "sequence.tide",
+            "old": "< (get minute incoming) (get minute prior)",
+            "replacement": "or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (< (get serial incoming) (get serial prior)))))"
+          },
+          {
+            "file": "streak.tide",
+            "old": "if backward 0",
+            "replacement": "if backward 1"
+          }
+        ],
+        "library": [
+          {
+            "file": "sequence.tide",
+            "old": "< (get minute incoming) (get minute prior)",
+            "replacement": "prefer_min (get minute incoming) (get minute prior) (prefer_max (get priority incoming) (get priority prior) (< (get serial incoming) (get serial prior)))"
+          },
+          {
+            "file": "streak.tide",
+            "old": "if backward 0",
+            "replacement": "if backward 1"
+          }
+        ],
+        "python": [
+          {
+            "file": "sequence.py",
+            "old": "incoming[\"minute\"] < prior[\"minute\"]",
+            "replacement": "(incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+          },
+          {
+            "file": "streak.py",
+            "old": "0 if backward",
+            "replacement": "1 if backward"
+          }
+        ]
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 4
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "breaks": 0,
+            "longest": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 5,
+              "serial": 4
+            },
+            {
+              "minute": 1,
+              "priority": 5,
+              "serial": 3
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 5,
+              "serial": 3
+            },
+            {
+              "minute": 1,
+              "priority": 5,
+              "serial": 4
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 3,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 3,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 3,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 2,
+              "serial": 2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 7,
+              "priority": 1,
+              "serial": 2
+            },
+            {
+              "minute": 7,
+              "priority": 0,
+              "serial": 2
+            },
+            {
+              "minute": 7,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 7,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 6,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        }
+      ],
+      "holdout": [
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 6,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 4,
+            "longest": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 3,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 0,
+            "longest": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 1
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 5,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 2,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -2,
+              "serial": -2
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": -1
+            },
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "minute": 1,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 1,
+              "serial": -1
+            }
+          ],
+          "expect": {
+            "breaks": 1,
+            "longest": 2
+          }
+        }
+      ],
+      "task": "A journal contains (minute,priority,serial) events (2,7,4), (2,8,1), (3,0,0), (4,0,0), (5,0,0). The report gives breaks=0, longest=5; expected breaks=1, longest=4. Legal order is increasing minute, then decreasing priority, then increasing serial; identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order. A reversal starts a new segment at the incoming event. Empty journals return zeros and batches are independent."
+    }
+  },
+  "module": "prefer_min candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (< candidate current)\n\nprefer_max candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (> candidate current)\n\nexample earlier_min prefer_min\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":false},\"expect\":true}\n\nexample later_min prefer_min\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":true},\"expect\":false}\n\nexample equal_keep prefer_min\n{\"inputs\":{\"candidate\":0,\"current\":0,\"on_equal\":false},\"expect\":false}\n\nexample equal_take prefer_min\n{\"inputs\":{\"candidate\":-5,\"current\":-5,\"on_equal\":true},\"expect\":true}\n\nexample larger_max prefer_max\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":false},\"expect\":true}\n\nexample smaller_max prefer_max\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":true},\"expect\":false}\n\nexample equal_first_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":false},\"expect\":false}\n\nexample equal_second_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":true},\"expect\":true}\n"
+}

@@ -1,0 +1,513 @@
+use syntax
+
+record Site
+word:t line:i column:i
+
+record SiteBuffer
+pages:**{Site} tail:*{Site}
+
+empty_sites > {SiteBuffer}
+make SiteBuffer pages (list *{Site} 0) tail (list {Site} 0)
+
+site_push buf:{SiteBuffer} site:{Site} > {SiteBuffer}
+let tail get tail buf
+if (eq (length tail) 256) (make SiteBuffer pages (append (get pages buf) tail) tail (list {Site} 1 site))
+with tail buf (append tail site)
+
+site_pages buf:{SiteBuffer} > **{Site}
+append (get pages buf) (get tail buf)
+
+flat_sites buf:{SiteBuffer} > *{Site}
+if (eq (length (get pages buf)) 0) (get tail buf)
+fold (site_pages buf) (list {Site} 0) sites_before_page batch page
+  fold page sites_before_page acc pos site append acc site
+
+record SiteLex
+items:{SiteBuffer} start:i quoted:b escaped:b
+
+end_word cursor:{SiteLex} source:t row:i stop:i > {SiteLex}
+let start get start cursor
+if (< start 0) cursor
+make SiteLex items (site_push (get items cursor) (make Site word (text_slice source start stop) line row column (+ start 1))) start -1 quoted false escaped false
+
+schema_tokens source:t row:i > {SiteBuffer}
+let gaps " \t\u001f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"
+let cursor fold (indices (chunk_count (text_len source))) (make SiteLex items empty_sites start -1 quoted false escaped false) held chunk unused_chunk
+  let start * (- chunk 1) 2048
+  let size - (text_len source) start
+  fold (indices (if (< size 2048) size 2048)) held acc offset unused
+    let pos + start offset
+    let ch text_slice source (- pos 1) pos
+    if (get quoted acc)
+      (if (and (not (get escaped acc)) (text_eq ch "\"")) (end_word acc source row pos)
+       with escaped acc (and (not (get escaped acc)) (text_eq ch "\\")))
+    if (text_eq ch "\"") (with quoted (with start (end_word acc source row (- pos 1)) (- pos 1)) true)
+    if (white ch gaps) (end_word acc source row (- pos 1))
+    if (and (text_eq ch "=") (eq (get start acc) (- pos 2)))
+      (let previous text_slice source (- pos 2) (- pos 1)
+       if (or (text_eq previous "<") (text_eq previous ">")) acc
+       let closed end_word acc source row (- pos 1)
+       with items closed (site_push (get items closed) (make Site word ch line row column pos)))
+    if (case (text_find "(),=" ch 0) false idx true)
+      (let closed end_word acc source row (- pos 1)
+       with items closed (site_push (get items closed) (make Site word ch line row column pos)))
+    if (< (get start acc) 0) (with start acc (- pos 1)) acc
+get items (end_word cursor source row (text_len source))
+
+record SchemaBlock
+head:*{Site} body:{SiteBuffer}
+
+record SchemaBlocks
+done:*{SchemaBlock} current:{SchemaBlock}
+
+empty_block > {SchemaBlock}
+make SchemaBlock head (list {Site} 0) body empty_sites
+
+end_block group:{SchemaBlocks} > {SchemaBlocks}
+let current get current group
+if (eq (length (get head current)) 0) group
+make SchemaBlocks done (append (get done group) current) current empty_block
+
+includes_break text:t separators:t > b
+fold (indices (text_len separators)) false hit pos unused
+  or hit (case (text_find text (text_slice separators (- pos 1) pos) 0) false idx true)
+
+source_rows source:t > *t
+let other_breaks "\r\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029"
+let physical lines source
+if (not (includes_break source other_breaks)) physical
+fold physical (list t 0) rows row line
+  if (not (includes_break line other_breaks)) (append rows line)
+  let split fold (indices (text_len line)) (pair rows 0) acc pos unused
+    if (white (text_slice line (- pos 1) pos) other_breaks)
+      (pair (append (first acc) (text_slice line (second acc) (- pos 1))) pos) acc
+  append (first split) (text_slice line (second split) (text_len line))
+
+record RowGroup
+offset:i rows:*t prefix:t complete:i
+
+record RowStream
+groups:*{RowGroup} partial:t offset:i last_cr:b
+
+chunk_count n:i > i
+div (+ n 2047) 2048
+
+only_chars source:t start:i accepted:t > b
+let n - (text_len source) start
+if (and (> n 0) (not (white (text_slice source start (+ start 1)) accepted))) false
+if (not (> n 2048)) (fold (indices n) true ok pos unused and ok (white (text_slice source (+ start (- pos 1)) (+ start pos)) accepted))
+fold (indices (chunk_count n)) true ok part unused
+  if (not ok) false
+  let base * (- part 1) 2048
+  let left - n base
+  fold (indices (if (< left 2048) left 2048)) ok match_char pos unused_pos
+    let stop + (+ start base) pos
+    and match_char (white (text_slice source (- stop 1) stop) accepted)
+
+source_groups source:t > *{RowGroup}
+let n text_len source
+if (not (> n 2048))
+  (let rows source_rows source
+   list {RowGroup} 1 (make RowGroup offset 0 rows rows prefix "" complete (length rows)))
+let stream fold (indices (chunk_count n)) (make RowStream groups (list {RowGroup} 0) partial "" offset 0 last_cr false) acc row unused
+  let start * (- row 1) 2048
+  let raw text_slice source start (+ start 2048)
+  let size text_len raw
+  let block if (and (get last_cr acc) (text_eq (text_slice raw 0 1) "\n")) (text_slice raw 1 size) raw
+  let parts source_rows (concat block "x")
+  let count length parts
+  let complete - count 1
+  let tail need (at parts (- count 1)) "last_line" 0
+  let fragment text_slice tail 0 (- (text_len tail) 1)
+  let pending if (eq count 1) (concat (get partial acc) fragment) fragment
+  let groups if (eq complete 0) (get groups acc)
+    (append (get groups acc) (make RowGroup offset (get offset acc) rows parts prefix (get partial acc) complete complete))
+  make RowStream groups groups partial pending offset (+ (get offset acc) complete) last_cr (text_eq (text_slice raw (- size 1) size) "\r")
+if (text_eq (get partial stream) "") (get groups stream)
+append (get groups stream) (make RowGroup offset (get offset stream) rows (list t 1 (get partial stream)) prefix "" complete 1)
+
+source_line group:{RowGroup} pos:i fragment:t > t
+if (and (eq pos 1) (not (text_eq (get prefix group) ""))) (concat (get prefix group) fragment) fragment
+
+schema_blocks source:t imports:b > *{SchemaBlock}
+let result fold (source_groups source) (make SchemaBlocks done (list {SchemaBlock} 0) current empty_block) groups batch group_rows
+  fold (get rows group_rows) groups group pos fragment
+    if (> pos (get complete group_rows)) group
+    let line source_line group_rows pos fragment
+    let row + (get offset group_rows) pos
+    let current get current group
+    let in_example case (at (get head current) 0) false heading (text_eq (get word heading) "example")
+    let words if in_example
+      (if (only_chars line 0 " \t\u001f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000") empty_sites
+       (site_push empty_sites (make Site word line line row column 1)))
+      (schema_tokens line row)
+    let first_page case (at (get pages words) 0) (get tail words) items items
+    case (at first_page 0) (end_block group) site
+    let op get word site
+    if (and (not imports) (text_eq op "use")) fail "defer_check"
+    if (eq (length (get head current)) 0)
+      (if (or imports (or (text_eq op "record") (text_eq op "variant"))) (with current group (with head current (flat_sites words))) (fail "defer_check"))
+    let body if (eq (length (get tail (get body current))) 0) words
+      (fold (site_pages words) (get body current) prior part page fold page prior acc word_index item site_push acc item)
+    with current group (with body current body)
+get done (end_block result)
+
+control_chars > t
+"\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009\u000a\u000b\u000c\u000d\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f"
+
+json_chars value:t > t
+let controls control_chars
+let hex "0123456789abcdef"
+fold (indices (text_len value)) "" acc pos unused
+  let ch text_slice value (- pos 1) pos
+  let encoded if (or (text_eq ch "\"") (text_eq ch "\\")) (concat "\\" ch)
+    (case (text_find controls ch 0) ch offset
+     let high div offset 16
+     let low mod offset 16
+     cat3 "\\u00" (text_slice hex high (+ high 1)) (text_slice hex low (+ low 1)))
+  concat acc encoded
+
+json_string value:t > t
+let size text_len value
+let escaped if (< size 2049) (json_chars value)
+  (fold (indices (chunk_count size)) "" acc part unused
+    let start * (- part 1) 2048
+    concat acc (json_chars (text_slice value start (+ start 2048))))
+cat3 "\"" escaped "\""
+
+diagnosis file:t site:{Site} code:t message:t > t
+cat3 "{\"file\":" (json_string file)
+  (cat3 ",\"code\":" (json_string code) (cat3 ",\"message\":" (json_string message)
+   (cat3 ",\"line\":" (decimal (get line site)) (cat3 ",\"column\":" (decimal (get column site)) "}"))))
+
+legal_name name:t > b
+if (not (valid_id name)) false
+if (case (intrinsic name) false ar true) false
+if (case (display_arity name) false ar true) false
+let keywords "|list|make|true|false|use|package|export|record|variant|end|rule|example|state|when|else|out|set|keep|reset|E_OVERFLOW|E_DATA|"
+case (text_find keywords (cat3 "|" name "|") 0) true pos false
+
+checked_name name:t used:*t loc:{Site} file:t > t
+if (and (legal_name name) (case (entry_at used name) true pos false)) name
+fail (diagnosis file loc "E_NAME" (concat "Invalid or duplicate name: " name))
+
+namespace_name space:t name:t > t
+if (text_eq space "") name (cat3 space "." name)
+
+namespace_of name:t > t
+case (text_find name "." 0) "" cut (text_slice name 0 cut)
+
+local_name name:t > t
+case (text_find name "." 0) name cut (text_slice name (+ cut 1) (text_len name))
+
+scoped_declaration name:t space:t used:*t loc:{Site} file:t > t
+let local checked_name name (list t 0) loc file
+let qualified namespace_name space local
+if (case (entry_at used qualified) false pos true) fail (diagnosis file loc "E_NAME" (concat "Invalid or duplicate name: " name))
+qualified
+
+record SymbolScope
+space:t calls:*t types:*t
+
+empty_symbol_scope > {SymbolScope}
+make SymbolScope space "" calls (list t 0) types (list t 0)
+
+scope_index aliases:*t canonical:*t spelling:t space:t > ?i
+if (eq (length aliases) 0) (entry_at canonical spelling)
+let local if (and (not (text_eq space "")) (text_eq (namespace_of spelling) space)) (local_name spelling) spelling
+if (text_eq local "") (nil i)
+entry_at aliases local
+
+record SchemaType
+name:t file:t tagged:b loc:{Site} fields:*t types:*t refs:*t
+
+record Declarations
+names:*t entries:*{SchemaType}
+
+schema_field decl:{SchemaType} site:{Site} file:t > {SchemaType}
+let token get word site
+let colon need (text_find token ":" 0) (diagnosis file site "E_TYPE" "Expected name:type") 0
+let typ text_slice token (+ colon 1) (text_len token)
+let shape data_shape typ
+if (not (or (text_eq typ "r") (case shape false value true))) fail (diagnosis file site "E_TYPE" "Expected name:type")
+let name checked_name (text_slice token 0 colon) (get fields decl) site file
+case shape (fail (diagnosis file site "E_TYPE" "Record fields must be data")) data
+let refs fold (get refs data) (get refs decl) acc pos ref append acc ref
+with refs (with types (with fields decl (append (get fields decl) name)) (append (get types decl) typ)) refs
+
+variant_labels sites:*{Site} file:t > *t
+let names fold sites (list t 0) acc row site append acc (get word site)
+let size length names
+let invalid fold names size first_bad row name
+  if (or (< first_bad size) (legal_name name)) first_bad (- row 1)
+let eligible if (eq invalid size) names
+  (fold names (list t 0) acc row name if (> row invalid) acc (append acc name))
+let order label_order eligible
+let error_idx fold order invalid earliest row idx
+  if (or (eq row 1) (not (< idx earliest))) earliest
+  let previous need (at order (- row 2)) "previous_tag" 0
+  if (text_eq (need (at names idx) "tag" 0) (need (at names previous) "previous_tag" 0)) idx earliest
+case (at sites error_idx)
+  (fold order (list t 0) acc row idx append acc (need (at names idx) "sorted_tag" 0))
+  issue fail (diagnosis file issue "E_NAME" (concat "Invalid or duplicate name: " (get word issue)))
+
+declare_type table:{Declarations} block:{SchemaBlock} file:t fn_names:*t space:t > {Declarations}
+let head get head block
+let loc need (at head 0) "missing_site" 0
+let body flat_sites (get body block)
+if (eq (length body) 0) fail (diagnosis file loc "E_SYNTAX" "Missing declaration body")
+if (not (eq (length head) 2)) fail (diagnosis file loc "E_SYNTAX" "Expected type name")
+let site need (at head 1) "missing_name" 0
+let name scoped_declaration (get word site) space (get names table) site file
+if (case (entry_at fn_names name) false ix true) fail (diagnosis file site "E_NAME" (concat "Invalid or duplicate name: " name))
+let variant_type text_eq (get word loc) "variant"
+let initial make SchemaType name name file file tagged variant_type loc loc fields (list t 0) types (list t 0) refs (list t 0)
+let decl if variant_type (with fields initial (variant_labels body file))
+  (fold body initial acc idx item schema_field acc item file)
+make Declarations names (append (get names table) name) entries (append (get entries table) decl)
+
+record WalkFrame
+node:i edge:i deepest:i
+
+record DepthMemo
+names:*t depths:*i
+
+record TypeWalk
+path:*{WalkFrame} memo:{DepthMemo} root:i
+
+walk_step walk:{TypeWalk} table:{Declarations} > {TypeWalk}
+let path get path walk
+let size length path
+if (eq size 0)
+  (case (at (get entries table) (get root walk)) walk decl
+   let next with root walk (+ (get root walk) 1)
+   if (or (get tagged decl) (case (entry_at (get names (get memo walk)) (get name decl)) false idx true)) next
+   with path next (list {WalkFrame} 1 (make WalkFrame node (get root walk) edge 0 deepest 0)))
+let frame need (at path (- size 1)) "type_frame" 0
+let decl need (at (get entries table) (get node frame)) "type_declaration" 0
+let parents fold path (list {WalkFrame} 0) acc pos item if (< pos size) (append acc item) acc
+let memo get memo walk
+case (at (get refs decl) (get edge frame))
+  (let depth + (get deepest frame) 1
+   if (and (eq size 1) (> depth 16)) (fail (diagnosis (get file decl) (get loc decl) "E_TYPE" "Record nesting limit"))
+   let next_path fold parents (list {WalkFrame} 0) acc pos item
+     append acc (if (and (eq pos (- size 1)) (> depth (get deepest item))) (with deepest item depth) item)
+   make TypeWalk path next_path memo (make DepthMemo names (append (get names memo) (get name decl)) depths (append (get depths memo) depth)) root (get root walk))
+  ref
+  let node need (entry_at (get names table) ref) (diagnosis (get file decl) (get loc decl) "E_TYPE" (concat "Unknown named type: " ref)) 0
+  let target need (at (get entries table) node) "type_declaration" 0
+  let advanced with edge frame (+ (get edge frame) 1)
+  if (get tagged target) (with path walk (append parents advanced))
+  let cycle fold path false hit pos item or hit (eq (get node item) node)
+  if (or cycle (not (< size 16))) fail (diagnosis (get file target) (get loc target) "E_TYPE" "Cyclic or deeply nested record")
+  case (lookup_size (get names memo) (get depths memo) ref)
+    (with path walk (append (append parents advanced) (make WalkFrame node node edge 0 deepest 0)))
+    depth
+    with path walk (append parents (if (> depth (get deepest frame)) (with deepest advanced depth) advanced))
+
+check_type_graph table:{Declarations} > b
+let entries get entries table
+let budget fold entries 0 steps pos decl + steps (+ (if (get tagged decl) 1 2) (length (get refs decl)))
+let initial make TypeWalk path (list {WalkFrame} 0) memo (make DepthMemo names (list t 0) depths (list i 0)) root 0
+let walk fold (indices (div (+ budget 4095) 4096)) initial cursor block unused
+  let left - budget (* (- block 1) 4096)
+  fold (indices (if (< left 4096) left 4096)) cursor acc tick unused_tick walk_step acc table
+and (eq (get root walk) (length entries)) (eq (length (get path walk)) 0)
+
+label_before lhs:t rhs:t > b
+let a text_len lhs
+let bsize text_len rhs
+let n if (< a bsize) a bsize
+let order fold (indices n) 0 decision pos unused
+  if (not (eq decision 0)) decision
+  let l text_slice lhs (- pos 1) pos
+  let rch text_slice rhs (- pos 1) pos
+  if (text_eq l rch) 0
+  if (< (bootstrap_code_at l 0) (bootstrap_code_at rch 0)) -1 1
+if (eq order 0) (< a bsize) (< order 0)
+
+record MergePass
+order:*i left:i right:i
+
+merge_labels names:*t order:*i width:i > *i
+let size length order
+let span * width 2
+let merged fold order (make MergePass order (list i 0) left 0 right 0) acc row unused
+  let offset - row 1
+  let base * (div offset span) span
+  let left if (eq offset base) base (get left acc)
+  let right if (eq offset base) (+ base width) (get right acc)
+  let take_left if (or (not (< right size)) (not (< right (+ base span)))) true
+    if (not (< left (+ base width))) false
+    let lhs need (at names (need (at order left) "left_slot" 0)) "left_label" 0
+    let rhs need (at names (need (at order right) "right_slot" 0)) "right_label" 0
+    not (label_before rhs lhs)
+  let index need (at order (if take_left left right)) "merge_slot" 0
+  make MergePass order (append (get order acc) index)
+    left (if take_left (+ left 1) left) right (if take_left right (+ right 1))
+get order merged
+
+label_order names:*t > *i
+let initial fold names (list i 0) order row unused append order (- row 1)
+let sorted fold names true ok row name
+  if (or (not ok) (eq row 1)) ok
+  not (label_before name (need (at names (- row 2)) "previous_label" 0))
+if sorted initial
+fold (list i 12 1 2 4 8 16 32 64 128 256 512 1024 2048) initial order pos width
+  if (< width (length names)) (merge_labels names order width) order
+
+json_item items:t item:t > t
+if (text_eq items "") item (cat3 items "," item)
+
+schema_members decl:{SchemaType} > t
+let fields get fields decl
+if (get tagged decl)
+  (let values fold fields "" acc row label json_item acc (json_string label)
+   cat3 "[" values "]")
+let pairs fold fields "" acc pos name
+  json_item acc (cat3 (json_string name) ":" (json_string (need (at (get types decl) (- pos 1)) "field_type" pos)))
+cat3 "{" pairs "}"
+
+validated_schema blocks:*{SchemaBlock} file:t > {Declarations}
+if (eq (length blocks) 0) fail (diagnosis file (make Site word "" line 1 column 1) "E_SYNTAX" "Empty program")
+let table fold blocks (make Declarations names (list t 0) entries (list {SchemaType} 0)) acc row block declare_type acc block file (list t 0) ""
+if (not (check_type_graph table)) fail "type_graph_incomplete"
+table
+
+schema_objects table:{Declarations} > t
+let objects fold (get entries table) (pair "" "") acc pos decl
+  let item cat3 (json_string (get name decl)) ":" (schema_members decl)
+  if (get tagged decl) (pair (first acc) (json_item (second acc) item)) (pair (json_item (first acc) item) (second acc))
+cat3 "\"records\":{" (first objects) (cat3 "},\"variants\":{" (second objects) "}")
+
+schema_fields table:{Declarations} > t
+concat (schema_objects table) ",\"definitions\":{},\"examples\":0"
+
+schema_report source:t file:t > t
+schema_fields (validated_schema (schema_blocks source false) file)
+
+format_schema blocks:*{SchemaBlock} > t
+fold blocks "" output block_number block
+  let heading fold (get head block) "" acc pos item
+    cat3 acc (if (eq pos 1) "" " ") (get word item)
+  let rows fold (flat_sites (get body block)) (pair heading 0) acc pos item
+    let row get line item
+    pair (cat3 (first acc) (if (eq row (second acc)) " " "\n") (get word item)) row
+  cat3 output (if (eq block_number 1) "" "\n") (concat (first rows) "\n")
+
+record PinLexer
+items:*t buffer:t quoted:b skip:i
+
+hex_value ch:t > i
+case (text_find "0123456789abcdef" ch 0)
+  (+ 10 (need (text_find "ABCDEF" ch 0) "defer_check" 0)) value value
+
+escape_pin text:t offset:i > &ti
+let size text_len text
+if (not (< offset size)) fail "defer_check"
+let ch text_slice text offset (+ offset 1)
+if (not (text_eq ch "u"))
+  (let idx need (text_find "\"\\/bfnrt" ch 0) "defer_check" 0
+   pair (text_slice "\"\\/\b\f\n\r\t" idx (+ idx 1)) 1)
+if (> (+ offset 5) size) fail "defer_check"
+let value fold (indices 4) 0 acc pos unused + (* acc 16) (hex_value (text_slice text (+ offset pos) (+ (+ offset pos) 1)))
+if (> value 127) fail "defer_check"
+let ascii " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f"
+let decoded if (< value 32) (text_slice control_chars value (+ value 1)) (text_slice ascii (- value 32) (- value 31))
+pair decoded 5
+
+pin_token cursor:{PinLexer} text:t pos:i > {PinLexer}
+if (< pos (get skip cursor)) cursor
+let ch text_slice text pos (+ pos 1)
+if (get quoted cursor)
+  (if (text_eq ch "\"")
+    (make PinLexer items (append (get items cursor) (concat "s" (get buffer cursor))) buffer "" quoted false skip 0)
+   if (text_eq ch "\\")
+    (let escape escape_pin text (+ pos 1)
+     with skip (with buffer cursor (concat (get buffer cursor) (first escape))) (+ (+ pos 1) (second escape)))
+   if (case (text_find control_chars ch 0) false idx true) (fail "defer_check")
+   with buffer cursor (concat (get buffer cursor) ch))
+if (text_eq ch "\"") (with quoted cursor true)
+if (white ch " \n\r\t") cursor
+if (case (text_find "{}:," ch 0) false idx true) (with items cursor (append (get items cursor) ch))
+fail "defer_check"
+
+record Pins
+keys:*t values:*t
+
+pin_object text:t > {Pins}
+let scanned fold (indices (text_len text)) (make PinLexer items (list t 0) buffer "" quoted false skip 0) acc pos unused
+  pin_token acc text (- pos 1)
+let items get items scanned
+let n length items
+if (or (get quoted scanned) (not (and (text_eq (need (at items 0) "defer_check" 0) "{") (text_eq (need (at items (- n 1)) "defer_check" 0) "}")))) fail "defer_check"
+let empty make Pins keys (list t 0) values (list t 0)
+if (eq n 2) empty
+if (not (eq (mod n 4) 1)) fail "defer_check"
+fold (indices (div n 4)) empty acc row unused
+  let start + 1 (* (- row 1) 4)
+  let key need (at items start) "defer_check" row
+  let sep need (at items (+ start 1)) "defer_check" row
+  let val need (at items (+ start 2)) "defer_check" row
+  let end_token need (at items (+ start 3)) "defer_check" row
+  if (not (and (text_eq sep ":") (text_eq end_token (if (eq (+ start 4) n) "}" ",")))) (fail "defer_check")
+  if (not (and (text_eq (text_slice key 0 1) "s") (text_eq (text_slice val 0 1) "s"))) (fail "defer_check")
+  if (case (entry_at (get keys acc) key) false idx true) (fail "defer_check")
+  make Pins keys (append (get keys acc) key) values (append (get values acc) val)
+
+pin_status text:t release:t > t
+if (or (text_eq text release) (text_eq text (concat release "\n"))) "ok"
+let actual pin_object release
+let found pin_object text
+let same and (eq (length (get keys found)) (length (get keys actual)))
+  (fold (get keys found) true equal pos key
+   and equal (case (entry_at (get keys actual) key) false idx
+     (text_eq (need (at (get values actual) idx) "release_key" pos) (need (at (get values found) (- pos 1)) "pin_key" pos))))
+if same "ok" (concat "!" text)
+
+
+check_schema source:r entry:t > t
+if (text_eq entry "quote") (json_string (read source))
+if (or (text_eq entry "E_UTF8") (or (text_eq entry "input_limit") (text_eq entry "regular_file_required")))
+  (let code if (text_eq entry "E_UTF8") "E_UTF8" (if (text_eq entry "input_limit") "E_LIMIT" "E_IO")
+   let msg if (text_eq entry "E_UTF8") "Expected UTF-8 source" (if (text_eq entry "input_limit") "File size limit" "Regular file required")
+   cat3 "{\"file\":" (json_string (read source)) (cat3 ",\"code\":" (json_string code) (cat3 ",\"message\":" (json_string msg) "}")))
+if (text_eq (text_slice entry 0 1) "=") (pin_status (read source) (text_slice entry 1 (text_len entry)))
+let snapshot read source
+let file text_slice entry 1 (text_len entry)
+let blocks schema_blocks snapshot false
+let table validated_schema blocks file
+let action text_slice entry 0 1
+if (text_eq action "?") "{\"passed\":0}\n"
+let fields schema_fields table
+if (text_eq action "~")
+  (let output format_schema blocks
+   if (text_eq fields (schema_report output file)) output (fail "format_changed_schema"))
+cat3 fields "\n" snapshot
+
+example forward_types schema_report
+{"inputs":{"source":"record Packet\nkey:&i?{Flag} items:*?{Body}\n\nvariant Flag\nyes No inactive\n\nrecord Body\nmessage:t","file":"schema.tide"},"expect":"\"records\":{\"Packet\":{\"key\":\"&i?{Flag}\",\"items\":\"*?{Body}\"},\"Body\":{\"message\":\"t\"}},\"variants\":{\"Flag\":[\"No\",\"inactive\",\"yes\"]},\"definitions\":{},\"examples\":0"}
+
+example cycle_site schema_report
+{"inputs":{"source":"record A\nfield:?{B}\n\n record B\nback:{A}","file":"graph.tide"},"expect_error":{"code":"E_DATA","reason":"{\"file\":\"graph.tide\",\"code\":\"E_TYPE\",\"message\":\"Cyclic or deeply nested record\",\"line\":1,\"column\":1}"}}
+
+example field_capability schema_report
+{"inputs":{"source":"record Doc\n\tgrant:r","file":"doc.tide"},"expect_error":{"code":"E_DATA","reason":"{\"file\":\"doc.tide\",\"code\":\"E_TYPE\",\"message\":\"Record fields must be data\",\"line\":2,\"column\":2}"}}
+
+example reordered_pin pin_status
+{"inputs":{"text":"{ \"b\":\"3\", \"\\u0061\":\"\\u0032\" }","release":"{\"a\":\"2\",\"b\":\"3\"}"},"expect":"ok"}
+
+example duplicate_pin pin_status
+{"inputs":{"text":"{\"a\":\"2\",\"\\u0061\":\"2\"}","release":"{\"a\":\"2\"}"},"expect_error":{"code":"E_DATA","reason":"defer_check"}}
+
+example unicode_lines schema_report
+{"inputs":{"source":"variant K\rOne\u0085Two\u2028\nrecord Box\u000bval:{K}","file":"schema.tide"},"expect":"\"records\":{\"Box\":{\"val\":\"{K}\"}},\"variants\":{\"K\":[\"One\",\"Two\"]},\"definitions\":{},\"examples\":0"}
+
+example formatted_schema check_schema
+{"inputs":{"source":"  variant   V\r\nz\t A\r\n b\r\n\r\n\r\nrecord  Box\n x:{V}","entry":"~parts.tide"},"expect":"variant V\nz A\nb\n\nrecord Box\nx:{V}\n"}
+
+example checked_empty_suite check_schema
+{"inputs":{"source":"record Probe\nreading:i","entry":"?parts.tide"},"expect":"{\"passed\":0}\n"}
+
+example ordered_names label_order
+{"inputs":{"names":["a0.tide","a.tide","A.tide","a.tide","Z.tide"]},"expect":[2,4,1,3,0]}

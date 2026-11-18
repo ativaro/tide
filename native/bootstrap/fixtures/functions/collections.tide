@@ -1,0 +1,41 @@
+variant Flag
+ok warn
+
+record Item
+label:t flag:{Flag}
+
+record Shelf
+items:*{Item} backup:?{Item} tags:*{Flag}
+
+record Store
+front:{Shelf} shelves:*{Shelf}
+
+tag_at store:{Store} shelf:i slot:i > ?{Flag}
+case (at (get shelves store) shelf) (nil {Flag}) group
+case (at (get items group) slot) (nil {Flag}) v (some (get flag v))
+
+add_to_first store:{Store} name:t > {Store}
+let shelf (get front store)
+let v (make Item label name flag (tag Flag warn))
+with front store (with items shelf (append (get items shelf) v))
+
+from_backup shelf:{Shelf} > ?{Item}
+get backup shelf
+
+tag_copy tags:*{Flag} > *{Flag}
+fold tags (list {Flag} 0) acc row v (append acc v)
+
+example nested_tag tag_at
+{"inputs":{"store":{"shelves":[{"backup":{"none":true},"tags":["warn"],"items":[{"flag":"ok","label":"Ω"}]}],"front":{"items":[],"tags":[],"backup":{"none":true}}},"shelf":0,"slot":0},"expect":{"some":"ok"}}
+
+example absent tag_at
+{"inputs":{"store":{"shelves":[],"front":{"items":[],"backup":{"none":true},"tags":[]}},"shelf":-1,"slot":0},"expect":{"none":true}}
+
+example nested_change add_to_first
+{"inputs":{"name":"雪","store":{"front":{"backup":{"some":{"flag":"ok","label":"a"}},"tags":["ok"],"items":[{"label":"a","flag":"ok"}]},"shelves":[{"items":[],"backup":{"none":true},"tags":[]}]}},"expect":{"front":{"items":[{"flag":"ok","label":"a"},{"flag":"warn","label":"雪"}],"backup":{"some":{"label":"a","flag":"ok"}},"tags":["ok"]},"shelves":[{"items":[],"tags":[],"backup":{"none":true}}]}}
+
+example optional_record from_backup
+{"inputs":{"shelf":{"items":[],"backup":{"some":{"label":"🐈","flag":"warn"}},"tags":[]}},"expect":{"some":{"flag":"warn","label":"🐈"}}}
+
+example copied tag_copy
+{"inputs":{"tags":["ok","warn","ok"]},"expect":["ok","warn","ok"]}

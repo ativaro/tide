@@ -1,0 +1,14 @@
+record Reading
+sensor:t value:i note:?t
+
+record Document
+readings:*{Reading} limits:%i
+
+record Summary
+above:i peak:?i
+
+parse payload:y > {Document}
+json_decode {Document} payload
+
+notes payload:t > {Document}
+parse (utf8_bytes payload)

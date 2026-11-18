@@ -1,0 +1,31 @@
+use nano
+
+record EditEvent
+key:{Input} value:t
+
+replay body:t events:*{EditEvent} > &{Buffer}{Effect}
+fold events (pair (main body) (tag Effect idle)) current row event
+  if (match (second current) idle false store false finish true end) current
+  step (first current) (get key event) (get value event)
+
+nano_checks > b
+let initial main "🐈\r\nEnde"
+let second_line first (step initial (tag Input down) "")
+if (not (eq (get caret second_line) 3)) fail "second_line_at_codepoint_three"
+let changed first (step second_line (tag Input character) "Ω")
+let shown view changed "fixture"
+if (not (text_eq (get body shown) "🐈\r\nΩEnde")) fail "inserted_into_second_line"
+let pending first (step changed (tag Input control) "x")
+let save second (step pending (tag Input character) "j")
+if (not (match save idle false store true finish false end)) fail "save_requested"
+let saved step pending (tag Input stored) ""
+match (second saved) idle false store false finish true end
+
+example editing_and_save nano_checks
+{"inputs":{},"expect":true}
+
+example replay_failed_save replay
+{"inputs":{"body":"A\r\nB","events":[{"key":"end_key","value":""},{"key":"character","value":"Ω"},{"key":"control","value":"x"},{"key":"character","value":"j"},{"key":"io_error","value":"Schreibfehler"}]},"expect":[{"body":"AΩ\r\nB","caret":2,"goal":-1,"clip":"","eol":"\r\n","dirty":true,"mode":"writing","notice":"Schreibfehler"},"idle"]}
+
+example replay_finish replay
+{"inputs":{"body":"","events":[{"key":"control","value":"x"},{"key":"character","value":"!"}]},"expect":[{"body":"","caret":0,"goal":-1,"clip":"","eol":"\n","dirty":false,"mode":"writing","notice":""},"finish"]}

@@ -1,0 +1,4 @@
+main expected:*i actual:*i > b
+and (eq (length expected) (length actual))
+  (fold expected true valid row value
+    and valid (eq value (need (at actual (- row 1)) "missing_result" row)))

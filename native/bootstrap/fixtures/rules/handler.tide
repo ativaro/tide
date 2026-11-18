@@ -1,0 +1,20 @@
+rule retain change:i > i
+state total:i=0
+when true -> total=set (catch E_OVERFLOW (+ total change) _ total)
+else -> total=keep
+out total
+
+rule reject change:i > i
+state total:i=0
+when true -> total=set (catch E_OVERFLOW (+ total change) err (raise err))
+else -> total=keep
+out total
+
+checked events:*i > *i
+catch E_OVERFLOW (scan reject events) _ (list i 0)
+
+example carry_on retain
+{"events":[5,9223372036854775807,3],"expect":[5,5,8]}
+
+example outside_rule checked
+{"inputs":{"events":[5,9223372036854775807,3]},"expect":[]}

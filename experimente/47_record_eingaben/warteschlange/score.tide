@@ -1,0 +1,5 @@
+record Ticket
+priority:i arrival:i
+
+score ticket:{Ticket} > i
++ (* 32 (get priority ticket)) (get arrival ticket)

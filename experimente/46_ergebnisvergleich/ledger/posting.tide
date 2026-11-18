@@ -1,0 +1,10 @@
+record Entry
+sequence:i balance:i
+
+record Ledger
+rows:*{Entry}
+
+post opening:{Ledger} amount:i > {Ledger}
+let rows (get rows opening)
+let entry (make Entry sequence (+ 1 (length rows)) balance (- amount 1))
+with rows opening (append rows entry)

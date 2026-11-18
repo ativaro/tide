@@ -1,0 +1,11 @@
+rule costly value:i > i
+state total:i=-9223372036854775808 saved:b=true
+when eq value 9 -> total=keep, saved=keep
+else -> total=set (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (div total value))))))))))), saved=keep
+out total
+
+main values:*i > *i
+scan costly values
+
+example long_and_short costly
+{"events":[1,9],"expect":[-9223372036854775808,-9223372036854775808]}

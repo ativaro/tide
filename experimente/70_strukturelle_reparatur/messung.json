@@ -1,0 +1,4156 @@
+{
+  "environment": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": "24",
+    "kernel": "7.3.4-1-cachyos",
+    "node": "v24.18.0",
+    "tide": "TIDE 0.6.5",
+    "python": "Python 3.14.10",
+    "builds": {
+      "before": "aac39bdfc5524d0f54e418b0f0ee7c5c62fbc2a630976afb213ff8a12b81024e",
+      "after": "baa22207b4e2e294f6347e15a09dd1f5f95ff48ac9ca7b2ae20b439236f28d8e"
+    },
+    "network": [
+      "lo"
+    ]
+  },
+  "seed": "20c7fa3dad18eed72418e0b58d55e296627fcbfb927e5db814e2f13757fdd183",
+  "inputs_sha256": "c6745e2b7cee0a2cd48409aa67f38ec9965f1bf66777e945cd5ed1206fb2abfe",
+  "model_runs": 0,
+  "model_input_tokens": 0,
+  "model_output_tokens": 0,
+  "audits": {
+    "cut": {
+      "public_red": 6,
+      "hidden_red": 63,
+      "outputs_sha256": "992ceb8a6c67b8d8683edfc5b11d574ca462888e084e705be5e0bb25c378070a"
+    },
+    "tape": {
+      "public_red": 7,
+      "hidden_red": 60,
+      "outputs_sha256": "f88aa404f1946768274ce75b137dd6552054e49ca9aefd570edce69e3cc51421"
+    },
+    "page": {
+      "public_red": 2,
+      "hidden_red": 8,
+      "outputs_sha256": "ee3566648d5eeaf24751526f03f7010c7e2a156a4a534b58195267a2157d845f"
+    },
+    "ticket": {
+      "public_red": 8,
+      "hidden_red": 64,
+      "outputs_sha256": "81a955afab56483f47f75bcdede29017838807802b2c9f95f5aa02fcd508e73c"
+    },
+    "namespace": {
+      "public_red": 3,
+      "hidden_red": 30,
+      "outputs_sha256": "b20e9334272752a950b8766171bf2c3325127da56f073a744de8d63758a388b8"
+    },
+    "annotation": {
+      "public_red": 3,
+      "hidden_red": 22,
+      "outputs_sha256": "06a111052fbc8dabaee0152ca577b0e65c0294bcee0710f37d696cda4bab5ee9"
+    },
+    "telemetry": {
+      "public_red": 7,
+      "hidden_red": 63,
+      "outputs_sha256": "81e605f7a2e741a1678bd2dda36eb47e00485dc63789923e538e4d96ef84ce65"
+    },
+    "trailer": {
+      "public_red": 6,
+      "hidden_red": 45,
+      "outputs_sha256": "6f3131964ec7b3e0d44267b41e96db751ca94e57cb0b816f3aa52899ab88c28f"
+    },
+    "thermal": {
+      "public_red": 7,
+      "hidden_red": 64,
+      "outputs_sha256": "c191193c3af29bc1b4e57a00b25c8690ed9cbf0195a5ee87080935a0264b3685"
+    },
+    "flag": {
+      "public_red": 5,
+      "hidden_red": 31,
+      "outputs_sha256": "7828f25c76287d80c52f86633cc324395f9cfcb4e742501887818ac43013d8d9"
+    }
+  },
+  "blocks": [
+    {
+      "round": 0,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.454784999999902,
+        "through_apply_ms": 6.454195000000254,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.126553000000058,
+        "through_apply_ms": 18.126002999999855,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.685566000000108,
+        "through_apply_ms": 19.297745000000305,
+        "accept_ms": 12.387820999999803
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.129143000000113,
+        "through_apply_ms": 13.688916000000063,
+        "accept_ms": 3.44022700000005
+      }
+    },
+    {
+      "round": 0,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.32453600000008,
+        "through_apply_ms": 19.32395600000018,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.587902000000213,
+        "through_apply_ms": 15.01328199999989,
+        "accept_ms": 3.5746200000003228
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.523155999999744,
+        "through_apply_ms": 7.522465999999895,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.588994000000184,
+        "through_apply_ms": 20.53902999999991,
+        "accept_ms": 13.049964000000273
+      }
+    },
+    {
+      "round": 0,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.752715999999964,
+        "through_apply_ms": 13.544804000000113,
+        "accept_ms": 3.207911999999851
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.832269,
+        "through_apply_ms": 20.04482999999982,
+        "accept_ms": 12.787439000000177
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.039490999999998,
+        "through_apply_ms": 18.038301000000047,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.0743680000000495,
+        "through_apply_ms": 7.073518000000149,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 0,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.77885799999967,
+        "through_apply_ms": 19.638781999999992,
+        "accept_ms": 13.14007599999968
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.987785999999687,
+        "through_apply_ms": 6.986985999999888,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.958138999999846,
+        "through_apply_ms": 13.418780999999854,
+        "accept_ms": 3.539357999999993
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.796115999999984,
+        "through_apply_ms": 18.795196000000033,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 0,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.107358000000204,
+        "through_apply_ms": 7.106448,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.756644999999935,
+        "through_apply_ms": 18.755744999999933,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.42306099999996,
+        "through_apply_ms": 20.198142999999618,
+        "accept_ms": 13.224918000000343
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.822626999999557,
+        "through_apply_ms": 13.532822999999553,
+        "accept_ms": 3.2898040000000037
+      }
+    },
+    {
+      "round": 0,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.593011999999817,
+        "through_apply_ms": 18.592212000000018,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.1606840000004,
+        "through_apply_ms": 12.913601000000199,
+        "accept_ms": 3.2470830000002024
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.103489000000081,
+        "through_apply_ms": 6.102848999999878,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.4158910000001,
+        "through_apply_ms": 19.76372500000025,
+        "accept_ms": 12.652165999999852
+      }
+    },
+    {
+      "round": 0,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.222643000000062,
+        "through_apply_ms": 18.75679500000024,
+        "accept_ms": 3.4658479999998235
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.03117300000031,
+        "through_apply_ms": 20.504239000000325,
+        "accept_ms": 12.526933999999983
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.202033999999912,
+        "through_apply_ms": 18.20131399999991,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.916283999999905,
+        "through_apply_ms": 6.9156739999998535,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 0,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.731557000000066,
+        "through_apply_ms": 20.323695000000043,
+        "accept_ms": 12.407862000000023
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.469316000000163,
+        "through_apply_ms": 6.46876599999996,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.633182999999917,
+        "through_apply_ms": 14.9852920000003,
+        "accept_ms": 3.6478909999996176
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.188184000000092,
+        "through_apply_ms": 18.18739400000004,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 0,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.880339000000276,
+        "through_apply_ms": 12.71786800000018,
+        "accept_ms": 3.162471000000096
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 33.06359300000031,
+        "through_apply_ms": 20.001858999999968,
+        "accept_ms": 13.061734000000342
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.795378000000255,
+        "through_apply_ms": 19.725714000000153,
+        "accept_ms": 13.069664000000103
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.318187000000307,
+        "through_apply_ms": 13.064874000000145,
+        "accept_ms": 3.253313000000162
+      }
+    },
+    {
+      "round": 0,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.84311800000023,
+        "through_apply_ms": 17.84236800000008,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.341664000000037,
+        "through_apply_ms": 6.340933999999834,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.008805999999822,
+        "through_apply_ms": 6.008175999999821,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.376958000000286,
+        "through_apply_ms": 18.376368000000184,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.297325999999885,
+        "through_apply_ms": 14.872929999999997,
+        "accept_ms": 3.424395999999888
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.53467300000011,
+        "through_apply_ms": 20.378307000000405,
+        "accept_ms": 12.156365999999707
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.952698000000055,
+        "through_apply_ms": 18.952158000000054,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.251901000000089,
+        "through_apply_ms": 7.251300999999785,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.656925999999658,
+        "through_apply_ms": 19.165642999999818,
+        "accept_ms": 12.49128299999984
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.329992999999831,
+        "through_apply_ms": 6.329333000000133,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.717706000000362,
+        "through_apply_ms": 12.554344000000128,
+        "accept_ms": 3.163362000000234
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.150102999999945,
+        "through_apply_ms": 18.149512999999843,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.201711000000159,
+        "through_apply_ms": 6.201161000000411,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.736715000000004,
+        "through_apply_ms": 17.73605499999985,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.104694999999992,
+        "through_apply_ms": 18.960689000000002,
+        "accept_ms": 12.14400599999999
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.89185899999984,
+        "through_apply_ms": 12.712586999999985,
+        "accept_ms": 3.1792719999998553
+      }
+    },
+    {
+      "round": 1,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.8136370000002,
+        "through_apply_ms": 17.812957000000097,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.926140000000032,
+        "through_apply_ms": 12.748877999999877,
+        "accept_ms": 3.1772620000001552
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.071938999999929,
+        "through_apply_ms": 6.071308999999928,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.992451999999957,
+        "through_apply_ms": 19.636591999999837,
+        "accept_ms": 12.35586000000012
+      }
+    },
+    {
+      "round": 1,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.636583999999857,
+        "through_apply_ms": 12.624154999999973,
+        "accept_ms": 3.0124289999998837
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.80022999999983,
+        "through_apply_ms": 18.733044999999947,
+        "accept_ms": 12.067184999999881
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.225495000000137,
+        "through_apply_ms": 17.224935000000187,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.130588999999873,
+        "through_apply_ms": 6.130028999999922,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.740458000000217,
+        "through_apply_ms": 19.582622000000356,
+        "accept_ms": 12.157835999999861
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.453616000000238,
+        "through_apply_ms": 6.453076000000237,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.11851999999999,
+        "through_apply_ms": 18.699643999999807,
+        "accept_ms": 3.418876000000182
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.001310999999987,
+        "through_apply_ms": 18.000601000000188,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.329813000000286,
+        "through_apply_ms": 6.329253000000335,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.36774800000012,
+        "through_apply_ms": 17.36712800000032,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.914981000000353,
+        "through_apply_ms": 19.541729999999916,
+        "accept_ms": 12.373251000000437
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.898037999999815,
+        "through_apply_ms": 15.212746000000152,
+        "accept_ms": 3.685291999999663
+      }
+    },
+    {
+      "round": 1,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.442410999999993,
+        "through_apply_ms": 18.980258999999933,
+        "accept_ms": 12.46215200000006
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.950460000000021,
+        "through_apply_ms": 12.668336000000181,
+        "accept_ms": 3.2821239999998397
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.535311999999976,
+        "through_apply_ms": 12.264978000000156,
+        "accept_ms": 3.2703339999998207
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.892671000000064,
+        "through_apply_ms": 19.558630999999878,
+        "accept_ms": 12.334040000000186
+      }
+    },
+    {
+      "round": 1,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.180349999999635,
+        "through_apply_ms": 6.179809999999634,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.259105999999974,
+        "through_apply_ms": 18.258546000000024,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.662854000000152,
+        "through_apply_ms": 17.662014,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.4986360000002605,
+        "through_apply_ms": 6.497736000000259,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 1,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.52245000000039,
+        "through_apply_ms": 18.52164000000039,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.960439000000406,
+        "through_apply_ms": 14.586373999999978,
+        "accept_ms": 3.374065000000428
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.568737000000056,
+        "through_apply_ms": 6.568006999999852,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.09769400000005,
+        "through_apply_ms": 19.806265000000167,
+        "accept_ms": 12.29142899999988
+      }
+    },
+    {
+      "round": 2,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.1349990000003345,
+        "through_apply_ms": 6.134439000000384,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.684034000000338,
+        "through_apply_ms": 17.683293999999933,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.782228000000032,
+        "through_apply_ms": 19.17612300000019,
+        "accept_ms": 12.606104999999843
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.561713000000054,
+        "through_apply_ms": 12.604505000000245,
+        "accept_ms": 2.9572079999998095
+      }
+    },
+    {
+      "round": 2,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.751706000000013,
+        "through_apply_ms": 17.751145999999608,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.975570999999945,
+        "through_apply_ms": 12.624794999999722,
+        "accept_ms": 3.3507760000002236
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 5.870233999999982,
+        "through_apply_ms": 5.869754000000285,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.05706400000008,
+        "through_apply_ms": 19.572451000000456,
+        "accept_ms": 12.484612999999626
+      }
+    },
+    {
+      "round": 2,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.576563000000533,
+        "through_apply_ms": 12.552824000000328,
+        "accept_ms": 3.023739000000205
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.832980000000134,
+        "through_apply_ms": 19.32707599999958,
+        "accept_ms": 12.505904000000555
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.883528000000297,
+        "through_apply_ms": 17.882798000000548,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.392173999999613,
+        "through_apply_ms": 6.391573999999309,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 2,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.312450000000354,
+        "through_apply_ms": 19.051401000000624,
+        "accept_ms": 12.26104899999973
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.622438000000329,
+        "through_apply_ms": 6.621868000000177,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.623444000000745,
+        "through_apply_ms": 12.633765999999923,
+        "accept_ms": 2.989678000000822
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.25222499999927,
+        "through_apply_ms": 18.25135499999942,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 2,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.41916399999991,
+        "through_apply_ms": 7.099428000000444,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.455229000000145,
+        "through_apply_ms": 18.454689000000144,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.64243500000066,
+        "through_apply_ms": 20.052961000000323,
+        "accept_ms": 12.589474000000337
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.437856999999894,
+        "through_apply_ms": 18.932839000000058,
+        "accept_ms": 3.5050179999998363
+      }
+    },
+    {
+      "round": 2,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.795835999999326,
+        "through_apply_ms": 17.795365999999376,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.441098999999667,
+        "through_apply_ms": 14.852558999999928,
+        "accept_ms": 3.588539999999739
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 5.999915999999757,
+        "through_apply_ms": 5.999475999999959,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.8283390000006,
+        "through_apply_ms": 20.379457000000002,
+        "accept_ms": 12.448882000000594
+      }
+    },
+    {
+      "round": 2,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.41251000000011,
+        "through_apply_ms": 13.178757000000587,
+        "accept_ms": 3.233752999999524
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.685057000000597,
+        "through_apply_ms": 19.313756000000467,
+        "accept_ms": 12.37130100000013
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.340659999999843,
+        "through_apply_ms": 18.99039999999968,
+        "accept_ms": 12.350260000000162
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.698816000000079,
+        "through_apply_ms": 12.516503999999259,
+        "accept_ms": 3.1823120000008203
+      }
+    },
+    {
+      "round": 2,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.676323000000593,
+        "through_apply_ms": 18.675662999999986,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.227600999999595,
+        "through_apply_ms": 6.227010999999948,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.000767000000451,
+        "through_apply_ms": 6.000347000000147,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.535901000000194,
+        "through_apply_ms": 17.53530099999989,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 2,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.557002999999895,
+        "through_apply_ms": 13.434132000000318,
+        "accept_ms": 3.122870999999577
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.3741,
+        "through_apply_ms": 19.951748000000407,
+        "accept_ms": 12.422351999999591
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.567861999999877,
+        "through_apply_ms": 17.567251999999826,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.668109999999615,
+        "through_apply_ms": 6.667669999999816,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 2,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.92797100000007,
+        "through_apply_ms": 20.568319999999403,
+        "accept_ms": 12.359651000000667
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.30474200000026,
+        "through_apply_ms": 7.30416200000036,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.211483999999473,
+        "through_apply_ms": 14.824367999999595,
+        "accept_ms": 3.387115999999878
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.43391899999915,
+        "through_apply_ms": 19.433358999999655,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.799278000000413,
+        "through_apply_ms": 12.612095999999838,
+        "accept_ms": 3.1871820000005755
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.227568000000247,
+        "through_apply_ms": 19.01009999999951,
+        "accept_ms": 12.217468000000736
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.70059399999991,
+        "through_apply_ms": 17.69994399999996,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.755780999999843,
+        "through_apply_ms": 6.755191000000195,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.25630700000056,
+        "through_apply_ms": 19.684213000000454,
+        "accept_ms": 12.572094000000106
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.830192999999781,
+        "through_apply_ms": 6.829643000000033,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.580273999999918,
+        "through_apply_ms": 12.57743500000015,
+        "accept_ms": 3.002838999999767
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.879728000000796,
+        "through_apply_ms": 17.879258000000846,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.235261000000719,
+        "through_apply_ms": 6.2348110000002634,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.914419000000635,
+        "through_apply_ms": 17.913579000000027,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.191296999999395,
+        "through_apply_ms": 19.27515499999936,
+        "accept_ms": 12.916142000000036
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.019760999999562,
+        "through_apply_ms": 13.037002999999459,
+        "accept_ms": 2.9827580000001035
+      }
+    },
+    {
+      "round": 3,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.238405000000057,
+        "through_apply_ms": 18.237945000000764,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.51449799999955,
+        "through_apply_ms": 19.05601099999967,
+        "accept_ms": 3.4584869999998773
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.435735000000022,
+        "through_apply_ms": 6.435275000000729,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.08074399999987,
+        "through_apply_ms": 20.361675999999534,
+        "accept_ms": 12.719068000000334
+      }
+    },
+    {
+      "round": 3,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.74180400000023,
+        "through_apply_ms": 16.023482000000513,
+        "accept_ms": 3.7183219999997164
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.360318999999436,
+        "through_apply_ms": 20.510339999999815,
+        "accept_ms": 12.849978999999621
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.621642999999494,
+        "through_apply_ms": 17.620982999999796,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.723160999999891,
+        "through_apply_ms": 6.722571000000244,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.97736299999997,
+        "through_apply_ms": 18.766464999999698,
+        "accept_ms": 12.21089800000027
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.994662000000062,
+        "through_apply_ms": 12.812488999999914,
+        "accept_ms": 3.182173000000148
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.610133999999562,
+        "through_apply_ms": 12.361689999999726,
+        "accept_ms": 3.248443999999836
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.672716000000037,
+        "through_apply_ms": 19.33521599999949,
+        "accept_ms": 12.337500000000546
+      }
+    },
+    {
+      "round": 3,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.346913000000313,
+        "through_apply_ms": 6.346252999999706,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.628152999999656,
+        "through_apply_ms": 17.6273029999993,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.575380999999652,
+        "through_apply_ms": 18.5744109999996,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.581218000000263,
+        "through_apply_ms": 6.580517999999756,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.482441999999537,
+        "through_apply_ms": 19.354575999999724,
+        "accept_ms": 12.127865999999813
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.772962000000007,
+        "through_apply_ms": 6.772461999999905,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.69494500000019,
+        "through_apply_ms": 13.540673000000425,
+        "accept_ms": 3.1542719999997644
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.434978999999657,
+        "through_apply_ms": 18.434148999999707,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 3,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.8267220000007,
+        "through_apply_ms": 7.826042000000598,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.921478000000207,
+        "through_apply_ms": 19.92073800000071,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.12674500000048,
+        "through_apply_ms": 20.00336900000002,
+        "accept_ms": 12.123376000000462
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.614971999999398,
+        "through_apply_ms": 15.129374999999527,
+        "accept_ms": 3.4855969999998706
+      }
+    },
+    {
+      "round": 3,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.854327000000012,
+        "through_apply_ms": 17.853707000000213,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.876758999999765,
+        "through_apply_ms": 12.829768999999942,
+        "accept_ms": 3.0469899999998233
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.080227999999806,
+        "through_apply_ms": 6.07977800000026,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.631194999999934,
+        "through_apply_ms": 19.271394999999757,
+        "accept_ms": 12.359800000000178
+      }
+    },
+    {
+      "round": 4,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.31502300000011,
+        "through_apply_ms": 6.314583000000312,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.331767000000582,
+        "through_apply_ms": 18.330856999999924,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.66288700000041,
+        "through_apply_ms": 19.337757000000238,
+        "accept_ms": 12.325130000000172
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.19174600000042,
+        "through_apply_ms": 13.158605999999963,
+        "accept_ms": 3.033140000000458
+      }
+    },
+    {
+      "round": 4,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.58375200000046,
+        "through_apply_ms": 17.58309199999985,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.627495000000636,
+        "through_apply_ms": 12.694167000000562,
+        "accept_ms": 2.933328000000074
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.140529000000242,
+        "through_apply_ms": 6.139899000000696,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.02163399999972,
+        "through_apply_ms": 19.60084199999983,
+        "accept_ms": 12.420791999999892
+      }
+    },
+    {
+      "round": 4,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 23.377725000000282,
+        "through_apply_ms": 19.838606000000254,
+        "accept_ms": 3.539119000000028
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.377370000000155,
+        "through_apply_ms": 20.630852000000232,
+        "accept_ms": 12.746517999999924
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.65964399999939,
+        "through_apply_ms": 17.65877399999954,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.009305999999924,
+        "through_apply_ms": 7.008645999999317,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 4,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.482413000000633,
+        "through_apply_ms": 19.306416000000354,
+        "accept_ms": 12.17599700000028
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.783711999999468,
+        "through_apply_ms": 6.783121999999821,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.12513299999955,
+        "through_apply_ms": 15.352848999999878,
+        "accept_ms": 3.7722839999996722
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.123771999999917,
+        "through_apply_ms": 18.123102000000472,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 4,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "accepted",
+        "ms": 16.21684499999992,
+        "through_apply_ms": 13.021722999999838,
+        "accept_ms": 3.195122000000083
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 32.88459999999941,
+        "through_apply_ms": 20.02421999999933,
+        "accept_ms": 12.860380000000077
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.713776999999936,
+        "through_apply_ms": 19.267015000000356,
+        "accept_ms": 12.44676199999958
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.289107000000513,
+        "through_apply_ms": 13.05502400000023,
+        "accept_ms": 3.2340830000002825
+      }
+    },
+    {
+      "round": 4,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.799455999999736,
+        "through_apply_ms": 17.798875999999836,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.488615999999638,
+        "through_apply_ms": 6.488185999999587,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.095828999999867,
+        "through_apply_ms": 6.095349000000169,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 19.019669999999678,
+        "through_apply_ms": 19.01904999999988,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 4,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.902974999999969,
+        "through_apply_ms": 6.902554999999666,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.06206100000054,
+        "through_apply_ms": 18.06145100000049,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.19427700000051,
+        "through_apply_ms": 19.096161000000393,
+        "accept_ms": 12.098116000000118
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.60941399999956,
+        "through_apply_ms": 13.456352000000152,
+        "accept_ms": 3.1530619999994087
+      }
+    },
+    {
+      "round": 4,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.273385000000417,
+        "through_apply_ms": 19.272565000000213,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.249495000000024,
+        "through_apply_ms": 15.683884999999464,
+        "accept_ms": 3.565610000000561
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.903634000000238,
+        "through_apply_ms": 6.90319400000044,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 34.17230500000005,
+        "through_apply_ms": 21.302785000000767,
+        "accept_ms": 12.869519999999284
+      }
+    },
+    {
+      "round": 4,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.738687000000027,
+        "through_apply_ms": 12.712946999999986,
+        "accept_ms": 3.0257400000000416
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.958111999999346,
+        "through_apply_ms": 18.854126999999608,
+        "accept_ms": 12.103984999999739
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.327016999999614,
+        "through_apply_ms": 17.326406999999563,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.272431999999753,
+        "through_apply_ms": 6.272012000000359,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 4,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.940521999999874,
+        "through_apply_ms": 18.656042999999954,
+        "accept_ms": 12.28447899999992
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.1312290000005305,
+        "through_apply_ms": 6.130779000000075,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.611424000000625,
+        "through_apply_ms": 12.297630000000026,
+        "accept_ms": 3.3137940000005983
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.78745600000002,
+        "through_apply_ms": 17.786776000000827,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.410939999999755,
+        "through_apply_ms": 12.51230300000043,
+        "accept_ms": 2.898636999999326
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.00639299999966,
+        "through_apply_ms": 18.762124999999287,
+        "accept_ms": 12.244268000000375
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.166103999999905,
+        "through_apply_ms": 17.165643999999702,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.091488000000027,
+        "through_apply_ms": 6.091037999999571,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.08831399999963,
+        "through_apply_ms": 19.86486700000023,
+        "accept_ms": 12.223446999999396
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.567627999999786,
+        "through_apply_ms": 6.567187999999987,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.408126000000266,
+        "through_apply_ms": 18.67246299999988,
+        "accept_ms": 3.735663000000386
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.167793999999958,
+        "through_apply_ms": 18.1670239999994,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.652908999999454,
+        "through_apply_ms": 6.652278999999908,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.629522999999608,
+        "through_apply_ms": 17.62904299999991,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.714837999999872,
+        "through_apply_ms": 19.43832900000052,
+        "accept_ms": 12.27650899999935
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.335895999999593,
+        "through_apply_ms": 15.649544999999307,
+        "accept_ms": 3.686351000000286
+      }
+    },
+    {
+      "round": 5,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.431352000000516,
+        "through_apply_ms": 19.141383000000133,
+        "accept_ms": 12.289969000000383
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.114223000000493,
+        "through_apply_ms": 12.858299999999872,
+        "accept_ms": 3.255923000000621
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.710756000000401,
+        "through_apply_ms": 12.41790200000014,
+        "accept_ms": 3.2928540000002613
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.532202999999754,
+        "through_apply_ms": 19.643081999999595,
+        "accept_ms": 12.88912100000016
+      }
+    },
+    {
+      "round": 5,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.665610000000015,
+        "through_apply_ms": 6.665039999999863,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.397077999999965,
+        "through_apply_ms": 18.396437999999762,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.399569000000156,
+        "through_apply_ms": 17.39897900000051,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.33903299999929,
+        "through_apply_ms": 6.338532999999188,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.846746999999596,
+        "through_apply_ms": 17.84611700000005,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.04670199999964,
+        "through_apply_ms": 13.81246900000042,
+        "accept_ms": 3.2342329999992216
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.588408999999956,
+        "through_apply_ms": 6.587768999999753,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.43937199999982,
+        "through_apply_ms": 19.903457999999773,
+        "accept_ms": 12.535914000000048
+      }
+    },
+    {
+      "round": 5,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.196694000000207,
+        "through_apply_ms": 15.627534000000196,
+        "accept_ms": 3.5691600000000108
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 34.10497399999986,
+        "through_apply_ms": 20.846996000000217,
+        "accept_ms": 13.257977999999639
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.034061000000293,
+        "through_apply_ms": 19.033371000000443,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.502136000000064,
+        "through_apply_ms": 7.501596000000063,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.473611999999775,
+        "through_apply_ms": 18.985748999999487,
+        "accept_ms": 12.487863000000289
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.668529999999919,
+        "through_apply_ms": 6.667829999999412,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.154915000000074,
+        "through_apply_ms": 12.930401999999958,
+        "accept_ms": 3.2245130000001154
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.06029099999978,
+        "through_apply_ms": 18.059661000000233,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 5,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.607097999999496,
+        "through_apply_ms": 6.606507999999849,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.1210430000001,
+        "through_apply_ms": 18.120112999999947,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.24249800000052,
+        "through_apply_ms": 19.48967999999968,
+        "accept_ms": 12.752818000000843
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.582381999999598,
+        "through_apply_ms": 13.234467000000222,
+        "accept_ms": 3.347914999999375
+      }
+    },
+    {
+      "round": 5,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.04768100000001,
+        "through_apply_ms": 18.046951000000263,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.62349400000039,
+        "through_apply_ms": 13.486463000000185,
+        "accept_ms": 3.1370310000002064
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.064108000000488,
+        "through_apply_ms": 6.0635879999999815,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.61900500000047,
+        "through_apply_ms": 19.462719000000106,
+        "accept_ms": 13.156286000000364
+      }
+    },
+    {
+      "round": 6,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.457765000000109,
+        "through_apply_ms": 7.457164999999804,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.610741999999846,
+        "through_apply_ms": 18.609771999999793,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 35.07591299999967,
+        "through_apply_ms": 21.406896999999844,
+        "accept_ms": 13.669015999999829
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 24.508347000000867,
+        "through_apply_ms": 20.63947200000075,
+        "accept_ms": 3.8688750000001164
+      }
+    },
+    {
+      "round": 6,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.711583999999675,
+        "through_apply_ms": 18.71047399999952,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 21.168942000000243,
+        "through_apply_ms": 17.125653000000057,
+        "accept_ms": 4.043289000000186
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.510506999999961,
+        "through_apply_ms": 6.50989699999991,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 35.04120200000034,
+        "through_apply_ms": 20.840525999999954,
+        "accept_ms": 14.200676000000385
+      }
+    },
+    {
+      "round": 6,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.237465000000157,
+        "through_apply_ms": 14.375439999999799,
+        "accept_ms": 3.862025000000358
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.926610999999866,
+        "through_apply_ms": 20.624511999999413,
+        "accept_ms": 13.302099000000453
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 33.056102999999894,
+        "through_apply_ms": 19.887015999999676,
+        "accept_ms": 13.169087000000218
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 17.10359200000039,
+        "through_apply_ms": 13.699926000000232,
+        "accept_ms": 3.4036660000001575
+      }
+    },
+    {
+      "round": 6,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.647793000000092,
+        "through_apply_ms": 18.647023000000445,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.341813000000002,
+        "through_apply_ms": 6.341182999999546,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.034928000000036,
+        "through_apply_ms": 6.034488000000238,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.814306000000215,
+        "through_apply_ms": 17.81381599999986,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 6,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.750844000000143,
+        "through_apply_ms": 15.283046999999897,
+        "accept_ms": 3.467797000000246
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.90332000000035,
+        "through_apply_ms": 20.221284000000196,
+        "accept_ms": 12.682036000000153
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.615333000000646,
+        "through_apply_ms": 17.614553000000342,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.836802999999236,
+        "through_apply_ms": 6.836202999999841,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 6,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.150024999999914,
+        "through_apply_ms": 19.967227999999523,
+        "accept_ms": 12.182797000000392
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.245581000000129,
+        "through_apply_ms": 7.245010999999977,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.724084000000403,
+        "through_apply_ms": 15.281856999999945,
+        "accept_ms": 3.4422270000004573
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.724194000000352,
+        "through_apply_ms": 19.7234440000002,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 6,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.519596999999521,
+        "through_apply_ms": 6.518956999999318,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.160673000000315,
+        "through_apply_ms": 18.159833000000617,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.26738800000021,
+        "through_apply_ms": 19.20693300000039,
+        "accept_ms": 12.06045499999982
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.073452000000543,
+        "through_apply_ms": 12.991442000000461,
+        "accept_ms": 3.082010000000082
+      }
+    },
+    {
+      "round": 6,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.85165700000016,
+        "through_apply_ms": 17.85111700000016,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.05647299999964,
+        "through_apply_ms": 12.861801000000014,
+        "accept_ms": 3.1946719999996276
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.118349000000308,
+        "through_apply_ms": 6.117829000000711,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.63688499999989,
+        "through_apply_ms": 19.964648999999554,
+        "accept_ms": 12.67223600000034
+      }
+    },
+    {
+      "round": 6,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.046582000000853,
+        "through_apply_ms": 12.950122000000192,
+        "accept_ms": 3.0964600000006612
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.4174009999997,
+        "through_apply_ms": 19.127932000000328,
+        "accept_ms": 12.289468999999372
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.566781999999876,
+        "through_apply_ms": 17.566052000000127,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.59078799999952,
+        "through_apply_ms": 7.590387999999621,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 6,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.98699300000044,
+        "through_apply_ms": 19.048690999999963,
+        "accept_ms": 12.938302000000476
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.95873599999959,
+        "through_apply_ms": 6.958246000000145,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.22223600000052,
+        "through_apply_ms": 13.150916000000507,
+        "accept_ms": 3.0713200000000143
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.087362000000212,
+        "through_apply_ms": 18.086911999999757,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.955769999999575,
+        "through_apply_ms": 15.331388999999945,
+        "accept_ms": 3.62438099999963
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.63291500000014,
+        "through_apply_ms": 19.84296600000016,
+        "accept_ms": 12.789948999999979
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.950568999999632,
+        "through_apply_ms": 17.950198999999884,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.433035000000018,
+        "through_apply_ms": 6.4326350000001185,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.10032499999943,
+        "through_apply_ms": 18.770204999999805,
+        "accept_ms": 12.330119999999624
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.923609999999826,
+        "through_apply_ms": 12.696336999999403,
+        "accept_ms": 3.227273000000423
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.591972999999598,
+        "through_apply_ms": 12.451741999999285,
+        "accept_ms": 3.1402310000003126
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 32.24172699999963,
+        "through_apply_ms": 19.73956399999952,
+        "accept_ms": 12.50216300000011
+      }
+    },
+    {
+      "round": 7,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.54849699999977,
+        "through_apply_ms": 6.548116999999365,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.036809999999605,
+        "through_apply_ms": 18.036409999999705,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.49117000000024,
+        "through_apply_ms": 18.490720000000692,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.858334000000468,
+        "through_apply_ms": 6.857954000000063,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.629495000000134,
+        "through_apply_ms": 20.573680000000422,
+        "accept_ms": 13.055814999999711
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.194880000000012,
+        "through_apply_ms": 7.194460000000618,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.29563700000017,
+        "through_apply_ms": 13.919010999999955,
+        "accept_ms": 3.376626000000215
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 20.301094999999805,
+        "through_apply_ms": 20.300685000000158,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 8.86651299999994,
+        "through_apply_ms": 8.865953000000445,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 24.413596000000325,
+        "through_apply_ms": 24.41317600000002,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 40.42399599999953,
+        "through_apply_ms": 24.760941999999886,
+        "accept_ms": 15.663053999999647
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 21.1743120000001,
+        "through_apply_ms": 16.99417100000028,
+        "accept_ms": 4.180140999999821
+      }
+    },
+    {
+      "round": 7,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 20.745143999999527,
+        "through_apply_ms": 20.744764000000032,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 21.24390399999993,
+        "through_apply_ms": 17.45289000000048,
+        "accept_ms": 3.79101399999945
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.269390999999814,
+        "through_apply_ms": 7.269011000000319,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 40.60450100000071,
+        "through_apply_ms": 25.950434999999743,
+        "accept_ms": 14.654066000000967
+      }
+    },
+    {
+      "round": 7,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 21.39015599999948,
+        "through_apply_ms": 17.053931999998895,
+        "accept_ms": 4.336224000000584
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 40.04776899999888,
+        "through_apply_ms": 24.053627999999662,
+        "accept_ms": 15.994140999999217
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 22.303663999999117,
+        "through_apply_ms": 22.30329399999937,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.794561000000613,
+        "through_apply_ms": 7.794081000000006,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 36.128732999999556,
+        "through_apply_ms": 22.40130599999975,
+        "accept_ms": 13.727426999999807
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.306092999999237,
+        "through_apply_ms": 7.305743000000803,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.58197300000029,
+        "through_apply_ms": 12.454681999999593,
+        "accept_ms": 3.127291000000696
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.231423999999606,
+        "through_apply_ms": 18.231073999999353,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 7,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.354373000000123,
+        "through_apply_ms": 6.35391300000083,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.450708999998824,
+        "through_apply_ms": 18.45035900000039,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.47559199999887,
+        "through_apply_ms": 19.826915999999983,
+        "accept_ms": 12.648675999998886
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.813958000000639,
+        "through_apply_ms": 12.83459000000039,
+        "accept_ms": 2.9793680000002496
+      }
+    },
+    {
+      "round": 7,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.44321900000068,
+        "through_apply_ms": 18.442838999999367,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.717241999998805,
+        "through_apply_ms": 19.23658499999874,
+        "accept_ms": 3.4806570000000647
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.560088000000178,
+        "through_apply_ms": 6.559728000000177,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.99543199999971,
+        "through_apply_ms": 20.544439999999668,
+        "accept_ms": 12.450992000000042
+      }
+    },
+    {
+      "round": 8,
+      "task": "thermal",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "accepted",
+        "ms": 16.093743999999788,
+        "through_apply_ms": 12.850720999998885,
+        "accept_ms": 3.2430230000009033
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.732796999998754,
+        "through_apply_ms": 19.268004999999903,
+        "accept_ms": 12.464791999998852
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.073174999999537,
+        "through_apply_ms": 18.754595000000336,
+        "accept_ms": 12.318579999999201
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.388670000000275,
+        "through_apply_ms": 13.060105000000476,
+        "accept_ms": 3.3285649999997986
+      }
+    },
+    {
+      "round": 8,
+      "task": "flag",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.302236000001358,
+        "through_apply_ms": 18.301846000000296,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.42060500000116,
+        "through_apply_ms": 6.420224999999846,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 5.9910670000008395,
+        "through_apply_ms": 5.9906970000010915,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.372777000000497,
+        "through_apply_ms": 18.372466999999233,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 8,
+      "task": "cut",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.313903000000209,
+        "through_apply_ms": 6.313623000000007,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.793486000000485,
+        "through_apply_ms": 17.79314599999998,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.669536999999764,
+        "through_apply_ms": 19.14172299999882,
+        "accept_ms": 12.527814000000944
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.626382000000376,
+        "through_apply_ms": 14.403369999999995,
+        "accept_ms": 3.223012000000381
+      }
+    },
+    {
+      "round": 8,
+      "task": "tape",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.50930900000094,
+        "through_apply_ms": 19.50898899999993,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.141372000000047,
+        "through_apply_ms": 15.70826599999964,
+        "accept_ms": 3.433106000000407
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.009336000000985,
+        "through_apply_ms": 7.008976000000985,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.172005000000354,
+        "through_apply_ms": 20.74321400000008,
+        "accept_ms": 12.428791000000274
+      }
+    },
+    {
+      "round": 8,
+      "task": "page",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.969720999999481,
+        "through_apply_ms": 12.996182999999291,
+        "accept_ms": 2.9735380000001896
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.39581100000032,
+        "through_apply_ms": 19.00604999999996,
+        "accept_ms": 12.389761000000362
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.68672399999923,
+        "through_apply_ms": 17.68640400000004,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.881464000000051,
+        "through_apply_ms": 6.880944000000454,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 8,
+      "task": "ticket",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.500233000000662,
+        "through_apply_ms": 19.290544999999838,
+        "accept_ms": 12.209688000000824
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.349924000000101,
+        "through_apply_ms": 6.349554000000353,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.993711000000985,
+        "through_apply_ms": 12.808248999999705,
+        "accept_ms": 3.18546200000128
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.058050999999978,
+        "through_apply_ms": 18.05771100000129,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 8,
+      "task": "namespace",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.436924999999974,
+        "through_apply_ms": 6.436415000000125,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.96802899999966,
+        "through_apply_ms": 17.967569000000367,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.16561599999841,
+        "through_apply_ms": 18.82783599999857,
+        "accept_ms": 12.337779999999839
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.278975999999602,
+        "through_apply_ms": 13.164005999999063,
+        "accept_ms": 3.1149700000005396
+      }
+    },
+    {
+      "round": 8,
+      "task": "annotation",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.79512600000089,
+        "through_apply_ms": 17.794716000000335,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.65257500000007,
+        "through_apply_ms": 12.742457999998805,
+        "accept_ms": 2.9101170000012644
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.067838000000847,
+        "through_apply_ms": 6.06753800000115,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.926931000001787,
+        "through_apply_ms": 19.490159000000858,
+        "accept_ms": 12.436772000000929
+      }
+    },
+    {
+      "round": 8,
+      "task": "telemetry",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 23.02596799999992,
+        "through_apply_ms": 19.502959999999803,
+        "accept_ms": 3.523008000000118
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.57893399999921,
+        "through_apply_ms": 20.140771999998833,
+        "accept_ms": 12.438162000000375
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.68328399999882,
+        "through_apply_ms": 17.682874000000083,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.918175000000701,
+        "through_apply_ms": 6.91785499999969,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 8,
+      "task": "trailer",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.74906800000099,
+        "through_apply_ms": 19.4196979999997,
+        "accept_ms": 12.32937000000129
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.569257999999536,
+        "through_apply_ms": 6.568957999999839,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.895167999999103,
+        "through_apply_ms": 15.260426999999254,
+        "accept_ms": 3.634740999999849
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.45629900000131,
+        "through_apply_ms": 18.45600900000136,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "flag",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.815411999999924,
+        "through_apply_ms": 6.8151120000002265,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.42656899999929,
+        "through_apply_ms": 18.426249000000098,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.601801999999225,
+        "through_apply_ms": 17.601411999999982,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.500167000000147,
+        "through_apply_ms": 6.499717000000601,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "cut",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.065521999998964,
+        "through_apply_ms": 18.065221999999267,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.299795999999333,
+        "through_apply_ms": 14.075654000000213,
+        "accept_ms": 3.2241419999991194
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.387264000000869,
+        "through_apply_ms": 6.386924000000363,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.21781700000065,
+        "through_apply_ms": 19.937028000000282,
+        "accept_ms": 12.280789000000368
+      }
+    },
+    {
+      "round": 9,
+      "task": "tape",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.831036000001404,
+        "through_apply_ms": 15.402369999999792,
+        "accept_ms": 3.4286660000016127
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 33.44448099999863,
+        "through_apply_ms": 20.57346999999936,
+        "accept_ms": 12.871010999999271
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.71905400000105,
+        "through_apply_ms": 18.718744000001607,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.394663999999466,
+        "through_apply_ms": 7.394334000000526,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "page",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.077954000000318,
+        "through_apply_ms": 18.73578400000042,
+        "accept_ms": 12.342169999999896
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.280342000000019,
+        "through_apply_ms": 6.280061999999816,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.493542000000161,
+        "through_apply_ms": 12.35888100000011,
+        "accept_ms": 3.134661000000051
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.35128700000132,
+        "through_apply_ms": 18.350986999999805,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "ticket",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.2712719999999536,
+        "through_apply_ms": 6.2709520000007615,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.891467999999804,
+        "through_apply_ms": 17.891168000000107,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.865521000001536,
+        "through_apply_ms": 18.53544099999999,
+        "accept_ms": 12.330080000001544
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.92660000000069,
+        "through_apply_ms": 12.695466999999553,
+        "accept_ms": 3.2311330000011367
+      }
+    },
+    {
+      "round": 9,
+      "task": "namespace",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.097171999999773,
+        "through_apply_ms": 18.096792000000278,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.357359000001452,
+        "through_apply_ms": 12.338450000001103,
+        "accept_ms": 3.018909000000349
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.07220800000141,
+        "through_apply_ms": 6.071868000000904,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.51494300000013,
+        "through_apply_ms": 19.376297000000704,
+        "accept_ms": 12.138645999999426
+      }
+    },
+    {
+      "round": 9,
+      "task": "annotation",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.467792000001282,
+        "through_apply_ms": 12.580595000001267,
+        "accept_ms": 2.8871970000000147
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.357390000001033,
+        "through_apply_ms": 19.142241999999897,
+        "accept_ms": 12.215148000001136
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.248406000000614,
+        "through_apply_ms": 17.24794600000132,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.201570999999603,
+        "through_apply_ms": 6.2012309999990975,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "telemetry",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.75185700000111,
+        "through_apply_ms": 20.336205000001428,
+        "accept_ms": 12.415651999999682
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.705330000000686,
+        "through_apply_ms": 6.705009999999675,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.038468999999168,
+        "through_apply_ms": 18.447988999998415,
+        "accept_ms": 3.5904800000007526
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.29024500000014,
+        "through_apply_ms": 18.289945000000444,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 9,
+      "task": "trailer",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.486806000000797,
+        "through_apply_ms": 6.486476000000039,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.66141400000015,
+        "through_apply_ms": 17.661104000000705,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.947251999999935,
+        "through_apply_ms": 19.40281700000014,
+        "accept_ms": 12.544434999999794
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.125592000000324,
+        "through_apply_ms": 15.43652000000111,
+        "accept_ms": 3.6890719999992143
+      }
+    },
+    {
+      "round": 9,
+      "task": "thermal",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.88991100000021,
+        "through_apply_ms": 19.5341010000011,
+        "accept_ms": 12.35580999999911
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.684535000000324,
+        "through_apply_ms": 12.510893000000578,
+        "accept_ms": 3.173641999999745
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.76246699999865,
+        "through_apply_ms": 12.441412000000128,
+        "accept_ms": 3.3210549999985233
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.910491000000548,
+        "through_apply_ms": 19.28380500000094,
+        "accept_ms": 12.626685999999609
+      }
+    },
+    {
+      "round": 10,
+      "task": "cut",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 17.13404300000002,
+        "through_apply_ms": 13.936150999999882,
+        "accept_ms": 3.197892000000138
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.977131999999983,
+        "through_apply_ms": 19.66410299999916,
+        "accept_ms": 12.313029000000824
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.661082999999053,
+        "through_apply_ms": 17.660722999999052,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.687990999998874,
+        "through_apply_ms": 6.687660999999935,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 10,
+      "task": "tape",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.492111999999906,
+        "through_apply_ms": 20.06565000000046,
+        "accept_ms": 12.426461999999447
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.812863000001016,
+        "through_apply_ms": 7.812513000000763,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.78666599999997,
+        "through_apply_ms": 15.202116000000387,
+        "accept_ms": 3.584549999999581
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.556170000001657,
+        "through_apply_ms": 19.555860000000393,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 10,
+      "task": "page",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.442025000000285,
+        "through_apply_ms": 6.441725000000588,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.630832999999257,
+        "through_apply_ms": 17.630513000000064,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.4711329999991,
+        "through_apply_ms": 18.89231800000016,
+        "accept_ms": 12.57881499999894
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.00387099999898,
+        "through_apply_ms": 13.013512999999875,
+        "accept_ms": 2.9903579999991052
+      }
+    },
+    {
+      "round": 10,
+      "task": "ticket",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.82659600000079,
+        "through_apply_ms": 17.82631600000059,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.947439999999915,
+        "through_apply_ms": 12.725887000000512,
+        "accept_ms": 3.2215529999994033
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.023558000000776,
+        "through_apply_ms": 6.02321800000027,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.840949999999793,
+        "through_apply_ms": 19.19132399999944,
+        "accept_ms": 12.649626000000353
+      }
+    },
+    {
+      "round": 10,
+      "task": "namespace",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.973190000000614,
+        "through_apply_ms": 12.791678000001411,
+        "accept_ms": 3.181511999999202
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.162107000000105,
+        "through_apply_ms": 19.01618100000087,
+        "accept_ms": 12.145925999999236
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.400728999999046,
+        "through_apply_ms": 17.400298999998995,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.441134999999122,
+        "through_apply_ms": 6.440824999999677,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 10,
+      "task": "annotation",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.16534700000011,
+        "through_apply_ms": 18.78357600000163,
+        "accept_ms": 12.38177099999848
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.37006399999882,
+        "through_apply_ms": 6.369753999999375,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.147133999998914,
+        "through_apply_ms": 12.269637999999759,
+        "accept_ms": 2.877495999999155
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.981230000001233,
+        "through_apply_ms": 17.98091999999997,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 10,
+      "task": "telemetry",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.742232000000513,
+        "through_apply_ms": 6.7419019999997545,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.767744999999195,
+        "through_apply_ms": 17.767384999999194,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.954521999999997,
+        "through_apply_ms": 19.63024200000109,
+        "accept_ms": 12.324279999998907
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.31816400000025,
+        "through_apply_ms": 18.84499599999981,
+        "accept_ms": 3.4731680000004417
+      }
+    },
+    {
+      "round": 10,
+      "task": "trailer",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.864168000000063,
+        "through_apply_ms": 17.863808000000063,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.917347999999038,
+        "through_apply_ms": 15.217886000000362,
+        "accept_ms": 3.6994619999986753
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 5.9964469999995345,
+        "through_apply_ms": 5.996106999999029,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.135095000001456,
+        "through_apply_ms": 19.76957500000026,
+        "accept_ms": 12.365520000001197
+      }
+    },
+    {
+      "round": 10,
+      "task": "thermal",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.740735999999742,
+        "through_apply_ms": 12.56368399999883,
+        "accept_ms": 3.177052000000913
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.455722000000605,
+        "through_apply_ms": 19.210934000000634,
+        "accept_ms": 12.244787999999971
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 30.71936800000003,
+        "through_apply_ms": 18.5351210000008,
+        "accept_ms": 12.184246999999232
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 16.167374000000564,
+        "through_apply_ms": 12.993592000000717,
+        "accept_ms": 3.1737819999998464
+      }
+    },
+    {
+      "round": 10,
+      "task": "flag",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.696674000000712,
+        "through_apply_ms": 18.696293999999398,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.357332999999926,
+        "through_apply_ms": 6.356963000000178,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.130769999999757,
+        "through_apply_ms": 6.130369999998948,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.64852400000018,
+        "through_apply_ms": 17.648144000000684,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 11,
+      "task": "tape",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 7.280041999998502,
+        "through_apply_ms": 7.279741999998805,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 19.259224999999788,
+        "through_apply_ms": 19.25888499999928,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.171495999999024,
+        "through_apply_ms": 19.90292799999952,
+        "accept_ms": 12.268567999999505
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 19.57513999999901,
+        "through_apply_ms": 16.018880999999965,
+        "accept_ms": 3.556258999999045
+      }
+    },
+    {
+      "round": 11,
+      "task": "page",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.389188000001013,
+        "through_apply_ms": 18.388817999999446,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.509750999999596,
+        "through_apply_ms": 13.397130999999717,
+        "accept_ms": 3.112619999999879
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.122969000000012,
+        "through_apply_ms": 6.122548999999708,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.33267899999919,
+        "through_apply_ms": 19.74220400000013,
+        "accept_ms": 12.59047499999906
+      }
+    },
+    {
+      "round": 11,
+      "task": "ticket",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.20953499999996,
+        "through_apply_ms": 12.993961999998646,
+        "accept_ms": 3.2155730000013136
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.336379999998826,
+        "through_apply_ms": 19.057010999998965,
+        "accept_ms": 12.27936899999986
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.359929000000193,
+        "through_apply_ms": 17.35964899999999,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.35767400000077,
+        "through_apply_ms": 6.357283000001189,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 11,
+      "task": "namespace",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.701068000000305,
+        "through_apply_ms": 18.59103200000027,
+        "accept_ms": 12.110036000000036
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.147030000000086,
+        "through_apply_ms": 6.146699999999328,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.290098000001308,
+        "through_apply_ms": 12.186257000001206,
+        "accept_ms": 3.103841000000102
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.80258700000013,
+        "through_apply_ms": 17.80226700000094,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 11,
+      "task": "annotation",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.07713799999874,
+        "through_apply_ms": 6.076817999999548,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.691703999998936,
+        "through_apply_ms": 17.691294000000198,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.485223000001497,
+        "through_apply_ms": 18.411168000000544,
+        "accept_ms": 12.074055000000953
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.450621000001775,
+        "through_apply_ms": 12.5296040000012,
+        "accept_ms": 2.9210170000005746
+      }
+    },
+    {
+      "round": 11,
+      "task": "telemetry",
+      "order": [
+        "python_before",
+        "tide_after",
+        "tide_before",
+        "python_after"
+      ],
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.264295000000857,
+        "through_apply_ms": 18.2639650000001,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 22.11678099999881,
+        "through_apply_ms": 18.712493999999424,
+        "accept_ms": 3.4042869999993854
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.314373000001069,
+        "through_apply_ms": 6.314043000000311,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.55199299999913,
+        "through_apply_ms": 20.27935400000024,
+        "accept_ms": 12.27263899999889
+      }
+    },
+    {
+      "round": 11,
+      "task": "trailer",
+      "order": [
+        "tide_after",
+        "python_after",
+        "python_before",
+        "tide_before"
+      ],
+      "tide_after": {
+        "status": "accepted",
+        "ms": 18.8473869999998,
+        "through_apply_ms": 15.220696999998836,
+        "accept_ms": 3.6266900000009628
+      },
+      "python_after": {
+        "status": "accepted",
+        "ms": 31.904271000001245,
+        "through_apply_ms": 19.668143000000782,
+        "accept_ms": 12.236128000000463
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.524140999999872,
+        "through_apply_ms": 17.52382100000068,
+        "accept_ms": 0
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.540188000000853,
+        "through_apply_ms": 6.539867999999842,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 11,
+      "task": "thermal",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 30.90099200000077,
+        "through_apply_ms": 18.796495999999024,
+        "accept_ms": 12.104496000001745
+      },
+      "tide_before": {
+        "status": "accepted",
+        "ms": 15.776017000000138,
+        "through_apply_ms": 12.529754000001049,
+        "accept_ms": 3.2462629999990895
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 15.711155999999391,
+        "through_apply_ms": 12.588524999999208,
+        "accept_ms": 3.122631000000183
+      },
+      "python_before": {
+        "status": "accepted",
+        "ms": 31.668877000000066,
+        "through_apply_ms": 19.400268000001233,
+        "accept_ms": 12.268608999998833
+      }
+    },
+    {
+      "round": 11,
+      "task": "flag",
+      "order": [
+        "tide_before",
+        "python_before",
+        "python_after",
+        "tide_after"
+      ],
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.171150000000125,
+        "through_apply_ms": 6.170790000000125,
+        "accept_ms": 0
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 17.505699999999706,
+        "through_apply_ms": 17.50542999999925,
+        "accept_ms": 0
+      },
+      "python_after": {
+        "status": "no_candidate",
+        "ms": 18.160464000000502,
+        "through_apply_ms": 18.160154000001057,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "no_candidate",
+        "ms": 6.556397000000288,
+        "through_apply_ms": 6.5560870000008435,
+        "accept_ms": 0
+      }
+    },
+    {
+      "round": 11,
+      "task": "cut",
+      "order": [
+        "python_after",
+        "tide_before",
+        "tide_after",
+        "python_before"
+      ],
+      "python_after": {
+        "status": "accepted",
+        "ms": 32.03995399999985,
+        "through_apply_ms": 19.451509000000442,
+        "accept_ms": 12.58844499999941
+      },
+      "tide_before": {
+        "status": "no_candidate",
+        "ms": 6.49964700000055,
+        "through_apply_ms": 6.499277000000802,
+        "accept_ms": 0
+      },
+      "tide_after": {
+        "status": "accepted",
+        "ms": 16.665493999998944,
+        "through_apply_ms": 13.524422999998933,
+        "accept_ms": 3.141071000000011
+      },
+      "python_before": {
+        "status": "no_candidate",
+        "ms": 18.20414399999936,
+        "through_apply_ms": 18.203843999999663,
+        "accept_ms": 0
+      }
+    }
+  ]
+}

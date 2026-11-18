@@ -1,0 +1,14 @@
+balance opening:i entries:*i > i
+fold entries opening total row entry + total entry
+
+main > i
+balance 100 list i 4 -20 15 -8 10
+
+example movements balance
+{"inputs":{"opening":100,"entries":[-20,15,-8,10]},"expect":97}
+
+example no_entries balance
+{"inputs":{"opening":-4,"entries":[]},"expect":-4}
+
+example overflow balance
+{"inputs":{"opening":9223372036854775807,"entries":[1]},"expect_error":{"code":"E_OVERFLOW"}}

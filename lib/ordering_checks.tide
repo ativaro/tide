@@ -1,0 +1,40 @@
+use ordering
+
+agrees a:i b:i c:i d:i tie:b > b
+let expected if (< a b) true (if (> a b) false (if (> c d) true (if (< c d) false tie)))
+let actual prefer_min a b (prefer_max c d tie)
+if expected actual (not actual)
+
+all_for a:i > b
+let extremes list i 5 -9223372036854775808 -1 0 1 9223372036854775807
+fold extremes true b_ok ib b and b_ok
+  (fold extremes true c_ok ic c and c_ok
+    (fold extremes true d_ok id d and d_ok
+      (and (agrees a b c d false) (agrees a b c d true))))
+
+eager a:i b:i z:i > b
+prefer_min a b (> (div 1 z) 0)
+
+guarded a:i b:i z:i > b
+if (eq a b) (> (div 1 z) 0) (< a b)
+
+example first_boundary all_for
+{"inputs":{"a":-9223372036854775808},"expect":true}
+
+example negative all_for
+{"inputs":{"a":-1},"expect":true}
+
+example zero all_for
+{"inputs":{"a":0},"expect":true}
+
+example positive all_for
+{"inputs":{"a":1},"expect":true}
+
+example last_boundary all_for
+{"inputs":{"a":9223372036854775807},"expect":true}
+
+example eager_argument eager
+{"inputs":{"a":0,"b":1,"z":0},"expect_error":{"code":"E_DATA","reason":"division_by_zero"}}
+
+example lazy_branch guarded
+{"inputs":{"a":0,"b":1,"z":0},"expect":true}

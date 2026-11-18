@@ -1,0 +1,109 @@
+use sqlite
+
+use run_inputs
+
+record AotRun
+work:i memory:i stream_left:i read_left:i reads:*{ReadSnapshot} recursions:i
+
+aot_start > {AotRun}
+make AotRun work 100000 memory 4194304 stream_left stream_quota read_left 131072 reads (list {ReadSnapshot} 0) recursions 0
+
+aot_work remaining:i file:t site:{Site} > i
+if (< remaining 0) fail (diagnosis file site "E_LIMIT" "Work budget exhausted")
+remaining
+
+aot_memory remaining:i file:t site:{Site} > i
+if (< remaining 0) fail (diagnosis file site "E_LIMIT" "Guest allocation budget exhausted")
+remaining
+
+aot_lines source:t file:t site:{Site} > *t
+if (not (line_count_ok source)) fail (diagnosis file site "E_LIMIT" "Line count limit")
+lines source
+
+aot_read run:{AotRun} fd:i file:t site:{Site} > &{AotRun}t
+let binary text_eq (get word site) "read_bytes"
+let cached find_snapshot (get reads run) fd
+let snapshot case cached (take_snapshot (number_value fd) (get read_left run) binary) prior prior
+let bytes get bytes snapshot
+if (eq bytes -1) fail (diagnosis file site "E_IO" "Granted read failed")
+if (eq bytes -2) fail (diagnosis file site "E_LIMIT" "Read byte budget exhausted")
+let work aot_work (- (get work run) (+ 1 (div bytes 32))) file site
+let contents need (snapshot_data snapshot binary) (diagnosis file site "E_UTF8" "Invalid UTF-8 input") 0
+let memory aot_memory (- (get memory run) (+ 8 (if binary bytes (* 4 (text_len contents))))) file site
+let updated with memory (with work run work) memory
+pair (case cached (with reads (with read_left updated (- (get read_left updated) bytes)) (append (get reads updated) snapshot)) prior updated) contents
+
+aot_required file:t site:{Site} reason:t row:i > t
+get detail (need_failure file site reason row)
+
+aot_arithmetic file:t site:{Site} a:i b:i > i
+let result numeric_operator site file a b
+if (not (text_eq (get code result) "")) fail (get detail result)
+get num (get value result)
+
+record AotArgs
+inputs:t reads:*t pending:t
+
+aot_options args:*t file:t > {AotArgs}
+let start make AotArgs inputs "{}" reads (list t 0) pending ""
+let usage root_diagnostic file "E_INPUT" "Expected --inputs JSON, --read NAME=PATH --db NAME=PATH or --https NAME=ORIGIN"
+let parsed fold args start acc row arg
+  let pending get pending acc
+  if (text_eq pending "--inputs") (with pending (with inputs acc arg) "")
+  if (text_eq pending "--pg") (with pending (with reads acc (append (get reads acc) (concat "~" arg))) "")
+  if (text_eq pending "--write") (with pending (with reads acc (append (get reads acc) (concat "+" arg))) "")
+  if (text_eq pending "--https") (with pending (with reads acc (append (get reads acc) (concat "@" arg))) "")
+  if (text_eq pending "--db") (with pending (with reads acc (append (get reads acc) (concat "!" arg))) "")
+  if (and (text_eq pending "--read") (white (text_slice arg 0 1) "!@+~")) fail usage
+  if (text_eq pending "--read") (with pending (with reads acc (append (get reads acc) arg)) "")
+  if (or (text_eq arg "--json") (and (text_eq arg "--") (eq row (length args)))) acc
+  if (or (text_eq arg "--inputs") (or (text_eq arg "--read") (or (text_eq arg "--db") (or (text_eq arg "--https") (or (text_eq arg "--write") (text_eq arg "--pg")))))) (with pending acc arg)
+  if (text_eq (text_slice arg 0 9) "--inputs=") (with inputs acc (text_slice arg 9 (text_len arg)))
+  if (text_eq (text_slice arg 0 5) "--pg=") (with reads acc (append (get reads acc) (concat "~" (text_slice arg 5 (text_len arg)))))
+  if (text_eq (text_slice arg 0 8) "--write=") (with reads acc (append (get reads acc) (concat "+" (text_slice arg 8 (text_len arg)))))
+  if (text_eq (text_slice arg 0 8) "--https=") (with reads acc (append (get reads acc) (concat "@" (text_slice arg 8 (text_len arg)))))
+  if (text_eq (text_slice arg 0 5) "--db=") (with reads acc (append (get reads acc) (concat "!" (text_slice arg 5 (text_len arg)))))
+  if (or (text_eq (text_slice arg 0 8) "--read=!") (or (text_eq (text_slice arg 0 8) "--read=@") (or (text_eq (text_slice arg 0 8) "--read=+") (text_eq (text_slice arg 0 8) "--read=~")))) fail usage
+  if (text_eq (text_slice arg 0 7) "--read=") (with reads acc (append (get reads acc) (text_slice arg 7 (text_len arg))))
+  fail usage
+if (not (text_eq (get pending parsed) "")) fail usage
+parsed
+
+aot_option_wire value:?i > t
+case value "{\"none\":true}" n (cat3 "{\"some\":" (signed_text n) "}")
+
+aot_failure file:t reason:t > t
+if (text_eq (text_slice reason 0 8) "{\"file\":") reason
+if (or (text_eq reason "E_UTF8") (or (text_eq reason "input_limit") (text_eq reason "regular_file_required")))
+  (check_schema file reason)
+"{\"code\":\"E_BACKEND\",\"message\":\"This invocation is unavailable in the native TIDE package.\"}"
+
+aot_data_result result:{ScalarResult} > {EvalValue}
+if (text_eq (get code result) "") (get value result) (fail (get detail result))
+
+aot_field record_value:{EvalValue} key:t kind:t value:{EvalValue} > {EvalValue}
+add_member record_value key kind value (field_bytes value kind)
+
+aot_list_item seq:{EvalValue} item:{EvalValue} kind:t file:t site:{Site} > {EvalValue}
+if (eq (sequence_size seq) 4096) fail (diagnosis file site "E_LIMIT" "List length limit")
+if (text_eq kind "t") (text_list_value (append (get texts seq) (get text item)))
+if (scalar_type kind) (list_value (append (get items seq) (get num item)))
+add_member seq "" kind item (field_bytes item kind)
+
+aot_item seq:{EvalValue} index:i > {EvalValue}
+if (> (length (get members seq)) 0) (member_value seq index)
+if (> (length (get texts seq)) 0) (text_value (need (at (get texts seq) index) "aot_item" 0))
+number_value (need (at (get items seq) index) "aot_item" 0)
+
+aot_index detail:t field:t index:i > t
+if (not (text_eq (text_slice detail 0 1) "{")) detail
+let key concat (json_string field) ":"
+if (case (text_find detail (concat "," key) 0) false pos true) detail (extra_fields detail (concat key (decimal index)))
+
+aot_caught detail:t code:t > ?{EvalValue}
+let data read_scalar_json detail internal_json false
+case (json_at data ".code") (nil {EvalValue}) token
+if (not (text_eq (get value (string_token token)) code)) (nil {EvalValue})
+let why case (json_at data ".reason") "" raw (get value (string_token raw))
+let pos case (json_at data ".input_line") (nil i) raw (int raw)
+some (caught_value (make ScalarResult value (number_value 0) code code detail detail reason why line pos trace ""))

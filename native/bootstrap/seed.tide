@@ -1,0 +1,844 @@
+use syntax
+
+record Lex
+tokens:*t word:t quote:b escaped:b
+
+record Term
+raw:t cpp:t stable:b access:t
+
+record Decl
+head:t body:*t
+
+record Blocks
+done:*{Decl} head:t body:*t
+
+record Product
+records:t forwards:t functions:t entry:t
+
+flush_lex cursor:{Lex} > {Lex}
+if (text_eq (get word cursor) "") cursor
+make Lex tokens (append (get tokens cursor) (get word cursor)) word "" quote false escaped false
+
+lex_char cursor:{Lex} ch:t display:b gaps:t > {Lex}
+let buffer concat (get word cursor) ch
+if (get quote cursor)
+  (let escaped get escaped cursor
+   if (and (not display) (and escaped (case (text_find "\"\\nrtbfu" ch 0) true found false))) fail "bootstrap_string_escape"
+   let closed and (not escaped) (text_eq ch "\"")
+   let next make Lex tokens (get tokens cursor) word buffer quote (not closed) escaped (and (not escaped) (text_eq ch "\\"))
+   if closed (flush_lex next) next)
+if (white ch gaps) (flush_lex cursor)
+if (text_eq ch "\"")
+  (if (and (not display) (not (text_eq (get word cursor) ""))) (fail "bootstrap_quoted_token")
+   (make Lex tokens (get tokens (flush_lex cursor)) word ch quote true escaped false))
+if (or (text_eq ch "(") (text_eq ch ")"))
+  (let prev flush_lex cursor
+   with tokens prev (append (get tokens prev) ch))
+with word cursor buffer
+
+line_tokens line:t display:b gaps:t > *t
+let start make Lex tokens (list t 0) word "" quote false escaped false
+let end_state fold (indices (text_len line)) start cursor row ignored lex_char cursor (text_slice line (- row 1) row) display gaps
+if (get quote end_state) fail "bootstrap_unclosed_string"
+get tokens (flush_lex end_state)
+
+tokens line:t > *t
+line_tokens line false " \t\r"
+
+identifier name:t > t
+if (valid_id name) name (fail "bootstrap_identifier")
+
+cpp_type typ:t > t
+if (text_eq typ "r") "Text"
+get target (need (data_shape typ) "bootstrap_data_type" 0)
+
+raw_at parts:*{Term} index:i > t
+get raw (need (at parts index) "bootstrap_operand" index)
+
+expr_at parts:*{Term} index:i > t
+let value get cpp (need (at parts index) "bootstrap_operand" index)
+if (text_eq value "") fail "bootstrap_invalid_expression" value
+
+joined parts:*{Term} start:i > t
+fold parts "" acc row term
+  if (< row (+ start 1)) acc (concat acc (concat (if (eq row (+ start 1)) "" ",") (expr_at parts (- row 1))))
+
+call_cpp name:t args:t > t
+cat3 name "(" (concat args ")")
+
+var_cpp name:t > t
+concat "v_" (identifier name)
+
+integer_code value:i > t
+if (eq value -9223372036854775808) "std::numeric_limits<I>::min()"
+if (< value 0) (cat3 "I{-" (decimal (- 0 value)) "LL}")
+cat3 "I{" (decimal value) "LL}"
+
+atom token:t > {Term}
+let first_ch text_slice token 0 1
+let lit if (text_eq first_ch "\"") (cat3 "literal<U" token ">()")
+  (if (or (text_eq token "true") (text_eq token "false")) token
+   (case (int token) (if (valid_id token) (concat "v_" token) "") number (integer_code number)))
+make Term raw token cpp lit stable (text_eq (text_slice lit 0 2) "v_") access ""
+
+op_call op:t parts:*{Term} > t
+let args joined parts 1
+if (text_eq (text_slice op 0 13) "bootstrap_pg_") (call_cpp (concat "t_" op) args)
+if (text_eq op "bootstrap_replace") (call_cpp "t_bootstrap_replace" args)
+if (text_eq op "bootstrap_https") (call_cpp "t_bootstrap_https" args)
+if (text_eq (text_slice op 0 14) "bootstrap_sql_") (sqlite_abi_call (text_slice op 14 (text_len op)) parts)
+if (text_eq op "+") (call_cpp "add" args)
+if (text_eq op "-") (call_cpp "sub" args)
+if (text_eq op "*") (call_cpp "mul" args)
+if (text_eq op "div") (call_cpp "quot" args)
+if (text_eq op "mod") (call_cpp "remd" args)
+if (text_eq op "bootstrap_rotr32")
+  (cat3 "I(std::rotr(std::uint32_t(" (expr_at parts 1) (cat3 "),int((" (expr_at parts 2) ")%32)))"))
+if (text_eq op "bootstrap_bit_and") (call_cpp "std::bit_and<I>{}" args)
+if (text_eq op "bootstrap_bit_xor") (call_cpp "std::bit_xor<I>{}" args)
+if (text_eq op "eq") (call_cpp "equal_i" args)
+if (text_eq op "<") (call_cpp "less_i" args)
+if (text_eq op ">") (call_cpp "more_i" args)
+if (text_eq op "<=") (cat3 "(!more_i(" args "))")
+if (text_eq op ">=") (cat3 "(!less_i(" args "))")
+if (text_eq op "pair") (call_cpp "std::make_pair" args)
+if (and (or (text_eq op "first") (text_eq op "second")) (get stable (need (at parts 1) "bootstrap_pair" 0)))
+  (cat3 "(" (expr_at parts 1) (concat ")." op))
+let native list t 26 "bootstrap_octets_utf8" "bootstrap_character" "bootstrap_project" "bootstrap_candidate" "bootstrap_stage" "bootstrap_commit" "bootstrap_utf8_octets" "bootstrap_code_at" "text_eq" "text_len" "text_slice" "text_find" "text_rfind" "concat" "length" "append" "at" "lines" "int" "some" "read" "first" "second" "bootstrap_open_read" "bootstrap_read_bytes" "bootstrap_line"
+if (fold native false hit row key or hit (text_eq key op)) (call_cpp (concat "t_" op) args)
+call_cpp (concat "f_" (identifier op)) args
+
+throws_value expr:t > b
+text_eq (text_slice expr 0 7) "(throw "
+
+failure_value expr:t > t
+text_slice expr 7 (- (text_len expr) 1)
+
+return_code expr:t > t
+if (throws_value expr) (concat expr ";") (cat3 "return " expr ";")
+
+match_code parts:*{Term} > t
+let n length parts
+if (or (< n 5) (not (text_eq (raw_at parts (- n 1)) "end"))) fail "bootstrap_match_end"
+let arms fold parts "" body row item
+  if (or (< row 3) (or (eq row n) (eq (mod row 2) 0))) body
+  concat body (cat3 "case V::" (var_cpp (get raw item)) (concat ":" (return_code (expr_at parts row))))
+let count decimal (div (- n 3) 2)
+cat3 "([&](){auto choice=" (expr_at parts 1)
+  (cat3 ";using V=decltype(choice);static_assert(int(V::tide_count)==" count
+   (cat3 ",\"incomplete TIDE match\");switch(choice){" arms "}throw Failure{\"bootstrap_match\",0};}())"))
+
+lower parts:*{Term} > t
+let op raw_at parts 0
+if (text_eq op "tag") (cat3 "R_" (identifier (raw_at parts 1)) (concat "::" (var_cpp (raw_at parts 2))))
+if (text_eq op "match") (match_code parts)
+if (text_eq op "if")
+  (let yes expr_at parts 2
+   let no expr_at parts 3
+   if (and (throws_value yes) (throws_value no))
+     (cat3 "(throw (" (expr_at parts 1) (cat3 "?" (failure_value yes) (cat3 ":" (failure_value no) "))")))
+   cat3 "(" (expr_at parts 1) (cat3 "?" yes (cat3 ":" no ")")))
+if (text_eq op "not") (cat3 "(!" (expr_at parts 1) ")")
+if (or (text_eq op "and") (text_eq op "or"))
+  (cat3 "(" (expr_at parts 1) (cat3 (if (text_eq op "and") "&&" "||") (expr_at parts 2) ")"))
+if (text_eq op "let")
+  (let body expr_at parts 3
+   let prefix cat3 "([&](){const auto& " (var_cpp (raw_at parts 1)) (cat3 "=" (expr_at parts 2) ";return ")
+   if (throws_value body) (cat3 "(throw " prefix (concat (failure_value body) ";}()))"))
+   cat3 prefix body ";}())")
+if (text_eq op "bootstrap_recover")
+  (cat3 "([&](){try{return " (expr_at parts 1) (cat3 ";}catch(const Failure&){return " (expr_at parts 2) ";}}())"))
+if (text_eq op "bootstrap_while")
+  (let state var_cpp (raw_at parts 2)
+   cat3 "([&](){auto " state (cat3 "=" (expr_at parts 1)
+     (cat3 ";while(" (expr_at parts 3) (cat3 "){" state (cat3 "=" (expr_at parts 4) (cat3 ";}return " state ";}())"))))))
+if (text_eq op "map")
+  (let item var_cpp (raw_at parts 3)
+   let seq expr_at parts 2
+   let body expr_at parts 4
+   let step if (throws_value body) (concat body ";") (cat3 "result.push_back(" body ");")
+   if (throws_value seq) seq
+   cat3 "([&](){const auto& seq=" seq
+     (cat3 ";Seq<" (cpp_type (raw_at parts 1)) (cat3 "> result;for(const auto& " item
+       (cat3 ":seq){" step "}return result;}())"))))
+if (text_eq op "fold")
+  (let acc var_cpp (raw_at parts 3)
+   let row_name var_cpp (raw_at parts 4)
+   let item var_cpp (raw_at parts 5)
+   cat3 "([&](){const auto& seq=" (expr_at parts 1)
+     (cat3 ";auto " acc (cat3 "=" (expr_at parts 2)
+      (cat3 ";I " row_name (cat3 "=0;for(const auto& " item
+       (cat3 ":seq){++" row_name (cat3 ";" acc (cat3 "=" (expr_at parts 6) (cat3 ";}return " acc ";}())")))))))))
+if (text_eq op "case")
+  (let empty expr_at parts 2
+   let full expr_at parts 4
+   let both and (throws_value empty) (throws_value full)
+   let none_code if both (return_code (failure_value empty)) (return_code empty)
+   let some_code if both (return_code (failure_value full)) (return_code full)
+   let branch cat3 "([&](){const auto& opt=" (expr_at parts 1) (cat3 ";if(!opt){" none_code
+     (cat3 "}const auto& " (var_cpp (raw_at parts 3)) (cat3 "=*opt;" some_code "}())")))
+   if both (cat3 "(throw " branch ")") branch)
+if (text_eq op "need")
+  (let access get access (need (at parts 1) "bootstrap_operand" 1)
+   if (not (text_eq access ""))
+     (cat3 access "([&](){return Failure{" (cat3 (expr_at parts 2) "," (concat (expr_at parts 3) "};}))")))
+   cat3 "([&](){const auto& opt=" (expr_at parts 1)
+     (cat3 ";if(!opt)throw Failure{" (expr_at parts 2) (cat3 "," (expr_at parts 3) "};return *opt;}())")))
+if (text_eq op "fail") (cat3 "(throw Failure{" (expr_at parts 1) ",0})")
+if (text_eq op "list")
+  (let n need (int (raw_at parts 2)) "bootstrap_count" 0
+   if (not (eq n (- (length parts) 3))) (fail "bootstrap_list_arity")
+   cat3 "Seq<" (cpp_type (raw_at parts 1)) (cat3 ">{" (joined parts 3) "}"))
+if (text_eq op "nil") (cat3 "Opt<" (cpp_type (raw_at parts 1)) ">{}")
+if (text_eq op "get") (cat3 "(" (expr_at parts 2) (concat ").v_" (identifier (raw_at parts 1))))
+if (text_eq op "with") (cat3 "([&](){auto obj=" (expr_at parts 2) (cat3 ";obj." (var_cpp (raw_at parts 1))
+  (cat3 "=" (expr_at parts 3) ";return obj;}())")))
+if (text_eq op "make")
+  (let fields fold parts "" body row term
+    if (or (< row 3) (eq (mod row 2) 0)) body
+    (concat body (cat3 (if (eq row 3) "." ",.") (var_cpp (get raw term)) (concat "=" (expr_at parts row))))
+   cat3 "R_" (identifier (raw_at parts 1)) (cat3 "{" fields "}"))
+op_call op parts
+
+record Vocabulary
+names:*t arities:*i types:*t widths:*i
+
+record Pending
+parts:*{Term} parent:i target:i grouped:b depth:i
+
+record Reader
+current:{Pending} saved:*{Pending} opening:b display:b
+
+record_fields decl:{Decl} gaps:t > *t
+fold (get body decl) (list t 0) fields row line
+  fold (line_tokens line false gaps) fields acc pos field append acc field
+
+symbols decls:*{Decl} gaps:t > {Vocabulary}
+let start make Vocabulary names (list t 0) arities (list i 0) types (list t 0) widths (list i 0)
+fold decls start env row decl
+  let sig line_tokens (get head decl) false gaps
+  let op need (at sig 0) "bootstrap_head" 0
+  if (or (text_eq op "use") (or (text_eq op "example") (or (text_eq op "variant") (text_eq op "rule")))) env
+  if (text_eq op "record")
+    (let name need (at sig 1) "bootstrap_record" 0
+     let width length (record_fields decl gaps)
+     with widths (with types env (append (get types env) name)) (append (get widths env) width))
+  with arities (with names env (append (get names env) op)) (append (get arities env) (- (length sig) 3))
+
+raw_position op:t pos:i > b
+if (text_eq op "tag") true
+if (text_eq op "match") (eq (mod pos 2) 0)
+if (text_eq op "make") (or (eq pos 1) (eq (mod pos 2) 0))
+if (text_eq op "list") (< pos 3)
+if (text_eq op "map") (or (eq pos 1) (eq pos 3))
+if (text_eq op "fold") (and (> pos 2) (< pos 6))
+if (text_eq op "case") (eq pos 3)
+and (eq pos 1) (or (text_eq op "let") (or (text_eq op "nil") (or (text_eq op "get") (text_eq op "with"))))
+
+display_raw op:t pos:i > b
+if (text_eq op "catch") (or (eq pos 1) (eq pos 3))
+and (text_eq op "scan") (eq pos 1)
+
+display_call parts:*{Term} > t
+let op raw_at parts 0
+let text fold parts "(" acc row term
+  let raw get raw term
+  let value if (and (eq row 3) (text_eq op "list"))
+    (let n text_len raw
+     let offset fold (indices n) 0 skip pos unused
+       if (and (eq skip (- pos 1)) (and (< pos n) (text_eq (text_slice raw skip pos) "0"))) pos skip
+     text_slice raw offset n)
+    raw
+  concat acc (concat (if (eq row 1) "" " ") value)
+concat text ")"
+
+operand token:t display:b > {Term}
+if display (make Term raw token cpp "" stable false access "") (atom token)
+
+push_part frame:{Pending} term:{Term} > {Pending}
+with parts frame (append (get parts frame) term)
+
+lower_child parts:*{Term} parent:*{Term} > t
+if (not (and (eq (length parent) 6) (text_eq (raw_at parts 0) "append"))) (lower parts)
+if (not (and (text_eq (raw_at parent 0) "fold") (text_eq (raw_at parts 1) (raw_at parent 3)))) (lower parts)
+cat3 "([&](){auto item=" (expr_at parts 2)
+  (cat3 ";return t_append(std::move(" (expr_at parts 1) "),std::move(item));}())")
+
+close_one reading:{Reader} > {Reader}
+let frame get current reading
+let previous need (at (get saved reading) (get parent frame)) "bootstrap_unmatched_close" 0
+let parts get parts frame
+let node if (get display reading) (make Term raw (display_call parts) cpp "" stable false access "")
+  (let op raw_at parts 0
+   let stable if (or (text_eq op "first") (text_eq op "second")) (get stable (need (at parts 1) "bootstrap_pair" 0))
+     (and (text_eq op "get") (get stable (need (at parts 2) "bootstrap_receiver" 0)))
+   let indexed and (text_eq op "at") (get stable (need (at parts 1) "bootstrap_sequence" 0))
+   let prefix if indexed (cat3 "t_indexed(" (expr_at parts 1) (cat3 "," (expr_at parts 2) ",")) ""
+   make Term raw "" cpp (lower_child parts (get parts previous)) stable stable access prefix)
+with current reading (push_part previous node)
+
+reduce_frames reading:{Reader} > {Reader}
+fold (indices (get depth (get current reading))) reading acc row skip
+  let frame get current acc
+  if (and (not (get grouped frame)) (and (eq (length (get parts frame)) (get target frame)) (not (< (get parent frame) 0))))
+    (close_one acc) acc
+
+bootstrap_arity token:t > ?i
+if (text_eq token "bootstrap_pg_send") (some 4)
+if (white (cat3 "|" token "|") "|bootstrap_pg_open|bootstrap_pg_step|bootstrap_pg_cols|bootstrap_pg_count|bootstrap_pg_error|") (some 1)
+if (white (cat3 "|" token "|") "|bootstrap_pg_oid|bootstrap_pg_name|bootstrap_pg_size|bootstrap_pg_value|") (some 2)
+if (text_eq token "bootstrap_replace") (some 2)
+if (text_eq token "bootstrap_https") (some 5)
+if (text_eq (text_slice token 0 14) "bootstrap_sql_") (sqlite_abi_arity (text_slice token 14 (text_len token)))
+if (not (text_eq (text_slice token 0 10) "bootstrap_")) (nil i)
+if (white (cat3 "|" token "|") "|bootstrap_candidate|bootstrap_commit|bootstrap_octets_utf8|bootstrap_utf8_octets|bootstrap_character|bootstrap_open_read|") (some 1)
+if (or (text_eq token "bootstrap_line") (text_eq token "bootstrap_while")) (some 4)
+if (text_eq token "bootstrap_stage") (some 3)
+if (white (cat3 "|" token "|") "|bootstrap_recover|bootstrap_project|bootstrap_code_at|bootstrap_bit_and|bootstrap_bit_xor|bootstrap_rotr32|bootstrap_read_bytes|") (some 2) (nil i)
+
+add_token reading:{Reader} token:t env:{Vocabulary} > {Reader}
+let frame get current reading
+let parts get parts frame
+let pos length parts
+let opening get opening reading
+if (text_eq token ")")
+  (if (or opening (or (not (get grouped frame)) (not (eq pos (get target frame))))) (fail "bootstrap_close_arity")
+   (reduce_frames (close_one reading)))
+if (not (< pos (get target frame))) fail "bootstrap_extra_operand"
+let parent_op case (at parts 0) "" term (get raw term)
+let display get display reading
+let raw or (raw_position parent_op pos) (and display (display_raw parent_op pos))
+if (text_eq token "(")
+  (if (or opening raw) (fail "bootstrap_unexpected_group") (with opening reading true))
+if raw
+  (let target if (and (text_eq parent_op "list") (eq pos 2))
+     (+ 3 (need (int token) "bootstrap_count" 0))
+     (if (and (text_eq parent_op "make") (eq pos 1))
+       (+ 2 (* 2 (need (lookup_size (get types env) (get widths env) token) "bootstrap_record" 0)))
+       (if (and (text_eq parent_op "match") (not (text_eq token "end"))) (+ pos 3) (get target frame)))
+   if (or (< target (+ pos 1)) (> target 4096)) (fail "bootstrap_arity")
+   reduce_frames (with current reading (push_part (with target frame target) (operand token display))))
+let private_size if display (nil i) (bootstrap_arity token)
+let arity case private_size (if (text_eq token "list") (some 2) (if (text_eq token "make") (some 1)
+  (case (intrinsic token) (case (if display (display_arity token) (nil i)) (lookup_size (get names env) (get arities env) token) ar (some ar)) value (some value)))) size (some size)
+case arity
+  (if opening (fail "bootstrap_group_atom")
+   (reduce_frames (with current reading (push_part frame (operand token display)))))
+  count
+  let parents get saved reading
+  let depth + 1 (get depth frame)
+  if (> depth 48) fail "bootstrap_depth"
+  let child make Pending parts (list {Term} 1 (operand token display)) parent (length parents) target (+ count 1) grouped opening depth depth
+  reduce_frames (make Reader current child saved (append parents frame) opening false display display)
+
+parse_expression body:*t env:{Vocabulary} display:b gaps:t > t
+let root make Pending parts (list {Term} 0) parent -1 target 1 grouped false depth 0
+let start make Reader current root saved (list {Pending} 0) opening false display display
+let parsed fold body start cursor row line fold (line_tokens line display gaps) cursor acc idx token add_token acc token env
+let frame get current parsed
+if (not (and (not (get opening parsed)) (and (eq (get parent frame) -1) (eq (length (get parts frame)) 1)))) fail "bootstrap_missing_operand"
+if display (raw_at (get parts frame) 0) (expr_at (get parts frame) 0)
+
+expression body:*t env:{Vocabulary} > t
+parse_expression body env false " \t\r"
+
+finish cursor:{Blocks} > {Blocks}
+if (text_eq (get head cursor) "") cursor
+make Blocks done (append (get done cursor) (make Decl head (get head cursor) body (get body cursor))) head "" body (list t 0)
+
+declarations source:t gaps:t > *{Decl}
+let start make Blocks done (list {Decl} 0) head "" body (list t 0)
+let size text_len source
+let result fold (indices (div (+ size 2047) 2048)) (pair 0 start) prior page unused
+  let from first prior
+  if (eq from size) prior
+  let stop if (> (- size from) 2048)
+    (case (text_find source "\n" (+ from 2047)) size newline (+ newline 1)) size
+  let blocks fold (lines (text_slice source from stop)) (second prior) cursor row line
+    if (blank_source_line line gaps) (finish cursor)
+    (if (text_eq (get head cursor) "") (with head cursor line) (with body cursor (append (get body cursor) line)))
+  pair stop blocks
+get done (finish (second result))
+
+binding text:t parameter:b > t
+let split need (text_find text ":" 0) "bootstrap_binding" 0
+let typ text_slice text (+ split 1) (text_len text)
+let by_ref and parameter (not (or (text_eq typ "i") (text_eq typ "b")))
+cat3 (cpp_type typ) (if by_ref " const& " " ") (var_cpp (text_slice text 0 split))
+
+parameter_type sig:*t pos:i > t
+let field need (at sig pos) "bootstrap_parameter" 0
+let split need (text_find field ":" 0) "bootstrap_binding" 0
+text_slice field (+ split 1) (text_len field)
+
+emit_decl output:{Product} decl:{Decl} env:{Vocabulary} target:t > {Product}
+let sig tokens (get head decl)
+let name need (at sig 0) "bootstrap_header" 0
+let body get body decl
+if (or (text_eq name "example") (text_eq name "use")) output
+if (text_eq name "variant")
+  (let name_type identifier (need (at sig 1) "bootstrap_variant" 0)
+   let labels fold (record_fields decl " \t\r") "" acc pos label concat acc (concat (var_cpp label) ",")
+   with records output (concat (get records output) (cat3 "enum class R_" name_type (cat3 "{" labels "tide_count};\n"))))
+if (text_eq name "record")
+  (let fields fold (record_fields decl " \t\r") "" acc pos field concat acc (concat (binding field false) ";")
+   with records output (concat (get records output)
+    (cat3 "struct R_" (identifier (need (at sig 1) "bootstrap_record" 0)) (cat3 "{" fields "};\n"))))
+let n length sig
+if (not (text_eq (need (at sig (- n 2)) "bootstrap_signature" 0) ">")) fail "bootstrap_signature"
+let result cpp_type (need (at sig (- n 1)) "bootstrap_result" 0)
+let params fold sig "" acc pos field
+  if (or (eq pos 1) (> pos (- n 2))) acc (concat acc (concat (if (eq pos 2) "" ",") (binding field true)))
+let head cat3 result " f_" (concat (identifier name) (cat3 "(" params ")"))
+let definition cat3 head "{return " (concat (expression body env) ";}\n")
+let entry if (not (text_eq name target)) (get entry output)
+  (if (not (text_eq (get entry output) "")) (fail "bootstrap_duplicate_entry")
+   let fn concat "f_" (identifier name)
+   if (eq n 3) (call_cpp fn "")
+   (let first_type parameter_type sig 1
+    if (not (text_eq first_type "r")) (fail "bootstrap_entry_signature")
+    if (eq n 4) (call_cpp fn "input")
+    (if (and (eq n 5) (text_eq (parameter_type sig 2) "t"))
+       (call_cpp fn "input,entry") (fail "bootstrap_entry_signature"))))
+make Product records (get records output) forwards (concat (get forwards output) (concat head ";\n")) functions (concat (get functions output) definition) entry entry
+
+unicode_runtime > t
+let rows list t 25
+  "Opt<I> t_text_rfind(const Text&s,const Text&n,I end){size_t limit=std::clamp<I>(end,0,s.size());if(n.size()>limit)return {};auto i=s.rfind(n,limit-n.size());if(i==Text::npos)return {};return I(i);}"
+  "static_assert(sizeof(wchar_t)==sizeof(char32_t));"
+  "size_t transcode(const char* from,const char* to,const char* source,size_t input_size,char* out,size_t capacity){"
+  "  iconv_t codec=iconv_open(to,from);if(codec==(iconv_t)-1)throw std::runtime_error(\"E_ENCODING\");"
+  "  char* in=const_cast<char*>(source);size_t left=capacity;"
+  "  bool ok=iconv(codec,&in,&input_size,&out,&left)!=(size_t)-1;iconv_close(codec);"
+  "  if(!ok||input_size)throw std::range_error(\"E_UTF8\");return capacity-left;"
+  "}"
+  "Text decode(const std::string& bytes){"
+  "  Text value(bytes.size(),0);size_t n=transcode(\"UTF-8\",\"WCHAR_T\",bytes.data(),bytes.size(),reinterpret_cast<char*>(value.data()),value.size()*sizeof(char32_t));"
+  "  value.resize(n/sizeof(char32_t));"
+  "  if(std::any_of(value.begin(),value.end(),[](char32_t c){return c>0x10ffff||(c>=0xd800&&c<=0xdfff);}))throw std::range_error(\"E_UTF8\");"
+  "  return value;"
+  "}"
+  "std::string encode(const Text& value){"
+  "  std::string bytes(value.size()*4,0);size_t n=transcode(\"WCHAR_T\",\"UTF-8\",reinterpret_cast<const char*>(value.data()),value.size()*sizeof(char32_t),bytes.data(),bytes.size());"
+  "  bytes.resize(n);return bytes;"
+  "}"
+  "template<size_t N> struct LiteralText {"
+  "  char32_t units[N];"
+  "  constexpr LiteralText(const char32_t (&s)[N]){std::copy_n(s,N,units);}"
+  "};"
+  "template<LiteralText S> const Text& literal(){static const Text value(S.units,std::size(S.units)-1);return value;}"
+  "std::ostream& operator<<(std::ostream& os,const Text& s){return os<<encode(s);}"
+  "struct Failure{Text reason;I line;Failure(Text r,I l):reason(r),line(l){} Failure(const char*r,I l):Failure(decode(r),l){}};"
+fold rows "" code row line concat code (concat line "\n")
+
+
+sequence_runtime > t
+let rows list t 54
+  "template<class T,bool P=std::is_class_v<T>> class Seq;"
+  "template<class T> class Seq<T,false> {"
+  "  using Buffer=std::vector<T>;"
+  "  std::shared_ptr<Buffer> storage;"
+  "  const Buffer& view() const {static const Buffer empty;return storage?*storage:empty;}"
+  "public:"
+  "  Seq()=default;"
+  "  Seq(std::initializer_list<T> values):storage(std::make_shared<Buffer>(values)){}"
+  "  size_t size() const {return storage?storage->size():0;}"
+  "  auto begin() const {return view().cbegin();}"
+  "  auto end() const {return view().cend();}"
+  "  typename Buffer::const_reference operator[](size_t i) const {return view()[i];}"
+  "  void push_back(T v){"
+  "    if(!storage)storage=std::make_shared<Buffer>();"
+  "    else if(storage.use_count()!=1)storage=std::make_shared<Buffer>(*storage);"
+  "    storage->push_back(std::move(v));"
+  "  }"
+  "};"
+  "template<class T> class Seq<T,true> {"
+  "    using Buffer=std::vector<T>;"
+  "    using Pages=std::vector<std::shared_ptr<const Buffer>>;"
+  "    static constexpr size_t width=16;"
+  "    std::shared_ptr<Pages> full;"
+  "    std::shared_ptr<Buffer> tail;"
+  "    struct Iterator {"
+  "        const Seq* seq;size_t index;"
+  "        bool operator!=(const Iterator& other) const{return index!=other.index;}"
+  "        Iterator& operator++(){++index;return *this;}"
+  "        typename Buffer::const_reference operator*() const{return (*seq)[index];}"
+  "    };"
+  "public:"
+  "    Seq()=default;"
+  "    Seq(std::initializer_list<T> values){"
+  "        if(values.size()<=width)tail=std::make_shared<Buffer>(values);"
+  "        else for(const auto& v:values)push_back(v);"
+  "    }"
+  "    size_t size() const{return (full?full->size()*width:0)+(tail?tail->size():0);}"
+  "    Iterator begin() const{return {this,0};}"
+  "    Iterator end() const{return {this,size()};}"
+  "    typename Buffer::const_reference operator[](size_t i) const{"
+  "        if(!full)return (*tail)[i];"
+  "        auto page=i/width;"
+  "        return page==full->size()?(*tail)[i%width]:(*(*full)[page])[i%width];"
+  "    }"
+  "    void push_back(T v){"
+  "        if(!tail)tail=std::make_shared<Buffer>();"
+  "        else if(tail->size()==width){"
+  "            if(!full)full=std::make_shared<Pages>();"
+  "            else if(full.use_count()!=1)full=std::make_shared<Pages>(*full);"
+  "            full->push_back(tail);tail=std::make_shared<Buffer>();"
+  "        }else if(tail.use_count()!=1)tail=std::make_shared<Buffer>(*tail);"
+  "        tail->push_back(std::move(v));"
+  "    }"
+  "};"
+fold rows "" code row line concat code (concat line "\n")
+
+arithmetic_runtime > t
+let rows list t 6
+  "[[gnu::cold,noreturn]] void arithmetic_error(const char* reason){throw Failure{reason,0};}"
+  "inline I add(I a,I b){I c;if(__builtin_add_overflow(a,b,&c))arithmetic_error(\"E_OVERFLOW\");return c;}"
+  "inline I sub(I a,I b){I c;if(__builtin_sub_overflow(a,b,&c))arithmetic_error(\"E_OVERFLOW\");return c;}"
+  "inline I mul(I a,I b){I c;if(__builtin_mul_overflow(a,b,&c))arithmetic_error(\"E_OVERFLOW\");return c;}"
+  "inline I quot(I a,I b){if(!b)arithmetic_error(\"division_by_zero\");if(a==INT64_MIN&&b==-1)arithmetic_error(\"E_OVERFLOW\");return a/b;}"
+  "inline I remd(I a,I b){if(!b)arithmetic_error(\"division_by_zero\");return b==-1?0:a%b;}"
+fold rows "" code row line concat code (concat line "\n")
+
+prelude > t
+concat "#include <algorithm>\n#include <charconv>\n#include <functional>\n#include <bit>\n#include <iconv.h>\n#include <stdexcept>\n#include <cstdint>\n#include <iostream>\n#include <iterator>\n#include <optional>\n#include <string>\n#include <vector>\n#include <type_traits>\n#include <memory>\n#include <limits>\n#include <sys/resource.h>\n#include <fcntl.h>\n#include <unistd.h>\n#include <sys/stat.h>\n#include <string_view>\n"
+ (concat (concat "using I=std::int64_t;using Text=std::u32string;template<class T>using Opt=std::optional<T>;\n" (concat sequence_runtime unicode_runtime))
+ (concat "template<class A,class B>auto t_first(const std::pair<A,B>&p){return p.first;}template<class A,class B>auto t_second(const std::pair<A,B>&p){return p.second;}template<class T>auto t_some(T x){return Opt<T>(x);}template<class T>Opt<T> t_at(const Seq<T>&xs,I i){if(i<0||size_t(i)>=xs.size())return {};return xs[i];}template<class Missing>[[gnu::cold,noreturn]] void missing_item(Missing make){throw make();}template<class T,class Missing>decltype(auto) t_indexed(const Seq<T>&xs,I i,Missing missing){if(i<0||size_t(i)>=xs.size())missing_item(missing);return xs[size_t(i)];}template<class T>Seq<T> t_append(Seq<T> xs,T v){if(xs.size()>=4096)throw Failure{\"list_limit\",0};xs.push_back(std::move(v));return xs;}template<class T>I t_length(const Seq<T>&x){return I(x.size());}\n"
+ (concat "I t_text_len(const Text&s){return I(s.size());}Text t_read(const Text&s){return s;}Opt<Text> t_bootstrap_octets_utf8(const Text&s){try{return decode(std::string(s.begin(),s.end()));}catch(const std::range_error&){return {};}}Text t_bootstrap_utf8_octets(const Text&s){auto bytes=encode(s);Text out;out.reserve(bytes.size());for(unsigned char b:bytes)out+=b;return out;}Text t_bootstrap_character(I n){if(n<0||n>0x10ffff||(n>=0xd800&&n<=0xdfff))throw Failure{\"E_UTF8\",0};return Text(1,char32_t(n));}I t_bootstrap_code_at(const Text&s,I i){if(i<0||size_t(i)>=s.size())throw Failure{\"text_index\",0};return s[size_t(i)];}Text t_concat(const Text&a,const Text&b){if(a.size()+b.size()>4194304)throw Failure{\"text_limit\",0};return a+b;}bool t_text_eq(const Text&a,const Text&b){return a==b;}Text t_text_slice(const Text&s,I a,I b){a=std::clamp<I>(a,0,s.size());b=std::clamp<I>(b,a,s.size());return s.substr(a,b-a);}Opt<I> t_text_find(const Text&s,const Text&n,I a){auto i=s.find(n,std::clamp<I>(a,0,s.size()));if(i==Text::npos)return {};return I(i);}\n"
+ (concat "Opt<I> t_int(const Text&text){if(std::any_of(text.begin(),text.end(),[](char32_t c){return c>127;}))return {};std::string s(text.begin(),text.end());I n;auto [p,e]=std::from_chars(s.data(),s.data()+s.size(),n);if(e!=std::errc{}||p!=s.data()+s.size())return {};return n;}Seq<Text> t_lines(const Text&s){Seq<Text>x;for(size_t p=0;p<s.size();){auto q=s.find('\\n',p);auto n=q==Text::npos?s.size():q;auto end=(q!=Text::npos&&n>p&&s[n-1]=='\\r')?n-1:n;if(x.size()>=4096)throw Failure{\"line_limit\",0};x.push_back(s.substr(p,end-p));p=q==Text::npos?s.size():q+1;}return x;}\n"
+ (concat arithmetic_runtime
+ "bool less_i(I a,I b){return a<b;}bool more_i(I a,I b){return a>b;}bool equal_i(I a,I b){return a==b;}\n")))))
+
+grant_primitives > t
+let rows list t 55
+  "// Positional reads keep nested folds and snapshot reads independent."
+  "std::pair<I,std::pair<I,Text>> t_bootstrap_line(I fd,const Text& fixture,I offset,I limit){"
+  "    struct Window { I fd=-999, start=0, used=0; char data[65536]; std::string example; };"
+  "    static thread_local Window w;"
+  "    if(w.fd!=fd || offset==0){w.fd=fd;w.used=0;if(fd<0)w.example=encode(fixture);}"
+  "    std::string carry;"
+  "    I consumed=0;"
+  "    for(;;){"
+  "        I pos=offset+consumed, left=limit-consumed;"
+  "        std::string_view view;"
+  "        if(fd<0){view=std::string_view(w.example).substr(size_t(pos));}"
+  "        else {"
+  "            if(!w.used || pos<w.start || pos>=w.start+w.used){"
+  "                ssize_t n;do{n=pread(int(fd),w.data,std::min<I>(sizeof w.data,left+1),pos);}while(n<0 && errno==EINTR);"
+  "                if(n<0)return {-1,{consumed,{}}};"
+  "                w.start=pos;w.used=n;"
+  "            }"
+  "            view={w.data+(pos-w.start),size_t(w.used-(pos-w.start))};"
+  "        }"
+  "        view=view.substr(0,size_t(left+1));"
+  "        auto lf=view.find('\\n');bool ended=lf!=view.npos;"
+  "        I count=ended?I(lf)+1:I(view.size());"
+  "        if(count>left)return {-2,{limit,{}}};"
+  "        if(consumed+count>131072)return {-4,{consumed+count,{}}};"
+  "        consumed+=count;"
+  "        if(!ended && !view.empty()){carry.append(view);continue;}"
+  "        if(!consumed)return {0,{0,{}}};"
+  "        auto body=view.substr(0,ended?lf:0);"
+  "        if(!carry.empty()){carry.append(body);body=carry;}"
+  "        if(ended && !body.empty() && body.back()=='\\r')body.remove_suffix(1);"
+  "        try{"
+  "            if(std::all_of(body.begin(),body.end(),[](unsigned char c){return c<128;}))"
+  "                return {1,{consumed,Text(body.begin(),body.end())}};"
+  "            return {1,{consumed,decode(std::string(body))}};"
+  "        }catch(const std::range_error&){return {-3,{consumed,{}}};}"
+  "    }"
+  "}"
+  "I t_bootstrap_open_read(const Text& path){"
+  "    auto name=encode(path);if(name.find(char(0))!=name.npos)return -1;"
+  "    int fd=open(name.c_str(),O_RDONLY|O_NONBLOCK|O_CLOEXEC);if(fd<0)return -1;"
+  "    struct stat st;if(fstat(fd,&st)){close(fd);return -1;}"
+  "    if(!S_ISREG(st.st_mode)){close(fd);return -2;}return fd;"
+  "}"
+  "std::pair<I,Text> t_bootstrap_read_bytes(I fd,I limit){"
+  "    char block[8192];std::string bytes;"
+  "    for(;;){"
+  "        auto n=read(int(fd),block,std::min<I>(sizeof block,limit+1-I(bytes.size())));"
+  "        if(n<0&&errno==EINTR)continue;"
+  "        if(n<0)return {-1,{}};"
+  "        if(!n)break;"
+  "        if(I(bytes.size())+n>limit)return {-2,{}};"
+  "        bytes.append(block,n);"
+  "    }"
+  "    Text raw;raw.reserve(bytes.size());for(unsigned char byte:bytes)raw+=byte;return {I(bytes.size()),std::move(raw)};"
+  "}"
+fold rows "" code row line concat code (concat line "\n")
+
+file_input_setup > t
+let rows list t 8
+  "if(argc==4&&std::string_view(argv[1])==\"--read-file\"){"
+  "  int fd=open(argv[2],O_RDONLY|O_NONBLOCK|O_CLOEXEC);if(fd<0)throw Failure{\"open_failed\",0};"
+  "  struct stat metadata;if(fstat(fd,&metadata))throw Failure{\"stat_failed\",0};"
+  "  if(!S_ISREG(metadata.st_mode))throw Failure{\"regular_file_required\",0};"
+  "  if(fd!=STDIN_FILENO){if(dup2(fd,STDIN_FILENO)<0)throw Failure{\"open_failed\",0};close(fd);}"
+  "  entry=decode(argv[3]);"
+  "}else if(argc<=2){entry=decode(argc==2?argv[1]:\"main\");}"
+  "else throw Failure{\"bootstrap_arguments\",0};"
+fold rows "" code row line concat code (concat line "\n")
+
+sibling_io_code > t
+let rows list t 72
+  "#include <cstring>"
+  "struct InputFD {"
+  "    int fd;"
+  "    explicit InputFD(int value):fd(value){}"
+  "    ~InputFD(){if(fd>=0)close(fd);}"
+  "    InputFD(const InputFD&)=delete;"
+  "};"
+  "struct SourcePath {"
+  "    std::string folder,name;"
+  "    explicit SourcePath(const std::string& path){"
+  "        auto cut=path.rfind('/');"
+  "        folder=cut==path.npos?\".\":cut==0?\"/\":path.substr(0,cut);"
+  "        name=cut==path.npos?path:path.substr(cut+1);"
+  "    }"
+  "    std::string sibling(const std::string& key) const{return (folder==\"/\"?folder:folder+\"/\")+key;}"
+  "};"
+  "template<class Error>"
+  "std::pair<Text,I> read_unit_at(int dir,const std::string& name,bool nofollow,Error error){"
+  "    InputFD input(openat(dir,name.c_str(),O_RDONLY|O_NONBLOCK|O_CLOEXEC|(nofollow?O_NOFOLLOW:0)));"
+  "    if(input.fd<0)throw error(errno);"
+  "    struct stat st;if(fstat(input.fd,&st))throw error(errno);"
+  "    if(!S_ISREG(st.st_mode))throw Failure{\"regular_file_required\",0};"
+  "    char block[8192];std::string bytes;"
+  "    for(;;){"
+  "        auto n=read(input.fd,block,sizeof block);if(n<0&&errno==EINTR)continue;"
+  "        if(n<0)throw error(errno);"
+  "        if(!n)break;"
+  "        if(bytes.size()+size_t(n)>131072)throw Failure{\"input_limit\",0};"
+  "        bytes.append(block,n);"
+  "    }"
+  "    return {decode(bytes),I(bytes.size())};"
+  "}"
+  "template<class Error>"
+  "std::pair<Text,I> read_import_at(int dir,const std::string& name,Error error){"
+  "    std::unique_ptr<InputFD> owned;"
+  "    size_t start=0;"
+  "    for(;;){"
+  "        auto cut=name.find('/',start);"
+  "        std::string part=name.substr(start,cut==name.npos?name.npos:cut-start);"
+  "        if(part.empty()||part==\".\"||part==\"..\")throw Failure{\"invalid_sibling_request\",0};"
+  "        if(cut==name.npos)return read_unit_at(dir,part,true,error);"
+  "        auto next=std::make_unique<InputFD>(openat(dir,part.c_str(),O_PATH|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC));"
+  "        if(next->fd<0)throw error(errno);"
+  "        dir=next->fd;owned=std::move(next);"
+  "        start=cut+1;"
+  "    }"
+  "}"
+  "template<class Begin,class Supply,class Escape,class Report>"
+  "auto load_project(int dir,const SourcePath& path,const Text& entry,const std::pair<Text,I>* overlay,const Text& unit,Begin begin,Supply supply,Escape escape,Report report){"
+  "    auto load=[&](const std::string& name,bool sibling){"
+  "        auto error=[&](int code){return Failure{report(entry,decode(path.sibling(name)),code,decode(strerror(code))),0};};return sibling?read_import_at(dir,name,error):read_unit_at(dir,name,false,error);"
+  "    };"
+  "    auto wire=[&](const Text& s){Text out;if(entry.empty()||(entry[0]!=':'&&entry[0]!='#'))return out;"
+  "        out.reserve(s.size()+2);out+=U'\"';"
+  "        for(char32_t c:s){if(c>=32&&c<127&&c!='\"'&&c!=92)out+=c;else out+=escape(I(c));}"
+  "        out+=U'\"';return out;};"
+  "    auto root=(overlay&&unit==decode(path.name))?*overlay:load(path.name.empty()?\".\":path.name,false);"
+  "    auto state=begin(root.first,wire(root.first),root.second,decode(path.name),entry);"
+  "    for(unsigned i=0;!state.v_next_name.empty();++i){"
+  "        const auto& key=state.v_next_name;"
+  "        if(i>=64||key.find(char32_t(0))!=Text::npos)throw Failure{\"invalid_sibling_request\",0};"
+  "        auto data=overlay&&key==unit?*overlay:load(encode(key),true);"
+  "        state=supply(state,data.first,wire(data.first),data.second);"
+  "    }"
+  "    return state;"
+  "}"
+  "template<class Begin,class Supply,class Finish,class Escape,class Report>"
+  "Text read_siblings(const std::string& path,const Text& entry,const Text& call,const Text& inputs,Begin begin,Supply supply,Finish finish,Escape escape,Report report){"
+  "    SourcePath location(path);InputFD dir(open(location.folder.c_str(),O_PATH|O_DIRECTORY|O_CLOEXEC));"
+  "    if(dir.fd<0){int code=errno;throw Failure{report(entry,decode(path),code,decode(strerror(code))),0};}"
+  "    return finish(load_project(dir.fd,location,entry,nullptr,Text{},begin,supply,escape,report),entry,call,inputs);"
+  "}"
+fold rows "" code row line concat code (concat line "\n")
+
+transaction_grant_code > t
+let rows list t 68
+  "#include <sys/file.h>"
+  "#include <sys/random.h>"
+  "struct R_ProjectGrant {"
+  "    SourcePath target;"
+  "    Text entry;"
+  "    std::string candidate;"
+  "    InputFD dir;"
+  "    bool writable;"
+  "    Failure error(const std::string& where,int code) const{"
+  "        return {f_project_error(entry,decode(where),code,decode(strerror(code))),0};"
+  "    }"
+  "    R_ProjectGrant(const std::string& path,const Text& file,const std::string& input,bool write)"
+  "        :target(path),entry(file),candidate(input),dir(open(target.folder.c_str(),O_RDONLY|O_DIRECTORY|O_CLOEXEC)),writable(write){"
+  "        if(dir.fd<0)throw error(path,errno);"
+  "        while(flock(dir.fd,LOCK_EX)<0){if(errno!=EINTR)throw error(target.folder,errno);}"
+  "    }"
+  "};"
+  "R_ProjectFiles t_bootstrap_project(const R_ProjectGrant& io,const Opt<std::pair<Text,Text>>& root){"
+  "    std::optional<std::pair<Text,I>> overlay;"
+  "    if(root){"
+  "        auto size=encode(root->second).size();if(size>131072)throw Failure{\"input_limit\",0};"
+  "        overlay.emplace(root->second,I(size));"
+  "    }"
+  "    return load_project(io.dir.fd,io.target,io.entry,overlay?&*overlay:nullptr,root?root->first:Text{},f_project_begin,f_project_supply,f_project_escape,f_project_error);"
+  "}"
+  "Text t_bootstrap_candidate(const R_ProjectGrant& io){"
+  "    return read_unit_at(AT_FDCWD,io.candidate,false,[&](int code){return io.error(io.candidate,code);}).first;"
+  "}"
+  "struct StagedFile {"
+  "    const R_ProjectGrant& io;"
+  "    std::string name,target;"
+  "    StagedFile(const R_ProjectGrant& grant,std::string file):io(grant),target(std::move(file)){}"
+  "    ~StagedFile(){if(!name.empty())unlinkat(io.dir.fd,name.c_str(),0);}"
+  "};"
+  "std::unique_ptr<StagedFile> t_bootstrap_stage(const R_ProjectGrant& io,const R_SourceUnit& unit,const Text& content){"
+  "    auto target=encode(unit.v_name);if(target.empty()||target==\".\"||target==\"..\"||target.find('/')!=target.npos||target.find(char(0))!=target.npos)throw Failure{\"invalid_sibling_request\",0};"
+  "    auto error=[&](int code){return io.error(io.target.sibling(target),code);};"
+  "    if(!io.writable)throw error(EACCES);"
+  "    struct stat st;if(fstatat(io.dir.fd,target.c_str(),&st,AT_SYMLINK_NOFOLLOW)<0)throw error(errno);"
+  "    if(!S_ISREG(st.st_mode))throw Failure{\"regular_file_required\",0};"
+  "    auto staged=std::make_unique<StagedFile>(io,target);"
+  "    std::string name;int fd;"
+  "    do{"
+  "        uint64_t nonce;ssize_t n;"
+  "        do{n=getrandom(&nonce,sizeof nonce,0);}while(n<0&&errno==EINTR);"
+  "        if(n!=sizeof nonce)throw error(n<0?errno:EIO);"
+  "        name=\".tide-edit.\"+std::to_string(nonce);"
+  "        fd=openat(io.dir.fd,name.c_str(),O_WRONLY|O_CREAT|O_EXCL|O_CLOEXEC,0600);"
+  "    }while(fd<0&&errno==EEXIST);"
+  "    if(fd<0)throw error(errno);"
+  "    InputFD output(fd);staged->name=std::move(name);"
+  "    auto bytes=encode(content);"
+  "    for(size_t at=0;at<bytes.size();){"
+  "        auto n=write(fd,bytes.data()+at,bytes.size()-at);"
+  "        if(n<0&&errno==EINTR)continue;"
+  "        if(n<=0)throw error(n<0?errno:EIO);"
+  "        at+=size_t(n);"
+  "    }"
+  "    if(fchmod(fd,st.st_mode&07777)<0||fsync(fd)<0)throw error(errno);"
+  "    return staged;"
+  "}"
+  "bool t_bootstrap_commit(const std::unique_ptr<StagedFile>& staged){"
+  "    const auto& io=staged->io;int dir=io.dir.fd;"
+  "    if(renameat(dir,staged->name.c_str(),dir,staged->target.c_str())<0)throw io.error(io.target.sibling(staged->target),errno);"
+  "    staged->name.clear();"
+  "    if(fsync(dir)<0)throw io.error(io.target.folder,errno);"
+  "    return true;"
+  "}"
+fold rows "" code row line concat code (concat line "\n")
+
+sibling_branch prefix:t > t
+let symbol concat "f_" (identifier prefix)
+let args fold (list t 5 "_begin" "_supply" "_finish" "_escape" "_error") "" calls row suffix
+  cat3 calls "," (concat symbol suffix)
+cat3 "if((argc==4||argc==6)&&std::string_view(argv[1])==\"--read-project\"){auto output=read_siblings(argv[2],decode(argv[3]),decode(argc==6?argv[4]:\"\"),decode(argc==6?argv[5]:\"{}\")" args ");std::cout<<output<<std::flush;return std::cout?0:74;}"
+
+test_entry_code > t
+let rows list t 50
+  "#include <sys/auxv.h>"
+  "#include <sys/utsname.h>"
+  "int test_suite(const char* filename,const std::string& catalog){"
+  "    std::unique_ptr<char,decltype(&std::free)> resolved(realpath(filename,nullptr),&std::free);"
+  "    if(!resolved)return 75;"
+  "    std::string path(resolved.get());"
+  "    try{"
+  "        auto source=[](const std::string& p){return read_unit_at(AT_FDCWD,p,false,[](int){return Failure{\"read_failed\",0};}).first;};"
+  "        Opt<Text> pin;"
+  "        for(auto dir=SourcePath(path).folder;;dir=SourcePath(dir).folder){"
+  "            auto lock=(dir==\"/\"?dir:dir+\"/\")+\"tide.lock\";"
+  "            struct stat st;"
+  "            if(lstat(lock.c_str(),&st)==0){pin=source(lock);break;}"
+  "            if(errno!=ENOENT)return 75;"
+  "            if(dir==\"/\")break;"
+  "        }"
+  "        if(!f_test_release_matches(source(catalog),pin))return 75;"
+  "    }catch(const Failure&){return 75;}catch(const std::exception&){return 75;}"
+  "    Text file;try{file=decode(filename);}catch(const std::range_error&){return 75;}"
+  "    try{"
+  "        auto output=read_siblings(path,U\"?\"+file,Text{},Text(U\"{}\"),f_project_begin,f_project_supply,f_project_finish,f_project_escape,f_project_error);"
+  "        std::cout<<output<<std::flush;"
+  "        if(std::cout)return 0;"
+  "        std::cerr<<\"Could not write TIDE output.\\n\";return 1;"
+  "    }catch(const Failure& e){"
+  "        if(e.reason.starts_with(U\"{\\\"file\\\":\"))std::cerr<<e.reason<<'\\n';"
+  "        else if(e.reason==U\"E_UTF8\" || e.reason==U\"input_limit\" || e.reason==U\"regular_file_required\")std::cerr<<f_check_schema(file,e.reason)<<'\\n';"
+  "        else return 3;"
+  "        return 1;"
+  "    }catch(const std::range_error& e){"
+  "        if(std::string_view(e.what())!=\"E_UTF8\")return 3;"
+  "        std::cerr<<f_check_schema(file,Text(U\"E_UTF8\"))<<'\\n';return 1;"
+  "    }catch(const std::exception&){return 3;}"
+  "}"
+  "// AT_EXECFN also identifies a PATH or symlink invocation in a filesystem without /proc."
+  "std::string installed_cli(){"
+  "    const char* executed=reinterpret_cast<const char*>(getauxval(AT_EXECFN));"
+  "    if(!executed)return {};"
+  "    std::unique_ptr<char,decltype(&std::free)> exe(realpath(executed,nullptr),&std::free);"
+  "    if(!exe)return {};"
+  "    SourcePath path(exe.get());"
+  "    return path.name==\"tide\"?SourcePath(path.folder).folder:std::string{};"
+  "}"
+  "int cli_fallback(const std::string& root,char** argv){"
+  "    execv((root+\"/tide\").c_str(),argv);std::cerr<<\"Could not start TIDE launcher.\\n\";return 1;"
+  "}"
+  "bool plain_cli_test(int argc,char** argv){"
+  "    if(argc!=3 || std::string_view(argv[1])!=\"test\" || !argv[2][0] || argv[2][0]=='-')return false;"
+  "    struct utsname os;return uname(&os)==0 && std::string_view(os.sysname)==\"Linux\" && std::string_view(os.machine)==\"x86_64\";"
+  "}"
+fold rows "" code row line concat code (concat line "\n")
+
+test_dispatch > t
+let rows list t 7
+  "if(!cli.empty()){"
+  "    int result=test_suite(argv[2],cli+\"/native/catalog/release.tsv\");"
+  "    if(result==75)return cli_fallback(cli,argv);"
+  "    if(result==3){std::cerr<<\"{\\\"code\\\":\\\"E_BACKEND\\\",\\\"message\\\":\\\"This invocation is unavailable in the native TIDE package.\\\"}\\n\";return 1;}"
+  "    return result;"
+  "}"
+  "if(argc==4 && std::string_view(argv[1])==\"--test-suite\")return test_suite(argv[2],argv[3]);"
+fold rows "" code row line concat code (concat line "\n")
+
+run_branch > t
+concat "if(argc>=6&&std::string_view(argv[1])==\"--read-project\"&&argv[3][0]=='!'){"
+ "Seq<Text> grants;for(int i=6;i<argc;++i)grants=t_append(std::move(grants),decode(argv[i]));auto finish=[&](const auto& s,const Text& e,const Text& c,const Text& in){return f_project_run(s,e,c,in,grants);};auto output=read_siblings(argv[2],decode(argv[3]),decode(argv[4]),decode(argv[5]),f_project_begin,f_project_supply,finish,f_project_escape,f_project_error);std::cout<<output<<std::flush;return std::cout?0:74;}"
+
+start_code entry:t siblings:t > t
+let reads case (text_find entry "input" 0) false found true
+let args if reads file_input_setup "if(argc>2)throw Failure{\"bootstrap_arguments\",0};entry=decode(argc==2?argv[1]:\"main\");"
+let limit if (text_eq siblings "compiler") "1048576" "131072"
+let setup if reads (cat3 "char block[8192];while(std::cin.read(block,sizeof block)||std::cin.gcount()){if(bytes.size()+std::cin.gcount()>" limit ")throw Failure{\"input_limit\",0};bytes.append(block,std::cin.gcount());}if(!std::cin.eof())throw Failure{\"E_IO\",0};input=decode(bytes);") ""
+let runner text_eq siblings "runner"
+let dispatch if runner "auto cli=installed_cli();if(!cli.empty() && !plain_cli_test(argc,argv))return cli_fallback(cli,argv);" ""
+let start cat3 "int main(int argc,char**argv){try{" dispatch "for(auto [kind,max]:{std::pair{RLIMIT_AS,rlim_t(536870912)},std::pair{RLIMIT_CPU,rlim_t(20)}}){struct rlimit r;if(getrlimit(kind,&r))return 1;\n#ifdef TIDE_SERVICE\nif(kind==RLIMIT_CPU)continue;\n#endif\nr.rlim_cur=std::min(r.rlim_cur,max);if(setrlimit(kind,&r))return 1;}std::string bytes;Text input,entry;"
+if (text_eq siblings "aot")
+  (cat3 "Text compiled_entry(const Seq<Text>& args);\n" start
+    "Seq<Text> argv_text;for(int i=1;i<argc;++i)argv_text=t_append(std::move(argv_text),decode(argv[i]));std::cout<<compiled_entry(argv_text)<<std::flush;if(!std::cout){std::cerr<<\"Could not write TIDE output.\\n\";return 1;}return 0;}catch(const Failure&e){std::cerr<<e.reason<<'\\n';return 1;}catch(const std::exception&e){std::cerr<<e.what()<<'\\n';return 1;}}\n")
+let protocol if (or (text_eq siblings "") (text_eq siblings "compiler")) start
+  (if (text_eq siblings "transaction")
+    (concat start "if(argc==8&&(std::string_view(argv[1])==\"--replace-root\"||std::string_view(argv[1])==\"--replace-nodes\")){bool write=std::string_view(argv[7])==\"yes\";R_ProjectGrant io(argv[2],decode(argv[3]),argv[4],write);std::cout<<f_apply_edit(io,decode(argv[3]),std::string_view(argv[1])==\"--replace-nodes\"?t_some(decode(argv[4])):Opt<Text>{},decode(argv[5]),std::string_view(argv[6])==\"yes\",write)<<std::flush;return std::cout?0:74;}")
+    (cat3 (if runner (concat sibling_io_code test_entry_code) sibling_io_code) start (if runner (cat3 test_dispatch run_branch (sibling_branch "project")) (sibling_branch siblings))))
+cat3 (cat3 protocol args (concat setup "std::cout<<std::boolalpha<<"))
+  entry
+  ";return std::cout?0:1;}catch(const Failure&e){std::cerr<<e.reason<<'\\n';return 1;}catch(const std::exception&e){std::cerr<<e.what()<<'\\n';return 1;}}\n"
+
+main source:r entry:t > t
+let parsed declarations (read source) " \t\r"
+let start make Product records "" forwards "" functions "" entry ""
+let env symbols parsed " \t\r"
+let names case (text_find entry "@" 0) (pair entry "") cut
+  pair (text_slice entry 0 cut) (identifier (text_slice entry (+ cut 1) (text_len entry)))
+let output fold parsed start units idx decl emit_decl units decl env (first names)
+if (and (not (text_eq (second names) "aot")) (text_eq (get entry output) "")) fail "bootstrap_missing_main"
+let editor_target text_eq (second names) "transaction"
+let forwards cat3 (get records output) (if editor_target "struct R_ProjectGrant;\n" "") (get forwards output)
+let os if editor_target (concat sibling_io_code transaction_grant_code) ""
+let abi if (case (entry_at (get names env) "sql_allowed") false idx true) "#include <sqlite3.h>\n" ""
+let net if (case (entry_at (get names env) "https_action") false idx true) (concat https_abi pg_abi) ""
+cat3 prelude (cat3 grant_primitives "using R_NativeHandle=std::shared_ptr<void>;\n" (concat abi (concat net (if (case (entry_at (get names env) "write_action") false idx true) write_abi "")))) (cat3 forwards os (concat (get functions output) (start_code (get entry output) (second names))))
+
+example literal_token tokens
+{"inputs":{"line":"concat \"a  (b)\" \"c\""},"expect":["concat","\"a  (b)\"","\"c\""]}
+
+example invalid_identifier identifier
+{"inputs":{"name":"a-b"},"expect_error":{"code":"E_DATA","reason":"bootstrap_identifier"}}

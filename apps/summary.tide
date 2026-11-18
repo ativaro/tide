@@ -1,0 +1,11 @@
+use readings
+
+record Summary
+above:i peak:?i
+
+summarize rows:*t limit:i > {Summary}
+fold rows (make Summary above 0 peak (nil i)) result row line
+let value reading line row
+make Summary
+above (if (> value limit) (+ (get above result) 1) (get above result))
+peak (higher value (get peak result))

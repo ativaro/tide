@@ -1,0 +1,26 @@
+use counters
+
+rule sample delta:i > i
+state current:i=initial_value saved:i=-3
+when eq delta 0 -> saved=set current, current=set saved
+when < delta 0 -> current=reset, saved=keep
+else -> current=set (increase current delta), saved=set current
+out + current saved
+
+observe deltas:*i > *i
+scan sample deltas
+
+main > *i
+observe (list i 4 0 2 -1 1)
+
+example order sample
+{"events":[0,2,-1,1],"expect":[4,-4,4,15]}
+
+example no_events sample
+{"events":[],"expect":[]}
+
+example direct main
+{"inputs":{},"expect":[4,-4,4,15]}
+
+example overflow sample
+{"events":[0,-1,9223372036854775807],"expect_error":{"code":"E_OVERFLOW"}}

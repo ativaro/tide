@@ -1,0 +1,3466 @@
+{
+  "sweeps": [
+    {
+      "family": "balance",
+      "visible": [
+        {
+          "inputs": {
+            "a": 20,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 0
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 8
+          },
+          "expect": -19
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": -3
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": -7
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": -11
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": -15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": -23
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 12
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": -31
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": -4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 31
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": -12
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 23
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": -20
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": -28
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 7
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": -1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": -5
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": -9
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 26
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": -17
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": -25
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": -6
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": -10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": -14
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 12
+          },
+          "expect": -18
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 6
+          },
+          "expect": 17
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 0
+          },
+          "expect": 13
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 9
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 1
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": -3
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": -7
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": -11
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": -15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": -23
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 12
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": -31
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": -4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 31
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": -12
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 23
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": -20
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": -28
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 7
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": -1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": -5
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": -9
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 26
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": -17
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": -25
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": -2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": -6
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": -10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": -14
+        }
+      ],
+      "actual": 34,
+      "TIDE": {
+        "tested": 12,
+        "ms": 16.531647,
+        "candidates": [
+          {
+            "edit": {
+              "node": "ledger.tide:7:1",
+              "op": "-"
+            },
+            "expr": "(+ budget cost)"
+          }
+        ]
+      },
+      "Python-AST": {
+        "tested": 12,
+        "ms": 614.720969,
+        "candidates": [
+          {
+            "edit": {
+              "node": "ledger.py:7:12:7:25",
+              "op": "-"
+            },
+            "expr": "budget + cost"
+          }
+        ]
+      }
+    },
+    {
+      "family": "dispatch",
+      "visible": [
+        {
+          "inputs": {
+            "a": 10,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 4
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 16
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 28
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 13
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 25
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 37
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 22
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 34
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 19
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 31
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 4
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 16
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 28
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 37
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 13
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 10
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 25
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 4
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 22
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 37
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 16
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 34
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 28
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 22
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 1
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 19
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 34
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 13
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 31
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 90
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 25
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 4
+          },
+          "expect": 10
+        }
+      ],
+      "actual": 90,
+      "TIDE": {
+        "tested": 2,
+        "ms": 15.087890000000016,
+        "candidates": []
+      },
+      "Python-AST": {
+        "tested": 4,
+        "ms": 210.732929,
+        "candidates": [
+          {
+            "edit": {
+              "node": "capacity.py:2:12:2:22",
+              "op": "<="
+            },
+            "expr": "load < cap"
+          }
+        ]
+      }
+    },
+    {
+      "family": "windows",
+      "visible": [
+        {
+          "inputs": {
+            "a": 18,
+            "b": 5
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 1
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 7,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 10
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 11
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 5
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 12
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 13
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 1
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 8
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 2
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 9
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 3
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 11
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 12
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 13
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 1
+          },
+          "expect": 28
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 11
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 9
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 3
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 10
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 11
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 12
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 6
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 13
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 1
+          },
+          "expect": 15
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 2
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 9
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 10
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 11
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 5
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 12
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 13
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 1
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 8
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 2
+          },
+          "expect": 18
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 9
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 3
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 10
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 4
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 11
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 12
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 13
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 1
+          },
+          "expect": 28
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 11
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 9
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 3
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 10
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 11
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 12
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 6
+          },
+          "expect": 0
+        }
+      ],
+      "actual": 1,
+      "TIDE": {
+        "tested": 8,
+        "ms": 17.449974999999995,
+        "candidates": [
+          {
+            "edit": {
+              "node": "windows.tide:2:1",
+              "op": "div"
+            },
+            "expr": "(mod minutes width)"
+          }
+        ]
+      },
+      "Python-AST": {
+        "tested": 8,
+        "ms": 472.66547000000014,
+        "candidates": [
+          {
+            "edit": {
+              "node": "windows.py:2:12:2:27",
+              "op": "//"
+            },
+            "expr": "minutes % width"
+          }
+        ]
+      }
+    },
+    {
+      "family": "invoice",
+      "visible": [
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 0
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 0
+          },
+          "expect": 18
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": 242
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": 156
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 203
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": 98
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 192
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": 171
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 108
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": 140
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 124
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": 99
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 130
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 126
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 494
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": 112
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": 462
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 88
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 56
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 54
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 69
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 72
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 385
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 65
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": 360
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": 325
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 12
+          },
+          "expect": 280
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 6
+          },
+          "expect": 296
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 0
+          },
+          "expect": 30
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 288
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 1
+          },
+          "expect": 30
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 8
+          },
+          "expect": 270
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 20
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 9
+          },
+          "expect": 242
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 10
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 204
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 11
+          },
+          "expect": 156
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 5
+          },
+          "expect": 203
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 12
+          },
+          "expect": 98
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 6
+          },
+          "expect": 192
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 0
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 7
+          },
+          "expect": 171
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 1
+          },
+          "expect": 108
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 8
+          },
+          "expect": 140
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 2
+          },
+          "expect": 124
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 9
+          },
+          "expect": 99
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 130
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 10
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 4
+          },
+          "expect": 126
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 11
+          },
+          "expect": 494
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 5
+          },
+          "expect": 112
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 12
+          },
+          "expect": 462
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 88
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 0
+          },
+          "expect": 56
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 7
+          },
+          "expect": 54
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 1
+          },
+          "expect": 69
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 8
+          },
+          "expect": 10
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 2
+          },
+          "expect": 72
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 9
+          },
+          "expect": 385
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 65
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 10
+          },
+          "expect": 360
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 4
+          },
+          "expect": 48
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 11
+          },
+          "expect": 325
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 5
+          },
+          "expect": 21
+        }
+      ],
+      "actual": 17,
+      "TIDE": {
+        "tested": 8,
+        "ms": 16.82557399999996,
+        "candidates": []
+      },
+      "Python-AST": {
+        "tested": 8,
+        "ms": 441.1155440000002,
+        "candidates": []
+      }
+    },
+    {
+      "family": "remainder",
+      "visible": [
+        {
+          "inputs": {
+            "a": 3,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 4
+          },
+          "expect": 3
+        }
+      ],
+      "hidden": [
+        {
+          "inputs": {
+            "a": 0,
+            "b": 2
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 6
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 5
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 6
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 7
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 35,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 11,
+            "b": 6
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 28,
+            "b": 7
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 4,
+            "b": 8
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 21,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 38,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 14,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 31,
+            "b": 5
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 7,
+            "b": 6
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 24,
+            "b": 7
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 0,
+            "b": 8
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 17,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 34,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 10,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 27,
+            "b": 5
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 3,
+            "b": 6
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 20,
+            "b": 7
+          },
+          "expect": 6
+        },
+        {
+          "inputs": {
+            "a": 37,
+            "b": 8
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 13,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 30,
+            "b": 3
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 6,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 23,
+            "b": 5
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 40,
+            "b": 6
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 16,
+            "b": 7
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 33,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 9,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 26,
+            "b": 3
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 2,
+            "b": 4
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 19,
+            "b": 5
+          },
+          "expect": 4
+        },
+        {
+          "inputs": {
+            "a": 36,
+            "b": 6
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 12,
+            "b": 7
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 29,
+            "b": 8
+          },
+          "expect": 5
+        },
+        {
+          "inputs": {
+            "a": 5,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 22,
+            "b": 3
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 39,
+            "b": 4
+          },
+          "expect": 3
+        },
+        {
+          "inputs": {
+            "a": 15,
+            "b": 5
+          },
+          "expect": 0
+        },
+        {
+          "inputs": {
+            "a": 32,
+            "b": 6
+          },
+          "expect": 2
+        },
+        {
+          "inputs": {
+            "a": 8,
+            "b": 7
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 25,
+            "b": 8
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 1,
+            "b": 2
+          },
+          "expect": 1
+        },
+        {
+          "inputs": {
+            "a": 18,
+            "b": 3
+          },
+          "expect": 0
+        }
+      ],
+      "actual": 5,
+      "TIDE": {
+        "tested": 4,
+        "ms": 14.60104999999976,
+        "candidates": [
+          {
+            "edit": {
+              "node": "loads.tide:2:1",
+              "op": "div"
+            },
+            "expr": "(+ units cap)"
+          },
+          {
+            "edit": {
+              "node": "loads.tide:2:1",
+              "op": "mod"
+            },
+            "expr": "(+ units cap)"
+          }
+        ]
+      },
+      "Python-AST": {
+        "tested": 4,
+        "ms": 211.45487200000025,
+        "candidates": [
+          {
+            "edit": {
+              "node": "loads.py:2:12:2:23",
+              "op": "//"
+            },
+            "expr": "units + cap"
+          },
+          {
+            "edit": {
+              "node": "loads.py:2:12:2:23",
+              "op": "%"
+            },
+            "expr": "units + cap"
+          }
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "family": "balance",
+      "arm": "TIDE",
+      "seed": 83,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "balance",
+      "arm": "Python-AST",
+      "seed": 83,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "Python-AST",
+      "seed": 83,
+      "tested": 4,
+      "choices": 1,
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "TIDE",
+      "seed": 83,
+      "tested": 2,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "TIDE",
+      "seed": 83,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "Python-AST",
+      "seed": 83,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "Python-AST",
+      "seed": 83,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "TIDE",
+      "seed": 83,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "remainder",
+      "arm": "TIDE",
+      "seed": 83,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "mod"
+      },
+      "passed": true,
+      "tokens": 177,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. div is the whole quotient; mod is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.tide:2:1\",\"op\":\"div\",\"expr\":\"(+ units cap)\"},{\"choice\":\"B\",\"node\":\"loads.tide:2:1\",\"op\":\"mod\",\"expr\":\"(+ units cap)\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 83
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:56.804481792Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 164447119,
+        "load_duration": 569191,
+        "prompt_eval_count": 167,
+        "prompt_eval_cached_count": 1,
+        "prompt_eval_duration": 35128000,
+        "eval_count": 10,
+        "eval_duration": 126010000
+      }
+    },
+    {
+      "family": "remainder",
+      "arm": "Python-AST",
+      "seed": 83,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "%"
+      },
+      "passed": true,
+      "tokens": 185,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. // is the whole quotient; % is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"//\",\"expr\":\"units + cap\"},{\"choice\":\"B\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"%\",\"expr\":\"units + cap\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 83
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:56.999707643Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 149900290,
+        "load_duration": 639422,
+        "prompt_eval_count": 175,
+        "prompt_eval_cached_count": 34,
+        "prompt_eval_duration": 31288000,
+        "eval_count": 10,
+        "eval_duration": 112738000
+      }
+    },
+    {
+      "family": "balance",
+      "arm": "Python-AST",
+      "seed": 137,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "balance",
+      "arm": "TIDE",
+      "seed": 137,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "TIDE",
+      "seed": 137,
+      "tested": 2,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "Python-AST",
+      "seed": 137,
+      "tested": 4,
+      "choices": 1,
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "Python-AST",
+      "seed": 137,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "TIDE",
+      "seed": 137,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "TIDE",
+      "seed": 137,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "Python-AST",
+      "seed": 137,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "remainder",
+      "arm": "Python-AST",
+      "seed": 137,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "//"
+      },
+      "passed": false,
+      "tokens": 185,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. // is the whole quotient; % is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"%\",\"expr\":\"units + cap\"},{\"choice\":\"B\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"//\",\"expr\":\"units + cap\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 137
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:57.422182058Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 130961275,
+        "load_duration": 538690,
+        "prompt_eval_count": 175,
+        "prompt_eval_cached_count": 130,
+        "prompt_eval_duration": 21868000,
+        "eval_count": 10,
+        "eval_duration": 106840000
+      }
+    },
+    {
+      "family": "remainder",
+      "arm": "TIDE",
+      "seed": 137,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "div"
+      },
+      "passed": false,
+      "tokens": 177,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. div is the whole quotient; mod is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.tide:2:1\",\"op\":\"mod\",\"expr\":\"(+ units cap)\"},{\"choice\":\"B\",\"node\":\"loads.tide:2:1\",\"op\":\"div\",\"expr\":\"(+ units cap)\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 137
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:57.614115095Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 135407701,
+        "load_duration": 498980,
+        "prompt_eval_count": 167,
+        "prompt_eval_cached_count": 125,
+        "prompt_eval_duration": 21412000,
+        "eval_count": 10,
+        "eval_duration": 105644000
+      }
+    },
+    {
+      "family": "balance",
+      "arm": "TIDE",
+      "seed": 269,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.tide:7:1",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "balance",
+      "arm": "Python-AST",
+      "seed": 269,
+      "tested": 12,
+      "choices": 1,
+      "selected": {
+        "node": "ledger.py:7:12:7:25",
+        "op": "-"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "Python-AST",
+      "seed": 269,
+      "tested": 4,
+      "choices": 1,
+      "selected": {
+        "node": "capacity.py:2:12:2:22",
+        "op": "<="
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "dispatch",
+      "arm": "TIDE",
+      "seed": 269,
+      "tested": 2,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "TIDE",
+      "seed": 269,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.tide:2:1",
+        "op": "div"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "windows",
+      "arm": "Python-AST",
+      "seed": 269,
+      "tested": 8,
+      "choices": 1,
+      "selected": {
+        "node": "windows.py:2:12:2:27",
+        "op": "//"
+      },
+      "passed": true,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "Python-AST",
+      "seed": 269,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "invoice",
+      "arm": "TIDE",
+      "seed": 269,
+      "tested": 8,
+      "choices": 0,
+      "selected": null,
+      "passed": false,
+      "tokens": 0,
+      "request": null,
+      "response": null
+    },
+    {
+      "family": "remainder",
+      "arm": "TIDE",
+      "seed": 269,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.tide:2:1",
+        "op": "mod"
+      },
+      "passed": true,
+      "tokens": 177,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. div is the whole quotient; mod is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.tide:2:1\",\"op\":\"div\",\"expr\":\"(+ units cap)\"},{\"choice\":\"B\",\"node\":\"loads.tide:2:1\",\"op\":\"mod\",\"expr\":\"(+ units cap)\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 269
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:58.014198741Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 122002554,
+        "load_duration": 496330,
+        "prompt_eval_count": 167,
+        "prompt_eval_cached_count": 125,
+        "prompt_eval_duration": 21496000,
+        "eval_count": 10,
+        "eval_duration": 98309000
+      }
+    },
+    {
+      "family": "remainder",
+      "arm": "Python-AST",
+      "seed": 269,
+      "tested": 4,
+      "choices": 2,
+      "selected": {
+        "node": "loads.py:2:12:2:23",
+        "op": "%"
+      },
+      "passed": true,
+      "tokens": 185,
+      "request": {
+        "model": "qwen3:4b",
+        "system": "Choose a single operator edit satisfying the full contract. All listed choices passed the public examples. Select only one choice by its label and return just the JSON. // is the whole quotient; % is the remainder.",
+        "prompt": "{\"contract\":\"Pack a individual units into as many full crates of capacity b as possible. Return the count of units left unpacked. a is nonnegative and b is positive.\",\"witness\":{\"inputs\":{\"a\":3,\"b\":2},\"expected\":1,\"actual\":5},\"choices\":[{\"choice\":\"A\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"//\",\"expr\":\"units + cap\"},{\"choice\":\"B\",\"node\":\"loads.py:2:12:2:23\",\"op\":\"%\",\"expr\":\"units + cap\"}]}",
+        "format": {
+          "type": "object",
+          "properties": {
+            "choice": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ],
+          "additionalProperties": false
+        },
+        "think": false,
+        "stream": false,
+        "keep_alive": "5m",
+        "options": {
+          "temperature": 0.2,
+          "top_p": 0.9,
+          "num_predict": 48,
+          "num_ctx": 4096,
+          "seed": 269
+        }
+      },
+      "response": {
+        "model": "qwen3:4b",
+        "created_at": "2026-11-17T21:49:58.205903873Z",
+        "response": "{\n  \"choice\": \"B\"\n}",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 147279459,
+        "load_duration": 485359,
+        "prompt_eval_count": 175,
+        "prompt_eval_cached_count": 130,
+        "prompt_eval_duration": 21323000,
+        "eval_count": 10,
+        "eval_duration": 117838000
+      }
+    }
+  ]
+}

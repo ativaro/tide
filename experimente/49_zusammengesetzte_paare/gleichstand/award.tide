@@ -1,0 +1,8 @@
+record Bid
+name:t price:i
+
+winner incumbent:{Bid} challenger:{Bid} > {Bid}
+if (lower (get price challenger) (get price incumbent)) challenger incumbent
+
+lower offer:i standing:i > b
+not (> offer standing)

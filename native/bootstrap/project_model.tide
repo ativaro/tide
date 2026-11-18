@@ -1,0 +1,345 @@
+use packages
+
+record ImportFrame
+unit:i first_row:i
+
+record ImportChoice
+depth:i row:i name:t loc:{Site}
+
+record ProjectFiles
+units:*{SourceUnit} names:*t path:*{ImportFrame} next_name:t pending:{Site} total:i
+
+import_sites source:t > *{Site}
+if (case (text_find source "use" 0) true offset false) (list {Site} 0)
+let gaps " \t\u001f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"
+fold (source_groups source) (list {Site} 0) groups batch group_rows
+  fold (get rows group_rows) groups sites row fragment
+    if (> row (get complete group_rows)) sites
+    let line source_line group_rows row fragment
+    case (text_find line "use" 0) sites offset
+    let leading fold (indices (chunk_count offset)) true ok section unused
+      let lo * (- section 1) 2048
+      and ok (blank_source_line (text_slice line lo (if (< offset (+ lo 2048)) offset (+ lo 2048))) gaps)
+    if (not leading) sites
+    let start + offset 3
+    let n text_len line
+    if (and (< start n) (not (white (text_slice line start (+ start 1)) gaps))) sites
+    let trimmed fold (indices (chunk_count (- n start))) (pair n n) held chunk unused_chunk
+      let lo + start (* (- chunk 1) 2048)
+      let size - n lo
+      fold (indices (if (< size 2048) size 2048)) held bounds pos unused
+        let at_ch + lo (- pos 1)
+        if (white (text_slice line at_ch (+ at_ch 1)) gaps) bounds
+        pair (if (eq (first bounds) n) at_ch (first bounds)) (+ at_ch 1)
+    append sites (make Site word (text_slice line (first trimmed) (second trimmed)) line (+ row (get offset group_rows)) column (+ offset 1))
+
+module_chain project:{ProjectFiles} depth:i key:t > t
+let chain fold (get path project) "" acc pos frame
+  if (> pos depth) acc
+  json_item acc (json_string (need (at (get names project) (get unit frame)) "missing_module" pos))
+cat3 "[" (json_item chain (json_string key)) "]"
+
+module_cycle project:{ProjectFiles} depth:i key:t file:t loc:{Site} > t
+let msg diagnosis file loc "E_CYCLE" "Cyclic module import"
+concat (text_slice msg 0 (- (text_len msg) 1)) (cat3 ",\"chain\":" (module_chain project depth key) "}")
+
+pending_import project:{ProjectFiles} > ?{ImportChoice}
+let frames get path project
+fold frames (nil {ImportChoice}) found step unused_frame
+  case found
+    (let depth + (- (length frames) step) 1
+     let frame need (at frames (- depth 1)) "missing_frame" 0
+     let unit need (at (get units project) (get unit frame)) "missing_unit" 0
+     fold (get imports unit) (nil {ImportChoice}) choice row loc
+       case choice
+         (if (< row (get first_row frame)) choice
+          let request module_request unit loc
+          let key get path request
+          let pin get pin request
+          let conflict if (get versioned request)
+            (fold (get units project) "" known col loaded
+              let have get pin loaded
+              if (and (text_eq (get name pin) (get name have)) (not (text_eq (get version pin) (get version have)))) (get version have) known) ""
+          if (not (text_eq conflict ""))
+            fail (diagnosis (get file unit) loc "E_PACKAGE" (cat3 "Conflicting versions of " (get name pin) (cat3 ": " conflict (concat " and " (get version pin)))))
+          let root need (at (get units project) 0) "root_unit" 0
+          if (and (get versioned request) (text_eq (get name pin) (get name (get pin root)))) fail (module_cycle project depth (get name root) (get file unit) loc)
+          case (entry_at (get names project) key)
+            (if (or (not (< depth 32)) (> (length (get names project)) 64))
+               (fail (diagnosis (get file unit) loc "E_LIMIT" "Module count or depth limit"))
+             some (make ImportChoice depth depth row row name key loc loc))
+            visited
+            let cycle fold frames false hit pos ancestor or hit (and (not (> pos depth)) (eq (get unit ancestor) visited))
+            if cycle (fail (module_cycle project depth key (get file unit) loc)) choice)
+         picked choice)
+    already found
+
+request_sibling project:{ProjectFiles} > {ProjectFiles}
+case (pending_import project) (with next_name project "") choice
+let path fold (get path project) (list {ImportFrame} 0) frames pos frame
+  if (> pos (get depth choice)) frames
+  append frames (if (eq pos (get depth choice)) (with first_row frame (+ (get row choice) 1)) frame)
+with pending (with path (with next_name project (get name choice)) path) (get loc choice)
+
+project_begin body:t wire:t size:i name:t entry:t > {ProjectFiles}
+let file text_slice entry 1 (text_len entry)
+let pin case (package_header body file) empty_package_pin declared declared
+let unit make SourceUnit name name file file source body wire wire imports (import_sites body) pin pin
+request_sibling (make ProjectFiles units (list {SourceUnit} 1 unit) names (list t 1 name)
+  path (list {ImportFrame} 1 (make ImportFrame unit 0 first_row 1)) next_name "" pending (make Site word "" line 1 column 1) total size)
+
+project_limit project:{ProjectFiles} > t
+let frames get path project
+let parent need (at frames (- (length frames) 1)) "parent_frame" 0
+let owner need (at (get units project) (get unit parent)) "parent_unit" 0
+diagnosis (get file owner) (get pending project) "E_LIMIT" "Project source size limit"
+
+project_supply project:{ProjectFiles} body:t wire:t size:i > {ProjectFiles}
+let total + size (get total project)
+if (> total 131072) fail (project_limit project)
+let name get next_name project
+let parent need (at (get path project) (- (length (get path project)) 1)) "import_parent" 0
+let from need (at (get units project) (get unit parent)) "import_unit" 0
+let request module_request from (get pending project)
+let header package_header body name
+let pin get pin request
+let valid_header case header (not (get versioned request)) declared
+  and (get versioned request) (and (text_eq (get name pin) (get name declared)) (text_eq (get version pin) (get version declared)))
+if (not valid_header)
+  fail (diagnosis (get file from) (get pending project) "E_PACKAGE" (if (get versioned request)
+    (cat3 "Expected package header for " (get name pin) (concat "@" (get version pin))) "Package headers belong in the package entry"))
+let unit make SourceUnit name name file name source body wire wire imports (import_sites body) pin pin
+let frame make ImportFrame unit (length (get units project)) first_row 1
+request_sibling (make ProjectFiles units (append (get units project) unit) names (append (get names project) name)
+  path (append (get path project) frame) next_name "" pending (get pending project) total total)
+
+record PackageExport
+name:t file:t loc:{Site}
+
+record SourceDeclarations
+types:{Declarations} names:*t functions:*{Signature} examples:*{FunctionExample} sample_names:*t exports:*{PackageExport} entry_scope:{SymbolScope}
+
+declare_block book:{SourceDeclarations} block:{SchemaBlock} unit:{SourceUnit} modules:*t first_block:b > {SourceDeclarations}
+let head get head block
+let site need (at head 0) "missing_head" 0
+let op get word site
+let file get file unit
+let space get name (get pin unit)
+if (text_eq op "package")
+  (if (and first_block (not (text_eq space ""))) book (fail (diagnosis file site "E_PACKAGE" "Package header must be first")))
+if (text_eq op "use")
+  (let error diagnosis file site "E_MODULE" "Invalid or unresolved use declaration"
+   if (not (and (eq (length head) 2) (eq (length (get tail (get body block))) 0))) fail error
+   let target need (at head 1) error 0
+   let request module_request unit (with word site (get word target))
+   case (entry_at modules (get path request)) (fail error) found book)
+if (text_eq op "export")
+  (if (or (text_eq space "") (or (< (length head) 2) (> (length (get tail (get body block))) 0)))
+    fail (diagnosis file site "E_EXPORT" "Expected export NAME in a package")
+   let exports fold head (get exports book) acc row item
+     if (eq row 1) acc
+     let name scoped_declaration (get word item) space (list t 0) item file
+     append acc (make PackageExport name name file file loc item)
+   with exports book exports)
+let names get names book
+let types get types book
+if (or (text_eq op "record") (text_eq op "variant"))
+  (with types book (declare_type types block file names space))
+if (not (text_eq op "example"))
+  (let fn signature block file names types space
+   with functions (with names book (append names (get name fn))) (append (get functions book) fn))
+let body flat_sites (get body block)
+if (eq (length body) 0) fail (diagnosis file site "E_SYNTAX" "Missing declaration body")
+if (not (and (eq (length head) 3) (eq (length body) 1))) fail (diagnosis file site "E_SYNTAX" "Expected example name target and JSON")
+let item need (at head 1) "example_name" 0
+let name scoped_declaration (get word item) space (get sample_names book) item file
+let target get word (need (at head 2) "example_target" 0)
+let source_line_site need (at body 0) "example_json" 0
+let data read_scalar_json (get word source_line_site) (with site (json_origin file) (some source_line_site)) true
+let ex make FunctionExample name name target target file file loc site data data
+with examples (with sample_names book (append (get sample_names book) name)) (append (get examples book) ex)
+
+record ProjectScope
+space:t symbols:{SymbolScope}
+
+package_links units:*{SourceUnit} > *&tt
+fold units (list &tt 0) acc row unit
+  fold (get imports unit) acc links pos site
+    let request module_request unit site
+    if (get versioned request) (append links (pair (get name (get pin unit)) (get name (get pin request)))) links
+
+package_aliases names:*t space:t imports:*t exported:*t > *t
+map t names name
+  let owner namespace_of name
+  if (text_eq owner space) (local_name name)
+  if (and (case (entry_at imports owner) false pos true) (case (entry_at exported name) false pos true)) name ""
+
+project_scope space:t links:*&tt book:{SourceDeclarations} exported:*t > {SymbolScope}
+let imports fold links (list t 0) acc row link if (text_eq (first link) space) (append acc (second link)) acc
+make SymbolScope space space calls (package_aliases (get names book) space imports exported)
+  types (package_aliases (get names (get types book)) space imports exported)
+
+select_scope scopes:*{ProjectScope} space:t > {SymbolScope}
+fold scopes empty_symbol_scope found row item
+  if (text_eq space (get space item)) (get symbols item) found
+
+bind_project_symbols book:{SourceDeclarations} units:*{SourceUnit} > {SourceDeclarations}
+let spaces fold units (list t 0) acc row unit
+  let name get name (get pin unit)
+  if (case (entry_at acc name) false found true) acc (append acc name)
+if (and (eq (length spaces) 1) (case (entry_at spaces "") false pos true)) book
+let types get types book
+let names get names book
+let all append (list *t 1 names) (get names types)
+let exported fold (get exports book) (list t 0) acc row item
+  let name get name item
+  let found fold all false ok pos group or ok (case (entry_at group name) false idx true)
+  if (or (not found) (case (entry_at acc name) false idx true))
+    fail (diagnosis (get file item) (get loc item) "E_EXPORT" (concat "Unknown or duplicate export: " name))
+  append acc name
+let links package_links units
+let scopes map {ProjectScope} spaces space
+  make ProjectScope space space symbols (project_scope space links book exported)
+let schemas with entries types
+  (map {SchemaType} (get entries types) decl
+   let scope select_scope scopes (namespace_of (get name decl))
+   let fields map t (get types decl) kind (scoped_type kind scope types (get file decl) (get loc decl))
+   let refs fold fields (list t 0) acc row kind
+     fold (type_names kind) acc next pos name append next name
+   with refs (with types decl fields) refs)
+let functions map {Signature} (get functions book) fn
+  let scope select_scope scopes (namespace_of (get name fn))
+  let args map t (get types fn) kind (scoped_type kind scope schemas (get file fn) (get loc fn))
+  with scope (with result (with types fn args) (scoped_type (get result fn) scope schemas (get file fn) (get loc fn))) scope
+let examples map {FunctionExample} (get examples book) ex
+  let scope select_scope scopes (namespace_of (get name ex))
+  let index need (scope_index (get calls scope) names (get target ex) (get space scope))
+    (diagnosis (get file ex) (get loc ex) "E_NAME" (concat "Unknown example target: " (get target ex))) 0
+  with target ex (need (at names index) "example_target" 0)
+let root need (at units 0) "root_unit" 0
+with entry_scope (with examples (with functions (with types book schemas) functions) examples) (select_scope scopes (get name (get pin root)))
+
+project_declarations project:{ProjectFiles} entry_blocks:*{SchemaBlock} > {SourceDeclarations}
+if (and (eq (length entry_blocks) 0) (eq (length (get units project)) 1))
+  fail (diagnosis (get file (need (at (get units project) 0) "missing_root" 0)) (make Site word "" line 1 column 1) "E_SYNTAX" "Empty program")
+let types make Declarations names (list t 0) entries (list {SchemaType} 0)
+let start make SourceDeclarations types types names (list t 0) functions (list {Signature} 0) examples (list {FunctionExample} 0) sample_names (list t 0) exports (list {PackageExport} 0) entry_scope empty_symbol_scope
+let units get units project
+let collected fold units start all_types pos unit
+  let blocks if (eq pos 1) entry_blocks (schema_blocks (get source unit) true)
+  fold blocks all_types acc row block declare_block acc block unit (get names project) (eq row 1)
+let table bind_project_symbols collected units
+let schemas get types table
+if (not (check_type_graph schemas)) fail "type_graph_incomplete"
+if (eq (length (get functions table)) 0) table
+let resolved fold (get functions table) (list {Signature} 0) acc row fn
+  let valid fold (append (get types fn) (get result fn)) true ok pos kind
+    and ok (check_type_names kind schemas (get file fn) (get loc fn))
+  if valid (append acc (with schemas fn schemas)) (fail "record_signature")
+with functions table resolved
+
+project_imports units:*{SourceUnit} > t
+let edges fold units "" result pos unit
+  fold (get imports unit) result acc row loc
+    let request module_request unit loc
+    let pin get pin request
+    let version if (get versioned request) (cat3 ",\"package\":" (json_string (get name pin)) (concat ",\"version\":" (json_string (get version pin)))) ""
+    let edge cat3 "{\"file\":" (json_string (get file unit))
+      (cat3 ",\"module\":" (json_string (get path request))
+       (cat3 ",\"line\":" (decimal (get line loc)) (cat3 ",\"column\":" (decimal (get column loc)) (concat version "}"))))
+    json_item acc edge
+cat3 "\"imports\":[" edges "]"
+
+project_snapshot project:{ProjectFiles} > t
+let units get units project
+let root_unit need (at units 0) "missing_root" 0
+if (eq (length units) 1) (get source root_unit)
+let keys fold units (list t 0) acc pos unit if (eq pos 1) acc (append acc (get name unit))
+let members fold (label_order keys) "" acc pos idx
+  let unit need (at units (+ idx 1)) "missing_snapshot" 0
+  json_item acc (cat3 "[" (json_string (get name unit)) (cat3 "," (get wire unit) "]"))
+cat3 "[" (get wire root_unit) (cat3 ",[" members "]]")
+
+record CompiledProject
+declarations:{SourceDeclarations} program:{CheckedFunctions} samples:*{SampleArgs}
+
+project_entry_index compiled:{CompiledProject} call:t file:t > i
+let book get declarations compiled
+let scope get entry_scope book
+need (scope_index (get calls scope) (get names book) call (get space scope))
+  (root_diagnostic file "E_ENTRY" (concat "Expected function: " call)) 0
+
+compile_project project:{ProjectFiles} blocks:*{SchemaBlock} > {CompiledProject}
+let table project_declarations project blocks
+let program check_functions (get functions table) (get names table)
+let trees get trees program
+let missing fold trees "" acc row tree if (text_eq (get missing tree) "") acc (json_item acc (get missing tree))
+if (not (text_eq missing ""))
+  (let file get file (need (at (get units project) 0) "root" 0)
+   fail (extra_fields (root_diagnostic file "E_MATCH" "Non-exhaustive variant matches") (cat3 "\"diagnostics\":[" missing "]")))
+let schemas get types table
+let unavailable fold (get entries schemas) (list t 0) acc row decl
+  let supported fold (get types decl) true ok pos typ and ok (signature_kind typ)
+  if supported acc (append acc (get name decl))
+let unsupported if (eq (length unavailable) 0) unavailable
+  (fold (indices 16) unavailable prior level unused
+   fold (get entries schemas) prior acc row decl
+     if (case (entry_at acc (get name decl)) false found true) acc
+     let depends fold (get refs decl) false hit pos ref or hit (case (entry_at acc ref) false found true)
+     if depends (append acc (get name decl)) acc)
+let runnable if (eq (length unsupported) 0) true
+  (fold (get functions table) true ok row fn
+   let args fold (append (get types fn) (get result fn)) ok valid pos typ and valid (runnable_value typ unsupported)
+   let nodes get nodes (need (at trees (- row 1)) "function_tree" 0)
+   fold (append (get pages nodes) (get tail nodes)) args valid page group
+     fold group valid enabled pos node and enabled (runnable_value (get typ node) unsupported))
+if (not runnable) fail "defer_check"
+let samples fold (get examples table) (list {SampleArgs} 0) acc row ex
+  let sample sample_args ex program
+  if (and (> (length (get bounds (get domain sample))) 0) (> (length (get bounds (target_domain acc (get target sample)))) 0))
+    fail (diagnosis (get file ex) (get loc ex) "E_INPUT" "Duplicate requires for example target")
+  append acc sample
+make CompiledProject declarations table program program samples samples
+
+runnable_value typ:t unsupported:*t > b
+fold (type_names typ) true ok row name and ok (case (entry_at unsupported name) true found false)
+
+compiled_fields compiled:{CompiledProject} > t
+let book get declarations compiled
+cat3 (schema_objects (get types book)) ",\"definitions\":" (cat3 (function_fields (get program compiled)) ",\"examples\":" (decimal (length (get samples compiled))))
+
+example imports_unicode import_sites
+{"inputs":{"source":"use A\r\n\u3000use\tB\nuser C\nnot use D\n use xxx yyy"},"expect":[{"word":"A","line":1,"column":1},{"word":"B","line":2,"column":2},{"word":"xxx yyy","line":5,"column":2}]}
+
+quoted_path path:t > t
+let delimiter if (and (case (text_find path "'" 0) false idx true) (case (text_find path "\"" 0) true idx false)) "\"" "'"
+let printable " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+let hex "0123456789abcdef"
+let controls concat control_chars "\u007f"
+let escaped fold (indices (text_len path)) delimiter acc pos unused
+  let ch text_slice path (- pos 1) pos
+  if (or (text_eq ch delimiter) (text_eq ch "\\")) (cat3 acc "\\" ch)
+  if (case (text_find printable ch 0) false idx true) (concat acc ch)
+  if (text_eq ch "\n") (concat acc "\\n")
+  if (text_eq ch "\r") (concat acc "\\r")
+  if (text_eq ch "\t") (concat acc "\\t")
+  let ctrl need (text_find controls ch 0) "defer_check" 0
+  let value if (eq ctrl 32) 127 ctrl
+  let high div value 16
+  let low mod value 16
+  cat3 acc "\\x" (concat (text_slice hex high (+ high 1)) (text_slice hex low (+ low 1)))
+concat escaped delimiter
+
+project_error entry:t path:t number:i reason:t > t
+let file text_slice entry 1 (text_len entry)
+if (text_eq (text_slice entry 0 1) "#")
+  (cat3 "{\"file\":" (json_string file) (cat3 ",\"code\":\"E_IO\",\"message\":" (json_string reason)
+    (cat3 ",\"path\":" (json_string path) (cat3 ",\"errno\":" (decimal number) "}"))))
+let detail cat3 "[Errno " (decimal number) (cat3 "] " reason (concat ": " (quoted_path path)))
+cat3 "{\"file\":" (json_string file) (cat3 ",\"code\":\"E_IO\",\"message\":" (json_string detail) "}")
+
+example cyclic_entry project_begin
+{"inputs":{"body":"\n  use demo","wire":"","size":11,"name":"demo.tide","entry":":demo.tide"},"expect_error":{"code":"E_DATA","reason":"{\"file\":\"demo.tide\",\"code\":\"E_CYCLE\",\"message\":\"Cyclic module import\",\"line\":2,\"column\":3,\"chain\":[\"demo.tide\",\"demo.tide\"]}"}}
+
+example missing_unicode_module project_error
+{"inputs":{"entry":"#Quelle.tide","path":"/März/entwurf.tide","number":2,"reason":"No such file or directory"},"expect":"{\"file\":\"Quelle.tide\",\"code\":\"E_IO\",\"message\":\"No such file or directory\",\"path\":\"/März/entwurf.tide\",\"errno\":2}"}

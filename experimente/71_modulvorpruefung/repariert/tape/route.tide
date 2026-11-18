@@ -1,0 +1,28 @@
+use rulebook
+
+address bank:i track:i sector:i > i
+(decimal_address bank track sector)
+
+example direct_0 address
+{"inputs":{"bank":0,"track":0,"sector":0},"expect":0}
+
+example direct_1 address
+{"inputs":{"bank":0,"track":0,"sector":1},"expect":1}
+
+example direct_2 address
+{"inputs":{"bank":0,"track":0,"sector":3},"expect":3}
+
+example direct_3 address
+{"inputs":{"bank":1,"track":2,"sector":3},"expect":123}
+
+example direct_4 address
+{"inputs":{"bank":8,"track":7,"sector":2},"expect":872}
+
+example direct_5 address
+{"inputs":{"bank":0,"track":9,"sector":7},"expect":97}
+
+example direct_6 address
+{"inputs":{"bank":1,"track":1,"sector":0},"expect":110}
+
+example direct_7 address
+{"inputs":{"bank":0,"track":4,"sector":1},"expect":41}

@@ -1,0 +1,5275 @@
+{
+  "plan_sha256": "f915d4b4f70c40b4c129081a136eaf02cfc13d57dd00bf4fc8968185e00fef11",
+  "model": "gpt-6-astra",
+  "reasoning": "xhigh",
+  "tier_requested": "priority",
+  "cli": "codex-cli 0.157.1",
+  "design": "Identical defective TIDE sources, except the library variant adds use ordering to the entry and the unmodified ordering.tide module. All TIDE arms use the grouped compiler packet with named edits plus optional unused checked signatures. Python receives its entire source and named edits. Six blocks per family; all six arm permutations per family; serial isolated ephemeral sessions with identical project path and optional tools. The customer symptom, no location or advice, and verifier observation precede every packet. The new library is available, not required. Only unused callable signatures are delivered; no candidate repairs or library examples in the prompt.",
+  "preflight": {
+    "allocation": {
+      "tide-plain": {
+        "red": [
+          "{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}"
+        ],
+        "single-0": [
+          "{\"passed\":30,\"failed\":10,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":4,\"nearby_id\":7}}}"
+        ],
+        "single-1": [
+          "{\"passed\":31,\"failed\":9,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":9}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      },
+      "tide-lib": {
+        "red": [
+          "{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}"
+        ],
+        "single-0": [
+          "{\"passed\":30,\"failed\":10,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":4,\"nearby_id\":7}}}"
+        ],
+        "single-1": [
+          "{\"passed\":31,\"failed\":9,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":9}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      },
+      "python-native": {
+        "red": [
+          "{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}"
+        ],
+        "single-0": [
+          "{\"passed\":30,\"failed\":10,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":4,\"nearby_id\":7}}}"
+        ],
+        "single-1": [
+          "{\"passed\":31,\"failed\":9,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":9}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      }
+    },
+    "journal": {
+      "tide-plain": {
+        "red": [
+          "{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "single-0": [
+          "{\"passed\":22,\"failed\":18,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":1,\"longest\":3}}}"
+        ],
+        "single-1": [
+          "{\"passed\":23,\"failed\":17,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      },
+      "tide-lib": {
+        "red": [
+          "{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "single-0": [
+          "{\"passed\":22,\"failed\":18,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":1,\"longest\":3}}}"
+        ],
+        "single-1": [
+          "{\"passed\":23,\"failed\":17,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      },
+      "python-native": {
+        "red": [
+          "{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "single-0": [
+          "{\"passed\":22,\"failed\":18,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":1,\"longest\":3}}}"
+        ],
+        "single-1": [
+          "{\"passed\":23,\"failed\":17,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}"
+        ],
+        "green": [
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}",
+          "{\"passed\":40,\"failed\":0,\"first_failure\":null}"
+        ]
+      }
+    }
+  },
+  "unique_sessions": 37,
+  "prompts": {
+    "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525": "The allocation report returns urgent_id=7 and nearby_id=7 for jobs (id,severity,travel,capacity) (7,3,2,1), (4,3,2,6), (9,2,2,8). Expected: 4 and 9. Urgent selects highest severity, then shortest travel, then highest capacity. Nearby selects shortest travel, then highest capacity, then highest severity. An exact tie always keeps the earlier input. Return zero IDs for empty batches. Batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}\n\n--- jobs.tide ---\nrecord Job\nid:i severity:i travel:i capacity:i\n\ninitial jobs:*{Job} > {Job}\n(case (at jobs 0) (make Job id 0 severity 0 travel 0 capacity 0) head head)\n\n\n--- nearby.tide ---\nnearby jobs:*{Job} > i\n(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate best)) (get id chosen))\n\n\n--- summary.tide ---\nrecord Pick\nurgent_id:i nearby_id:i\n\npicks jobs:*{Job} > {Pick}\n(make Pick urgent_id (urgent jobs) nearby_id (nearby jobs))\n\nmain batches:**{Job} > *{Pick}\n(fold batches (list {Pick} 0) acc row batch (append acc (picks batch)))\n\n\n--- urgent.tide ---\nurgent jobs:*{Job} > i\n(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate best)) (get id chosen))\n\n",
+    "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7": "The allocation report returns urgent_id=7 and nearby_id=7 for jobs (id,severity,travel,capacity) (7,3,2,1), (4,3,2,6), (9,2,2,8). Expected: 4 and 9. Urgent selects highest severity, then shortest travel, then highest capacity. Nearby selects shortest travel, then highest capacity, then highest severity. An exact tie always keeps the earlier input. Return zero IDs for empty batches. Batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\nOther checked functions:\nprefer_min candidate:i current:i on_equal:b > b\nprefer_max candidate:i current:i on_equal:b > b\n\n{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}\n\n--- jobs.tide ---\nrecord Job\nid:i severity:i travel:i capacity:i\n\ninitial jobs:*{Job} > {Job}\n(case (at jobs 0) (make Job id 0 severity 0 travel 0 capacity 0) head head)\n\n\n--- nearby.tide ---\nnearby jobs:*{Job} > i\n(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate best)) (get id chosen))\n\n\n--- summary.tide ---\nrecord Pick\nurgent_id:i nearby_id:i\n\npicks jobs:*{Job} > {Pick}\n(make Pick urgent_id (urgent jobs) nearby_id (nearby jobs))\n\nmain batches:**{Job} > *{Pick}\n(fold batches (list {Pick} 0) acc row batch (append acc (picks batch)))\n\n\n--- urgent.tide ---\nurgent jobs:*{Job} > i\n(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate best)) (get id chosen))\n\n",
+    "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef": "The allocation report returns urgent_id=7 and nearby_id=7 for jobs (id,severity,travel,capacity) (7,3,2,1), (4,3,2,6), (9,2,2,8). Expected: 4 and 9. Urgent selects highest severity, then shortest travel, then highest capacity. Nearby selects shortest travel, then highest capacity, then highest severity. An exact tie always keeps the earlier input. Return zero IDs for empty batches. Batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":25,\"failed\":15,\"first_failure\":{\"input\":[{\"id\":7,\"severity\":3,\"travel\":2,\"capacity\":1},{\"id\":4,\"severity\":3,\"travel\":2,\"capacity\":6},{\"id\":9,\"severity\":2,\"travel\":2,\"capacity\":8}],\"expected\":{\"urgent_id\":4,\"nearby_id\":9},\"actual\":{\"urgent_id\":7,\"nearby_id\":7}}}\n\n--- jobs.py ---\ndef initial(jobs):\n    return jobs[0] if jobs else {\"id\": 0, \"severity\": 0, \"travel\": 0, \"capacity\": 0}\n\n\n--- nearby.py ---\nfrom jobs import initial\n\n\ndef nearby(jobs):\n    best = initial(jobs)\n    for candidate in jobs:\n        if candidate[\"travel\"] < best[\"travel\"]:\n            best = candidate\n    return best[\"id\"]\n\n\n--- summary.py ---\nfrom urgent import urgent\nfrom nearby import nearby\n\n\ndef picks(jobs):\n    return {\"urgent_id\": urgent(jobs), \"nearby_id\": nearby(jobs)}\n\n\ndef main(batches):\n    return [picks(batch) for batch in batches]\n\n\n--- urgent.py ---\nfrom jobs import initial\n\n\ndef urgent(jobs):\n    best = initial(jobs)\n    for candidate in jobs:\n        if candidate[\"severity\"] > best[\"severity\"]:\n            best = candidate\n    return best[\"id\"]\n\n",
+    "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457": "A journal contains (minute,priority,serial) events (2,7,4), (2,8,1), (3,0,0), (4,0,0), (5,0,0). The report gives breaks=0, longest=5; expected breaks=1, longest=4. Legal order is increasing minute, then decreasing priority, then increasing serial; identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order. A reversal starts a new segment at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}\n\n--- event.py ---\nfrom typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n\n\n--- sequence.py ---\nfrom event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return incoming[\"minute\"] < prior[\"minute\"]\n\n\n--- streak.py ---\nfrom sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 0 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n\n\n--- summary.py ---\nfrom streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, _, longest = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n\n",
+    "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731": "A journal contains (minute,priority,serial) events (2,7,4), (2,8,1), (3,0,0), (4,0,0), (5,0,0). The report gives breaks=0, longest=5; expected breaks=1, longest=4. Legal order is increasing minute, then decreasing priority, then increasing serial; identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order. A reversal starts a new segment at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(< (get minute incoming) (get minute prior))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 0 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n",
+    "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587": "A journal contains (minute,priority,serial) events (2,7,4), (2,8,1), (3,0,0), (4,0,0), (5,0,0). The report gives breaks=0, longest=5; expected breaks=1, longest=4. Legal order is increasing minute, then decreasing priority, then increasing serial; identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order. A reversal starts a new segment at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\nOther checked functions:\nprefer_min candidate:i current:i on_equal:b > b\nprefer_max candidate:i current:i on_equal:b > b\n\n{\"passed\":13,\"failed\":27,\"first_failure\":{\"input\":[{\"minute\":2,\"priority\":7,\"serial\":4},{\"minute\":2,\"priority\":8,\"serial\":1},{\"minute\":3,\"priority\":0,\"serial\":0},{\"minute\":4,\"priority\":0,\"serial\":0},{\"minute\":5,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":1,\"longest\":4},\"actual\":{\"breaks\":0,\"longest\":5}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(< (get minute incoming) (get minute prior))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 0 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n"
+  },
+  "runs": [
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:19:36.822700927Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1443.790393754,
+      "monotonic_ready": 1444.486370375,
+      "monotonic_end": 1458.563055598,
+      "prepare_seconds": 0.6959766209999998,
+      "elapsed_seconds": 14.772661843999913,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e671-c433-72d1-932e-7514c8f4f882"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 761,
+              "reasoning_output_tokens": 518
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1458.460913767,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 17920,
+        "output_tokens": 761,
+        "reasoning_output_tokens": 518,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20225,
+      "less_cache": 2305,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:19:51.614443939Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1458.569138992,
+      "monotonic_ready": 1459.250530612,
+      "monotonic_end": 1476.327574133,
+      "prepare_seconds": 0.6813916199998857,
+      "elapsed_seconds": 17.758435141000064,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e671-fca4-7072-a802-a40adee53eda"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 818,
+              "reasoning_output_tokens": 603
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1476.220127252,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 17920,
+        "output_tokens": 818,
+        "reasoning_output_tokens": 603,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20310,
+      "less_cache": 2390,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 1,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:20:09.378924415Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1476.333456836,
+      "monotonic_ready": 1476.368393828,
+      "monotonic_end": 1485.32251893,
+      "prepare_seconds": 0.03493699199998446,
+      "elapsed_seconds": 8.989062093999792,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e672-3f7e-7c51-bc03-0c2472b746dc"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 410,
+              "reasoning_output_tokens": 241
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (best[\"severity\"], -best[\"travel\"], best[\"capacity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (-candidate[\"travel\"], candidate[\"capacity\"], candidate[\"severity\"]) > (-best[\"travel\"], best[\"capacity\"], best[\"severity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1485.278557714,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 17920,
+        "output_tokens": 410,
+        "reasoning_output_tokens": 241,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19831,
+      "less_cache": 1911,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:20:18.373674169Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1485.328450676,
+      "monotonic_ready": 1485.366490235,
+      "monotonic_end": 1496.810571017,
+      "prepare_seconds": 0.03803955899979883,
+      "elapsed_seconds": 11.482120340999927,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e672-62a4-7f22-acc2-8d8ad2a76f7d"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19470,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 534,
+              "reasoning_output_tokens": 339
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (\n    incoming[\"minute\"],\n    -incoming[\"priority\"],\n    incoming[\"serial\"],\n) < (\n    prior[\"minute\"],\n    -prior[\"priority\"],\n    prior[\"serial\"],\n)"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1496.764002619,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19470,
+        "cached_input_tokens": 17920,
+        "output_tokens": 534,
+        "reasoning_output_tokens": 339,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20004,
+      "less_cache": 2084,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:20:29.861633326Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1496.816348472,
+      "monotonic_ready": 1497.408221041,
+      "monotonic_end": 1505.984094591,
+      "prepare_seconds": 0.591872568999861,
+      "elapsed_seconds": 9.167746118999958,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e672-91b1-7993-8bc6-63c331a7ad5c"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 406,
+              "reasoning_output_tokens": 222
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1505.879352661,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 17920,
+        "output_tokens": 406,
+        "reasoning_output_tokens": 222,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19940,
+      "less_cache": 2020,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 1,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:20:39.035420316Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1505.989964159,
+      "monotonic_ready": 1506.572749887,
+      "monotonic_end": 1520.455453286,
+      "prepare_seconds": 0.5827857280000899,
+      "elapsed_seconds": 14.465489126999955,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e672-b576-7202-9eb6-f9dbeaac4e9b"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 673,
+              "reasoning_output_tokens": 489
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1520.348177291,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19562,
+        "cached_input_tokens": 17920,
+        "output_tokens": 673,
+        "reasoning_output_tokens": 489,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20235,
+      "less_cache": 2315,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:20:53.506814534Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1520.461246895,
+      "monotonic_ready": 1520.49712551,
+      "monotonic_end": 1531.014876448,
+      "prepare_seconds": 0.035878615000001446,
+      "elapsed_seconds": 10.553629553000064,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e672-ebe1-7592-a16f-3d10034eb276"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19470,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 312,
+              "reasoning_output_tokens": 183
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1530.968109914,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19470,
+        "cached_input_tokens": 17920,
+        "output_tokens": 312,
+        "reasoning_output_tokens": 183,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19782,
+      "less_cache": 1862,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:21:04.065929360Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1531.02069858,
+      "monotonic_ready": 1531.597714362,
+      "monotonic_end": 1544.614839823,
+      "prepare_seconds": 0.5770157819999895,
+      "elapsed_seconds": 13.594141242999967,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e673-1811-7ca3-a6da-3993a08b3f9f"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 696,
+              "reasoning_output_tokens": 512
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1544.510822389,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19562,
+        "cached_input_tokens": 17920,
+        "output_tokens": 696,
+        "reasoning_output_tokens": 512,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20258,
+      "less_cache": 2338,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 2,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:21:17.665747514Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1544.620808671,
+      "monotonic_ready": 1545.2102033,
+      "monotonic_end": 1558.784582217,
+      "prepare_seconds": 0.5893946290000258,
+      "elapsed_seconds": 14.163773545999902,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e673-4d5d-7081-93f4-166517c57903"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 543,
+              "reasoning_output_tokens": 359
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1558.67573491,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 19328,
+        "output_tokens": 543,
+        "reasoning_output_tokens": 359,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20077,
+      "less_cache": 749,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:21:31.835804427Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1558.79024624,
+      "monotonic_ready": 1559.473997454,
+      "monotonic_end": 1571.719851636,
+      "prepare_seconds": 0.6837512140000399,
+      "elapsed_seconds": 12.929605395999943,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e673-850a-7a00-97a7-a2e613e9d7bc"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 676,
+              "reasoning_output_tokens": 461
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1571.610324737,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 17920,
+        "output_tokens": 676,
+        "reasoning_output_tokens": 461,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20168,
+      "less_cache": 2248,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:21:44.771383065Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1571.725974072,
+      "monotonic_ready": 1571.762480842,
+      "monotonic_end": 1585.524796012,
+      "prepare_seconds": 0.03650676999995994,
+      "elapsed_seconds": 13.798821939999925,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e673-b425-7240-9849-09dfe19a1919"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 511,
+              "reasoning_output_tokens": 331
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (\n        best[\"severity\"], -best[\"travel\"], best[\"capacity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (-candidate[\"travel\"], candidate[\"capacity\"], candidate[\"severity\"]) > (\n        -best[\"travel\"], best[\"capacity\"], best[\"severity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1585.47997523,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 17920,
+        "output_tokens": 511,
+        "reasoning_output_tokens": 331,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19932,
+      "less_cache": 2012,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 2,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:21:58.575928602Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1585.53050363,
+      "monotonic_ready": 1586.190933631,
+      "monotonic_end": 1601.33050585,
+      "prepare_seconds": 0.6604300009998951,
+      "elapsed_seconds": 15.800002219999897,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e673-ed5b-78b2-8ef9-7d97d35c5800"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 564,
+              "reasoning_output_tokens": 310
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1601.22366818,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 17920,
+        "output_tokens": 564,
+        "reasoning_output_tokens": 310,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20028,
+      "less_cache": 2108,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:22:14.381983710Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1601.33661652,
+      "monotonic_ready": 1601.370601523,
+      "monotonic_end": 1610.596503024,
+      "prepare_seconds": 0.03398500299999796,
+      "elapsed_seconds": 9.259886503999951,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e674-28bd-71b2-bf03-c971d79fad0f"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 432,
+              "reasoning_output_tokens": 252
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (\n        best[\"severity\"], -best[\"travel\"], best[\"capacity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (-candidate[\"travel\"], candidate[\"capacity\"], candidate[\"severity\"]) > (\n        -best[\"travel\"], best[\"capacity\"], best[\"severity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1610.551093001,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 17920,
+        "output_tokens": 432,
+        "reasoning_output_tokens": 252,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19853,
+      "less_cache": 1933,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:22:23.647507613Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1610.60203965,
+      "monotonic_ready": 1611.300502525,
+      "monotonic_end": 1624.10173494,
+      "prepare_seconds": 0.6984628749999047,
+      "elapsed_seconds": 13.499695289999863,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e674-4e97-7b52-ba47-6f08d6d13f0d"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 677,
+              "reasoning_output_tokens": 462
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1624.000320064,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 19328,
+        "output_tokens": 677,
+        "reasoning_output_tokens": 462,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20141,
+      "less_cache": 813,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 3,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:22:37.153054578Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1624.107649878,
+      "monotonic_ready": 1624.789271027,
+      "monotonic_end": 1641.174639819,
+      "prepare_seconds": 0.681621148999966,
+      "elapsed_seconds": 17.066989940999974,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e674-8438-73a3-896d-1403993f5115"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 793,
+              "reasoning_output_tokens": 640
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (prefer_max (get severity candidate) (get severity best) (prefer_min (get travel candidate) (get travel best) (> (get capacity candidate) (get capacity best)))) candidate best)) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (prefer_min (get travel candidate) (get travel best) (prefer_max (get capacity candidate) (get capacity best) (> (get severity candidate) (get severity best)))) candidate best)) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1641.068728285,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 17920,
+        "output_tokens": 793,
+        "reasoning_output_tokens": 640,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20285,
+      "less_cache": 2365,
+      "adopted_calls": [
+        "prefer_max",
+        "prefer_min",
+        "prefer_min",
+        "prefer_max"
+      ],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:22:54.225925488Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1641.180521658,
+      "monotonic_ready": 1641.757219805,
+      "monotonic_end": 1654.089849882,
+      "prepare_seconds": 0.5766981469998882,
+      "elapsed_seconds": 12.909328223999864,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e674-c660-7a41-bba1-3309411fbc8e"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 570,
+              "reasoning_output_tokens": 386
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1653.986116298,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 19328,
+        "output_tokens": 570,
+        "reasoning_output_tokens": 386,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20104,
+      "less_cache": 776,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:23:07.141405888Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1654.096262696,
+      "monotonic_ready": 1654.13277046,
+      "monotonic_end": 1662.946315785,
+      "prepare_seconds": 0.03650776400013456,
+      "elapsed_seconds": 8.850053089000085,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e674-f6e7-7da3-9e6f-85ca17c331ca"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19470,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 420,
+              "reasoning_output_tokens": 269
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (\n    incoming[\"minute\"],\n    -incoming[\"priority\"],\n    incoming[\"serial\"],\n) < (\n    prior[\"minute\"],\n    -prior[\"priority\"],\n    prior[\"serial\"],\n)"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1662.89713833,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19470,
+        "cached_input_tokens": 19328,
+        "output_tokens": 420,
+        "reasoning_output_tokens": 269,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19890,
+      "less_cache": 562,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 3,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:23:15.998100948Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1662.952667668,
+      "monotonic_ready": 1663.54548203,
+      "monotonic_end": 1694.043012168,
+      "prepare_seconds": 0.5928143619998991,
+      "elapsed_seconds": 31.0903444999999,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e675-1aaa-7092-8dfa-95a4a12b7d20"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 678,
+              "reasoning_output_tokens": 494
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior)))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1676.413945773,
+          "acceptance": "",
+          "diagnostic": "{\"file\": \"sequence.tide\", \"code\": \"E_SYNTAX\", \"message\": \"Missing operand\", \"line\": 4, \"column\": 274}\n"
+        },
+        {
+          "attempt": 2,
+          "thread_ids": [
+            "01a1e675-4e47-7c20-876f-c26e432efdb0"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19802,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 906,
+              "reasoning_output_tokens": 722
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1693.93374512,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 39364,
+        "cached_input_tokens": 37248,
+        "output_tokens": 1584,
+        "reasoning_output_tokens": 1216,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 40948,
+      "less_cache": 3700,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:23:47.094032043Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1694.048951974,
+      "monotonic_ready": 1694.641632203,
+      "monotonic_end": 1709.316446185,
+      "prepare_seconds": 0.5926802290000523,
+      "elapsed_seconds": 15.267494210999985,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e675-9543-7091-9716-1be6355eecd2"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 694,
+              "reasoning_output_tokens": 510
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1709.207712136,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19562,
+        "cached_input_tokens": 19328,
+        "output_tokens": 694,
+        "reasoning_output_tokens": 510,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20256,
+      "less_cache": 928,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:24:02.368067287Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1709.322620858,
+      "monotonic_ready": 1709.847614728,
+      "monotonic_end": 1723.957292697,
+      "prepare_seconds": 0.5249938700001167,
+      "elapsed_seconds": 14.63467183900002,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e675-d07d-74f1-9e0e-dd5a7e413ddf"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 700,
+              "reasoning_output_tokens": 516
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1723.852832041,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 19328,
+        "output_tokens": 700,
+        "reasoning_output_tokens": 516,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20234,
+      "less_cache": 906,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 4,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:24:17.008415387Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1723.963166004,
+      "monotonic_ready": 1724.00086266,
+      "monotonic_end": 1749.051215529,
+      "prepare_seconds": 0.03769665599998007,
+      "elapsed_seconds": 25.088049525000088,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e676-06cf-7810-b097-bb27292fec3f"
+          ],
+          "usage": [
+            {
+              "input_tokens": 59947,
+              "cached_input_tokens": 59392,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1337,
+              "reasoning_output_tokens": 417
+            }
+          ],
+          "commands": [
+            {
+              "id": "item_2",
+              "type": "command_execution",
+              "command": "/usr/bin/bash -lc \"pwd\nrg --files -g 'AGENTS.md' -g 'sequence.py' -g 'streak.py' -g 'verify'\"",
+              "aggregated_output": "/var/tmp/tide-ordering-y8PzxCLV/project\nstreak.py\nsequence.py\n",
+              "exit_code": 0,
+              "status": "completed"
+            },
+            {
+              "id": "item_3",
+              "type": "command_execution",
+              "command": "/usr/bin/bash -lc \"python -B - <<'PY'\nimport sequence\nimport streak\nimport summary\n\nexec('''def earlier(incoming, prior):\n    return (incoming[\\\"minute\\\"], -incoming[\\\"priority\\\"], incoming[\\\"serial\\\"]) < (\n        prior[\\\"minute\\\"], -prior[\\\"priority\\\"], prior[\\\"serial\\\"]\n    )\n''', sequence.__dict__)\nstreak.earlier = sequence.earlier\nexec('''def advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 1 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n''', streak.__dict__)\nsummary.advance = streak.advance\n\ndef events(rows):\n    return [dict(zip(('minute', 'priority', 'serial'), row)) for row in rows]\n\ncases = [\n    ([], {'breaks': 0, 'longest': 0}),\n    ([(2, 7, 4)], {'breaks': 0, 'longest': 1}),\n    ([(2, 7, 4), (2, 8, 1), (3, 0, 0), (4, 0, 0), (5, 0, 0)], {'breaks': 1, 'longest': 4}),\n    ([(2, 8, 9), (2, 7, 0)], {'breaks': 0, 'longest': 2}),\n    ([(2, 7, 4), (2, 7, 3)], {'breaks': 1, 'longest': 1}),\n    ([(2, 7, 3), (2, 7, 4), (2, 7, 4)], {'breaks': 0, 'longest': 3}),\n    ([(2, 0, 9), (3, 100, 0)], {'breaks': 0, 'longest': 2}),\n    ([(3, 100, 0), (2, 0, 9), (1, 0, 0)], {'breaks': 2, 'longest': 1}),\n    ([(1, 0, 0), (2, 0, 0), (3, 0, 0), (0, 0, 0)], {'breaks': 1, 'longest': 3}),\n]\nfor rows, expected in cases:\n    actual = summary.journal(events(rows))\n    assert actual == expected, (rows, actual, expected)\nassert summary.main([events(rows) for rows, _ in cases]) == [expected for _, expected in cases]\nprint('Passed 9 focused cases and batch-independence check using candidate bodies in memory.')\nPY\"",
+              "aggregated_output": "Passed 9 focused cases and batch-independence check using candidate bodies in memory.\n",
+              "exit_code": 0,
+              "status": "completed"
+            }
+          ],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (\n    prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"]\n)"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1748.999217984,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 59947,
+        "cached_input_tokens": 59392,
+        "output_tokens": 1337,
+        "reasoning_output_tokens": 417,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 61284,
+      "less_cache": 1892,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:24:42.102542615Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1749.057295233,
+      "monotonic_ready": 1749.091483297,
+      "monotonic_end": 1760.066192734,
+      "prepare_seconds": 0.034188063999863516,
+      "elapsed_seconds": 11.008897500999865,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e676-68d4-79e3-a308-986ebe4cd01a"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 19200,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 501,
+              "reasoning_output_tokens": 321
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (\n        best[\"severity\"], -best[\"travel\"], best[\"capacity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (-candidate[\"travel\"], candidate[\"capacity\"], candidate[\"severity\"]) > (\n        -best[\"travel\"], best[\"capacity\"], best[\"severity\"]\n    ):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1760.020105643,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 19200,
+        "output_tokens": 501,
+        "reasoning_output_tokens": 321,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19922,
+      "less_cache": 722,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:24:53.118735964Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1760.073694498,
+      "monotonic_ready": 1760.767737629,
+      "monotonic_end": 1775.353446465,
+      "prepare_seconds": 0.6940431310001713,
+      "elapsed_seconds": 15.279751967000038,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e676-9670-7551-9a9c-24e64ccd0f09"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 727,
+              "reasoning_output_tokens": 512
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1775.248446366,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 17920,
+        "output_tokens": 727,
+        "reasoning_output_tokens": 512,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20219,
+      "less_cache": 2299,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 4,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:25:08.405243275Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1775.360428195,
+      "monotonic_ready": 1775.935738463,
+      "monotonic_end": 1787.358854601,
+      "prepare_seconds": 0.5753102680000666,
+      "elapsed_seconds": 11.998426406000135,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e676-d2b4-7753-901d-287a1a0cadbb"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 611,
+              "reasoning_output_tokens": 396
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1787.255429412,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 17920,
+        "output_tokens": 611,
+        "reasoning_output_tokens": 396,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20075,
+      "less_cache": 2155,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:25:20.410164579Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1787.36463865,
+      "monotonic_ready": 1788.013354758,
+      "monotonic_end": 1801.697347023,
+      "prepare_seconds": 0.6487161080001442,
+      "elapsed_seconds": 14.33270837300006,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-01c3-7b10-b4f5-ed60b1d42e08"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 684,
+              "reasoning_output_tokens": 469
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1801.592432068,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 17920,
+        "output_tokens": 684,
+        "reasoning_output_tokens": 469,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20148,
+      "less_cache": 2228,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:25:34.748581249Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1801.703333208,
+      "monotonic_ready": 1801.738707344,
+      "monotonic_end": 1809.815172698,
+      "prepare_seconds": 0.03537413599997308,
+      "elapsed_seconds": 8.111839489999966,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-3772-79e3-8ab8-265f6d83a50f"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 386,
+              "reasoning_output_tokens": 217
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (best[\"severity\"], -best[\"travel\"], best[\"capacity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (-candidate[\"travel\"], candidate[\"capacity\"], candidate[\"severity\"]) > (-best[\"travel\"], best[\"capacity\"], best[\"severity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1809.771088438,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 17920,
+        "output_tokens": 386,
+        "reasoning_output_tokens": 217,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19807,
+      "less_cache": 1887,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 5,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:25:42.866117417Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1809.820856246,
+      "monotonic_ready": 1810.490786142,
+      "monotonic_end": 1820.962854507,
+      "prepare_seconds": 0.6699298959999851,
+      "elapsed_seconds": 11.141998261000026,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-59db-7a52-bbcc-8c162eb08eab"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 519,
+              "reasoning_output_tokens": 304
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1820.857734516,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 19328,
+        "output_tokens": 519,
+        "reasoning_output_tokens": 304,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20011,
+      "less_cache": 683,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:25:54.013797635Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1820.968139303,
+      "monotonic_ready": 1821.546660251,
+      "monotonic_end": 1832.991562686,
+      "prepare_seconds": 0.5785209480000049,
+      "elapsed_seconds": 12.023423382999908,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-84d3-7f12-88b4-c342d26c4c7f"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 596,
+              "reasoning_output_tokens": 412
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1832.889167049,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 17920,
+        "output_tokens": 596,
+        "reasoning_output_tokens": 412,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20130,
+      "less_cache": 2210,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:26:06.042675190Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1832.997010738,
+      "monotonic_ready": 1833.582132844,
+      "monotonic_end": 1849.202807985,
+      "prepare_seconds": 0.5851221059999716,
+      "elapsed_seconds": 16.205797246999964,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-b2db-75f0-92aa-ea6df58ec987"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 754,
+              "reasoning_output_tokens": 570
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1849.092702998,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19562,
+        "cached_input_tokens": 19328,
+        "output_tokens": 754,
+        "reasoning_output_tokens": 570,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20316,
+      "less_cache": 988,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 5,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:26:22.253970441Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1849.208360681,
+      "monotonic_ready": 1849.245516093,
+      "monotonic_end": 1859.053304673,
+      "prepare_seconds": 0.03715541200017469,
+      "elapsed_seconds": 9.844943992000026,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e677-f00d-7bb2-99b5-4ed2041be61c"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19470,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 505,
+              "reasoning_output_tokens": 320
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "incoming_key = (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"])\nprior_key = (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])\nreturn incoming_key < prior_key"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1859.00414985,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19470,
+        "cached_input_tokens": 17920,
+        "output_tokens": 505,
+        "reasoning_output_tokens": 320,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19975,
+      "less_cache": 2055,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:26:32.104512580Z",
+      "prompt_sha256": "8878cdd93a5df301abd5315de5d70ee6a3ab451a933cd362b438258faacfc587",
+      "status": "passed",
+      "monotonic_start": 1859.059379313,
+      "monotonic_ready": 1859.671546279,
+      "monotonic_end": 1872.697549603,
+      "prepare_seconds": 0.6121669660001317,
+      "elapsed_seconds": 13.638170290000062,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e678-18c8-7322-8119-485f2abbe0d7"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19562,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 654,
+              "reasoning_output_tokens": 470
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1872.593354502,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19562,
+        "cached_input_tokens": 0,
+        "output_tokens": 654,
+        "reasoning_output_tokens": 470,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20216,
+      "less_cache": 20216,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:26:45.748860063Z",
+      "prompt_sha256": "5dd6f4ab8f5953a412ed194850ea28206c538803d8070739e2311e21c2743457",
+      "status": "passed",
+      "monotonic_start": 1872.703323876,
+      "monotonic_ready": 1872.744504198,
+      "monotonic_end": 1880.421456796,
+      "prepare_seconds": 0.04118032199994559,
+      "elapsed_seconds": 7.718132920000016,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e678-4cb9-71f2-86e4-bdf2f3d0b4ea"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19470,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 338,
+              "reasoning_output_tokens": 205
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (\n    prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"]\n)"
+              },
+              {
+                "name": "advance",
+                "body": "prior, breaks, current, longest = state_value\nbackward = prior is not None and earlier(incoming, prior)\ncount = 1 if backward else current + 1\nreturn incoming, breaks + int(backward), count, max(count, longest)"
+              }
+            ]
+          },
+          "answered": 1880.375050463,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19470,
+        "cached_input_tokens": 19328,
+        "output_tokens": 338,
+        "reasoning_output_tokens": 205,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19808,
+      "less_cache": 480,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "journal",
+      "repetition": 6,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:26:53.472800638Z",
+      "prompt_sha256": "5cbcb3206a71e1a36bd2549593c3e4acecc41a4355b46da0c892ca2358b8d731",
+      "status": "passed",
+      "monotonic_start": 1880.427467836,
+      "monotonic_ready": 1881.017363831,
+      "monotonic_end": 1893.078097917,
+      "prepare_seconds": 0.5898959950000062,
+      "elapsed_seconds": 12.650630080999917,
+      "before": {
+        "passed": 13,
+        "failed": 27,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e678-6d20-7f30-bb2c-d2ca304a6756"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19534,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 590,
+              "reasoning_output_tokens": 406
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "advance",
+                "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+              }
+            ]
+          },
+          "answered": 1892.977736299,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19534,
+        "cached_input_tokens": 19328,
+        "output_tokens": 590,
+        "reasoning_output_tokens": 406,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20124,
+      "less_cache": 796,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "tide-lib",
+      "utc": "2026-11-16T22:27:06.128808512Z",
+      "prompt_sha256": "532d4ee84dcdb797528199a68216708d5218a325d121e48ac9ab46df491f78e7",
+      "status": "passed",
+      "monotonic_start": 1893.083229993,
+      "monotonic_ready": 1893.656242295,
+      "monotonic_end": 1907.66613508,
+      "prepare_seconds": 0.5730123020000519,
+      "elapsed_seconds": 14.582905086999972,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e678-9d85-7ba1-bca6-e368d38037c6"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19492,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 788,
+              "reasoning_output_tokens": 573
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1907.576319473,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19492,
+        "cached_input_tokens": 19328,
+        "output_tokens": 788,
+        "reasoning_output_tokens": 573,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20280,
+      "less_cache": 952,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "tide-plain",
+      "utc": "2026-11-16T22:27:20.716844635Z",
+      "prompt_sha256": "b0c130585971433c757fcd2206e43030fc848b6e3ebb2d4eaadc070dfc9be525",
+      "status": "passed",
+      "monotonic_start": 1907.671146323,
+      "monotonic_ready": 1908.239510459,
+      "monotonic_end": 1919.285916476,
+      "prepare_seconds": 0.5683641360001275,
+      "elapsed_seconds": 11.614770153000109,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e678-d675-7711-b26f-b8139bf53de5"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19464,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 580,
+              "reasoning_output_tokens": 365
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (> (get severity candidate) (get severity best)) candidate (if (< (get severity candidate) (get severity best)) best (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate best)))))) (get id chosen))"
+              },
+              {
+                "name": "nearby",
+                "body": "(let chosen (fold jobs (initial jobs) best row candidate (if (< (get travel candidate) (get travel best)) candidate (if (> (get travel candidate) (get travel best)) best (if (> (get capacity candidate) (get capacity best)) candidate (if (< (get capacity candidate) (get capacity best)) best (if (> (get severity candidate) (get severity best)) candidate best)))))) (get id chosen))"
+              }
+            ]
+          },
+          "answered": 1919.18449299,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19464,
+        "cached_input_tokens": 17920,
+        "output_tokens": 580,
+        "reasoning_output_tokens": 365,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 20044,
+      "less_cache": 2124,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "family": "allocation",
+      "repetition": 6,
+      "arm": "python-native",
+      "utc": "2026-11-16T22:27:32.337524057Z",
+      "prompt_sha256": "6304a49d907185d8464c3f165fce49db18bc1bc8d8ff280bff22dede9475f2ef",
+      "status": "passed",
+      "monotonic_start": 1919.292419822,
+      "monotonic_ready": 1919.327191825,
+      "monotonic_end": 1930.207254972,
+      "prepare_seconds": 0.03477200299994365,
+      "elapsed_seconds": 10.914835150000044,
+      "before": {
+        "passed": 25,
+        "failed": 15,
+        "first_failure": {
+          "input": [
+            {
+              "id": 7,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 1
+            },
+            {
+              "id": 4,
+              "severity": 3,
+              "travel": 2,
+              "capacity": 6
+            },
+            {
+              "id": 9,
+              "severity": 2,
+              "travel": 2,
+              "capacity": 8
+            }
+          ],
+          "expected": {
+            "urgent_id": 4,
+            "nearby_id": 9
+          },
+          "actual": {
+            "urgent_id": 7,
+            "nearby_id": 7
+          }
+        }
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "thread_ids": [
+            "01a1e679-02b9-7dc0-a831-91a476e058ef"
+          ],
+          "usage": [
+            {
+              "input_tokens": 19421,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 482,
+              "reasoning_output_tokens": 309
+            }
+          ],
+          "commands": [],
+          "process_exit": 0,
+          "answer": {
+            "edits": [
+              {
+                "name": "urgent",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"severity\"], -candidate[\"travel\"], candidate[\"capacity\"]) > (best[\"severity\"], -best[\"travel\"], best[\"capacity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              },
+              {
+                "name": "nearby",
+                "body": "best = initial(jobs)\nfor candidate in jobs:\n    if (candidate[\"travel\"], -candidate[\"capacity\"], -candidate[\"severity\"]) < (best[\"travel\"], -best[\"capacity\"], -best[\"severity\"]):\n        best = candidate\nreturn best[\"id\"]"
+              }
+            ]
+          },
+          "answered": 1930.162841361,
+          "acceptance": "{\"passed\":40,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": ""
+        }
+      ],
+      "reported_usage": {
+        "input_tokens": 19421,
+        "cached_input_tokens": 17920,
+        "output_tokens": 482,
+        "reasoning_output_tokens": 309,
+        "cache_write_input_tokens": 0
+      },
+      "gross": 19903,
+      "less_cache": 1983,
+      "adopted_calls": [],
+      "replay": {
+        "control": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        },
+        "holdout": {
+          "exit": 0,
+          "result": {
+            "passed": 40,
+            "failed": 0,
+            "first_failure": null
+          },
+          "stderr": ""
+        }
+      }
+    }
+  ],
+  "summary": {
+    "allocation": {
+      "tide-plain": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 6,
+        "tool_calls": 0,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 13.916201831499961,
+            "minimum": 11.614770153000109,
+            "maximum": 15.800002219999897,
+            "total": 82.01826428599998
+          },
+          "gross": {
+            "median": 20108.0,
+            "minimum": 20028,
+            "maximum": 20225,
+            "total": 120661
+          },
+          "less_cache": {
+            "median": 2139.5,
+            "minimum": 813,
+            "maximum": 2305,
+            "total": 11733
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 17920,
+            "maximum": 19328,
+            "total": 108928
+          },
+          "output": {
+            "median": 644.0,
+            "minimum": 564,
+            "maximum": 761,
+            "total": 3877
+          },
+          "reasoning": {
+            "median": 429.0,
+            "minimum": 310,
+            "maximum": 518,
+            "total": 2520
+          },
+          "non_reasoning": {
+            "median": 215.0,
+            "minimum": 215,
+            "maximum": 254,
+            "total": 1357
+          },
+          "prepare": {
+            "median": 0.6545730545000197,
+            "minimum": 0.5683641360001275,
+            "maximum": 0.6984628749999047,
+            "total": 3.847260009000138
+          },
+          "after_answer": {
+            "median": 0.10278350999999475,
+            "minimum": 0.10141487599980792,
+            "maximum": 0.10683767000000444,
+            "total": 0.6201580069996453
+          }
+        }
+      },
+      "tide-lib": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 6,
+        "tool_calls": 0,
+        "adoption": 1,
+        "metrics": {
+          "seconds": {
+            "median": 14.931328527000005,
+            "minimum": 11.141998261000026,
+            "maximum": 17.758435141000064,
+            "total": 88.75968579300002
+          },
+          "gross": {
+            "median": 20249.5,
+            "minimum": 20011,
+            "maximum": 20310,
+            "total": 121273
+          },
+          "less_cache": {
+            "median": 2273.5,
+            "minimum": 683,
+            "maximum": 2390,
+            "total": 10937
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 17920,
+            "maximum": 19328,
+            "total": 110336
+          },
+          "output": {
+            "median": 757.5,
+            "minimum": 519,
+            "maximum": 818,
+            "total": 4321
+          },
+          "reasoning": {
+            "median": 542.5,
+            "minimum": 304,
+            "maximum": 640,
+            "total": 3093
+          },
+          "non_reasoning": {
+            "median": 215.0,
+            "minimum": 153,
+            "maximum": 215,
+            "total": 1228
+          },
+          "prepare": {
+            "median": 0.6815063844999258,
+            "minimum": 0.5730123020000519,
+            "maximum": 0.6940431310001713,
+            "total": 3.9837493120001
+          },
+          "after_answer": {
+            "median": 0.1055157625000902,
+            "minimum": 0.08981560699999136,
+            "maximum": 0.10952689900000223,
+            "total": 0.6228210110000418
+          }
+        }
+      },
+      "python-native": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 6,
+        "tool_calls": 0,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 10.087360826999998,
+            "minimum": 8.111839489999966,
+            "maximum": 13.798821939999925,
+            "total": 62.08334267899954
+          },
+          "gross": {
+            "median": 19878.0,
+            "minimum": 19807,
+            "maximum": 19932,
+            "total": 119248
+          },
+          "less_cache": {
+            "median": 1922.0,
+            "minimum": 722,
+            "maximum": 2012,
+            "total": 10448
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 17920,
+            "maximum": 19200,
+            "total": 108800
+          },
+          "output": {
+            "median": 457.0,
+            "minimum": 386,
+            "maximum": 511,
+            "total": 2722
+          },
+          "reasoning": {
+            "median": 280.5,
+            "minimum": 217,
+            "maximum": 331,
+            "total": 1671
+          },
+          "non_reasoning": {
+            "median": 176.5,
+            "minimum": 169,
+            "maximum": 180,
+            "total": 1051
+          },
+          "prepare": {
+            "median": 0.034854497499964054,
+            "minimum": 0.03398500299999796,
+            "maximum": 0.03650676999995994,
+            "total": 0.2097629679997226
+          },
+          "after_answer": {
+            "median": 0.044617196500098544,
+            "minimum": 0.04396121599984326,
+            "maximum": 0.04608709099989028,
+            "total": 0.2687769829997251
+          }
+        }
+      }
+    },
+    "journal": {
+      "tide-plain": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 6,
+        "tool_calls": 0,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 12.779979152499891,
+            "minimum": 9.167746118999958,
+            "maximum": 14.63467183900002,
+            "total": 75.54957319199957
+          },
+          "gross": {
+            "median": 20114.0,
+            "minimum": 19940,
+            "maximum": 20234,
+            "total": 120609
+          },
+          "less_cache": {
+            "median": 851.0,
+            "minimum": 749,
+            "maximum": 2210,
+            "total": 7457
+          },
+          "cached": {
+            "median": 19328.0,
+            "minimum": 17920,
+            "maximum": 19328,
+            "total": 113152
+          },
+          "output": {
+            "median": 580.0,
+            "minimum": 406,
+            "maximum": 700,
+            "total": 3405
+          },
+          "reasoning": {
+            "median": 396.0,
+            "minimum": 222,
+            "maximum": 516,
+            "total": 2301
+          },
+          "non_reasoning": {
+            "median": 184.0,
+            "minimum": 184,
+            "maximum": 184,
+            "total": 1104
+          },
+          "prepare": {
+            "median": 0.5839577885000153,
+            "minimum": 0.5249938700001167,
+            "maximum": 0.591872568999861,
+            "total": 3.4513761579999027
+          },
+          "after_answer": {
+            "median": 0.10409711999989213,
+            "minimum": 0.10036161799985166,
+            "maximum": 0.10884730699990541,
+            "total": 0.6245407319995593
+          }
+        }
+      },
+      "tide-lib": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 7,
+        "tool_calls": 0,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 14.86649166899997,
+            "minimum": 13.594141242999967,
+            "maximum": 31.0903444999999,
+            "total": 104.26143661799983
+          },
+          "gross": {
+            "median": 20257.0,
+            "minimum": 20216,
+            "maximum": 40948,
+            "total": 142229
+          },
+          "less_cache": {
+            "median": 2326.5,
+            "minimum": 928,
+            "maximum": 20216,
+            "total": 30485
+          },
+          "cached": {
+            "median": 18624.0,
+            "minimum": 0,
+            "maximum": 37248,
+            "total": 111744
+          },
+          "output": {
+            "median": 695.0,
+            "minimum": 654,
+            "maximum": 1584,
+            "total": 5055
+          },
+          "reasoning": {
+            "median": 511.0,
+            "minimum": 470,
+            "maximum": 1216,
+            "total": 3767
+          },
+          "non_reasoning": {
+            "median": 184.0,
+            "minimum": 184,
+            "maximum": 368,
+            "total": 1288
+          },
+          "prepare": {
+            "median": 0.588901167500012,
+            "minimum": 0.5770157819999895,
+            "maximum": 0.6121669660001317,
+            "total": 3.542585173000134
+          },
+          "after_answer": {
+            "median": 0.10800502199992934,
+            "minimum": 0.10401743400007035,
+            "maximum": 0.11010498699988602,
+            "total": 0.6435946139997668
+          }
+        }
+      },
+      "python-native": {
+        "runs": 6,
+        "passed": 6,
+        "attempts": 6,
+        "tool_calls": 2,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 10.199286772500045,
+            "minimum": 7.718132920000016,
+            "maximum": 25.088049525000088,
+            "total": 73.5369294200002
+          },
+          "gross": {
+            "median": 19932.5,
+            "minimum": 19782,
+            "maximum": 61284,
+            "total": 160743
+          },
+          "less_cache": {
+            "median": 1877.0,
+            "minimum": 480,
+            "maximum": 2084,
+            "total": 8935
+          },
+          "cached": {
+            "median": 18624.0,
+            "minimum": 17920,
+            "maximum": 59392,
+            "total": 151808
+          },
+          "output": {
+            "median": 462.5,
+            "minimum": 312,
+            "maximum": 1337,
+            "total": 3446
+          },
+          "reasoning": {
+            "median": 294.5,
+            "minimum": 183,
+            "maximum": 417,
+            "total": 1733
+          },
+          "non_reasoning": {
+            "median": 168.0,
+            "minimum": 129,
+            "maximum": 920,
+            "total": 1713
+          },
+          "prepare": {
+            "median": 0.03742603400007738,
+            "minimum": 0.035878615000001446,
+            "maximum": 0.04118032199994559,
+            "total": 0.22645832800003518
+          },
+          "after_answer": {
+            "median": 0.047960678499975984,
+            "minimum": 0.046406333000049926,
+            "maximum": 0.05199754499994924,
+            "total": 0.2900710880001043
+          }
+        }
+      }
+    },
+    "both": {
+      "tide-plain": {
+        "runs": 12,
+        "passed": 12,
+        "attempts": 12,
+        "tool_calls": 0,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 13.204511756999864,
+            "minimum": 9.167746118999958,
+            "maximum": 15.800002219999897,
+            "total": 157.56783747799955
+          },
+          "gross": {
+            "median": 20114.0,
+            "minimum": 19940,
+            "maximum": 20234,
+            "total": 241270
+          },
+          "less_cache": {
+            "median": 2064.0,
+            "minimum": 749,
+            "maximum": 2305,
+            "total": 19190
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 17920,
+            "maximum": 19328,
+            "total": 222080
+          },
+          "output": {
+            "median": 593.0,
+            "minimum": 406,
+            "maximum": 761,
+            "total": 7282
+          },
+          "reasoning": {
+            "median": 401.0,
+            "minimum": 222,
+            "maximum": 518,
+            "total": 4821
+          },
+          "non_reasoning": {
+            "median": 199.5,
+            "minimum": 184,
+            "maximum": 254,
+            "total": 2461
+          },
+          "prepare": {
+            "median": 0.589645312000016,
+            "minimum": 0.5249938700001167,
+            "maximum": 0.6984628749999047,
+            "total": 7.298636167000041
+          },
+          "after_answer": {
+            "median": 0.10357938649997322,
+            "minimum": 0.10036161799985166,
+            "maximum": 0.10884730699990541,
+            "total": 1.2446987389992046
+          }
+        }
+      },
+      "tide-lib": {
+        "runs": 12,
+        "passed": 12,
+        "attempts": 13,
+        "tool_calls": 0,
+        "adoption": 1,
+        "metrics": {
+          "seconds": {
+            "median": 14.925199648999978,
+            "minimum": 11.141998261000026,
+            "maximum": 31.0903444999999,
+            "total": 193.02112241099985
+          },
+          "gross": {
+            "median": 20257.0,
+            "minimum": 20011,
+            "maximum": 40948,
+            "total": 263502
+          },
+          "less_cache": {
+            "median": 2307.0,
+            "minimum": 683,
+            "maximum": 20216,
+            "total": 41422
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 0,
+            "maximum": 37248,
+            "total": 222080
+          },
+          "output": {
+            "median": 711.5,
+            "minimum": 519,
+            "maximum": 1584,
+            "total": 9376
+          },
+          "reasoning": {
+            "median": 512.0,
+            "minimum": 304,
+            "maximum": 1216,
+            "total": 6860
+          },
+          "non_reasoning": {
+            "median": 199.5,
+            "minimum": 153,
+            "maximum": 368,
+            "total": 2516
+          },
+          "prepare": {
+            "median": 0.6024906640000154,
+            "minimum": 0.5730123020000519,
+            "maximum": 0.6940431310001713,
+            "total": 7.526334485000234
+          },
+          "after_answer": {
+            "median": 0.10659376450007585,
+            "minimum": 0.08981560699999136,
+            "maximum": 0.11010498699988602,
+            "total": 1.2664156249998086
+          }
+        }
+      },
+      "python-native": {
+        "runs": 12,
+        "passed": 12,
+        "attempts": 12,
+        "tool_calls": 2,
+        "adoption": 0,
+        "metrics": {
+          "seconds": {
+            "median": 10.199286772500045,
+            "minimum": 7.718132920000016,
+            "maximum": 25.088049525000088,
+            "total": 135.62027209899975
+          },
+          "gross": {
+            "median": 19896.5,
+            "minimum": 19782,
+            "maximum": 61284,
+            "total": 279991
+          },
+          "less_cache": {
+            "median": 1901.5,
+            "minimum": 480,
+            "maximum": 2084,
+            "total": 19383
+          },
+          "cached": {
+            "median": 17920.0,
+            "minimum": 17920,
+            "maximum": 59392,
+            "total": 260608
+          },
+          "output": {
+            "median": 457.0,
+            "minimum": 312,
+            "maximum": 1337,
+            "total": 6168
+          },
+          "reasoning": {
+            "median": 289.0,
+            "minimum": 183,
+            "maximum": 417,
+            "total": 3404
+          },
+          "non_reasoning": {
+            "median": 176.5,
+            "minimum": 129,
+            "maximum": 920,
+            "total": 2764
+          },
+          "prepare": {
+            "median": 0.036192692499980694,
+            "minimum": 0.03398500299999796,
+            "maximum": 0.04118032199994559,
+            "total": 0.4362212959997578
+          },
+          "after_answer": {
+            "median": 0.0462467119999701,
+            "minimum": 0.04396121599984326,
+            "maximum": 0.05199754499994924,
+            "total": 0.5588480709998294
+          }
+        }
+      }
+    }
+  },
+  "paired_lib_minus": {
+    "allocation": {
+      "tide-plain": {
+        "seconds": {
+          "median": 2.976954115500007,
+          "minimum": -3.1907101120000334,
+          "maximum": 3.567294651000111,
+          "wins": 2,
+          "ties": 0
+        },
+        "gross": {
+          "median": 142.0,
+          "minimum": -137,
+          "maximum": 236,
+          "wins": 1,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 112.5,
+          "minimum": -1545,
+          "maximum": 1552,
+          "wins": 2,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -1408,
+          "maximum": 1408,
+          "wins": 1,
+          "ties": 3
+        },
+        "output": {
+          "median": 114.0,
+          "minimum": -165,
+          "maximum": 208,
+          "wins": 1,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 133.5,
+          "minimum": -165,
+          "maximum": 208,
+          "wins": 1,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": -14.0,
+          "minimum": -62,
+          "maximum": 0,
+          "wins": 3,
+          "ties": 3
+        },
+        "prepare": {
+          "median": 0.01293097699988266,
+          "minimum": -0.016841725999938717,
+          "maximum": 0.11873286300010477,
+          "wins": 2,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.0021320694999076295,
+          "minimum": -0.011607878999939203,
+          "maximum": 0.005305050000060874,
+          "wins": 1,
+          "ties": 0
+        },
+        "both_wins": 1
+      },
+      "python-native": {
+        "seconds": {
+          "median": 3.9694622015000505,
+          "minimum": -0.8692165439999826,
+          "maximum": 8.769373047000272,
+          "wins": 1,
+          "ties": 0
+        },
+        "gross": {
+          "median": 337.0,
+          "minimum": 204,
+          "maximum": 479,
+          "wins": 0,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 334.0,
+          "minimum": -1204,
+          "maximum": 1577,
+          "wins": 2,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -1280,
+          "maximum": 1408,
+          "wins": 1,
+          "ties": 3
+        },
+        "output": {
+          "median": 266.0,
+          "minimum": 133,
+          "maximum": 408,
+          "wins": 0,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 227.5,
+          "minimum": 87,
+          "maximum": 388,
+          "wins": 0,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": 38.5,
+          "minimum": -27,
+          "maximum": 46,
+          "wins": 1,
+          "ties": 0
+        },
+        "prepare": {
+          "median": 0.6468495359999906,
+          "minimum": 0.5382402990001083,
+          "maximum": 0.6598550670003078,
+          "wins": 0,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.06076862100019298,
+          "minimum": 0.04540199599978223,
+          "maximum": 0.06470611700001427,
+          "wins": 0,
+          "ties": 0
+        },
+        "both_wins": 0
+      }
+    },
+    "journal": {
+      "tide-plain": {
+        "seconds": {
+          "median": 2.5849570365001,
+          "minimum": -0.5696323029999348,
+          "maximum": 18.181016276000037,
+          "wins": 1,
+          "ties": 0
+        },
+        "gross": {
+          "median": 183.5,
+          "minimum": 22,
+          "maximum": 20844,
+          "wins": 0,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 942.0,
+          "minimum": -1222,
+          "maximum": 19420,
+          "wins": 1,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -19328,
+          "maximum": 17920,
+          "wins": 2,
+          "ties": 2
+        },
+        "output": {
+          "median": 155.5,
+          "minimum": -6,
+          "maximum": 1014,
+          "wins": 1,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 155.5,
+          "minimum": -6,
+          "maximum": 830,
+          "wins": 1,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": 0.0,
+          "minimum": 0,
+          "maximum": 184,
+          "wins": 0,
+          "ties": 5
+        },
+        "prepare": {
+          "median": 0.011358686499988835,
+          "minimum": -0.01237884700003633,
+          "maximum": 0.06768635899993569,
+          "wins": 2,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.004053438000028109,
+          "minimum": -0.004829872999835061,
+          "maximum": 0.007709349999913684,
+          "wins": 1,
+          "ties": 0
+        },
+        "both_wins": 0
+      },
+      "python-native": {
+        "seconds": {
+          "median": 4.480274529999974,
+          "minimum": -9.820555314000103,
+          "maximum": 22.240291410999816,
+          "wins": 1,
+          "ties": 0
+        },
+        "gross": {
+          "median": 374.5,
+          "minimum": -41028,
+          "maximum": 21058,
+          "wins": 1,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 353.5,
+          "minimum": -1067,
+          "maximum": 19736,
+          "wins": 2,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -40064,
+          "maximum": 17920,
+          "wins": 2,
+          "ties": 2
+        },
+        "output": {
+          "median": 282.5,
+          "minimum": -643,
+          "maximum": 1164,
+          "wins": 1,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 257.5,
+          "minimum": 93,
+          "maximum": 947,
+          "wins": 0,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": 25.0,
+          "minimum": -736,
+          "maximum": 217,
+          "wins": 3,
+          "ties": 0
+        },
+        "prepare": {
+          "median": 0.5514751334999346,
+          "minimum": 0.541137166999988,
+          "maximum": 0.5709866440001861,
+          "wins": 0,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.05893918049991953,
+          "minimum": 0.05673650399990038,
+          "maximum": 0.06095016399990527,
+          "wins": 0,
+          "ties": 0
+        },
+        "both_wins": 1
+      }
+    },
+    "both": {
+      "tide-plain": {
+        "seconds": {
+          "median": 2.976954115500007,
+          "minimum": -3.1907101120000334,
+          "maximum": 18.181016276000037,
+          "wins": 3,
+          "ties": 0
+        },
+        "gross": {
+          "median": 144.0,
+          "minimum": -137,
+          "maximum": 20844,
+          "wins": 1,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 142.0,
+          "minimum": -1545,
+          "maximum": 19420,
+          "wins": 3,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -19328,
+          "maximum": 17920,
+          "wins": 3,
+          "ties": 5
+        },
+        "output": {
+          "median": 116.0,
+          "minimum": -165,
+          "maximum": 1014,
+          "wins": 2,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 152.0,
+          "minimum": -165,
+          "maximum": 830,
+          "wins": 2,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": 0.0,
+          "minimum": -62,
+          "maximum": 184,
+          "wins": 3,
+          "ties": 8
+        },
+        "prepare": {
+          "median": 0.011358686499988835,
+          "minimum": -0.016841725999938717,
+          "maximum": 0.11873286300010477,
+          "wins": 4,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.0032613560000527286,
+          "minimum": -0.011607878999939203,
+          "maximum": 0.007709349999913684,
+          "wins": 2,
+          "ties": 0
+        },
+        "both_wins": 1
+      },
+      "python-native": {
+        "seconds": {
+          "median": 3.9694622015000505,
+          "minimum": -9.820555314000103,
+          "maximum": 22.240291410999816,
+          "wins": 2,
+          "ties": 0
+        },
+        "gross": {
+          "median": 359.0,
+          "minimum": -41028,
+          "maximum": 21058,
+          "wins": 1,
+          "ties": 0
+        },
+        "less_cache": {
+          "median": 334.0,
+          "minimum": -1204,
+          "maximum": 19736,
+          "wins": 4,
+          "ties": 0
+        },
+        "cached": {
+          "median": 0.0,
+          "minimum": -40064,
+          "maximum": 17920,
+          "wins": 3,
+          "ties": 5
+        },
+        "output": {
+          "median": 277.5,
+          "minimum": -643,
+          "maximum": 1164,
+          "wins": 1,
+          "ties": 0
+        },
+        "reasoning": {
+          "median": 257.0,
+          "minimum": 87,
+          "maximum": 947,
+          "wins": 0,
+          "ties": 0
+        },
+        "non_reasoning": {
+          "median": 38.5,
+          "minimum": -736,
+          "maximum": 217,
+          "wins": 4,
+          "ties": 0
+        },
+        "prepare": {
+          "median": 0.5636466209999753,
+          "minimum": 0.5382402990001083,
+          "maximum": 0.6598550670003078,
+          "wins": 0,
+          "ties": 0
+        },
+        "after_answer": {
+          "median": 0.06029555200007053,
+          "minimum": 0.04540199599978223,
+          "maximum": 0.06470611700001427,
+          "wins": 0,
+          "ties": 0
+        },
+        "both_wins": 1
+      }
+    }
+  },
+  "source_sha256": {
+    "lib/ordering.tide": "3defda3d26aff38e3b1d070c898ec83999a04797a3cbe33181f79da435632e83",
+    "workbench/project_context.tide": "99849400f9309f9c4992cbeb37276ca769197b0442c7accbaef8df6b63c7d6fa",
+    "workbench/function_body.tide": "72f581b0a926dfd73351ac1d520bc1395555c700cb3b78b6b699be984882380d"
+  }
+}

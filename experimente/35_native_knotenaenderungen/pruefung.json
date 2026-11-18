@@ -1,0 +1,608 @@
+{
+  "date": "2026-11-17",
+  "platform": "linux x64",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "compiler": "g++ (GCC) 16.2.1 20260810",
+  "method": {
+    "timing": "Installed public CLI on CPU 2, parent also pinned, alternating methods, 3 warm-up pairs and 15 measured calls per mode, includes spawn, JSON serialization, verification and output. File preparation, initial context lookup and separate final test excluded.",
+    "tokenizer": "o200k_base",
+    "answer": "Exact UTF-8 contents of complete candidate file vs minified single-entry JSON patch, without flags, prompts, hidden reasoning, shell quoting or filenames. Preview stdout includes source, write stdout omits source."
+  },
+  "python_free": {
+    "empty_build": true,
+    "namespace": "bwrap, no network, explicit /usr/bin allowlist, interpreter absent, Python library paths masked, clean checkout subset native/ apps/ lib/ Makefile tide. Build and installation archive not mounted.",
+    "make_target": "check-native install",
+    "bootstrap_source_and_executable_fixed_point": true,
+    "verified_elf_checksums": 12,
+    "staged_tools_sha256": {
+      "tidec": "28434b5c447db866441716c5780a78112510cc4ea313c68039233590201b530b",
+      "catalog": "70d00d40cb6498d8da987646e6ac6f32ecfad490a70b773858b0d7733abcf583",
+      "forms": "327debd121e772572a1f23ea59a569b5b7985fb630a3b67ebcba7926cbf1c361",
+      "checker": "52235629f18c86e9dcd8f11d100a226ff84fefda33c612f6aa33bb0c0f5ec63d",
+      "inspector": "4f25641fc5c9245e418f087b71c2d72cac6eb3025fba923420272788f94b62d4",
+      "editor": "e2a9d801b553f61ceb13e36f5ddf112e1afa8e6d6056470fc2d70eb3f4732276"
+    },
+    "legacy_upgrade": {
+      "source_modules_removed": 11,
+      "bytecode_files_removed": 11,
+      "launchers_removed": 2,
+      "extra_file_preserved": true
+    },
+    "interactive_status": {
+      "code": "E_BACKEND",
+      "message": "Interactive terminal and document I/O still require a native implementation."
+    }
+  },
+  "validation": {
+    "nodes": {
+      "counts": {
+        "replace": 236,
+        "op": 236,
+        "emptyArray": 2,
+        "emptyString": 2,
+        "scalar": 2,
+        "bool": 2,
+        "object": 2,
+        "nonStringId": 2,
+        "nested": 2,
+        "extra": 2,
+        "extra2": 2,
+        "missingOp": 2,
+        "unknownId": 2,
+        "unknownFile": 2,
+        "unknownOp": 2,
+        "badType": 2,
+        "badArity": 2,
+        "unknownName": 2,
+        "wrongScope": 2,
+        "overlap": 2,
+        "duplicate": 2,
+        "two": 2,
+        "operatorAndChild": 2,
+        "wrongExample": 2,
+        "badReplace": 2,
+        "blankReplace": 2,
+        "newline": 2,
+        "escaped": 2,
+        "over256": 2,
+        "JSON": 18,
+        "staleJSON": 18,
+        "imported write": 4,
+        "256 disjoint": 1
+      },
+      "outcomes": {
+        "ok": 325,
+        "E_EDIT": 193,
+        "E_NODE": 5,
+        "E_TYPE": 2,
+        "E_SYNTAX": 2,
+        "E_NAME": 4,
+        "E_EXAMPLE": 3,
+        "E_JSON": 30,
+        "E_REVISION": 3
+      },
+      "differences": [],
+      "oracleGaps": [
+        {
+          "target": "balance.tide",
+          "node": "2:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "4:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "11:1"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "12:3"
+        },
+        {
+          "target": "functions/lists.tide",
+          "node": "list_ops.tide:2:1"
+        }
+      ]
+    },
+    "whole_source_cases": 176,
+    "whole_source_differences": 0,
+    "prior_suites": {
+      "scalar": 466,
+      "lists": 176,
+      "rules": 333,
+      "inspection": 595,
+      "limits": 8,
+      "queries": 218,
+      "diagnostics": 45,
+      "fingerprints": 26,
+      "arrays": 83
+    },
+    "parallel_module_writes": [
+      {
+        "round": 1,
+        "success": 1,
+        "stale": 7,
+        "revision": "8e49957044905b3d51c547725c5dcd3090226bcb6e7b14fcb6706e6d2afdb8e8"
+      },
+      {
+        "round": 2,
+        "success": 1,
+        "stale": 7,
+        "revision": "c2e7f53967dabb101afbdbf15703c3ee2fcf65852d3d8ed56fb4332f28c822df"
+      },
+      {
+        "round": 3,
+        "success": 1,
+        "stale": 7,
+        "revision": "eb23f7481fcd39bc10183a7e2880a6cb564f4d1f7b9bb7dd0a6dcfbb8387119e"
+      },
+      {
+        "round": 4,
+        "success": 1,
+        "stale": 7,
+        "revision": "c455cc04aa786148125a33d096d5874ed29998cc258893db5ea1e8ed68ac1079"
+      },
+      {
+        "round": 5,
+        "success": 1,
+        "stale": 7,
+        "revision": "afacd9c9826bcf7a1be1e693f0d8ff9dda261abddb38cdd3e81fc13b1408c9a8"
+      },
+      {
+        "round": 6,
+        "success": 1,
+        "stale": 7,
+        "revision": "fc7dd2b9169fb1e0350a160aaac9dc40f5520092f938a42a01b6cfa5260e2510"
+      },
+      {
+        "round": 7,
+        "success": 1,
+        "stale": 7,
+        "revision": "450a91d60fa575adf357fabdf3a0b60fa553bc659fe45877a861b10886e5f271"
+      },
+      {
+        "round": 8,
+        "success": 1,
+        "stale": 7,
+        "revision": "247702e4a521e02cc8efc5258a7c72d8038dba8e3744929c28c3dc800a5f2712"
+      },
+      {
+        "round": 9,
+        "success": 1,
+        "stale": 7,
+        "revision": "1cf0aae380fdf4d9536eaf4b2257fd005fa296c15c2c56bac806539d1df7a3fb"
+      },
+      {
+        "round": 10,
+        "success": 1,
+        "stale": 7,
+        "revision": "6552198eecdfae09f6045fae73550007555ad24c869d741389c820b17d60832c"
+      },
+      {
+        "round": 11,
+        "success": 1,
+        "stale": 7,
+        "revision": "7b8e31ff212cca4deb7b2aeb5684e6b7ec45f314e1dbc525966e183445b3a4cd"
+      },
+      {
+        "round": 12,
+        "success": 1,
+        "stale": 7,
+        "revision": "e14bc782fd9fd85ff4f55ebc1288a6994854afa6958078306ca393c8bddc000e"
+      }
+    ]
+  },
+  "timings": [
+    {
+      "name": "saldo",
+      "write": false,
+      "base": "6f2bd07d27d4aaf0ce6edb1b7378f37f6eb8bfdaa1925f01a1b06d974a226925",
+      "node": "2:38",
+      "patch": "[{\"node\":\"2:38\",\"op\":\"+\"}]",
+      "source_sha256": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25",
+      "examples": 3,
+      "rows": {
+        "nodes": {
+          "times": [
+            6.12,
+            6.058,
+            6.069,
+            6.14,
+            6.016,
+            6.033,
+            6.08,
+            6.071,
+            5.998,
+            6.137,
+            6.148,
+            6,
+            6.066,
+            6.037,
+            6.098
+          ],
+          "answer_bytes": 26,
+          "answer_tokens": 12,
+          "stdout_tokens": 236,
+          "median_ms": 6.069
+        },
+        "source": {
+          "times": [
+            6.124,
+            6.016,
+            5.993,
+            6.092,
+            6.041,
+            6.196,
+            6.042,
+            5.991,
+            6.121,
+            5.964,
+            5.957,
+            6.005,
+            6.016,
+            6.001,
+            6.03
+          ],
+          "answer_bytes": 418,
+          "answer_tokens": 120,
+          "stdout_tokens": 236,
+          "median_ms": 6.016
+        }
+      }
+    },
+    {
+      "name": "saldo",
+      "write": true,
+      "base": "6f2bd07d27d4aaf0ce6edb1b7378f37f6eb8bfdaa1925f01a1b06d974a226925",
+      "node": "2:38",
+      "patch": "[{\"node\":\"2:38\",\"op\":\"+\"}]",
+      "source_sha256": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25",
+      "examples": 3,
+      "rows": {
+        "nodes": {
+          "times": [
+            7.547,
+            7.612,
+            7.697,
+            7.64,
+            7.631,
+            7.619,
+            7.614,
+            7.65,
+            7.691,
+            7.987,
+            7.781,
+            7.702,
+            7.817,
+            7.835,
+            7.837
+          ],
+          "answer_bytes": 26,
+          "answer_tokens": 12,
+          "stdout_tokens": 103,
+          "median_ms": 7.691
+        },
+        "source": {
+          "times": [
+            7.49,
+            7.622,
+            7.609,
+            7.568,
+            7.673,
+            7.624,
+            7.595,
+            7.52,
+            7.712,
+            7.883,
+            8.002,
+            7.787,
+            7.936,
+            7.854,
+            7.728
+          ],
+          "answer_bytes": 418,
+          "answer_tokens": 120,
+          "stdout_tokens": 103,
+          "median_ms": 7.673
+        }
+      }
+    },
+    {
+      "name": "ordering",
+      "write": false,
+      "base": "9316d3c8fa039d6c43825001d714f3672020f3f3ae18d71ea147686d8b32e51d",
+      "node": "5:27",
+      "patch": "[{\"node\":\"5:27\",\"replace\":\"on_equal\"}]",
+      "source_sha256": "3defda3d26aff38e3b1d070c898ec83999a04797a3cbe33181f79da435632e83",
+      "examples": 8,
+      "rows": {
+        "nodes": {
+          "times": [
+            6.483,
+            6.611,
+            6.469,
+            6.604,
+            6.58,
+            6.514,
+            6.594,
+            6.594,
+            6.517,
+            6.461,
+            6.596,
+            6.552,
+            6.529,
+            6.498,
+            6.593
+          ],
+          "answer_bytes": 38,
+          "answer_tokens": 14,
+          "stdout_tokens": 442,
+          "median_ms": 6.552
+        },
+        "source": {
+          "times": [
+            6.436,
+            6.507,
+            6.525,
+            6.486,
+            6.536,
+            6.535,
+            6.47,
+            6.575,
+            6.493,
+            6.472,
+            6.483,
+            6.64,
+            6.564,
+            6.488,
+            6.459
+          ],
+          "answer_bytes": 1181,
+          "answer_tokens": 312,
+          "stdout_tokens": 442,
+          "median_ms": 6.493
+        }
+      }
+    },
+    {
+      "name": "ordering",
+      "write": true,
+      "base": "9316d3c8fa039d6c43825001d714f3672020f3f3ae18d71ea147686d8b32e51d",
+      "node": "5:27",
+      "patch": "[{\"node\":\"5:27\",\"replace\":\"on_equal\"}]",
+      "source_sha256": "3defda3d26aff38e3b1d070c898ec83999a04797a3cbe33181f79da435632e83",
+      "examples": 8,
+      "rows": {
+        "nodes": {
+          "times": [
+            8.488,
+            8.373,
+            8.396,
+            8.371,
+            8.842,
+            8.415,
+            8.435,
+            9.267,
+            8.593,
+            8.757,
+            8.198,
+            8.259,
+            8.231,
+            8.366,
+            8.191
+          ],
+          "answer_bytes": 38,
+          "answer_tokens": 14,
+          "stdout_tokens": 100,
+          "median_ms": 8.396
+        },
+        "source": {
+          "times": [
+            8.282,
+            8.229,
+            8.21,
+            8.276,
+            8.299,
+            8.297,
+            8.424,
+            8.586,
+            8.413,
+            8.175,
+            8.05,
+            8.197,
+            8.191,
+            8.107,
+            8.137
+          ],
+          "answer_bytes": 1181,
+          "answer_tokens": 312,
+          "stdout_tokens": 100,
+          "median_ms": 8.229
+        }
+      }
+    },
+    {
+      "name": "import_report",
+      "write": false,
+      "base": "353e32d194da0e0a5efb5347112dbde9b135475aa624f0aaf5e7c10370c09c9c",
+      "node": "5:5",
+      "patch": "[{\"node\":\"5:5\",\"op\":\"<\"}]",
+      "source_sha256": "aaa2f8248c216aea8a4bedcd1782c47d3403641349d53701459b20e2d31a8c7d",
+      "examples": 6,
+      "rows": {
+        "nodes": {
+          "times": [
+            6.84,
+            6.608,
+            6.715,
+            6.728,
+            6.682,
+            6.62,
+            6.691,
+            6.675,
+            6.653,
+            6.606,
+            6.604,
+            6.761,
+            6.703,
+            6.684,
+            6.675
+          ],
+          "answer_bytes": 25,
+          "answer_tokens": 13,
+          "stdout_tokens": 373,
+          "median_ms": 6.682
+        },
+        "source": {
+          "times": [
+            6.671,
+            6.74,
+            6.675,
+            6.57,
+            6.647,
+            6.599,
+            6.784,
+            6.59,
+            6.612,
+            6.631,
+            6.617,
+            6.628,
+            6.517,
+            6.586,
+            6.598
+          ],
+          "answer_bytes": 862,
+          "answer_tokens": 240,
+          "stdout_tokens": 373,
+          "median_ms": 6.617
+        }
+      }
+    },
+    {
+      "name": "import_report",
+      "write": true,
+      "base": "353e32d194da0e0a5efb5347112dbde9b135475aa624f0aaf5e7c10370c09c9c",
+      "node": "5:5",
+      "patch": "[{\"node\":\"5:5\",\"op\":\"<\"}]",
+      "source_sha256": "aaa2f8248c216aea8a4bedcd1782c47d3403641349d53701459b20e2d31a8c7d",
+      "examples": 6,
+      "rows": {
+        "nodes": {
+          "times": [
+            8.332,
+            8.378,
+            8.413,
+            8.355,
+            8.404,
+            8.576,
+            8.412,
+            8.441,
+            8.519,
+            8.48,
+            8.532,
+            8.47,
+            8.679,
+            8.67,
+            8.478
+          ],
+          "answer_bytes": 25,
+          "answer_tokens": 13,
+          "stdout_tokens": 106,
+          "median_ms": 8.47
+        },
+        "source": {
+          "times": [
+            8.255,
+            8.379,
+            8.313,
+            8.42,
+            8.36,
+            8.377,
+            8.313,
+            8.415,
+            8.392,
+            8.755,
+            8.563,
+            8.726,
+            8.899,
+            8.524,
+            8.514
+          ],
+          "answer_bytes": 862,
+          "answer_tokens": 240,
+          "stdout_tokens": 106,
+          "median_ms": 8.415
+        }
+      }
+    },
+    {
+      "name": "import_adjust",
+      "write": false,
+      "base": "f5fa529d07f322f3cc2cf761063c526c66012a95e419b8e4feb93db6017165cd",
+      "node": "adjustment.tide:2:1",
+      "patch": "[{\"node\":\"adjustment.tide:2:1\",\"op\":\"+\"}]",
+      "source_sha256": "a5abd31221a7c0aba4e583927488513e99db0ad016450e91e76804d88253ff1b",
+      "examples": 6,
+      "rows": {
+        "nodes": {
+          "times": [
+            6.759,
+            6.569,
+            6.616,
+            6.606,
+            6.719,
+            6.608,
+            6.752,
+            6.58,
+            6.697,
+            6.562,
+            6.699,
+            6.581,
+            6.718,
+            6.593,
+            6.661
+          ],
+          "answer_bytes": 41,
+          "answer_tokens": 17,
+          "stdout_tokens": 132,
+          "median_ms": 6.616
+        }
+      }
+    },
+    {
+      "name": "import_adjust",
+      "write": true,
+      "base": "f5fa529d07f322f3cc2cf761063c526c66012a95e419b8e4feb93db6017165cd",
+      "node": "adjustment.tide:2:1",
+      "patch": "[{\"node\":\"adjustment.tide:2:1\",\"op\":\"+\"}]",
+      "source_sha256": "a5abd31221a7c0aba4e583927488513e99db0ad016450e91e76804d88253ff1b",
+      "examples": 6,
+      "rows": {
+        "nodes": {
+          "times": [
+            8.589,
+            8.545,
+            12.867,
+            8.294,
+            8.337,
+            8.291,
+            8.37,
+            8.423,
+            8.284,
+            8.299,
+            8.286,
+            8.405,
+            8.437,
+            8.312,
+            8.39
+          ],
+          "answer_bytes": 41,
+          "answer_tokens": 17,
+          "stdout_tokens": 103,
+          "median_ms": 8.37
+        }
+      }
+    }
+  ]
+}

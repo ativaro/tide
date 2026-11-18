@@ -1,0 +1,27 @@
+{
+  "files": {
+    "abnahme.tide": "0b311e085eec60aa019f9b544048aa77ce7f8af6d637118036ef26f0707e2c5f",
+    "aufgaben.json": "45aa609c2dcc75bc450068ce10e4ab99d2026b1f256f748302880a9995dc2ab2",
+    "versuchsplan.json": "d5e75c51767eafcfacb2017528900070002d15950dcd1104c8c518ebc025d6f4",
+    "messen.mjs": "5d328aca37bb7bc62ca1757144f3ff87fd7fd2a9fc7341b292b38bda82daadf4",
+    "cpython_suche.py": "c343b5d72f9aa668661257d484e47c9c4eb62d438355a7ada0d2a6000eebef1c",
+    "suche.patch": "ebc3f69058e854576046120679dab8f73a2d77bb08a32c818bb7bf7969b47daa",
+    "../../native/bootstrap/explain.tide": "7800348c444404fe228824bb22d0263263d39c47ac244dbb13f7e191d20f1cc8",
+    "../60_reparaturzeit/cpython_comparison.py": "56d480b0bd79f704744bf0ab308564e1e592bd75ab004c4ac96b75d69a3970ea",
+    "../55_knotenreparatur/cpython_ast.py": "2c71e4b4c054e4f123684dd52780505be011b81e6f81d405ceb432a255f07d65",
+    "../../tide.lock": "9f3f465178707337cc410daedaea5f3cfde2ddac9b25ff9c7297bb17134492ad",
+    "../../tide": "8e02a4594002285be6e67f06e788cddc882b7bbb4ad68764f048da8549372827"
+  },
+  "builds": {
+    "before": "aac39bdfc5524d0f54e418b0f0ee7c5c62fbc2a630976afb213ff8a12b81024e",
+    "after": "baa22207b4e2e294f6347e15a09dd1f5f95ff48ac9ca7b2ae20b439236f28d8e"
+  },
+  "seed": "20c7fa3dad18eed72418e0b58d55e296627fcbfb927e5db814e2f13757fdd183",
+  "frozen_utc": "2026-11-18T10:45:25.556Z",
+  "harness_corrections": [
+    {
+      "original_sha256": "34345c28287ced1d8ea0542958e31c3acc9a4f2c181a00074a49f0e3d8e6f5b4",
+      "reason": "Before warm-up, the isolated original-behavior audit used the name samples, also a public function in the cut fixture. Renamed only the audit parameter; kept seed, fixtures, oracle, policies and timing."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Geklammerte Reparaturansicht in einem Durchlauf
+
+Der letzte Blindversuch begünstigte vollständig geklammerte Funktionsrümpfe. Der aktuelle Aufbau startet dafür pro erreichbarer Funktion einen Referenzprozess. Ein nativer TIDE-Durchlauf soll aus derselben geprüften Momentaufnahme die gleichen Ausdrücke liefern.
+
+Vor der Zeitmessung alle angeforderten Funktionsnamen, Dateizuordnungen, Rumpftexte und die vollständige Modellansicht vergleichen. Vier Projekte sind vorgegeben: Jury und Depot aus Versuch 25, Nano mit dem Einstieg step und Space Invaders mit der Spielfunktion tick. Zusätzlich alle erreichbaren Funktionen der Anwendungen und Compilerquellen, soweit unterstützt, und gezielte Fälle für Bindungen, Records, Varianten, Fehlerbehandlung und Textliterale prüfen. Eine nicht darstellbare gültige Eingabe muss über den bisherigen Ablauf weiterhin funktionieren.
+
+Je Projekt zwei Aufwärmpaare und zwölf gemessene Paare in wechselnder Reihenfolge. Zeit vom Start der Formularabfragen aus einem bereits vorliegenden Plan bis zum vollständigen Satz der bearbeitbaren Ausdrücke. Zusätzlich den ganzen Ablauf einschließlich des gleichbleibenden Aufwands für Prüfen, Plan und Zusammenführen erfassen. Beide Seiten verwenden dieselbe Momentaufnahme, dieselbe Funktionsreihenfolge und dieselben Werkzeuge für die unveränderten Schritte. Buildzeit separat beobachten. Einzelzeiten und Ausgabenprüfsummen sichern. Der Versuch misst lokale Laufzeit, die Modellnutzung wird nicht neu gemessen.

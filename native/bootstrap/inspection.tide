@@ -1,0 +1,104 @@
+use explain
+
+inspect_nodes nodes:{NodeBuffer} names:*t prefix:t > t
+let pages append (get pages nodes) (get tail nodes)
+fold pages "" before group page
+  let viewed fold page "" acc row node
+    if (not (get root node)) acc
+    let idx + (* (- group 1) 256) (- row 1)
+    json_item acc (inspect_view nodes idx names prefix "nodes")
+  if (text_eq viewed "") before (json_item before viewed)
+
+inspect_index tree:{FunctionTree} prefix:t selected:t file:t > i
+let nodes get nodes tree
+let pages append (get pages nodes) (get tail nodes)
+let index fold pages -1 found group page
+  if (not (< found 0)) found
+  fold page found acc row node
+    if (and (< acc 0) (text_eq selected (node_key prefix node))) (+ (* (- group 1) 256) (- row 1)) acc
+if (< index 0) fail (root_diagnostic file "E_NODE" "Unknown node for this definition") index
+
+binding_fields keys:*t types:*t > t
+fold keys "" acc pos key json_item acc (cat3 (json_string key) ":" (json_string (need (at types (- pos 1)) "binding_type" 0)))
+
+inspect_bindings tree:{FunctionTree} fn:{Signature} idx:i > t
+let scope node_scope tree fn idx
+cat3 "{" (binding_fields (get names scope) (get types scope)) "}"
+
+inspect_example ex:{FunctionExample} summary:b > t
+let name json_string (get name ex)
+let target json_string (get target ex)
+let data get data ex
+let canonical cat3 "[" name (cat3 "," target (cat3 "," (contract_object data) "]"))
+let heading cat3 "{\"name\":" name (cat3 ",\"target\":" target (concat ",\"contract_sha256\":" (json_string (sha256_utf8 canonical))))
+if summary (concat heading "}")
+let members get compact data
+concat heading (concat "," (text_slice members 1 (text_len members)))
+
+caller_names program:{CheckedFunctions} reached:*t depth:i > *t
+fold (get trees program) reached found row tree
+  let info need (at (get info program) (- row 1)) "caller_info" 0
+  if (and (> depth 0) (not (eq (get height info) depth))) found
+  let calls fold (get calls tree) false hit pos callee or hit (case (entry_at reached callee) false idx true)
+  let name need (at (get names program) (- row 1)) "caller_name" 0
+  if calls (append found name) found
+
+inspect_impact compiled:{CompiledProject} name:t file:t summary:b selected:?t > t
+let program get program compiled
+let target list t 1 name
+let direct caller_names program target 0
+let limit fold (get info program) 0 high pos info if (> (get height info) high) (get height info) high
+let all fold (indices limit) target found depth unused caller_names program found depth
+let book get declarations compiled
+let picks case selected
+  (fold (get examples book) (list i 0) acc pos ex
+    case (entry_at all (get target ex)) acc idx append acc (- pos 1))
+  label
+  let missing root_diagnostic file "E_EXAMPLE" (concat "Unknown affected example: " label)
+  let idx need (entry_at (get sample_names book) label) missing 0
+  let ex need (at (get examples book) idx) "example_index" 0
+  case (entry_at all (get target ex)) (fail missing) found (list i 1 idx)
+let examples fold picks "" acc pos idx
+  let ex need (at (get examples book) idx) "example_index" 0
+  json_item acc (inspect_example ex summary)
+let immediate fold direct (list t 0) acc pos item if (eq pos 1) acc (append acc item)
+let callers fold all (list t 0) acc pos item if (eq pos 1) acc (append acc item)
+cat3 "\"direct_callers\":" (json_labels (sorted_labels immediate))
+  (cat3 ",\"affected_callers\":" (json_labels (sorted_labels callers)) (cat3 ",\"examples\":[" examples "]"))
+
+project_finish project:{ProjectFiles} entry:t name:t option:t > t
+let unit need (at (get units project) 0) "root_unit" 0
+let file get file unit
+let compiled compile_project project (schema_blocks (get source unit) true)
+let compact text_eq name "--diff"
+let candidates or (> (probe_offset option) 0) (or (text_eq option "pairs") (text_eq option "candidates"))
+if (and (or compact (text_eq name "")) (or candidates (or (and compact (text_eq option "no")) (or (text_eq option "nodes") (or (text_eq option "explain") (text_eq option "executed"))))))
+  (explained_tests project compiled file option compact)
+let program get program compiled
+let names get names program
+let index need (entry_at names name) (root_diagnostic file "E_NAME" (concat "Unknown definition: " name)) 0
+let fn need (at (get signatures program) index) "definition" 0
+let tree need (at (get trees program) index) "function_tree" 0
+let nodes get nodes tree
+let prefix if (text_eq file (get file fn)) "" (concat (get file fn) ":")
+let common cat3 "\"definition\":" (json_string name) (concat "," (schema_objects (get types (get declarations compiled))))
+let mode text_slice option 0 1
+let hole text_eq mode "!"
+let summary text_eq mode "?"
+let filter text_eq mode "="
+let cut if filter (need (text_find option "|" 1) "inspection_option" 0) (text_len option)
+let selected if filter (some (text_slice option (+ cut 1) (text_len option))) (nil t)
+let location if (or summary filter) (text_slice option 1 cut) option
+let selection if (text_eq location "")
+  (cat3 "\"nodes\":[" (inspect_nodes nodes names prefix) "]")
+  (let id text_slice location 1 (text_len location)
+   let idx inspect_index tree prefix id file
+   let node node_at nodes idx
+   let scope cat3 "\"expected_type\":" (json_string (node_expectation program tree fn idx)) (cat3 ",\"bindings\":" (inspect_bindings tree fn idx) (concat ",\"read_grants\":" (json_labels (grant_names fn))))
+   if hole (cat3 scope ",\"draft_edit\":{\"node\":" (concat (json_string id) ",\"replace\":\"__hole__\"}"))
+   cat3 "\"selection\":{" (node_fields id node)
+     (cat3 "," scope (cat3 ",\"compact\":" (json_string (inspect_view nodes idx names prefix "compact"))
+      (cat3 ",\"expanded\":" (json_string (inspect_view nodes idx names prefix "expanded")) "}"))))
+let marker if summary "\"examples_view\":\"index\"," (if filter "\"examples_view\":\"selected\"," "")
+let details if hole selection (cat3 (function_info program index) "," (cat3 marker (inspect_impact compiled name file summary selected) (concat "," selection)))
+cat3 common "," (cat3 details "\n" (project_snapshot project))

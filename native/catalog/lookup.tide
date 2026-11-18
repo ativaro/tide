@@ -1,0 +1,7 @@
+lookup source:t key:t > ?t
+let prefix concat key "\t"
+let size text_len prefix
+fold (lines source) (nil t) found row line
+  if (text_eq (text_slice line 0 size) prefix)
+    (case found (some (text_slice line size (text_len line))) previous (fail "duplicate_catalog_key"))
+    found

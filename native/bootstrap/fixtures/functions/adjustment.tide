@@ -1,0 +1,5 @@
+adjust amount:i change:i > i
++ amount change
+
+ratio amount:i count:i > i
+div amount count

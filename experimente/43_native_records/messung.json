@@ -1,0 +1,843 @@
+{
+  "benchmark": {
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "core": 2,
+    "warm": 3,
+    "rounds": 21,
+    "hashes": {
+      "balance.tide": "59a26a635579e43f52d6ce231d576e22ac605fb37094d65e2bf922f209f08c25",
+      "project.tide": "4c5ed142070ffee8821f5bfb84e10bb2156e08fc9f479a64113e6aaaa3d78f49",
+      "readings.tide": "053e18a9f02af6a8b9a957d697d2e64b5d69ccb6abef1290aac658f71f6b1513",
+      "summary.tide": "969ee2755a8c50025a486090ab4868d62dfcb8bcc90bfbf40b629ed5d6b06e60",
+      "update.tide": "0af6bd9f253290ea51f324a12fda6e54999356b178d6819acb6f38d132bf6394"
+    },
+    "cases": {
+      "two_fields": {
+        "file": "project.tide",
+        "target": "main",
+        "expected": 28672,
+        "median": {
+          "prototype": 26.062987,
+          "after": 17.292877
+        },
+        "ms": {
+          "prototype": [
+            26.004986,
+            26.166669,
+            26.063998,
+            26.007386,
+            26.137529,
+            26.255311,
+            26.160089,
+            25.997926,
+            26.032696,
+            25.908234,
+            25.979565,
+            26.062987,
+            26.048556,
+            26.123538,
+            26.353263,
+            25.954095,
+            26.013416,
+            26.525756,
+            26.500725,
+            26.028447,
+            26.094618
+          ],
+          "after": [
+            17.303677,
+            17.589052,
+            17.231225,
+            17.259646,
+            17.323817,
+            17.216535,
+            17.372428,
+            17.287526,
+            17.236926,
+            17.761085,
+            17.541532,
+            17.289726,
+            17.263676,
+            17.292877,
+            17.092332,
+            17.290157,
+            17.301826,
+            17.693144,
+            17.338597,
+            17.222325,
+            17.408649
+          ]
+        }
+      },
+      "keep_list": {
+        "file": "update.tide",
+        "target": "main",
+        "expected": 1399,
+        "median": {
+          "prototype": 8.665998,
+          "after": 8.456355
+        },
+        "ms": {
+          "prototype": [
+            8.627558,
+            8.669088,
+            8.678139,
+            8.706679,
+            8.908693,
+            8.72712,
+            8.679959,
+            8.597077,
+            8.574707,
+            8.658609,
+            8.665998,
+            8.74848,
+            8.664978,
+            8.629298,
+            8.680379,
+            8.75139,
+            8.607248,
+            8.636928,
+            8.70847,
+            8.611467,
+            8.587877
+          ],
+          "after": [
+            8.380213,
+            8.548677,
+            8.395403,
+            8.504266,
+            8.497246,
+            8.384533,
+            8.477655,
+            8.499056,
+            8.403843,
+            8.486825,
+            8.443194,
+            8.454445,
+            8.715679,
+            8.429094,
+            8.456355,
+            8.587217,
+            8.457685,
+            8.439684,
+            8.380073,
+            8.523136,
+            8.408054
+          ]
+        }
+      },
+      "report": {
+        "file": "summary.tide",
+        "target": "summarize",
+        "expected": {
+          "above": 181,
+          "peak": {
+            "some": 261
+          }
+        },
+        "median": {
+          "prototype": 16.99194,
+          "after": 15.794477
+        },
+        "ms": {
+          "prototype": [
+            17.015501,
+            16.896099,
+            17.067492,
+            17.041142,
+            16.9523,
+            17.048552,
+            17.038471,
+            16.872588,
+            16.99194,
+            16.981701,
+            16.821008,
+            17.159524,
+            17.067531,
+            16.96959,
+            16.953,
+            17.025842,
+            17.095723,
+            16.97358,
+            16.94102,
+            17.074292,
+            16.882308
+          ],
+          "after": [
+            15.947781,
+            15.756056,
+            15.700026,
+            15.882149,
+            15.854768,
+            15.745087,
+            15.719886,
+            15.794477,
+            15.808267,
+            15.713056,
+            15.805677,
+            15.737576,
+            15.828697,
+            15.784757,
+            15.855379,
+            16.647174,
+            15.735576,
+            15.776797,
+            15.858988,
+            15.755167,
+            15.858769
+          ]
+        }
+      },
+      "balance": {
+        "file": "balance.tide",
+        "target": "balance",
+        "expected": -3996,
+        "median": {
+          "before": 6.6746,
+          "prototype": 6.725011,
+          "after": 6.664339
+        },
+        "ms": {
+          "before": [
+            6.735511,
+            6.69287,
+            6.741531,
+            6.808752,
+            6.623359,
+            6.68964,
+            6.578808,
+            6.661719,
+            6.65564,
+            6.69227,
+            6.66977,
+            6.811732,
+            6.889464,
+            6.615389,
+            6.6746,
+            6.68858,
+            6.623459,
+            6.868524,
+            6.584998,
+            6.596809,
+            6.668159
+          ],
+          "prototype": [
+            6.69966,
+            6.67338,
+            6.66846,
+            6.736491,
+            6.69996,
+            6.953345,
+            6.741961,
+            6.721531,
+            6.764371,
+            6.68262,
+            6.771492,
+            6.66476,
+            6.781442,
+            6.708911,
+            6.762192,
+            6.638149,
+            6.725011,
+            6.69239,
+            6.759162,
+            6.779592,
+            6.825394
+          ],
+          "after": [
+            6.589538,
+            6.735172,
+            6.577928,
+            6.616989,
+            6.649739,
+            6.684651,
+            6.65907,
+            6.65281,
+            6.581178,
+            6.68279,
+            6.602498,
+            6.591339,
+            6.729141,
+            6.68659,
+            6.67384,
+            6.67488,
+            6.69094,
+            6.67332,
+            6.597879,
+            6.664339,
+            6.986365
+          ]
+        }
+      },
+      "small": {
+        "file": "balance.tide",
+        "target": "balance",
+        "expected": 97,
+        "median": {
+          "before": 5.272713,
+          "prototype": 5.235232,
+          "after": 5.200161
+        },
+        "ms": {
+          "before": [
+            5.283332,
+            5.14206,
+            5.303063,
+            5.189141,
+            5.272713,
+            5.260292,
+            5.298863,
+            5.289743,
+            5.242562,
+            5.329494,
+            5.191321,
+            5.171141,
+            5.291733,
+            5.264683,
+            5.544258,
+            5.276123,
+            5.278353,
+            5.267762,
+            5.185451,
+            5.253492,
+            5.307493
+          ],
+          "prototype": [
+            5.168371,
+            5.285443,
+            5.162101,
+            5.16622,
+            5.276573,
+            5.247452,
+            5.15723,
+            5.235232,
+            5.297373,
+            5.15615,
+            5.157191,
+            5.277772,
+            5.288523,
+            5.268342,
+            5.231232,
+            5.266722,
+            5.212772,
+            5.174671,
+            5.301213,
+            5.173251,
+            5.257463
+          ],
+          "after": [
+            5.246342,
+            5.259903,
+            5.257582,
+            5.211272,
+            5.15272,
+            5.251342,
+            5.226872,
+            5.16252,
+            5.158671,
+            5.242782,
+            5.241922,
+            5.303243,
+            5.163501,
+            5.195401,
+            5.14547,
+            5.200161,
+            5.14584,
+            5.178931,
+            5.170531,
+            5.290943,
+            5.182401
+          ]
+        }
+      }
+    }
+  },
+  "checker_sha256": {
+    "before": "273d7ebe80b75febc74152323671e19873f294cda3e2a2e2bb88e8fdfaf07c45",
+    "prototype": "b549c7a72429be1bbf5aa7f2aa2c453846c484bd47b78d720c5f3b70ef840be1",
+    "after": "9c640928592fab2787e40dd4929f47af54d2cf86bf6087409c9474b1143838b5"
+  },
+  "field_matrix": [
+    {
+      "type": "i",
+      "sample": -42,
+      "passed": 3
+    },
+    {
+      "type": "*i",
+      "sample": [
+        -42,
+        -42
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?i",
+      "sample": {
+        "some": -42
+      },
+      "passed": 3
+    },
+    {
+      "type": "?i",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&ii",
+      "sample": [
+        -42,
+        -42
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&ii",
+      "sample": {
+        "some": [
+          -42,
+          -42
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&ii",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&ib",
+      "sample": [
+        -42,
+        true
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&ib",
+      "sample": {
+        "some": [
+          -42,
+          true
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&ib",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&it",
+      "sample": [
+        -42,
+        "🐈,]{}\""
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&it",
+      "sample": {
+        "some": [
+          -42,
+          "🐈,]{}\""
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&it",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "b",
+      "sample": true,
+      "passed": 3
+    },
+    {
+      "type": "*b",
+      "sample": [
+        true,
+        true
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?b",
+      "sample": {
+        "some": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "?b",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&bi",
+      "sample": [
+        true,
+        -42
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&bi",
+      "sample": {
+        "some": [
+          true,
+          -42
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&bi",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&bb",
+      "sample": [
+        true,
+        true
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&bb",
+      "sample": {
+        "some": [
+          true,
+          true
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&bb",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&bt",
+      "sample": [
+        true,
+        "🐈,]{}\""
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&bt",
+      "sample": {
+        "some": [
+          true,
+          "🐈,]{}\""
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&bt",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "t",
+      "sample": "🐈,]{}\"",
+      "passed": 3
+    },
+    {
+      "type": "*t",
+      "sample": [
+        "🐈,]{}\"",
+        "🐈,]{}\""
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?t",
+      "sample": {
+        "some": "🐈,]{}\""
+      },
+      "passed": 3
+    },
+    {
+      "type": "?t",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&ti",
+      "sample": [
+        "🐈,]{}\"",
+        -42
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&ti",
+      "sample": {
+        "some": [
+          "🐈,]{}\"",
+          -42
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&ti",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&tb",
+      "sample": [
+        "🐈,]{}\"",
+        true
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&tb",
+      "sample": {
+        "some": [
+          "🐈,]{}\"",
+          true
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&tb",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    },
+    {
+      "type": "&tt",
+      "sample": [
+        "🐈,]{}\"",
+        "🐈,]{}\""
+      ],
+      "passed": 3
+    },
+    {
+      "type": "?&tt",
+      "sample": {
+        "some": [
+          "🐈,]{}\"",
+          "🐈,]{}\""
+        ]
+      },
+      "passed": 3
+    },
+    {
+      "type": "?&tt",
+      "sample": {
+        "none": true
+      },
+      "passed": 3
+    }
+  ],
+  "source_errors": [
+    {
+      "file": "bad.tide",
+      "code": "E_FIELD",
+      "message": "Expected named field",
+      "line": 4,
+      "column": 10,
+      "expected": "id",
+      "actual": "mark"
+    },
+    {
+      "file": "bad.tide",
+      "code": "E_FIELD",
+      "message": "Unknown record field",
+      "line": 4,
+      "column": 5,
+      "field": "missing",
+      "actual": "{Box}"
+    },
+    {
+      "file": "bad.tide",
+      "code": "E_TYPE",
+      "message": "Unexpected operand type",
+      "line": 4,
+      "column": 38,
+      "operation": "with",
+      "argument": 2,
+      "expected": "i",
+      "actual": "b",
+      "field": "id"
+    },
+    {
+      "file": "bad.tide",
+      "code": "E_TYPE",
+      "message": "Unexpected operand type",
+      "line": 4,
+      "column": 13,
+      "operation": "make",
+      "argument": 1,
+      "expected": "i",
+      "actual": "b",
+      "field": "id"
+    },
+    {
+      "file": "bad.tide",
+      "code": "E_TYPE",
+      "message": "Unexpected type",
+      "line": 4,
+      "column": 1,
+      "expected": "{Box}",
+      "actual": "{Spare}"
+    }
+  ],
+  "contracts": {
+    "before": "a39064689a1636ae56aa4f3c571d83271f83e99803ecd20fd4ec17560fcdf2b7",
+    "after": "78242f41b990e43ce792e1fc3c8bf451a316882768c9d04589ac9237753f9175",
+    "prototype_both": "36326a664c611c454ade5c1f8c1bb3bcfcab814c2e87ffac81ede2ea95ef22bf",
+    "denied": "E_CONTRACT",
+    "accepted": [
+      {
+        "example": "key",
+        "before": {
+          "target": "lookup",
+          "expect": 4,
+          "inputs": {
+            "b": {
+              "id": 4,
+              "mark": {
+                "some": 1
+              }
+            }
+          }
+        },
+        "after": {
+          "target": "lookup",
+          "expect": 4,
+          "inputs": {
+            "b": {
+              "id": 4,
+              "mark": {
+                "some": 2
+              }
+            }
+          }
+        }
+      }
+    ],
+    "reordered": [],
+    "prototype_edit": {
+      "written": true,
+      "contract_changes": [],
+      "examples": {
+        "passed": 1
+      }
+    }
+  },
+  "repair": {
+    "failure": {
+      "file": "summary_checks.tide",
+      "code": "E_EXAMPLE",
+      "message": "Wrong output",
+      "line": 3,
+      "column": 1,
+      "example": "threshold",
+      "expected": {
+        "above": 2,
+        "peak": {
+          "some": 98
+        }
+      },
+      "actual": {
+        "above": 0,
+        "peak": {
+          "some": 98
+        }
+      },
+      "repair": {
+        "revision": "def59febbb5054e56eaf175bff8776ef867707179ff7b763fc242b533aa817ed",
+        "entry": "summary_checks.tide",
+        "target": "summarize",
+        "inputs": {
+          "rows": [
+            "80",
+            "81",
+            "98"
+          ],
+          "limit": 80
+        },
+        "records": {
+          "Summary": {
+            "above": "i",
+            "peak": "?i"
+          }
+        },
+        "execution": {
+          "complete": true,
+          "branches": {
+            "readings.tide:2:1": [
+              "present"
+            ],
+            "summary.tide:10:8": [
+              "else"
+            ],
+            "readings.tide:5:6": [
+              "none",
+              "some"
+            ],
+            "readings.tide:5:30": [
+              "then"
+            ]
+          }
+        },
+        "definitions": [
+          {
+            "node": "summary.tide:7:1",
+            "signature": "summarize rows:*t limit:i > {Summary}",
+            "body": "(fold rows (make Summary above 0 peak (nil i)) result row line (let value (reading line row) (make Summary above (if (< value limit) (+ (get above result) 1) (get above result)) peak (higher value (get peak result)))))"
+          },
+          {
+            "node": "readings.tide:2:1",
+            "signature": "reading line:t row:i > i",
+            "body": "(need (int line) \"invalid_integer\" row)"
+          },
+          {
+            "node": "readings.tide:5:1",
+            "signature": "higher value:i previous:?i > ?i",
+            "body": "(some (case previous value old (if (> value old) value old)))"
+          }
+        ]
+      }
+    },
+    "examples": {
+      "passed": 4
+    }
+  }
+}

@@ -1,0 +1,28 @@
+counts values:*i > &ii
+fold values (pair 0 0) totals row x
+if (< x 0) (pair (+ (first totals) 1) (second totals))
+           (pair (first totals) (+ (second totals) 1))
+
+flip value:&tb > &bt
+pair (second value) (first value)
+
+pick value:?&tb > t
+case value "absent" item (first item)
+
+required value:?&ii > i
+second (need value "no_coordinates" 7)
+
+example signed_counts counts
+{"inputs":{"values":[-8,0,7,-1]},"expect":[2,2]}
+
+example mixed flip
+{"inputs":{"value":["🐈,]\"{",false]},"expect":[false,"🐈,]\"{"]}
+
+example present pick
+{"inputs":{"value":{"some":["",true]}},"expect":""}
+
+example missing pick
+{"inputs":{"value":{"none":true}},"expect":"absent"}
+
+example require_value required
+{"inputs":{"value":{"none":true}},"expect_error":{"code":"E_DATA","reason":"no_coordinates","input_line":7}}

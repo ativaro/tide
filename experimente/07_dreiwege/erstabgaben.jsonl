@@ -1,0 +1,36 @@
+{"t":"S1","f":"A","edits":{"sort":"if > x y pair y x pair x y"}}
+{"t":"S2","f":"B","edits":{"move":"(pair (+ (first p) dx) (+ (second p) dy))"}}
+{"t":"S3","f":"C","edits":{"route":"4 if sperre else 2 if x < lo else 3 if x > hi else 1 if eil else 0"}}
+{"t":"S4","f":"A","edits":{"step":"if eq event 1 pair true false if eq event 2 pair false aktiv pair aktiv false"}}
+{"t":"A1","f":"C","edits":{"fee":"x + 2 if x > 0 else 0"}}
+{"t":"A2","f":"B","edits":{"basis":"5"}}
+{"t":"A3","f":"A","edits":{"finish":"+ catch E_OVERFLOW subtotal x y bad _ x post"}}
+{"t":"A4","f":"B","edits":{"step":"(+ (if clear 0 alt) (if tick 1 0))"}}
+{"t":"R1","f":"C","edits":{"bump":"used + delta if used < limit else 0"},"ursache":"Bei + fehlt Argument 2, delta."}
+{"t":"R2","f":"A","edits":{"channels":"pair cap left 0 7 cap right 2 9"}}
+{"t":"R3","f":"C","edits":{"adjust":"second(sample) + bias if first(sample) else 0"}}
+{"t":"R4","f":"B","edits":{"pick":"(if (< (first best) (first neu)) neu best)"}}
+{"t":"S1","f":"B","edits":{"sort":"(if (< x y) (pair x y) (pair y x))"}}
+{"t":"S2","f":"C","edits":{"move":"pair(first(p) + dx, second(p) + dy)"}}
+{"t":"S3","f":"A","edits":{"route":"if sperre 4 if < x lo 2 if > x hi 3 if eil 1 0"}}
+{"t":"S4","f":"C","edits":{"step":"pair(True, False) if event == 1 else pair(False, aktiv) if event == 2 else pair(aktiv, False)"}}
+{"t":"A1","f":"B","edits":{"fee":"(if (> x 0) (+ x 2) 0)"}}
+{"t":"A2","f":"A","edits":{"basis":"5"}}
+{"t":"A3","f":"B","edits":{"finish":"(+ (catch E_OVERFLOW (subtotal x y bad) _ x) post)"}}
+{"t":"A4","f":"C","edits":{"step":"(0 if clear else alt) + (1 if tick else 0)"}}
+{"t":"R1","f":"A","edits":{"bump":"if < used limit + used delta 0"},"ursache":"Bei + fehlt Argument 2, delta."}
+{"t":"R2","f":"C","edits":{"channels":"pair(cap(left,0,7), cap(right,2,9))"}}
+{"t":"R3","f":"B","edits":{"adjust":"(if (first sample) (+ (second sample) bias) 0)"}}
+{"t":"R4","f":"A","edits":{"pick":"if > first neu first best neu best"}}
+{"t":"S1","f":"C","edits":{"sort":"pair(y, x) if x > y else pair(x, y)"}}
+{"t":"S2","f":"A","edits":{"move":"pair + first p dx + second p dy"}}
+{"t":"S3","f":"B","edits":{"route":"(if sperre 4 (if (< x lo) 2 (if (> x hi) 3 (if eil 1 0))))"}}
+{"t":"S4","f":"B","edits":{"step":"(if (eq event 2) (pair false aktiv) (if (eq event 1) (pair true false) (pair aktiv false)))"}}
+{"t":"A1","f":"A","edits":{"fee":"if > x 0 + x 2 0"}}
+{"t":"A2","f":"C","edits":{"basis":"5"}}
+{"t":"A3","f":"C","edits":{"finish":"catch(E_OVERFLOW, subtotal(x, y, bad), _, x) + post"}}
+{"t":"A4","f":"A","edits":{"step":"+ if clear 0 alt if tick 1 0"}}
+{"t":"R1","f":"B","edits":{"bump":"(if (< used limit) (+ used delta) 0)"},"ursache":"Bei + fehlt Argument 2, delta."}
+{"t":"R2","f":"B","edits":{"channels":"(pair (cap left 0 7) (cap right 2 9))"}}
+{"t":"R3","f":"A","edits":{"adjust":"if first sample + second sample bias 0"}}
+{"t":"R4","f":"C","edits":{"pick":"neu if first(neu) > first(best) else best"}}

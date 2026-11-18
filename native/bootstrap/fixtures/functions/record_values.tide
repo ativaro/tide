@@ -1,0 +1,21 @@
+record Reading
+key:&ti enabled:b notes:*t latest:?&tb
+
+retag value:{Reading} mark:?&tb > {Reading}
+with latest value mark
+
+immutable value:{Reading} > &bb
+let changed (with enabled value (not (get enabled value)))
+pair (get enabled value) (get enabled changed)
+
+sample > {Reading}
+make Reading key (pair "A" -2) enabled false notes (list t 1 "Ω") latest (nil &tb)
+
+example built sample
+{"inputs":{},"expect":{"key":["A",-2],"enabled":false,"notes":["Ω"],"latest":{"none":true}}}
+
+example changed retag
+{"inputs":{"mark":{"some":["🐈",true]},"value":{"notes":["a","b"],"key":["",-1],"latest":{"none":true},"enabled":true}},"expect":{"enabled":true,"notes":["a","b"],"latest":{"some":["🐈",true]},"key":["",-1]}}
+
+example preserve immutable
+{"inputs":{"value":{"key":["z",2],"enabled":true,"latest":{"some":["a",false]},"notes":[]}},"expect":[true,false]}

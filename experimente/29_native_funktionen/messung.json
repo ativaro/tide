@@ -1,0 +1,1938 @@
+{
+  "platform": "Linux x64",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "comparator": "Python 3.14.10 direct reference-tide CLI",
+  "warmup_pairs": 3,
+  "pairs_normal": 20,
+  "pairs_stress": 9,
+  "alternating_order": true,
+  "includes_process_launch": true,
+  "timing_unit": "ms",
+  "results": {
+    "check": {
+      "tide": 7.033746,
+      "reference": 31.2110305,
+      "factor": 4.573693382614279,
+      "wins": 20,
+      "rows": [
+        {
+          "reference": 37.452396,
+          "tide": 9.427233
+        },
+        {
+          "tide": 7.774801,
+          "reference": 37.414766
+        },
+        {
+          "reference": 37.057199,
+          "tide": 9.582636
+        },
+        {
+          "tide": 6.874363,
+          "reference": 33.339177
+        },
+        {
+          "reference": 31.236276,
+          "tide": 7.969785
+        },
+        {
+          "tide": 5.959626,
+          "reference": 33.618962
+        },
+        {
+          "reference": 30.010451,
+          "tide": 8.023215
+        },
+        {
+          "tide": 6.130409,
+          "reference": 30.636394
+        },
+        {
+          "reference": 31.182754,
+          "tide": 7.193129
+        },
+        {
+          "tide": 5.783662,
+          "reference": 31.185785
+        },
+        {
+          "reference": 31.414209,
+          "tide": 8.387922
+        },
+        {
+          "tide": 6.077678,
+          "reference": 30.96114
+        },
+        {
+          "reference": 30.076043,
+          "tide": 7.71035
+        },
+        {
+          "tide": 5.807242,
+          "reference": 29.980751
+        },
+        {
+          "reference": 29.40433,
+          "tide": 6.803942
+        },
+        {
+          "tide": 5.899045,
+          "reference": 32.149304
+        },
+        {
+          "reference": 30.97028,
+          "tide": 7.846333
+        },
+        {
+          "tide": 6.279892,
+          "reference": 32.934758
+        },
+        {
+          "reference": 29.639984,
+          "tide": 7.340113
+        },
+        {
+          "tide": 5.865364,
+          "reference": 31.755536
+        }
+      ]
+    },
+    "test": {
+      "tide": 6.19423,
+      "reference": 31.397104,
+      "factor": 5.036792855850541,
+      "wins": 20,
+      "rows": [
+        {
+          "tide": 5.492767,
+          "reference": 31.611643
+        },
+        {
+          "reference": 32.031301,
+          "tide": 7.103038
+        },
+        {
+          "tide": 5.191311,
+          "reference": 31.914639
+        },
+        {
+          "reference": 31.405449,
+          "tide": 6.111048
+        },
+        {
+          "tide": 4.947036,
+          "reference": 30.876799
+        },
+        {
+          "reference": 31.133713,
+          "tide": 7.026736
+        },
+        {
+          "tide": 5.463166,
+          "reference": 31.498521
+        },
+        {
+          "reference": 31.190394,
+          "tide": 6.277412
+        },
+        {
+          "tide": 5.227122,
+          "reference": 31.777716
+        },
+        {
+          "reference": 34.413997,
+          "tide": 7.032286
+        },
+        {
+          "tide": 5.039827,
+          "reference": 31.247445
+        },
+        {
+          "reference": 31.616263,
+          "tide": 7.359642
+        },
+        {
+          "tide": 5.888874,
+          "reference": 30.408699
+        },
+        {
+          "reference": 33.927978,
+          "tide": 6.923564
+        },
+        {
+          "tide": 6.613649,
+          "reference": 30.93761
+        },
+        {
+          "reference": 31.126093,
+          "tide": 6.964565
+        },
+        {
+          "tide": 6.042547,
+          "reference": 30.846688
+        },
+        {
+          "reference": 31.885498,
+          "tide": 7.181979
+        },
+        {
+          "tide": 5.072028,
+          "reference": 31.388759
+        },
+        {
+          "reference": 29.983292,
+          "tide": 7.530876
+        }
+      ]
+    },
+    "tie": {
+      "tide": 6.068842500000001,
+      "reference": 31.140454,
+      "factor": 5.160129452863385,
+      "wins": 20,
+      "rows": [
+        {
+          "reference": 31.493951,
+          "tide": 6.769041
+        },
+        {
+          "tide": 5.232151,
+          "reference": 31.326857
+        },
+        {
+          "reference": 30.42751,
+          "tide": 6.918934
+        },
+        {
+          "tide": 5.634609,
+          "reference": 31.45619
+        },
+        {
+          "reference": 29.686865,
+          "tide": 6.827152
+        },
+        {
+          "tide": 5.028977,
+          "reference": 31.699855
+        },
+        {
+          "reference": 31.001461,
+          "tide": 7.497445
+        },
+        {
+          "tide": 5.017358,
+          "reference": 31.071312
+        },
+        {
+          "reference": 29.503632,
+          "tide": 7.168819
+        },
+        {
+          "tide": 5.245332,
+          "reference": 28.447032
+        },
+        {
+          "reference": 32.146693,
+          "tide": 6.399304
+        },
+        {
+          "tide": 5.098329,
+          "reference": 31.643473
+        },
+        {
+          "reference": 31.892938,
+          "tide": 7.084227
+        },
+        {
+          "tide": 5.738381,
+          "reference": 31.092913
+        },
+        {
+          "reference": 31.320037,
+          "tide": 6.767621
+        },
+        {
+          "tide": 5.066009,
+          "reference": 31.187995
+        },
+        {
+          "reference": 30.232126,
+          "tide": 7.155119
+        },
+        {
+          "tide": 5.558327,
+          "reference": 29.441301
+        },
+        {
+          "reference": 29.93229,
+          "tide": 7.365813
+        },
+        {
+          "tide": 5.400954,
+          "reference": 32.348837
+        }
+      ]
+    },
+    "step_limit": {
+      "tide": 5.355814,
+      "reference": 79.026382,
+      "factor": 14.755251395959606,
+      "wins": 9,
+      "rows": [
+        {
+          "tide": 5.182161,
+          "reference": 79.337688
+        },
+        {
+          "reference": 80.806277,
+          "tide": 8.115827
+        },
+        {
+          "tide": 5.233862,
+          "reference": 79.246396
+        },
+        {
+          "reference": 78.313719,
+          "tide": 6.691069
+        },
+        {
+          "tide": 5.213371,
+          "reference": 78.842439
+        },
+        {
+          "reference": 78.93104,
+          "tide": 7.74155
+        },
+        {
+          "tide": 5.233082,
+          "reference": 79.166975
+        },
+        {
+          "reference": 77.843779,
+          "tide": 7.552037
+        },
+        {
+          "tide": 5.355814,
+          "reference": 79.026382
+        }
+      ]
+    },
+    "unique": {
+      "tide": 114.250595,
+      "reference": 66.683523,
+      "factor": 0.5874930784804538,
+      "wins": 0,
+      "rows": [
+        {
+          "reference": 67.251523,
+          "tide": 115.325646
+        },
+        {
+          "tide": 112.211436,
+          "reference": 65.954429
+        },
+        {
+          "reference": 65.804215,
+          "tide": 114.909378
+        },
+        {
+          "tide": 114.334537,
+          "reference": 67.798954
+        },
+        {
+          "reference": 67.07367,
+          "tide": 114.169294
+        },
+        {
+          "tide": 113.47254,
+          "reference": 67.887366
+        },
+        {
+          "reference": 64.782846,
+          "tide": 114.250595
+        },
+        {
+          "tide": 111.772257,
+          "reference": 65.990109
+        },
+        {
+          "reference": 66.683523,
+          "tide": 115.345987
+        }
+      ]
+    },
+    "many_ties": {
+      "tide": 8.392313,
+      "reference": 66.760694,
+      "factor": 7.985545701167248,
+      "wins": 9,
+      "rows": [
+        {
+          "tide": 8.306101,
+          "reference": 66.370357
+        },
+        {
+          "reference": 66.849006,
+          "tide": 9.482573
+        },
+        {
+          "tide": 8.392313,
+          "reference": 67.017199
+        },
+        {
+          "reference": 66.132272,
+          "tide": 8.912003
+        },
+        {
+          "tide": 7.368483,
+          "reference": 65.890418
+        },
+        {
+          "reference": 66.760694,
+          "tide": 9.163068
+        },
+        {
+          "tide": 7.497966,
+          "reference": 67.53502
+        },
+        {
+          "reference": 67.873026,
+          "tide": 8.840551
+        },
+        {
+          "tide": 7.924064,
+          "reference": 65.194534
+        }
+      ]
+    },
+    "mixed": {
+      "tide": 37.656545,
+      "reference": 30.740941,
+      "factor": 0.8195957257404582,
+      "wins": 0,
+      "rows": [
+        {
+          "reference": 32.097352,
+          "tide": 38.050327
+        },
+        {
+          "tide": 38.595768,
+          "reference": 29.871129
+        },
+        {
+          "reference": 30.95059,
+          "tide": 39.561587
+        },
+        {
+          "tide": 37.883674,
+          "reference": 30.750306
+        },
+        {
+          "reference": 30.270207,
+          "tide": 36.430907
+        },
+        {
+          "tide": 39.783731,
+          "reference": 32.597952
+        },
+        {
+          "reference": 32.014031,
+          "tide": 37.202711
+        },
+        {
+          "tide": 37.63908,
+          "reference": 30.615964
+        },
+        {
+          "reference": 30.162095,
+          "tide": 37.215811
+        },
+        {
+          "tide": 37.752142,
+          "reference": 29.802348
+        },
+        {
+          "reference": 30.996621,
+          "tide": 37.809403
+        },
+        {
+          "tide": 37.67401,
+          "reference": 31.529781
+        },
+        {
+          "reference": 30.731576,
+          "tide": 37.765512
+        },
+        {
+          "tide": 36.019668,
+          "reference": 29.820468
+        },
+        {
+          "reference": 31.654164,
+          "tide": 37.535807
+        },
+        {
+          "tide": 36.034348,
+          "reference": 30.692435
+        },
+        {
+          "reference": 29.877529,
+          "tide": 37.282853
+        },
+        {
+          "tide": 36.495577,
+          "reference": 29.753717
+        },
+        {
+          "reference": 31.98784,
+          "tide": 36.703021
+        },
+        {
+          "tide": 37.950205,
+          "reference": 31.246706
+        }
+      ]
+    },
+    "two_modules": {
+      "tide": 6.2979769999999995,
+      "reference": 31.231440499999998,
+      "factor": 4.993313199594207,
+      "wins": 20,
+      "rows": [
+        {
+          "tide": 5.078739,
+          "reference": 30.827158
+        },
+        {
+          "reference": 30.176465,
+          "tide": 7.063017
+        },
+        {
+          "tide": 5.343963,
+          "reference": 31.585442
+        },
+        {
+          "reference": 30.990781,
+          "tide": 7.649188
+        },
+        {
+          "tide": 5.621389,
+          "reference": 29.609064
+        },
+        {
+          "reference": 31.545542,
+          "tide": 7.620638
+        },
+        {
+          "tide": 5.20479,
+          "reference": 29.536512
+        },
+        {
+          "reference": 30.355218,
+          "tide": 6.908764
+        },
+        {
+          "tide": 5.462765,
+          "reference": 31.754795
+        },
+        {
+          "reference": 31.591723,
+          "tide": 7.317812
+        },
+        {
+          "tide": 5.66233,
+          "reference": 31.492671
+        },
+        {
+          "reference": 32.332937,
+          "tide": 7.163629
+        },
+        {
+          "tide": 5.953925,
+          "reference": 30.864758
+        },
+        {
+          "reference": 31.4458,
+          "tide": 6.971665
+        },
+        {
+          "tide": 5.049988,
+          "reference": 31.717405
+        },
+        {
+          "reference": 31.899618,
+          "tide": 6.642029
+        },
+        {
+          "tide": 5.1409,
+          "reference": 32.116973
+        },
+        {
+          "reference": 31.017081,
+          "tide": 7.100208
+        },
+        {
+          "tide": 5.050188,
+          "reference": 30.830998
+        },
+        {
+          "reference": 30.905929,
+          "tide": 6.855433
+        }
+      ]
+    }
+  },
+  "initial": {
+    "check": {
+      "tide": 7.3871575,
+      "reference": 31.396208,
+      "factor": 4.31936947988438,
+      "wins": 20,
+      "rows": [
+        {
+          "reference": 37.892477,
+          "tide": 9.962712
+        },
+        {
+          "tide": 8.611736,
+          "reference": 38.609231
+        },
+        {
+          "reference": 38.705153,
+          "tide": 10.173725
+        },
+        {
+          "tide": 8.782978,
+          "reference": 39.58004
+        },
+        {
+          "reference": 39.818925,
+          "tide": 9.624425
+        },
+        {
+          "tide": 9.503772,
+          "reference": 35.890659
+        },
+        {
+          "reference": 30.924943,
+          "tide": 7.412883
+        },
+        {
+          "tide": 6.364922,
+          "reference": 32.703368
+        },
+        {
+          "reference": 29.479846,
+          "tide": 6.722549
+        },
+        {
+          "tide": 6.571846,
+          "reference": 31.165428
+        },
+        {
+          "reference": 30.782601,
+          "tide": 7.025604
+        },
+        {
+          "tide": 6.051846,
+          "reference": 31.453234
+        },
+        {
+          "reference": 29.835763,
+          "tide": 7.897392
+        },
+        {
+          "tide": 6.375582,
+          "reference": 31.201519
+        },
+        {
+          "reference": 31.339462,
+          "tide": 7.361432
+        },
+        {
+          "tide": 6.018686,
+          "reference": 31.452954
+        },
+        {
+          "reference": 31.152938,
+          "tide": 7.736598
+        },
+        {
+          "tide": 6.016826,
+          "reference": 32.091697
+        },
+        {
+          "reference": 30.961684,
+          "tide": 8.901031
+        },
+        {
+          "tide": 7.254529,
+          "reference": 30.860043
+        }
+      ]
+    },
+    "test": {
+      "tide": 6.064611,
+      "reference": 30.9592795,
+      "factor": 5.062944287898606,
+      "wins": 20,
+      "rows": [
+        {
+          "tide": 6.262871,
+          "reference": 30.522086
+        },
+        {
+          "reference": 32.331941,
+          "tide": 6.982484
+        },
+        {
+          "tide": 5.263371,
+          "reference": 29.816132
+        },
+        {
+          "reference": 30.241031,
+          "tide": 6.948003
+        },
+        {
+          "tide": 5.250491,
+          "reference": 30.360023
+        },
+        {
+          "reference": 31.055006,
+          "tide": 6.160228
+        },
+        {
+          "tide": 5.382894,
+          "reference": 32.27662
+        },
+        {
+          "reference": 30.908303,
+          "tide": 6.841211
+        },
+        {
+          "tide": 5.619328,
+          "reference": 30.081678
+        },
+        {
+          "reference": 30.012687,
+          "tide": 6.684668
+        },
+        {
+          "tide": 5.489116,
+          "reference": 30.21501
+        },
+        {
+          "reference": 31.710009,
+          "tide": 6.714949
+        },
+        {
+          "tide": 5.593867,
+          "reference": 31.891322
+        },
+        {
+          "reference": 31.207859,
+          "tide": 6.924573
+        },
+        {
+          "tide": 5.123209,
+          "reference": 33.029895
+        },
+        {
+          "reference": 31.878702,
+          "tide": 7.190608
+        },
+        {
+          "tide": 5.681989,
+          "reference": 30.362133
+        },
+        {
+          "reference": 30.350413,
+          "tide": 5.968994
+        },
+        {
+          "tide": 5.171709,
+          "reference": 31.010256
+        },
+        {
+          "reference": 31.24731,
+          "tide": 7.866772
+        }
+      ]
+    },
+    "tie": {
+      "tide": 6.647672999999999,
+      "reference": 31.5320805,
+      "factor": 4.697082934239284,
+      "wins": 20,
+      "rows": [
+        {
+          "reference": 31.79154,
+          "tide": 6.77326
+        },
+        {
+          "tide": 5.19144,
+          "reference": 30.340612
+        },
+        {
+          "reference": 32.018805,
+          "tide": 7.049106
+        },
+        {
+          "tide": 5.235141,
+          "reference": 34.025733
+        },
+        {
+          "reference": 33.022714,
+          "tide": 8.011424
+        },
+        {
+          "tide": 5.577407,
+          "reference": 31.971024
+        },
+        {
+          "reference": 32.660077,
+          "tide": 6.978424
+        },
+        {
+          "tide": 5.123788,
+          "reference": 29.201841
+        },
+        {
+          "reference": 32.676758,
+          "tide": 7.022275
+        },
+        {
+          "tide": 6.153489,
+          "reference": 31.694539
+        },
+        {
+          "reference": 31.280331,
+          "tide": 7.583546
+        },
+        {
+          "tide": 5.632118,
+          "reference": 31.271911
+        },
+        {
+          "reference": 30.656949,
+          "tide": 6.522086
+        },
+        {
+          "tide": 6.916213,
+          "reference": 31.381813
+        },
+        {
+          "reference": 32.018175,
+          "tide": 6.999585
+        },
+        {
+          "tide": 5.588287,
+          "reference": 31.2503
+        },
+        {
+          "reference": 31.682348,
+          "tide": 7.517404
+        },
+        {
+          "tide": 5.22997,
+          "reference": 29.645309
+        },
+        {
+          "reference": 30.081677,
+          "tide": 7.036915
+        },
+        {
+          "tide": 5.458795,
+          "reference": 29.950585
+        }
+      ]
+    },
+    "step_limit": {
+      "tide": 293.150929,
+      "reference": 78.779443,
+      "factor": 0.2663082263773991,
+      "wins": 0,
+      "rows": [
+        {
+          "tide": 293.841793,
+          "reference": 78.746772
+        },
+        {
+          "reference": 78.935896,
+          "tide": 298.810857
+        },
+        {
+          "tide": 295.677348,
+          "reference": 78.11789
+        },
+        {
+          "reference": 79.556237,
+          "tide": 298.737437
+        },
+        {
+          "tide": 291.986686,
+          "reference": 79.174481
+        },
+        {
+          "reference": 77.477557,
+          "tide": 290.962057
+        },
+        {
+          "tide": 292.282472,
+          "reference": 77.356666
+        },
+        {
+          "reference": 79.18722,
+          "tide": 291.006737
+        },
+        {
+          "tide": 293.150929,
+          "reference": 78.779443
+        }
+      ]
+    },
+    "two_modules": {
+      "tide": 6.218259,
+      "reference": 31.3176665,
+      "factor": 5.050004255649702,
+      "wins": 20,
+      "rows": [
+        {
+          "reference": 32.29448,
+          "tide": 6.935943
+        },
+        {
+          "tide": 5.509506,
+          "reference": 31.181859
+        },
+        {
+          "reference": 31.058937,
+          "tide": 5.983875
+        },
+        {
+          "tide": 5.824472,
+          "reference": 31.621468
+        },
+        {
+          "reference": 31.389403,
+          "tide": 7.012525
+        },
+        {
+          "tide": 5.430694,
+          "reference": 32.215529
+        },
+        {
+          "reference": 30.649248,
+          "tide": 6.836721
+        },
+        {
+          "tide": 6.340692,
+          "reference": 32.186618
+        },
+        {
+          "reference": 32.80064,
+          "tide": 7.421272
+        },
+        {
+          "tide": 6.165748,
+          "reference": 30.273811
+        },
+        {
+          "reference": 29.768001,
+          "tide": 6.77406
+        },
+        {
+          "tide": 5.319302,
+          "reference": 30.566977
+        },
+        {
+          "reference": 32.478543,
+          "tide": 6.464924
+        },
+        {
+          "tide": 6.161288,
+          "reference": 31.726039
+        },
+        {
+          "reference": 32.567726,
+          "tide": 6.944534
+        },
+        {
+          "tide": 5.971594,
+          "reference": 32.388072
+        },
+        {
+          "reference": 31.039876,
+          "tide": 7.407892
+        },
+        {
+          "tide": 5.495216,
+          "reference": 30.131618
+        },
+        {
+          "reference": 29.837513,
+          "tide": 6.27077
+        },
+        {
+          "tide": 5.798781,
+          "reference": 31.24593
+        }
+      ]
+    }
+  },
+  "iterations": {
+    "first": {
+      "step_limit": {
+        "tide": 296.8435,
+        "reference": 79.458096,
+        "factor": 0.2679341184470534,
+        "wins": 0,
+        "rows": [
+          {
+            "reference": 81.141448,
+            "tide": 305.692229
+          },
+          {
+            "tide": 291.263912,
+            "reference": 79.176451
+          },
+          {
+            "reference": 76.978778,
+            "tide": 293.573137
+          },
+          {
+            "tide": 292.012696,
+            "reference": 79.458096
+          },
+          {
+            "reference": 80.090778,
+            "tide": 298.919669
+          },
+          {
+            "tide": 297.437911,
+            "reference": 79.229151
+          },
+          {
+            "reference": 79.068298,
+            "tide": 294.803091
+          },
+          {
+            "tide": 297.88729,
+            "reference": 79.66097
+          },
+          {
+            "reference": 79.989366,
+            "tide": 296.8435
+          }
+        ]
+      },
+      "unique": {
+        "tide": 730.343942,
+        "reference": 66.610648,
+        "factor": 0.09193794974037611,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 731.034295,
+            "reference": 68.585877
+          },
+          {
+            "reference": 68.103727,
+            "tide": 740.757513
+          },
+          {
+            "tide": 739.452407,
+            "reference": 68.100798
+          },
+          {
+            "reference": 64.800524,
+            "tide": 730.538256
+          },
+          {
+            "tide": 724.369187,
+            "reference": 66.6846
+          },
+          {
+            "reference": 66.610648,
+            "tide": 726.822144
+          },
+          {
+            "tide": 720.778809,
+            "reference": 66.544928
+          },
+          {
+            "reference": 65.555459,
+            "tide": 730.343942
+          },
+          {
+            "tide": 728.788462,
+            "reference": 65.413316
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 766.580468,
+        "reference": 67.651839,
+        "factor": 0.08740914966956474,
+        "wins": 0,
+        "rows": [
+          {
+            "reference": 67.834852,
+            "tide": 769.81066
+          },
+          {
+            "tide": 774.007381,
+            "reference": 65.610549
+          },
+          {
+            "reference": 67.651839,
+            "tide": 763.257294
+          },
+          {
+            "tide": 762.51759,
+            "reference": 67.916263
+          },
+          {
+            "reference": 66.891105,
+            "tide": 766.580468
+          },
+          {
+            "tide": 763.854945,
+            "reference": 65.254153
+          },
+          {
+            "reference": 66.410255,
+            "tide": 759.763197
+          },
+          {
+            "tide": 780.597877,
+            "reference": 72.216016
+          },
+          {
+            "reference": 67.923608,
+            "tide": 781.885605
+          }
+        ]
+      }
+    },
+    "memo": {
+      "step_limit": {
+        "tide": 7.410366,
+        "reference": 81.06778,
+        "factor": 11.150270192000544,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 80.704043,
+            "tide": 8.60842
+          },
+          {
+            "tide": 7.825124,
+            "reference": 80.496118
+          },
+          {
+            "reference": 80.750923,
+            "tide": 6.724023
+          },
+          {
+            "tide": 6.867846,
+            "reference": 82.746223
+          },
+          {
+            "reference": 81.06778,
+            "tide": 7.410366
+          },
+          {
+            "tide": 7.541489,
+            "reference": 84.08964
+          },
+          {
+            "reference": 83.374676,
+            "tide": 6.837655
+          },
+          {
+            "tide": 6.0812,
+            "reference": 81.618061
+          },
+          {
+            "reference": 80.333406,
+            "tide": 8.10723
+          }
+        ]
+      },
+      "unique": {
+        "tide": 2182.501089,
+        "reference": 66.836068,
+        "factor": 0.030765156925607995,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 2199.129235,
+            "reference": 67.864289
+          },
+          {
+            "reference": 65.991112,
+            "tide": 2166.041758
+          },
+          {
+            "tide": 2198.447954,
+            "reference": 66.035323
+          },
+          {
+            "reference": 68.224146,
+            "tide": 2199.189473
+          },
+          {
+            "tide": 2182.501089,
+            "reference": 71.091302
+          },
+          {
+            "reference": 69.071202,
+            "tide": 2187.589266
+          },
+          {
+            "tide": 2171.729138,
+            "reference": 66.579412
+          },
+          {
+            "reference": 66.836068,
+            "tide": 2178.1477
+          },
+          {
+            "tide": 2155.779285,
+            "reference": 66.322888
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 35.256114,
+        "reference": 68.131183,
+        "factor": 1.94454579946729,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 69.452688,
+            "tide": 36.877947
+          },
+          {
+            "tide": 34.754525,
+            "reference": 68.131183
+          },
+          {
+            "reference": 68.599852,
+            "tide": 35.278085
+          },
+          {
+            "tide": 34.881867,
+            "reference": 67.738875
+          },
+          {
+            "reference": 70.287545,
+            "tide": 35.267155
+          },
+          {
+            "tide": 34.677203,
+            "reference": 68.662453
+          },
+          {
+            "reference": 66.300527,
+            "tide": 35.256114
+          },
+          {
+            "tide": 34.344087,
+            "reference": 67.827037
+          },
+          {
+            "reference": 67.351177,
+            "tide": 35.977559
+          }
+        ]
+      }
+    },
+    "seq": {
+      "step_limit": {
+        "tide": 6.549869,
+        "reference": 79.169379,
+        "factor": 12.162989197181643,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 79.036106,
+            "tide": 7.441967
+          },
+          {
+            "tide": 5.804334,
+            "reference": 80.785561
+          },
+          {
+            "reference": 79.169379,
+            "tide": 7.763933
+          },
+          {
+            "tide": 5.817104,
+            "reference": 80.418173
+          },
+          {
+            "reference": 78.232741,
+            "tide": 5.952617
+          },
+          {
+            "tide": 6.549869,
+            "reference": 77.127048
+          },
+          {
+            "reference": 81.154108,
+            "tide": 8.327113
+          },
+          {
+            "tide": 6.372226,
+            "reference": 77.505316
+          },
+          {
+            "reference": 81.101276,
+            "tide": 6.56429
+          }
+        ]
+      },
+      "unique": {
+        "tide": 686.257136,
+        "reference": 65.849926,
+        "factor": 0.09556613198501215,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 680.870884,
+            "reference": 66.302666
+          },
+          {
+            "reference": 64.260845,
+            "tide": 689.164637
+          },
+          {
+            "tide": 677.521656,
+            "reference": 64.748124
+          },
+          {
+            "reference": 64.240475,
+            "tide": 688.508933
+          },
+          {
+            "tide": 678.27749,
+            "reference": 65.849926
+          },
+          {
+            "reference": 64.983889,
+            "tide": 689.310048
+          },
+          {
+            "tide": 691.823396,
+            "reference": 66.03548
+          },
+          {
+            "reference": 66.095811,
+            "tide": 686.257136
+          },
+          {
+            "tide": 684.000412,
+            "reference": 66.590901
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 15.466814,
+        "reference": 66.736214,
+        "factor": 4.3301521567402315,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 65.731764,
+            "tide": 16.497985
+          },
+          {
+            "tide": 14.465844,
+            "reference": 65.900607
+          },
+          {
+            "reference": 66.736214,
+            "tide": 17.175968
+          },
+          {
+            "tide": 15.047516,
+            "reference": 66.022399
+          },
+          {
+            "reference": 69.10973,
+            "tide": 16.512535
+          },
+          {
+            "tide": 14.872323,
+            "reference": 67.847206
+          },
+          {
+            "reference": 68.029029,
+            "tide": 17.342901
+          },
+          {
+            "tide": 14.766641,
+            "reference": 65.314665
+          },
+          {
+            "reference": 66.973658,
+            "tide": 15.466814
+          }
+        ]
+      }
+    },
+    "compact": {
+      "step_limit": {
+        "tide": 6.969646,
+        "reference": 81.212453,
+        "factor": 11.79300957322653,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 81.669083,
+            "tide": 8.15568
+          },
+          {
+            "tide": 5.330805,
+            "reference": 79.467489
+          },
+          {
+            "reference": 82.391386,
+            "tide": 7.362424
+          },
+          {
+            "tide": 5.770723,
+            "reference": 82.016498
+          },
+          {
+            "reference": 80.988088,
+            "tide": 7.056679
+          },
+          {
+            "tide": 5.518888,
+            "reference": 80.108932
+          },
+          {
+            "reference": 82.193102,
+            "tide": 6.969646
+          },
+          {
+            "tide": 6.049599,
+            "reference": 81.212453
+          },
+          {
+            "reference": 80.974338,
+            "tide": 7.360904
+          }
+        ]
+      },
+      "unique": {
+        "tide": 245.848322,
+        "reference": 65.854041,
+        "factor": 0.2694155812898764,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 246.427173,
+            "reference": 64.77423
+          },
+          {
+            "reference": 67.500124,
+            "tide": 245.848322
+          },
+          {
+            "tide": 243.943814,
+            "reference": 65.703378
+          },
+          {
+            "reference": 67.809569,
+            "tide": 248.287869
+          },
+          {
+            "tide": 242.72566,
+            "reference": 66.728199
+          },
+          {
+            "reference": 65.365182,
+            "tide": 245.431454
+          },
+          {
+            "tide": 244.432934,
+            "reference": 65.854041
+          },
+          {
+            "reference": 64.995325,
+            "tide": 247.906972
+          },
+          {
+            "tide": 245.939904,
+            "reference": 67.908022
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 22.402429,
+        "reference": 67.454193,
+        "factor": 3.0515500712433123,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 67.445962,
+            "tide": 23.615603
+          },
+          {
+            "tide": 21.598164,
+            "reference": 67.083686
+          },
+          {
+            "reference": 70.34858,
+            "tide": 23.053392
+          },
+          {
+            "tide": 21.92558,
+            "reference": 66.048105
+          },
+          {
+            "reference": 68.603896,
+            "tide": 24.270996
+          },
+          {
+            "tide": 21.642575,
+            "reference": 67.454193
+          },
+          {
+            "reference": 66.226529,
+            "tide": 22.97522
+          },
+          {
+            "tide": 22.091613,
+            "reference": 67.887152
+          },
+          {
+            "reference": 68.547515,
+            "tide": 22.402429
+          }
+        ]
+      }
+    },
+    "immediate": {
+      "step_limit": {
+        "tide": 7.107249,
+        "reference": 79.350921,
+        "factor": 11.203809941089723,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 78.568506,
+            "tide": 7.111148
+          },
+          {
+            "tide": 5.316544,
+            "reference": 78.809071
+          },
+          {
+            "reference": 80.060605,
+            "tide": 7.641579
+          },
+          {
+            "tide": 5.263663,
+            "reference": 81.3247
+          },
+          {
+            "reference": 79.628267,
+            "tide": 7.107249
+          },
+          {
+            "tide": 5.267163,
+            "reference": 79.34092
+          },
+          {
+            "reference": 78.668278,
+            "tide": 7.570477
+          },
+          {
+            "tide": 5.515388,
+            "reference": 79.350921
+          },
+          {
+            "reference": 82.467022,
+            "tide": 7.820773
+          }
+        ]
+      },
+      "unique": {
+        "tide": 126.659746,
+        "reference": 66.285936,
+        "factor": 0.5214492998364807,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 127.049603,
+            "reference": 66.178773
+          },
+          {
+            "reference": 65.887398,
+            "tide": 126.659746
+          },
+          {
+            "tide": 126.773838,
+            "reference": 65.46518
+          },
+          {
+            "reference": 66.285936,
+            "tide": 127.436911
+          },
+          {
+            "tide": 126.40271,
+            "reference": 66.372807
+          },
+          {
+            "reference": 65.888388,
+            "tide": 126.356269
+          },
+          {
+            "tide": 126.302299,
+            "reference": 66.729254
+          },
+          {
+            "reference": 66.482609,
+            "tide": 126.523873
+          },
+          {
+            "tide": 127.245617,
+            "reference": 66.924718
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 9.156749,
+        "reference": 66.384848,
+        "factor": 7.170020259803189,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 65.468559,
+            "tide": 9.807422
+          },
+          {
+            "tide": 7.886394,
+            "reference": 67.225304
+          },
+          {
+            "reference": 67.061221,
+            "tide": 9.353003
+          },
+          {
+            "tide": 7.871564,
+            "reference": 66.759355
+          },
+          {
+            "reference": 66.215394,
+            "tide": 9.265221
+          },
+          {
+            "tide": 8.288131,
+            "reference": 68.189273
+          },
+          {
+            "reference": 65.502851,
+            "tide": 9.72522
+          },
+          {
+            "tide": 9.156749,
+            "reference": 64.912599
+          },
+          {
+            "reference": 66.384848,
+            "tide": 9.058437
+          }
+        ]
+      }
+    },
+    "indexed": {
+      "step_limit": {
+        "tide": 6.890934,
+        "reference": 79.68023,
+        "factor": 11.530123083129805,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 78.964256,
+            "tide": 10.79413
+          },
+          {
+            "tide": 6.230081,
+            "reference": 79.874413
+          },
+          {
+            "reference": 80.539266,
+            "tide": 7.496246
+          },
+          {
+            "tide": 5.940836,
+            "reference": 79.794042
+          },
+          {
+            "reference": 79.68023,
+            "tide": 6.910614
+          },
+          {
+            "tide": 6.066318,
+            "reference": 80.460176
+          },
+          {
+            "reference": 79.14644,
+            "tide": 6.890934
+          },
+          {
+            "tide": 5.221802,
+            "reference": 79.230681
+          },
+          {
+            "reference": 78.605289,
+            "tide": 8.183559
+          }
+        ]
+      },
+      "unique": {
+        "tide": 114.327584,
+        "reference": 65.242559,
+        "factor": 0.5707787514350124,
+        "wins": 0,
+        "rows": [
+          {
+            "tide": 115.007237,
+            "reference": 67.092575
+          },
+          {
+            "reference": 64.851052,
+            "tide": 115.623789
+          },
+          {
+            "tide": 115.6994,
+            "reference": 65.661447
+          },
+          {
+            "reference": 65.122866,
+            "tide": 114.327584
+          },
+          {
+            "tide": 112.60495,
+            "reference": 65.097676
+          },
+          {
+            "reference": 64.670698,
+            "tide": 114.15682
+          },
+          {
+            "tide": 114.665381,
+            "reference": 65.448563
+          },
+          {
+            "reference": 65.242559,
+            "tide": 113.742793
+          },
+          {
+            "tide": 111.541299,
+            "reference": 65.991034
+          }
+        ]
+      },
+      "many_ties": {
+        "tide": 8.611317,
+        "reference": 66.023094,
+        "factor": 7.650225975887313,
+        "wins": 9,
+        "rows": [
+          {
+            "reference": 66.023094,
+            "tide": 9.717279
+          },
+          {
+            "tide": 7.394564,
+            "reference": 69.182355
+          },
+          {
+            "reference": 65.978504,
+            "tide": 9.620157
+          },
+          {
+            "tide": 7.464965,
+            "reference": 66.613136
+          },
+          {
+            "reference": 65.508124,
+            "tide": 9.580717
+          },
+          {
+            "tide": 7.540787,
+            "reference": 65.974693
+          },
+          {
+            "reference": 66.643066,
+            "tide": 9.23803
+          },
+          {
+            "tide": 7.434184,
+            "reference": 66.568164
+          },
+          {
+            "reference": 65.878521,
+            "tide": 8.611317
+          }
+        ]
+      }
+    }
+  },
+  "sha256": {
+    "Makefile": "6fdd439189e8186a21dd96162501defdd4b222009466aa5e976440b97a8ae491",
+    "tide": "5083dec3e3001bcb708fb02aaf227f9c2c556426cf4d99c6bd27e3f101e4de68",
+    "lib/ordering.tide": "3defda3d26aff38e3b1d070c898ec83999a04797a3cbe33181f79da435632e83",
+    "native/bootstrap/seed.tide": "910a7b96833225338166f4d9d21a1e8e7460ebaa20015e0101226a7dc2a2b556",
+    "native/bootstrap/schema.tide": "2fc06286a62f76fff7f19772b3bfd6cc616cb117483fd509b7a09f610b640f72",
+    "native/bootstrap/project.tide": "3c27a7660924f15b3e86506f8a48ae111d707080f5b42e8ee9db26e4261a96a2",
+    "native/bootstrap/scalar_json.tide": "3009e3f3943f955c71d86af0a592a1083fb1c0a45bf59a1d027105c5522731b2",
+    "native/bootstrap/functions.tide": "771d03d982a70978dcad2c016170310f487037a861599848c7d9064dec69b8ec",
+    "native/bootstrap/function_run.tide": "e87ba9a7d967a1d7089a25ce697ace107c13a4cecabd18ccaada68c0ad2512df",
+    "native/bootstrap/function_cases.tide": "6ebbd501265caf3f6a3f8601f23b2f919c0d39390fe19ee9fb628d8df5d0c92b",
+    "native/bootstrap/checks.tide": "f9e7064aae9835fc688a661eee27b3a6042eb2c9a245d815aac1e87717aa04a0",
+    "native/bootstrap/fixtures/functions/report.tide": "aaa2f8248c216aea8a4bedcd1782c47d3403641349d53701459b20e2d31a8c7d",
+    "native/bootstrap/fixtures/functions/adjustment.tide": "a5abd31221a7c0aba4e583927488513e99db0ad016450e91e76804d88253ff1b"
+  },
+  "matched_initial": {
+    "step_limit": {
+      "tide": 292.744051,
+      "reference": 79.676733,
+      "factor": 0.2717694470788633,
+      "wins": 0,
+      "rows": [
+        {
+          "reference": 79.676733,
+          "tide": 293.177669
+        },
+        {
+          "tide": 292.744051,
+          "reference": 80.807605
+        },
+        {
+          "reference": 78.613963,
+          "tide": 291.844923
+        },
+        {
+          "tide": 296.263919,
+          "reference": 83.576999
+        },
+        {
+          "reference": 78.863057,
+          "tide": 299.581153
+        },
+        {
+          "tide": 293.137578,
+          "reference": 80.737693
+        },
+        {
+          "reference": 80.077752,
+          "tide": 292.431515
+        },
+        {
+          "tide": 292.289742,
+          "reference": 78.864578
+        },
+        {
+          "reference": 78.940409,
+          "tide": 291.380545
+        }
+      ]
+    },
+    "unique": {
+      "tide": 735.868433,
+      "reference": 67.17253,
+      "factor": 0.0912833422221279,
+      "wins": 0,
+      "rows": [
+        {
+          "tide": 727.962291,
+          "reference": 66.028739
+        },
+        {
+          "reference": 66.091841,
+          "tide": 744.004391
+        },
+        {
+          "tide": 734.636969,
+          "reference": 67.245422
+        },
+        {
+          "reference": 67.514667,
+          "tide": 738.335821
+        },
+        {
+          "tide": 739.215698,
+          "reference": 66.954387
+        },
+        {
+          "reference": 67.390556,
+          "tide": 731.191482
+        },
+        {
+          "tide": 735.868433,
+          "reference": 67.17253
+        },
+        {
+          "reference": 66.07856,
+          "tide": 752.483525
+        },
+        {
+          "tide": 732.385895,
+          "reference": 67.922785
+        }
+      ]
+    },
+    "many_ties": {
+      "tide": 762.961435,
+      "reference": 67.553568,
+      "factor": 0.08844017273792305,
+      "wins": 0,
+      "rows": [
+        {
+          "reference": 65.622741,
+          "tide": 760.921447
+        },
+        {
+          "tide": 777.696442,
+          "reference": 69.14317
+        },
+        {
+          "reference": 67.553568,
+          "tide": 762.365345
+        },
+        {
+          "tide": 758.714264,
+          "reference": 67.12784
+        },
+        {
+          "reference": 67.196191,
+          "tide": 759.792625
+        },
+        {
+          "tide": 780.413344,
+          "reference": 67.6313
+        },
+        {
+          "reference": 68.258042,
+          "tide": 766.090487
+        },
+        {
+          "tide": 772.009191,
+          "reference": 67.826844
+        },
+        {
+          "reference": 66.179422,
+          "tide": 762.961435
+        }
+      ]
+    }
+  }
+}

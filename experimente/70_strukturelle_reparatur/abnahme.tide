@@ -1,0 +1,169 @@
+pick values:*t n:i > t
+need (at values (mod n (length values))) "variant" 0
+
+suffix_part n:i > t
+if (eq n 0) "" (utf8_text (json_encode n))
+
+payload n:i > t
+let part pick (list t 6 "" "A" "é" "猫猫" "🍵" "éΩ") n
+concat part (suffix_part n)
+
+wire_octets n:i > i
+let prefix need (at (list i 6 0 1 2 6 4 5) (mod n 6)) "wire_size" 0
++ prefix (text_len (suffix_part n))
+
+record CutInput
+begin:i finish:i rate:i
+
+record CutCase
+inputs:{CutInput} expect:i
+
+cut_case n:i > {CutCase}
+let begin mod n 347
+let finish + begin (mod (div n 3) 83)
+let rate + 1 (mod n 17)
+let input make CutInput begin begin finish finish rate rate
+make CutCase inputs input expect (- (* rate finish) (* rate begin))
+
+cut ids:*i > *{CutCase}
+map {CutCase} ids n (cut_case n)
+
+record TapeInput
+bank:i track:i sector:i
+
+record TapeCase
+inputs:{TapeInput} expect:i
+
+tape_case n:i > {TapeCase}
+let bank mod (div n 100) 10
+let track mod (div n 10) 10
+let sector mod n 10
+let input make TapeInput bank bank track track sector sector
+make TapeCase inputs input expect (mod n 1000)
+
+tape ids:*i > *{TapeCase}
+map {TapeCase} ids n (tape_case n)
+
+record PageInput
+message:t
+
+record PageCase
+inputs:{PageInput} expect:i
+
+page_case n:i > {PageCase}
+let message payload n
+let size + 3 (wire_octets n)
+let input make PageInput message message
+make PageCase inputs input expect (+ (div size 8) (if (eq (mod size 8) 0) 0 1))
+
+page ids:*i > *{PageCase}
+map {PageCase} ids n (page_case n)
+
+record TicketInput
+title:t copies:i
+
+record TicketCase
+inputs:{TicketInput} expect:i
+
+ticket_case n:i > {TicketCase}
+let title payload n
+let copies + 1 (mod n 9)
+let input make TicketInput title title copies copies
+make TicketCase inputs input expect (+ (* 2 copies) (* copies (wire_octets n)))
+
+ticket ids:*i > *{TicketCase}
+map {TicketCase} ids n (ticket_case n)
+
+record NamespaceInput
+name:t
+
+record NamespaceCase
+inputs:{NamespaceInput} expect:i
+
+namespace_case n:i > {NamespaceCase}
+let head pick (list t 4 "" "srv::" "outer::域::" ":::") n
+let tail if (eq n 1) "" (suffix_part n)
+let name concat head tail
+let input make NamespaceInput name name
+make NamespaceCase inputs input expect (if (text_eq head "") 0 (- (text_len head) 1))
+
+namespace ids:*i > *{NamespaceCase}
+map {NamespaceCase} ids n (namespace_case n)
+
+record AnnotationInput
+text:t
+
+record AnnotationCase
+inputs:{AnnotationInput} expect:i
+
+annotation_case n:i > {AnnotationCase}
+let head pick (list t 4 "" "#" "猫#id#" "##a#") n
+let text concat head (if (eq n 1) "" (suffix_part n))
+let input make AnnotationInput text text
+make AnnotationCase inputs input expect (if (eq (text_len head) 0) -1 (text_len head))
+
+annotation ids:*i > *{AnnotationCase}
+map {AnnotationCase} ids n (annotation_case n)
+
+record TelemetryInput
+label:t inbound:i outbound:i
+
+record TelemetryCase
+inputs:{TelemetryInput} expect:i
+
+telemetry_case n:i > {TelemetryCase}
+let label payload n
+let inbound mod n 37
+let outbound mod (div n 5) 31
+let input make TelemetryInput label label inbound inbound outbound outbound
+make TelemetryCase inputs input expect (- (+ inbound (wire_octets n)) outbound)
+
+telemetry ids:*i > *{TelemetryCase}
+map {TelemetryCase} ids n (telemetry_case n)
+
+record TrailerInput
+frame:t
+
+record TrailerCase
+inputs:{TrailerInput} expect:i
+
+trailer_case n:i > {TrailerCase}
+let head pick (list t 4 "" "meta|" "ä|α|" "||") n
+let frame concat head (if (eq n 1) "" (payload n))
+let input make TrailerInput frame frame
+make TrailerCase inputs input expect (if (eq n 1) 0 (wire_octets n))
+
+trailer ids:*i > *{TrailerCase}
+map {TrailerCase} ids n (trailer_case n)
+
+record ThermalInput
+start:i intervals:i units:i
+
+record ThermalCase
+inputs:{ThermalInput} expect:i
+
+thermal_case n:i > {ThermalCase}
+let start mod n 257
+let intervals mod n 12
+let units mod (div n 7) 23
+let input make ThermalInput start start intervals intervals units units
+make ThermalCase inputs input expect (+ start (* units intervals))
+
+thermal ids:*i > *{ThermalCase}
+map {ThermalCase} ids n (thermal_case n)
+
+record FlagInput
+mode:t packets:i
+
+record FlagCase
+inputs:{FlagInput} expect:i
+
+flag_case n:i > {FlagCase}
+let idx mod n 6
+let mode pick (list t 6 "ON" "on" "On" "oN" "off" "") n
+let packets + 1 n
+let input make FlagInput mode mode packets packets
+make FlagCase inputs input expect (if (< idx 4) packets 0)
+
+flag ids:*i > *{FlagCase}
+map {FlagCase} ids n (flag_case n)

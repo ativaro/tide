@@ -1,0 +1,86 @@
+use syntax
+
+sha_parity a:i b:i c:i > i
+bootstrap_bit_xor (bootstrap_bit_xor a b) c
+
+sha_at words:*i offset:i > i
+need (at words offset) "sha_word" 0
+
+record ShaWords
+a:i b:i c:i d:i e:i f:i g:i h:i
+
+sha_block hash_state:{ShaWords} words:*i constants:*i expansion:*t > {ShaWords}
+let schedule fold expansion words acc pos unused
+  let i + pos 15
+  let x sha_at acc (- i 15)
+  let y sha_at acc (- i 2)
+  let s0 sha_parity (bootstrap_rotr32 x 7) (bootstrap_rotr32 x 18) (div x 8)
+  let s1 sha_parity (bootstrap_rotr32 y 17) (bootstrap_rotr32 y 19) (div y 1024)
+  append acc (mod (+ (+ (sha_at acc (- i 16)) s0) (+ (sha_at acc (- i 7)) s1)) 4294967296)
+let final fold schedule hash_state work pos word
+  let a get a work
+  let b get b work
+  let c get c work
+  let e get e work
+  let f get f work
+  let g get g work
+  let s1 sha_parity (bootstrap_rotr32 e 6) (bootstrap_rotr32 e 11) (bootstrap_rotr32 e 25)
+  let ch bootstrap_bit_xor g (bootstrap_bit_and e (bootstrap_bit_xor f g))
+  let tmp + (+ (get h work) s1) (+ ch (+ (sha_at constants (- pos 1)) word))
+  let ab bootstrap_bit_and a b
+  let majority + ab (bootstrap_bit_and (bootstrap_bit_xor a b) c)
+  let s0 sha_parity (bootstrap_rotr32 a 2) (bootstrap_rotr32 a 13) (bootstrap_rotr32 a 22)
+  make ShaWords a (mod (+ tmp (+ s0 majority)) 4294967296) b a c b d c
+    e (mod (+ tmp (get d work)) 4294967296) f e g f h g
+make ShaWords
+  a (mod (+ (get a hash_state) (get a final)) 4294967296)
+  b (mod (+ (get b hash_state) (get b final)) 4294967296)
+  c (mod (+ (get c hash_state) (get c final)) 4294967296)
+  d (mod (+ (get d hash_state) (get d final)) 4294967296)
+  e (mod (+ (get e hash_state) (get e final)) 4294967296)
+  f (mod (+ (get f hash_state) (get f final)) 4294967296)
+  g (mod (+ (get g hash_state) (get g final)) 4294967296)
+  h (mod (+ (get h hash_state) (get h final)) 4294967296)
+
+sha_round_constants > *i
+list i 64
+  1116352408 1899447441 3049323471 3921009573 961987163 1508970993 2453635748 2870763221
+  3624381080 310598401 607225278 1426881987 1925078388 2162078206 2614888103 3248222580
+  3835390401 4022224774 264347078 604807628 770255983 1249150122 1555081692 1996064986
+  2554220882 2821834349 2952996808 3210313671 3336571891 3584528711 113926993 338241895
+  666307205 773529912 1294757372 1396182291 1695183700 1986661051 2177026350 2456956037
+  2730485921 2820302411 3259730800 3345764771 3516065817 3600352804 4094571909 275423344
+  430227734 506948616 659060556 883997877 958139571 1322822218 1537002063 1747873779
+  1955562222 2024104815 2227730452 2361852424 2428436474 2756734187 3204031479 3329325298
+
+sha256_utf8 text:t > t
+let source bootstrap_utf8_octets text
+let size text_len source
+let blocks div (+ size 72) 64
+let total * blocks 64
+let constants sha_round_constants
+let initial make ShaWords a 1779033703 b 3144134277 c 1013904242 d 2773480762 e 1359893119 f 2600822924 g 528734635 h 1541459225
+let expansion indices 48
+let words_per_block indices 16
+let bytes_per_word indices 4
+let digest fold (indices (div (+ blocks 255) 256)) initial before group unused
+  let base * (- group 1) 256
+  let count - blocks base
+  fold (indices (if (> count 256) 256 count)) before hash_state block skip
+    let begin * (+ base (- block 1)) 64
+    let words fold words_per_block (list i 0) acc word step
+      let value fold bytes_per_word 0 v byte unused_byte
+        let offset + begin (+ (* (- word 1) 4) (- byte 1))
+        let n if (< offset size) (bootstrap_code_at source offset)
+          (if (eq offset size) 128 (if (< offset (- total 8)) 0
+           (let scale sha_at (list i 8 72057594037927936 281474976710656 1099511627776 4294967296 16777216 65536 256 1) (- offset (- total 8))
+            mod (div (* size 8) scale) 256)))
+        + (* v 256) n
+      append acc value
+    sha_block hash_state words constants expansion
+let hex "0123456789abcdef"
+let words list i 8 (get a digest) (get b digest) (get c digest) (get d digest) (get e digest) (get f digest) (get g digest) (get h digest)
+fold words "" encoded row word
+  fold (list i 8 268435456 16777216 1048576 65536 4096 256 16 1) encoded acc pos scale
+    let n mod (div word scale) 16
+    concat acc (text_slice hex n (+ n 1))

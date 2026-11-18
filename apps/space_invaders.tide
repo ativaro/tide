@@ -1,0 +1,85 @@
+use invaders_game
+
+record Glyph
+x:i y:i text:t ink:t
+
+main > {Game}
+with mode new_game (tag Phase ready)
+
+size > &ii
+pair 61 23
+
+glyph x:i y:i text:t ink:t > {Glyph}
+make Glyph x x y y text text ink ink
+
+digit n:i divisor:i > t
+need (at (list t 10 "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") (mod div n divisor 10)) "digit" 0
+
+score_text n:i > t
+concat (digit n 1000) concat (digit n 100) concat (digit n 10) (digit n 1)
+
+ship_icons n:i > t
+if > n 2 "^ ^ ^" if eq n 2 "^ ^" if eq n 1 "^" "-"
+
+frame_base world:{Game} > *{Glyph}
+list {Glyph} 13
+glyph 1 0 "SPACE INVADERS" "cyan"
+glyph 25 0 "PUNKTE" "dim"
+glyph 32 0 (score_text get score world) "gold"
+glyph 45 0 "SCHIFFE" "dim"
+glyph 53 0 (ship_icons get lives world) "green"
+glyph 0 2 "+-----------------------------------------------------------+" "dim"
+glyph 0 20 "+-----------------------------------------------------------+" "dim"
+glyph 5 6 "." "dim"
+glyph 28 10 "." "dim"
+glyph 52 12 "." "dim"
+glyph 21 15 "." "dim"
+glyph 40 5 "." "dim"
+glyph 2 22 "< > / A D  BEWEGEN    LEER  FEUER    P  PAUSE    Q  ENDE" "dim"
+
+alien_glyph enemy:{Alien} animation:b > {Glyph}
+let species get row enemy
+let sprite if eq species 0 (if animation "<o>" "{o}")
+if eq species 1 (if animation "[W]" "[M]") (if animation "/v\\" "\\v/")
+glyph - get x enemy 1 get y enemy sprite (if eq species 0 "pink" if eq species 1 "cyan" "gold")
+
+paint_fleet marks:*{Glyph} world:{Game} > *{Glyph}
+let animation eq mod div get age world 6 2 0
+fold get aliens world marks scene index enemy append scene alien_glyph enemy animation
+
+paint_bunkers marks:*{Glyph} forts:*{Bunker} > *{Glyph}
+fold forts marks scene index fort
+let hp get hp fort
+if eq hp 0 scene append scene
+glyph - get x fort 2 bunker_y (if eq hp 3 "[###]" if eq hp 2 "[# #]" "[ . ]") "green"
+
+paint_bolt marks:*{Glyph} bolt:?&ii sprite:t ink:t > *{Glyph}
+case bolt marks p append marks glyph first p second p sprite ink
+
+banner marks:*{Glyph} title:t action:t color:t > *{Glyph}
+let panel append marks glyph 8 8  "+-------------------------------------------+" color
+let body fold list i 4 9 10 11 12 panel scene index y
+append scene glyph 8 y "|                                           |" color
+let edge append body glyph 8 13 "+-------------------------------------------+" color
+append (append edge glyph 15 10 title color) glyph 15 12 action "white"
+
+draw world:{Game} > *{Glyph}
+let fleet paint_fleet (frame_base world) world
+let forts paint_bunkers fleet get bunkers world
+let shots paint_bolt (paint_bolt forts get shot world "|" "cyan") get bomb world "!" "pink"
+let scene if and > get grace world 0 eq mod get age world 2 1 shots
+append shots glyph - get ship world 1 ship_y "/^\\" "green"
+match get mode world
+ready   banner scene "S P A C E   I N V A D E R S" "ENTER  SPIEL STARTEN" "cyan"
+playing scene
+paused  banner scene "P A U S E" "P / ENTER  WEITER" "gold"
+won     banner scene "S E K T O R   G E S I C H E R T" "ENTER  NOCH EINMAL" "green"
+lost    banner scene "G A M E   O V E R" "ENTER  NOCH EINMAL" "pink"
+respawn banner scene "T R E F F E R" "GLEICH GEHT ES WEITER" "gold"
+end
+
+example arcade_score score_text
+{"inputs":{"n":240},"expect":"0240"}
+
+example arcade_size size
+{"inputs":{},"expect":[61,23]}

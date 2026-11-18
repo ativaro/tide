@@ -1,0 +1,15 @@
+{
+  "files": {
+    "abnahme.tide": "81dcbc64c2940e33b190d7233ff87c69cebd729c92faea879f3758cce4cf153a",
+    "aufgaben.json": "b04b81c322ad3ed7ad686a95e110d4c6a2c89e722a09d365f3d2d68807c7b005",
+    "versuchsplan.json": "5bf7c14b2f3dceaa0ed3c10b40744412cfec279589a66de084bb5c145b539e66",
+    "messen.mjs": "5d8c96690bc50c27f9345b8c903cb61a94fde28c31492bbb273d6aaf72ba9816",
+    "../61_dateiuebergreifende_paare/cpython_pairs.py": "0db10a0999595c9f3a4e1d1aad5f3fe69fe3a9530adc7196134c49557282f8f8",
+    "../60_reparaturzeit/cpython_comparison.py": "56d480b0bd79f704744bf0ab308564e1e592bd75ab004c4ac96b75d69a3970ea",
+    "../55_knotenreparatur/cpython_ast.py": "2c71e4b4c054e4f123684dd52780505be011b81e6f81d405ceb432a255f07d65",
+    "../../tide.lock": "9f3f465178707337cc410daedaea5f3cfde2ddac9b25ff9c7297bb17134492ad",
+    "../../tide": "8e02a4594002285be6e67f06e788cddc882b7bbb4ad68764f048da8549372827"
+  },
+  "seed": "14eaf5635d4c720d97cead24e55e7353d24a9d49db790f7276c91cb3d6fa584b",
+  "frozen_utc": "2026-11-18T10:30:05.928Z"
+}

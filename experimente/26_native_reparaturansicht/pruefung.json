@@ -1,0 +1,169 @@
+{
+  "host": "Linux x86_64, GCC 16.2.1, Python 3.14.10",
+  "source_sha256": "29e32d3ba8b712ea7f89fd87abbefab3fa0a07d4b230f3033d812dcfe5262074  native/bootstrap/seed.tide\nf80f41370b97760f99ed44ee5ccf16bb7499b09c69405236b885c037767deaa6  native/bootstrap/checks.tide\na0bed7e2e68616cee043eea1e895977a63a31b38296cea0a1effcfc268a1db1e  native/bootstrap/forms.tide\n0b979b120809261c72fd1f7756a3f6fa14881940ac5bb4a3932498c03076ca48  native/catalog/query.tide\nc3ede9b5a9edb4fc621e8cd1d760b8d113905f90e251309cdf8665a9501e2be1  native/catalog/help.tsv\n4c3187a07bd5bcfec0b60e0706be144271098fb327e8ab684288e8ce6622bb95  native/write-image\n0aca68c6c742228cd9285d3a0f6aec3f88fd7572f8125465796fcfc7acb0f383  tide\nd4ad6ce696c3891400d4b4fd7f79deae834970fed1d97e103ce1c829ce7e3212  Makefile\n2fc2bb4bd6a9fcf73629cd76745b83bbe2830f9eea42bf1534ea84216d968977  pyproject.toml\n643c10d4430af681f6f38a330435ec561d4b83a16eb3a87ea2a2895b1377d6e4  workbench/grouping.tide\nfb8eb6428c9f6729864496445df58bdf8742f535b91a98495cc1d03be14298ac  workbench/project_context.tide\n",
+  "results": {
+    "apps/balance.tide": {
+      "count": 2,
+      "sha256": "5e4def8ee50cf8f6b7b1f93236891d5be77e599fbc1650d8bdea0b755e647a4a"
+    },
+    "apps/cartons.tide": {
+      "count": 2,
+      "sha256": "feb7831866d8651e6fa48561dc20a6ce96449a7be4241aa68aaac902a6f9b01d"
+    },
+    "apps/first_peak.tide": {
+      "count": 1,
+      "sha256": "95c9a5c74f1eab7f622ceea0826c9e5232d294e25ca27ec5d0ae78c79c28eadb"
+    },
+    "apps/heat.tide": {
+      "count": 2,
+      "sha256": "80aa802cbc8d23c0e710250d311f5834a957a2999362e6eb871b00d9c960cce9"
+    },
+    "apps/heating.tide": {
+      "count": 2,
+      "sha256": "a0e1d8edd03411e17acdefb36ca56b3bd10436783ce7a7cdc5ad2cbc3febd2e7"
+    },
+    "apps/invaders_game.tide": {
+      "count": 26,
+      "sha256": "1ecbd70dcaca1449b2cfddb87587ce1dc317fdf691d2f15547fec2e4aba69eb9"
+    },
+    "apps/light.tide": {
+      "count": 2,
+      "sha256": "b0100ecdc6891c26bf03cad5f12df7da963693a71f96687bd1ba5cf941639498"
+    },
+    "apps/maximum.tide": {
+      "count": 1,
+      "sha256": "c6d03167b20f67f046678eaf8273631738c58996ee80c638dff68c30044200db"
+    },
+    "apps/nano.tide": {
+      "count": 16,
+      "sha256": "f057f40ec83701bb8f262de2eb2c19c095e813163e1008964b3819aab184bae1"
+    },
+    "apps/pump.tide": {
+      "count": 2,
+      "sha256": "94130fd3b7e29b1408a23ed0fcdc6328de234ae9120db8161608a2bfeeff0bc6"
+    },
+    "apps/readings.tide": {
+      "count": 2,
+      "sha256": "11a0d2cd590b938910f24956b0f5975812356167c26d7a62374845beb2ebbe8d"
+    },
+    "apps/report.tide": {
+      "count": 3,
+      "sha256": "1f9d85c7d3f8c77d444097fb6925ab458c8b628bd4ed939da650ca05cbd8b589"
+    },
+    "apps/space_invaders.tide": {
+      "count": 39,
+      "sha256": "117cbd621e1f2cb717844f1d084db638215a85b9351230881eb33a985d3d67a5"
+    },
+    "native/argv_i64.tide": {
+      "count": 35,
+      "sha256": "46f1fed6bd33faf0a44d786cfed904c4662b84a27b0c8b1036d1f26b0fa574ea"
+    },
+    "native/elf64.tide": {
+      "count": 14,
+      "sha256": "b81a58d6b82ec3a897720601c945e69e1816c477d728936a09d3a8b68e3b9969"
+    },
+    "native/fold_i64.tide": {
+      "count": 83,
+      "sha256": "6dd3710e1cb5c8ea0d9a57ef519751fc4777ea4fa158f902e0b43d877feb0cb9"
+    },
+    "native/rule_scan.tide": {
+      "count": 65,
+      "sha256": "a83717dce98b57e8a8964bdec147ab65e136529b57513a675c50ce1cbbe33af3"
+    },
+    "native/scalar.tide": {
+      "count": 29,
+      "sha256": "c6753cf1d8a91ff5a52393b00041562dd94afdd4035ea251d8493d9e16eeeebd"
+    },
+    "native/scan_image.tide": {
+      "count": 42,
+      "sha256": "80e922f92ec6abfb43a16f119bcfb33225e0484111a5a0b21c0a4ac2495d4296"
+    },
+    "native/source.tide": {
+      "count": 8,
+      "sha256": "8a51863395edcaabe0bb411fbdacc6331b16a54ce062c27ca4e0954bf1e7127f"
+    },
+    "native/bootstrap/checks.tide": {
+      "count": 49,
+      "sha256": "be74bf91a0a49bf39a87d79806e42bd16eed65e42fd943a6858aae542d6ea0bc"
+    },
+    "native/bootstrap/forms.tide": {
+      "count": 48,
+      "sha256": "a13dfebc71c21b2838b07bce4387439ed2ef1bf2ef767593788b3c2147592aed"
+    },
+    "native/bootstrap/seed.tide": {
+      "count": 46,
+      "sha256": "baf798d9b45e7d89793a1e038a9892b3a853e81a4931215c6023387ebcbaeb73"
+    },
+    "workbench/function_body.tide": {
+      "count": 20,
+      "sha256": "6209d14d7c3a6bff3873ca3e1e42e5771659da70709fbe7bc4a47b69d83557cb"
+    },
+    "workbench/function_fragment.tide": {
+      "count": 23,
+      "sha256": "35184019e1dd8ece41738d0ca91b6a0dbbbefeda1fe69d46482cc9b17448ff19"
+    },
+    "workbench/grouped_view.tide": {
+      "count": 24,
+      "sha256": "75e9e41febecf12785341c9dc38fd09e524e270aa46c56997b3ce79d633c45ad"
+    },
+    "workbench/grouping.tide": {
+      "count": 19,
+      "sha256": "503e8c12b62325b03523f1db322dcae2d4497a46e3b210df373d87b820777f79"
+    },
+    "workbench/project_context.tide": {
+      "count": 16,
+      "sha256": "cd0c047c45c29db04d2a445f5b75153407e2d67e273a4a59b4b4fd95dcdc683a"
+    },
+    "workbench/source_layout.tide": {
+      "count": 5,
+      "sha256": "9d41c78804c149b514e253d7c9a406ad808711f25118e3ce03ba30f18aac5e68"
+    },
+    "workbench/source_repair.tide": {
+      "count": 26,
+      "sha256": "4da1ab558094c7e1feafd5563567e07370c27d7e9fbe4ec82cee03b6ac24ac71"
+    },
+    "syntax": {
+      "count": 7,
+      "sha256": "f90bcd8e79b0301fdc98c19e26eb7a989800046ad82195c4b8ae922edf0a083f"
+    },
+    "adjacent": {
+      "count": 1,
+      "sha256": "d610fc6d7b71dada7bd2ccb9c91b470c2432c1af9de20b93a603a01d10d498f7"
+    },
+    "unicode": {
+      "count": 1,
+      "sha256": "697dc5d34d75d7fb7cbec26b125628296febf2dd464bea01646aabbce608c1fb"
+    }
+  },
+  "comparison_script": "from pathlib import Path\nimport json,subprocess,hashlib,sys,re\nfrom tide_lang.workbench import project,render\nfrom tide_lang.program import compile_source\nroot=Path.cwd(); w=Path(sys.argv[1]); results={}\n# Workbench snapshots omit examples and imports. Source text, including literal escape spellings, is otherwise preserved.\ndef visible(s):\n return '\\n\\n'.join(b for b in re.split(r'\\n[ \\t]*\\n',s) if b.strip() and b.split()[0] not in ('example','use'))\ndef check(name,src,mods):\n defs,_=compile_source(src,mods)\n expected={k:render(d.body,True) for k,d in defs.items() if not d.rule}\n packet='\\n\\n'.join(visible(s) for s in [src,*mods.values()])\n p=subprocess.run([root/'tide','forms'],input=packet,text=True,capture_output=True)\n if p.returncode:\n  results[name]={'count':len(expected),'failure':p.stderr.strip()};return\n rows=[r.split('\\t',1) for r in p.stdout.splitlines()]\n assert len(rows)==len(dict(rows)) and dict(rows)==expected,(name,[(k,x,expected.get(k)) for k,x in rows if expected.get(k)!=x][:1])\n results[name]={'count':len(rows),'sha256':hashlib.sha256(p.stdout.encode()).hexdigest()}\nfor f in [*sorted((root/'apps').glob('*.tide')),*sorted((root/'native').glob('*.tide')),*sorted((root/'native/bootstrap').glob('*.tide')),*sorted((root/'workbench').glob('*.tide'))]:\n s,m=project(f);check(str(f.relative_to(root)),s,m)\nproject_text='''variant Mode\na b\n\nrecord Box\nlow:i\nmode:{Mode}\n\nrule tally x:i > i\nstate last:i=0\nelse -> last=set x\nout last\n\nf m:{Mode} > i\nmatch m b 1 a 0 end\n\nguard q:i > ?i\ncatch E_DATA (need (nil ?i) \"bad\" q) why (input_line why)\n\nchoose v:i > *i\nlet boxed make Box low v mode tag Mode b\nlet xs list i 000002 01 -02\nif (=placeholder) xs scan tally xs\n\ng text:t > t\nconcat text \"a\\\\t\\\\n\\\\u00e9 \\\\\" ( \\\\\\\\ ) \"\n\nrecover > b\ncatch E_DATA fail \"bad\" error has_reason error \"bad\"\n\nmissing > i\ncatch E_DATA fail \"bad\" error raise error\n\nsub s:t > ?i\ntext_rfind s \"/\" (text_len s)\n'''.replace('=placeholder','eq (f (get mode boxed)) 1')\ncheck('syntax',project_text,{})\ncheck('adjacent', 'main > t\\nconcat\"ab\"\"cd\"\\n',{})\ncheck('unicode', 'main > t\\n\"Grüße\"\\n',{})\nprint(json.dumps(results,ensure_ascii=False))\n(w/'differential.json').write_text(json.dumps(results,indent=2)+'\\n')\n",
+  "isolation_command": "#!/usr/bin/env bash\nset -euo pipefail\nroot=/home/ativaro/Documents/tide\nb=/var/tmp/tide-batch-WBrQ70sP\nmkdir -p \"$b/release-clean\"\nargs=(--ro-bind \"$b/snapshots\" /samples --unshare-all --die-with-parent --new-session --clearenv --setenv PATH /usr/bin --setenv LC_ALL C --setenv HOME /tmp\n   --dir /usr --dir /usr/bin --ro-bind /usr/include /usr/include --ro-bind /usr/lib /usr/lib\n   --symlink lib /usr/lib64 --symlink usr/bin /bin --symlink usr/lib /lib --symlink usr/lib /lib64\n   --dev /dev --proc /proc --tmpfs /tmp --dir /work\n   --ro-bind \"$root/Makefile\" /work/Makefile --ro-bind \"$root/tide\" /work/tide --ro-bind \"$root/native\" /work/native\n   --ro-bind \"$root/apps\" /work/apps --bind \"$b/release-clean\" /work/build --chdir /work)\nargs+=(--tmpfs /usr/lib/gconv)\nfor p in /usr/lib/python*; do [[ -d $p ]] && args+=(--tmpfs \"$p\"); done\nfor p in /usr/lib/libpython*; do [[ ! -L $p ]] && args+=(--ro-bind /dev/null \"$p\"); done\nfor op in sh g++ as ld cat chmod cmp sha256sum xz xxd mv make mktemp rm mkdir env realpath dirname uname sort date install ln; do\n    args+=(--ro-bind \"$(realpath \"/usr/bin/$op\")\" \"/usr/bin/$op\")\ndone\nexec bwrap \"${args[@]}\" /bin/sh -eu -c '\n  if command -v python || command -v python3 || test -e /work/reference-tide; then exit 2; fi\n  before=$(date +%s%N)\n  ./tide forms < /samples/jury.tide > /work/build/first.tsv\n  after=$(date +%s%N)\n  echo \"first_ns=$((after-before))\"\n  for n in jury depot nano invaders unicode; do\n    ./tide forms < /samples/$n.tide > /work/build/$n.tsv\n    LC_ALL=C sort /work/build/$n.tsv > /work/build/$n.sorted\n    cmp /samples/$n.expected /work/build/$n.sorted\n    echo \"$n matched\"\n  done\n  make -s -j2 CXX=g++ check-native native\n  for cmd in check test run play context hole trace edit fmt describe lock build forms; do ./tide \"$cmd\" --help > \"/work/build/help-$cmd\"; test -s \"/work/build/help-$cmd\"; done\n  ./tide --help > /work/build/help-tide\n  echo \"14 CLI help topics\"\n  make -s install PREFIX=\"/usr/local\" DESTDIR=/work/build/prefix\n  installed=/work/build/prefix/usr/local/bin/tide\n  \"$installed\" --version\n  \"$installed\" build /work/apps/balance.tide /work/build/saldo\n  /work/build/saldo\n  test ! -e /work/build/prefix/usr/local/lib/tide/reference-tide\n  for pair in balance/balance heating/degree_hours cartons/carton_balance heat/simulate pump/simulate light/simulate; do app=${pair%/*}; fn=${pair#*/}; for entry in main \"$fn\"; do ./tide build \"apps/$app.tide\" \"/work/build/$app-$entry\" \"$entry\"; done; done\n  cd /work/build; sha256sum -c /samples/images.sha256; ./light-simulate true false false; ./balance-main\n'\n",
+  "isolation_log": "first_ns=5022404281\njury matched\ndepot matched\nnano matched\ninvaders matched\nunicode matched\ntrue\n14 CLI help topics\nTIDE 0.5.0\n97\nbalance-main: OK\nbalance-balance: OK\nheating-main: OK\nheating-degree_hours: OK\ncartons-main: OK\ncartons-carton_balance: OK\nheat-main: OK\nheat-simulate: OK\npump-main: OK\npump-simulate: OK\nlight-main: OK\nlight-simulate: OK\n[true,true,false]\n97\n",
+  "invalid_utf8_hex": [
+    "80",
+    "eda080",
+    "f4908080",
+    "f0808080",
+    "f09f",
+    "e282",
+    "f888808080"
+  ],
+  "invalid_utf8_result": "all exit 1, E_UTF8, empty stdout",
+  "regular_workbench": {
+    "unicode": "matched without fallback",
+    "nano": "matched without fallback",
+    "long_line": {
+      "codepoints": 4202,
+      "diagnostic": "bootstrap_line_limit",
+      "forms": "byte-identical after fallback"
+    }
+  },
+  "help_comparison": "11 legacy command help texts compared byte by byte; 14 help pages opened without reference",
+  "historical_python_tests": 35,
+  "standalone_forms": "Kernel, forms binary and stdin only; Unicode fixture identical; all seven invalid byte sequences rejected",
+  "installation": {
+    "staging": "Native and complete packages under temporary prefixes containing a space; no live install",
+    "installed_native": "Read-only prefix, no Python, Make, compiler or external gconv tables",
+    "installed_log": "TIDE 0.5.0\n97\n[true,true,false]\n[true,true,false]\n{\"code\":\"E_BACKEND\",\"message\":\"This invocation still requires the TIDE reference interpreter and Python 3.\"}\n",
+    "installed_complete": "Nano examples passed; Space Invaders import resolved; non-regular file rejected"
+  }
+}

@@ -1,0 +1,2012 @@
+{
+  "date": "2026-11-17T10:11:49.067Z",
+  "method": {
+    "warmups": 3,
+    "measured": 21,
+    "metric": "Serial CLI wall time from before spawn to process exit, including stdout capture; oracle comparison after timer. Rotating start and direction, pinned CPU 2, warm filesystem.",
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "kernel": "7.3.4-1-cachyos",
+    "python": "Python 3.14.10",
+    "flags": "-IBS",
+    "tokenizer": "o200k_base, gpt-tokenizer 3.4.0. The source row excludes its line ending; stdout includes it.",
+    "input": "row i = [{label:\"Ω\"+i,pos:i-40},i%2?\"finish\":\"waiting\"]; only at 4095 use [{label:\"\",pos:i%10},\"finish\"] to fit argv. Identical JSON bytes submitted to each variant at the same size."
+  },
+  "programs": {
+    "fixture_source": "native/bootstrap/fixtures/functions/composite_pairs.tide",
+    "source_sha256": {
+      "fold": "5d084b3bf4e45dee75ad7dfdc6f45a62861ee9f5413e66d854bddca2aa22d2dc",
+      "map": "ebc990aa1d98cc968344607494edee08102840ca0f5a0353c4066e07e921db81"
+    },
+    "variant": "Change only the expression of positions in a fresh copy of composite_pairs.tide; use matching package locks.",
+    "launch": "TIDE: tide run demo.tide --call positions --inputs JSON. CPython: /usr/bin/python3 -IBS positions.py JSON",
+    "python_source": "import json\nimport sys\n\ndef positions(entries):\n    if type(entries) is not list or len(entries) > 4096:\n        raise ValueError(\"entries\")\n    result = []\n    for item in entries:\n        if type(item) is not list or len(item) != 2:\n            raise ValueError(\"pair\")\n        cursor, outcome = item\n        if type(cursor) is not dict or cursor.keys() != {\"label\", \"pos\"}:\n            raise ValueError(\"cursor\")\n        if type(cursor[\"label\"]) is not str or outcome not in (\"waiting\", \"finish\"):\n            raise ValueError(\"label or outcome\")\n        pos = cursor[\"pos\"]\n        if type(pos) is not int or not -(1 << 63) <= pos < (1 << 63):\n            raise ValueError(\"pos\")\n        result.append(pos)\n    return result\n\nprint(json.dumps(positions(**json.loads(sys.argv[1])), separators=(\",\", \":\")))\n",
+    "tokens": {
+      "fold": {
+        "source": "fold entries (list i 0) seen row item (append seen (get pos (first item)))",
+        "o200k_base": 21
+      },
+      "map": {
+        "source": "map i entries item (get pos (first item))",
+        "o200k_base": 11
+      }
+    }
+  },
+  "measurements": [
+    {
+      "n": 1,
+      "variant": "fold_0.5",
+      "input_sha256": "54f355821365ce0e91f5375da9d94c5e41342017b6b152fe63dffa604b6431f3",
+      "input_bytes": 51,
+      "stdout_sha256": "c7a70b6e08bcde216876694e9e43bbcbea1e65e63c2e94d5eb566fb3373b777a",
+      "stdout_tokens": 3,
+      "median_ms": 6.171981,
+      "q1_ms": 6.001858,
+      "q3_ms": 6.440837,
+      "runs_ms": [
+        6.12339,
+        5.971967,
+        6.171981,
+        5.833033,
+        6.60007,
+        6.001858,
+        6.373075,
+        5.829353,
+        6.263862,
+        6.12609,
+        6.308434,
+        5.920455,
+        6.516819,
+        6.051428,
+        6.645881,
+        6.084939,
+        6.440837,
+        6.364114,
+        6.659322,
+        5.952006,
+        6.717152
+      ]
+    },
+    {
+      "n": 1,
+      "variant": "map_general",
+      "input_sha256": "54f355821365ce0e91f5375da9d94c5e41342017b6b152fe63dffa604b6431f3",
+      "input_bytes": 51,
+      "stdout_sha256": "c7a70b6e08bcde216876694e9e43bbcbea1e65e63c2e94d5eb566fb3373b777a",
+      "stdout_tokens": 3,
+      "median_ms": 5.933745,
+      "q1_ms": 5.802053,
+      "q3_ms": 6.16349,
+      "runs_ms": [
+        5.753092,
+        5.802053,
+        6.068109,
+        5.691071,
+        6.282973,
+        5.66757,
+        5.933745,
+        6.209532,
+        6.085339,
+        5.885155,
+        6.13518,
+        5.716321,
+        6.030247,
+        5.839114,
+        6.219921,
+        5.760132,
+        6.312033,
+        5.804433,
+        6.16349,
+        5.897135,
+        6.314994
+      ]
+    },
+    {
+      "n": 1,
+      "variant": "map_0.6",
+      "input_sha256": "54f355821365ce0e91f5375da9d94c5e41342017b6b152fe63dffa604b6431f3",
+      "input_bytes": 51,
+      "stdout_sha256": "c7a70b6e08bcde216876694e9e43bbcbea1e65e63c2e94d5eb566fb3373b777a",
+      "stdout_tokens": 3,
+      "median_ms": 6.029897,
+      "q1_ms": 5.920395,
+      "q3_ms": 6.177021,
+      "runs_ms": [
+        5.965016,
+        5.904275,
+        5.746442,
+        5.817973,
+        5.940066,
+        6.035308,
+        6.246363,
+        5.887955,
+        5.920395,
+        6.029897,
+        6.048668,
+        6.016588,
+        6.408076,
+        5.968317,
+        6.382845,
+        6.184591,
+        6.046898,
+        6.382185,
+        6.074989,
+        5.900415,
+        6.177021
+      ]
+    },
+    {
+      "n": 1,
+      "variant": "cpython",
+      "input_sha256": "54f355821365ce0e91f5375da9d94c5e41342017b6b152fe63dffa604b6431f3",
+      "input_bytes": 51,
+      "stdout_sha256": "c7a70b6e08bcde216876694e9e43bbcbea1e65e63c2e94d5eb566fb3373b777a",
+      "stdout_tokens": 3,
+      "median_ms": 9.566413,
+      "q1_ms": 9.45245,
+      "q3_ms": 9.739756,
+      "runs_ms": [
+        9.392789,
+        9.45245,
+        9.407529,
+        9.563703,
+        9.566413,
+        9.425289,
+        9.450901,
+        9.428849,
+        9.702945,
+        9.688766,
+        9.726936,
+        10.058783,
+        10.097084,
+        9.536522,
+        9.649374,
+        9.553623,
+        9.850769,
+        10.059503,
+        9.755777,
+        9.547742,
+        9.739756
+      ]
+    },
+    {
+      "n": 64,
+      "variant": "fold_0.5",
+      "input_sha256": "b69a8bc8aa83c617f8388a674e4b7b7233b3e95e206774d93810ef17e592a692",
+      "input_bytes": 2424,
+      "stdout_sha256": "d8c21879ff3b8375f936428b05c5213905bf215c9d1ae276c7e8a8b1d6a04087",
+      "stdout_tokens": 129,
+      "median_ms": 6.929607,
+      "q1_ms": 6.882866,
+      "q3_ms": 7.06939,
+      "runs_ms": [
+        7.137492,
+        7.248384,
+        7.06939,
+        6.897486,
+        6.882866,
+        6.911966,
+        6.855845,
+        6.900036,
+        6.944468,
+        6.968977,
+        6.910457,
+        7.600021,
+        7.706464,
+        6.790944,
+        7.05326,
+        6.988878,
+        6.829405,
+        6.929607,
+        6.877086,
+        6.832805,
+        7.660373
+      ]
+    },
+    {
+      "n": 64,
+      "variant": "map_general",
+      "input_sha256": "b69a8bc8aa83c617f8388a674e4b7b7233b3e95e206774d93810ef17e592a692",
+      "input_bytes": 2424,
+      "stdout_sha256": "d8c21879ff3b8375f936428b05c5213905bf215c9d1ae276c7e8a8b1d6a04087",
+      "stdout_tokens": 129,
+      "median_ms": 6.867015,
+      "q1_ms": 6.761773,
+      "q3_ms": 7.109481,
+      "runs_ms": [
+        6.578009,
+        7.885057,
+        6.932127,
+        6.863726,
+        6.852265,
+        6.753893,
+        7.019038,
+        6.867015,
+        7.036489,
+        6.761773,
+        6.61483,
+        7.526829,
+        7.195603,
+        7.109481,
+        6.905416,
+        6.786524,
+        7.278484,
+        6.732813,
+        6.803184,
+        6.742043,
+        7.360386
+      ]
+    },
+    {
+      "n": 64,
+      "variant": "map_0.6",
+      "input_sha256": "b69a8bc8aa83c617f8388a674e4b7b7233b3e95e206774d93810ef17e592a692",
+      "input_bytes": 2424,
+      "stdout_sha256": "d8c21879ff3b8375f936428b05c5213905bf215c9d1ae276c7e8a8b1d6a04087",
+      "stdout_tokens": 129,
+      "median_ms": 6.737243,
+      "q1_ms": 6.628771,
+      "q3_ms": 6.852335,
+      "runs_ms": [
+        6.801054,
+        6.574749,
+        6.636321,
+        6.747613,
+        6.844895,
+        6.534139,
+        6.983019,
+        6.61497,
+        6.647991,
+        6.776224,
+        6.628771,
+        7.132491,
+        7.09047,
+        7.140961,
+        6.658691,
+        6.674582,
+        6.737243,
+        6.582919,
+        6.573759,
+        6.852335,
+        7.211282
+      ]
+    },
+    {
+      "n": 64,
+      "variant": "cpython",
+      "input_sha256": "b69a8bc8aa83c617f8388a674e4b7b7233b3e95e206774d93810ef17e592a692",
+      "input_bytes": 2424,
+      "stdout_sha256": "d8c21879ff3b8375f936428b05c5213905bf215c9d1ae276c7e8a8b1d6a04087",
+      "stdout_tokens": 129,
+      "median_ms": 9.635264,
+      "q1_ms": 9.508381,
+      "q3_ms": 9.786578,
+      "runs_ms": [
+        9.786578,
+        9.43961,
+        9.556142,
+        9.396089,
+        9.640274,
+        9.508381,
+        9.484921,
+        9.571473,
+        9.718666,
+        9.359918,
+        9.838958,
+        9.46452,
+        10.187026,
+        10.114424,
+        9.729696,
+        9.598313,
+        10.238077,
+        9.653684,
+        10.171275,
+        9.601984,
+        9.635264
+      ]
+    },
+    {
+      "n": 256,
+      "variant": "fold_0.5",
+      "input_sha256": "22ed973f08521bde9b942a701f7bf5fb90983ba0431619d79b98ed591a96ccce",
+      "input_bytes": 9896,
+      "stdout_sha256": "a37d991ac5f4bbfd6d57980b565639a6e8ad618e46b40e2f906bea1c8da7b75e",
+      "stdout_tokens": 513,
+      "median_ms": 9.710916,
+      "q1_ms": 9.574963,
+      "q3_ms": 10.031143,
+      "runs_ms": [
+        9.505841,
+        9.537472,
+        9.710916,
+        9.89528,
+        9.574963,
+        9.795318,
+        9.499451,
+        9.555293,
+        9.656124,
+        9.593103,
+        10.056713,
+        9.522032,
+        10.031143,
+        10.779689,
+        9.660864,
+        10.39294,
+        10.057613,
+        9.759956,
+        10.706227,
+        9.774297,
+        9.601423
+      ]
+    },
+    {
+      "n": 256,
+      "variant": "map_general",
+      "input_sha256": "22ed973f08521bde9b942a701f7bf5fb90983ba0431619d79b98ed591a96ccce",
+      "input_bytes": 9896,
+      "stdout_sha256": "a37d991ac5f4bbfd6d57980b565639a6e8ad618e46b40e2f906bea1c8da7b75e",
+      "stdout_tokens": 513,
+      "median_ms": 9.380389,
+      "q1_ms": 9.169974,
+      "q3_ms": 9.726876,
+      "runs_ms": [
+        9.4206,
+        9.764606,
+        9.169174,
+        9.128043,
+        9.543513,
+        9.367738,
+        9.146554,
+        9.541032,
+        9.169974,
+        9.380389,
+        9.127824,
+        9.119553,
+        9.226965,
+        10.8947,
+        9.851029,
+        9.726876,
+        10.712427,
+        9.390649,
+        10.003282,
+        9.306367,
+        9.282487
+      ]
+    },
+    {
+      "n": 256,
+      "variant": "map_0.6",
+      "input_sha256": "22ed973f08521bde9b942a701f7bf5fb90983ba0431619d79b98ed591a96ccce",
+      "input_bytes": 9896,
+      "stdout_sha256": "a37d991ac5f4bbfd6d57980b565639a6e8ad618e46b40e2f906bea1c8da7b75e",
+      "stdout_tokens": 513,
+      "median_ms": 8.98963,
+      "q1_ms": 8.786836,
+      "q3_ms": 9.307997,
+      "runs_ms": [
+        8.917389,
+        8.95842,
+        8.771025,
+        8.715095,
+        9.210565,
+        8.732315,
+        8.774646,
+        9.407239,
+        9.069492,
+        9.307997,
+        8.786836,
+        8.590522,
+        9.521622,
+        10.566223,
+        9.778408,
+        9.144023,
+        9.89163,
+        8.811367,
+        9.261457,
+        8.98963,
+        8.905158
+      ]
+    },
+    {
+      "n": 256,
+      "variant": "cpython",
+      "input_sha256": "22ed973f08521bde9b942a701f7bf5fb90983ba0431619d79b98ed591a96ccce",
+      "input_bytes": 9896,
+      "stdout_sha256": "a37d991ac5f4bbfd6d57980b565639a6e8ad618e46b40e2f906bea1c8da7b75e",
+      "stdout_tokens": 513,
+      "median_ms": 9.818948,
+      "q1_ms": 9.698735,
+      "q3_ms": 9.982991,
+      "runs_ms": [
+        9.514562,
+        9.873809,
+        9.818948,
+        9.789457,
+        9.698735,
+        10.460152,
+        9.625144,
+        10.295408,
+        9.660565,
+        9.771677,
+        9.692655,
+        9.572943,
+        9.812358,
+        9.982991,
+        12.248539,
+        9.835069,
+        10.166215,
+        9.988252,
+        9.93671,
+        9.821318,
+        9.749566
+      ]
+    },
+    {
+      "n": 640,
+      "variant": "fold_0.5",
+      "input_sha256": "b74594724f444229473991c2a14d7419343ff62f194215d85e0464b79dc9cc34",
+      "input_bytes": 25064,
+      "stdout_sha256": "ae2dbf76d0b9987d5d8643eeb796c6f06c7fd65836a16c1c283513193a97c2fb",
+      "stdout_tokens": 1281,
+      "median_ms": 15.316455,
+      "q1_ms": 15.13785,
+      "q3_ms": 15.653502,
+      "runs_ms": [
+        15.10378,
+        15.645731,
+        15.653502,
+        16.311655,
+        14.976338,
+        15.499708,
+        15.131221,
+        16.318917,
+        15.13785,
+        15.599391,
+        15.242783,
+        16.49786,
+        15.204592,
+        15.296264,
+        20.805791,
+        15.10462,
+        15.330745,
+        15.179422,
+        15.316455,
+        15.12214,
+        15.713763
+      ]
+    },
+    {
+      "n": 640,
+      "variant": "map_general",
+      "input_sha256": "b74594724f444229473991c2a14d7419343ff62f194215d85e0464b79dc9cc34",
+      "input_bytes": 25064,
+      "stdout_sha256": "ae2dbf76d0b9987d5d8643eeb796c6f06c7fd65836a16c1c283513193a97c2fb",
+      "stdout_tokens": 1281,
+      "median_ms": 14.479147,
+      "q1_ms": 14.292363,
+      "q3_ms": 14.751702,
+      "runs_ms": [
+        14.315063,
+        14.292363,
+        14.708012,
+        15.367065,
+        14.177601,
+        14.113339,
+        14.082388,
+        14.751702,
+        14.15046,
+        14.370864,
+        14.61952,
+        14.249312,
+        14.310043,
+        16.225894,
+        15.849646,
+        15.10552,
+        14.479147,
+        14.581809,
+        14.65827,
+        14.369274,
+        15.10952
+      ]
+    },
+    {
+      "n": 640,
+      "variant": "map_0.6",
+      "input_sha256": "b74594724f444229473991c2a14d7419343ff62f194215d85e0464b79dc9cc34",
+      "input_bytes": 25064,
+      "stdout_sha256": "ae2dbf76d0b9987d5d8643eeb796c6f06c7fd65836a16c1c283513193a97c2fb",
+      "stdout_tokens": 1281,
+      "median_ms": 13.6713,
+      "q1_ms": 13.446735,
+      "q3_ms": 14.18363,
+      "runs_ms": [
+        13.781292,
+        14.108798,
+        13.400594,
+        13.480486,
+        13.23965,
+        13.548388,
+        13.440055,
+        13.446735,
+        13.374273,
+        13.424455,
+        14.198261,
+        14.18363,
+        14.016687,
+        14.342604,
+        14.300033,
+        14.239242,
+        13.6713,
+        13.584297,
+        14.765583,
+        13.68153,
+        13.529807
+      ]
+    },
+    {
+      "n": 640,
+      "variant": "cpython",
+      "input_sha256": "b74594724f444229473991c2a14d7419343ff62f194215d85e0464b79dc9cc34",
+      "input_bytes": 25064,
+      "stdout_sha256": "ae2dbf76d0b9987d5d8643eeb796c6f06c7fd65836a16c1c283513193a97c2fb",
+      "stdout_tokens": 1281,
+      "median_ms": 10.079943,
+      "q1_ms": 9.956471,
+      "q3_ms": 10.244747,
+      "runs_ms": [
+        9.870389,
+        10.234787,
+        9.870159,
+        9.852349,
+        9.956471,
+        10.023192,
+        9.91163,
+        10.072683,
+        9.967611,
+        10.095214,
+        10.133655,
+        9.8926,
+        10.877211,
+        10.489832,
+        10.452721,
+        10.068403,
+        10.079943,
+        10.151395,
+        10.244747,
+        10.429221,
+        10.815529
+      ]
+    },
+    {
+      "n": 723,
+      "variant": "fold_0.5",
+      "input_sha256": "69b637437f6f402ef4cc235897ddf1ad5e09245155a20fe6cc914434f951c2f9",
+      "input_bytes": 28343,
+      "stdout_sha256": "0aea0b0d4f5ee4de03cd59ce6a3091dba7326c04895db913b61fe51fa3c18565",
+      "stdout_tokens": 1447,
+      "median_ms": 16.665443,
+      "q1_ms": 16.456488,
+      "q3_ms": 16.827236,
+      "runs_ms": [
+        16.118642,
+        17.116533,
+        15.980318,
+        16.470789,
+        16.157832,
+        16.827236,
+        16.336786,
+        16.721464,
+        16.51441,
+        17.392028,
+        16.744635,
+        16.675743,
+        16.822287,
+        16.416948,
+        16.656534,
+        16.51298,
+        17.083152,
+        16.665443,
+        17.174323,
+        16.456488,
+        17.017011
+      ]
+    },
+    {
+      "n": 723,
+      "variant": "map_general",
+      "input_sha256": "69b637437f6f402ef4cc235897ddf1ad5e09245155a20fe6cc914434f951c2f9",
+      "input_bytes": 28343,
+      "stdout_sha256": "0aea0b0d4f5ee4de03cd59ce6a3091dba7326c04895db913b61fe51fa3c18565",
+      "stdout_tokens": 1447,
+      "median_ms": 15.545519,
+      "q1_ms": 15.289524,
+      "q3_ms": 15.774524,
+      "runs_ms": [
+        15.327204,
+        15.545519,
+        15.858007,
+        15.132411,
+        15.066029,
+        15.151471,
+        15.660422,
+        15.59013,
+        15.246593,
+        15.348396,
+        15.289524,
+        15.194682,
+        15.562989,
+        16.095351,
+        15.774524,
+        15.353975,
+        16.661653,
+        15.776824,
+        16.858927,
+        15.492629,
+        15.648202
+      ]
+    },
+    {
+      "n": 723,
+      "variant": "map_0.6",
+      "input_sha256": "69b637437f6f402ef4cc235897ddf1ad5e09245155a20fe6cc914434f951c2f9",
+      "input_bytes": 28343,
+      "stdout_sha256": "0aea0b0d4f5ee4de03cd59ce6a3091dba7326c04895db913b61fe51fa3c18565",
+      "stdout_tokens": 1447,
+      "median_ms": 14.462406,
+      "q1_ms": 14.369465,
+      "q3_ms": 14.820814,
+      "runs_ms": [
+        14.107259,
+        14.369465,
+        14.053517,
+        14.558768,
+        14.820814,
+        14.63028,
+        14.16853,
+        14.934977,
+        14.462406,
+        14.335123,
+        14.320334,
+        14.382995,
+        15.217263,
+        14.434146,
+        14.956567,
+        14.732342,
+        15.230843,
+        14.393795,
+        15.465648,
+        14.511757,
+        14.407775
+      ]
+    },
+    {
+      "n": 723,
+      "variant": "cpython",
+      "input_sha256": "69b637437f6f402ef4cc235897ddf1ad5e09245155a20fe6cc914434f951c2f9",
+      "input_bytes": 28343,
+      "stdout_sha256": "0aea0b0d4f5ee4de03cd59ce6a3091dba7326c04895db913b61fe51fa3c18565",
+      "stdout_tokens": 1447,
+      "median_ms": 10.184546,
+      "q1_ms": 10.136435,
+      "q3_ms": 10.296518,
+      "runs_ms": [
+        10.175455,
+        10.184546,
+        10.020553,
+        10.111295,
+        10.136435,
+        9.987062,
+        10.096204,
+        10.831449,
+        10.39787,
+        10.150375,
+        10.120104,
+        10.159045,
+        10.409311,
+        10.296518,
+        10.222506,
+        10.323668,
+        10.197136,
+        10.287388,
+        10.83074,
+        10.202886,
+        10.178915
+      ]
+    },
+    {
+      "n": 724,
+      "variant": "map_general",
+      "input_sha256": "301bf95214b5094574ccdfea4afb571c341e3e5bc8b339e9824406ae82365ee9",
+      "input_bytes": 28382,
+      "stdout_sha256": "2228050ed4a738a158cf554cf97574461b0f16155c9fe23c01eb135929e49631",
+      "stdout_tokens": 1449,
+      "median_ms": 15.408826,
+      "q1_ms": 15.219122,
+      "q3_ms": 15.638691,
+      "runs_ms": [
+        15.09069,
+        15.56628,
+        15.053249,
+        16.651182,
+        15.188332,
+        15.177762,
+        15.198162,
+        16.389097,
+        15.235432,
+        15.389627,
+        15.219122,
+        15.752344,
+        15.408826,
+        15.338525,
+        15.54908,
+        15.829606,
+        15.372405,
+        15.411257,
+        16.816436,
+        15.510329,
+        15.638691
+      ]
+    },
+    {
+      "n": 724,
+      "variant": "map_0.6",
+      "input_sha256": "301bf95214b5094574ccdfea4afb571c341e3e5bc8b339e9824406ae82365ee9",
+      "input_bytes": 28382,
+      "stdout_sha256": "2228050ed4a738a158cf554cf97574461b0f16155c9fe23c01eb135929e49631",
+      "stdout_tokens": 1449,
+      "median_ms": 14.443846,
+      "q1_ms": 14.368694,
+      "q3_ms": 14.723542,
+      "runs_ms": [
+        14.126289,
+        14.410435,
+        14.053647,
+        14.877635,
+        14.064697,
+        14.65324,
+        14.723542,
+        14.890826,
+        14.819884,
+        14.286262,
+        14.714852,
+        14.790203,
+        14.419466,
+        14.443846,
+        14.424916,
+        14.368694,
+        14.326284,
+        14.619229,
+        14.416216,
+        14.736392,
+        14.470517
+      ]
+    },
+    {
+      "n": 724,
+      "variant": "cpython",
+      "input_sha256": "301bf95214b5094574ccdfea4afb571c341e3e5bc8b339e9824406ae82365ee9",
+      "input_bytes": 28382,
+      "stdout_sha256": "2228050ed4a738a158cf554cf97574461b0f16155c9fe23c01eb135929e49631",
+      "stdout_tokens": 1449,
+      "median_ms": 10.215527,
+      "q1_ms": 10.149695,
+      "q3_ms": 10.319839,
+      "runs_ms": [
+        10.181045,
+        10.097114,
+        9.967611,
+        10.123234,
+        10.088724,
+        10.207266,
+        10.37176,
+        10.271348,
+        10.013592,
+        10.215527,
+        10.156536,
+        10.608975,
+        10.307098,
+        10.319839,
+        10.574754,
+        10.229197,
+        10.327019,
+        10.550363,
+        10.241737,
+        10.149695,
+        10.214356
+      ]
+    },
+    {
+      "n": 1024,
+      "variant": "map_general",
+      "input_sha256": "90c2e4e9b79e9d0da65d0ed6d0454e291572e48db5291a3772d94200166d499e",
+      "input_bytes": 40256,
+      "stdout_sha256": "1f7040b9b75b6df30cabff1b3f8fed7e19367c294a7fe87ddd60589834a2aa9c",
+      "stdout_tokens": 2049,
+      "median_ms": 19.709868,
+      "q1_ms": 19.499703,
+      "q3_ms": 19.905911,
+      "runs_ms": [
+        20.898483,
+        20.249709,
+        19.638766,
+        19.270719,
+        19.719828,
+        19.749308,
+        19.466282,
+        20.681588,
+        19.34551,
+        19.491693,
+        19.223447,
+        19.709868,
+        19.553544,
+        19.784539,
+        19.905911,
+        19.499703,
+        19.569955,
+        20.014404,
+        19.81182,
+        19.571414,
+        19.974613
+      ]
+    },
+    {
+      "n": 1024,
+      "variant": "map_0.6",
+      "input_sha256": "90c2e4e9b79e9d0da65d0ed6d0454e291572e48db5291a3772d94200166d499e",
+      "input_bytes": 40256,
+      "stdout_sha256": "1f7040b9b75b6df30cabff1b3f8fed7e19367c294a7fe87ddd60589834a2aa9c",
+      "stdout_tokens": 2049,
+      "median_ms": 18.42079,
+      "q1_ms": 18.065623,
+      "q3_ms": 18.686256,
+      "runs_ms": [
+        18.035962,
+        19.206577,
+        17.943991,
+        17.856838,
+        18.686256,
+        18.065623,
+        18.471702,
+        18.067493,
+        18.461951,
+        18.820288,
+        17.707405,
+        17.95352,
+        18.236257,
+        18.544903,
+        18.400759,
+        19.587555,
+        19.112595,
+        18.763608,
+        18.603274,
+        18.42079,
+        18.356029
+      ]
+    },
+    {
+      "n": 1024,
+      "variant": "cpython",
+      "input_sha256": "90c2e4e9b79e9d0da65d0ed6d0454e291572e48db5291a3772d94200166d499e",
+      "input_bytes": 40256,
+      "stdout_sha256": "1f7040b9b75b6df30cabff1b3f8fed7e19367c294a7fe87ddd60589834a2aa9c",
+      "stdout_tokens": 2049,
+      "median_ms": 10.649476,
+      "q1_ms": 10.459352,
+      "q3_ms": 10.788649,
+      "runs_ms": [
+        10.345779,
+        10.788649,
+        10.621115,
+        10.483402,
+        10.274898,
+        10.668746,
+        10.345429,
+        10.818499,
+        10.3444,
+        10.827979,
+        10.229627,
+        10.630675,
+        10.676016,
+        11.284249,
+        10.459352,
+        10.692587,
+        10.492392,
+        12.005534,
+        10.649476,
+        12.26881,
+        10.750018
+      ]
+    },
+    {
+      "n": 3000,
+      "variant": "map_general",
+      "input_sha256": "535800135c251983d39a4d461da21eb606673df7602f47c1f139a0a17a018d2e",
+      "input_bytes": 122244,
+      "stdout_sha256": "ab6fab784d6b9f39eac5408ce431767cb7c28359891a9d7672a10d44b95bfd86",
+      "stdout_tokens": 7961,
+      "median_ms": 47.433545,
+      "q1_ms": 47.097708,
+      "q3_ms": 48.582259,
+      "runs_ms": [
+        47.097708,
+        49.031189,
+        47.354033,
+        46.334972,
+        46.649958,
+        46.337732,
+        47.228171,
+        46.418444,
+        47.472745,
+        46.888064,
+        47.20535,
+        47.142789,
+        48.396775,
+        52.303109,
+        47.433545,
+        47.500917,
+        48.785424,
+        51.169664,
+        48.582259,
+        51.745286,
+        47.616269
+      ]
+    },
+    {
+      "n": 3000,
+      "variant": "map_0.6",
+      "input_sha256": "535800135c251983d39a4d461da21eb606673df7602f47c1f139a0a17a018d2e",
+      "input_bytes": 122244,
+      "stdout_sha256": "ab6fab784d6b9f39eac5408ce431767cb7c28359891a9d7672a10d44b95bfd86",
+      "stdout_tokens": 7961,
+      "median_ms": 43.035442,
+      "q1_ms": 42.091722,
+      "q3_ms": 43.627254,
+      "runs_ms": [
+        42.439669,
+        44.923942,
+        42.750696,
+        41.741744,
+        41.505339,
+        42.091722,
+        42.060091,
+        42.301176,
+        41.916748,
+        43.232215,
+        43.267937,
+        42.080532,
+        43.780508,
+        44.267228,
+        43.035442,
+        43.627254,
+        43.116043,
+        44.122645,
+        43.648395,
+        42.250036,
+        43.092563
+      ]
+    },
+    {
+      "n": 3000,
+      "variant": "cpython",
+      "input_sha256": "535800135c251983d39a4d461da21eb606673df7602f47c1f139a0a17a018d2e",
+      "input_bytes": 122244,
+      "stdout_sha256": "ab6fab784d6b9f39eac5408ce431767cb7c28359891a9d7672a10d44b95bfd86",
+      "stdout_tokens": 7961,
+      "median_ms": 12.975765,
+      "q1_ms": 12.529395,
+      "q3_ms": 13.272711,
+      "runs_ms": [
+        13.085667,
+        14.327483,
+        12.529395,
+        12.691299,
+        12.333371,
+        12.817471,
+        12.367852,
+        13.117108,
+        12.243659,
+        12.975765,
+        12.395613,
+        12.513275,
+        13.285191,
+        13.196569,
+        13.272711,
+        13.116148,
+        12.799831,
+        13.70135,
+        14.406825,
+        12.575076,
+        13.410314
+      ]
+    },
+    {
+      "n": 4095,
+      "variant": "map_general",
+      "input_sha256": "2371a494da8a0dc78c0eb5531c97411b1498f1cf5043decd2b070fb2c69926d9",
+      "input_bytes": 131053,
+      "stdout_sha256": "0a838f359d7669cd42bb8c0033198b31fe237311974dbc19ea8e7aa3cf221594",
+      "stdout_tokens": 8191,
+      "median_ms": 58.642283,
+      "q1_ms": 57.570339,
+      "q3_ms": 59.344687,
+      "runs_ms": [
+        58.705744,
+        62.090685,
+        57.492799,
+        57.772783,
+        59.012001,
+        57.979639,
+        58.04772,
+        59.344687,
+        56.447126,
+        59.326257,
+        57.190701,
+        56.799713,
+        78.146846,
+        58.642283,
+        58.201243,
+        60.191065,
+        57.570339,
+        58.694974,
+        59.643954,
+        57.165351,
+        61.621096
+      ]
+    },
+    {
+      "n": 4095,
+      "variant": "map_0.6",
+      "input_sha256": "2371a494da8a0dc78c0eb5531c97411b1498f1cf5043decd2b070fb2c69926d9",
+      "input_bytes": 131053,
+      "stdout_sha256": "0a838f359d7669cd42bb8c0033198b31fe237311974dbc19ea8e7aa3cf221594",
+      "stdout_tokens": 8191,
+      "median_ms": 52.206366,
+      "q1_ms": 51.223906,
+      "q3_ms": 54.124777,
+      "runs_ms": [
+        50.444179,
+        59.199474,
+        50.161652,
+        53.454382,
+        54.855652,
+        53.303519,
+        50.377277,
+        51.544632,
+        50.420168,
+        50.952959,
+        52.791539,
+        51.223906,
+        58.480518,
+        51.336837,
+        52.206366,
+        56.077718,
+        52.544613,
+        51.767256,
+        57.809035,
+        51.360099,
+        54.124777
+      ]
+    },
+    {
+      "n": 4095,
+      "variant": "cpython",
+      "input_sha256": "2371a494da8a0dc78c0eb5531c97411b1498f1cf5043decd2b070fb2c69926d9",
+      "input_bytes": 131053,
+      "stdout_sha256": "0a838f359d7669cd42bb8c0033198b31fe237311974dbc19ea8e7aa3cf221594",
+      "stdout_tokens": 8191,
+      "median_ms": 13.486565,
+      "q1_ms": 12.888193,
+      "q3_ms": 13.840673,
+      "runs_ms": [
+        12.651068,
+        13.573337,
+        13.486565,
+        13.320923,
+        13.884794,
+        12.550766,
+        12.888193,
+        12.643248,
+        12.520686,
+        13.525917,
+        14.068808,
+        13.672889,
+        15.376415,
+        12.535995,
+        13.501526,
+        13.387444,
+        13.840673,
+        13.210269,
+        14.430115,
+        13.260721,
+        13.875724
+      ]
+    }
+  ],
+  "checksums": {
+    "before": {
+      "checker": "9d26fe6c7656df7aa99402fe11cfb6cfdc9b66f7f3986109efef6b551305cfc1",
+      "tide": "1ec439e4be2286e3b993165af24d267d19266e88f7318819e181297b65f2e787",
+      "pin": {
+        "language": "0.5",
+        "tool": "0.5.0",
+        "catalog_sha256": "3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab"
+      }
+    },
+    "candidate": {
+      "checker": "eb7299c40597a8af13c970bed8e3ec75780320befe74a6be07e53a55ce1a5354",
+      "tide": "1ec439e4be2286e3b993165af24d267d19266e88f7318819e181297b65f2e787",
+      "pin": {
+        "language": "0.6",
+        "tool": "0.6.0",
+        "catalog_sha256": "1be1f73c016a78b714f5a06da7b179c0a04f30a1151d2845c80ff45dfdb10204"
+      }
+    },
+    "final": {
+      "checker": "78cee6f227fa5b99edcb87d3b6b8e4e248099eedd9772f5200da829caa1964d6",
+      "tide": "1ec439e4be2286e3b993165af24d267d19266e88f7318819e181297b65f2e787",
+      "pin": {
+        "language": "0.6",
+        "tool": "0.6.0",
+        "catalog_sha256": "1be1f73c016a78b714f5a06da7b179c0a04f30a1151d2845c80ff45dfdb10204"
+      }
+    }
+  },
+  "old_boundary": [
+    {
+      "n": 0,
+      "status": 0,
+      "result": 0
+    },
+    {
+      "n": 640,
+      "status": 0,
+      "result": 640
+    },
+    {
+      "n": 722,
+      "status": 0,
+      "result": 722
+    },
+    {
+      "n": 723,
+      "status": 0,
+      "result": 723
+    },
+    {
+      "n": 724,
+      "status": 1,
+      "result": {
+        "file": "composite_pairs.tide",
+        "code": "E_LIMIT",
+        "message": "Guest allocation budget exhausted",
+        "line": 18,
+        "column": 40
+      }
+    },
+    {
+      "n": 725,
+      "status": 1,
+      "result": {
+        "file": "composite_pairs.tide",
+        "code": "E_LIMIT",
+        "message": "Guest allocation budget exhausted",
+        "line": 18,
+        "column": 40
+      }
+    },
+    {
+      "n": 1024,
+      "status": 1,
+      "result": {
+        "file": "composite_pairs.tide",
+        "code": "E_LIMIT",
+        "message": "Guest allocation budget exhausted",
+        "line": 18,
+        "column": 40
+      }
+    },
+    {
+      "n": 3500,
+      "status": 1,
+      "result": {
+        "file": "composite_pairs.tide",
+        "code": "E_LIMIT",
+        "message": "Guest allocation budget exhausted",
+        "line": 18,
+        "column": 40
+      }
+    }
+  ],
+  "verification": {
+    "checks": 68,
+    "groups": {
+      "release": 6,
+      "static diagnostics": 8,
+      "forms, typed hole, edit and replay": 9,
+      "first failure, rethrow and scopes": 7,
+      "all list sizes and allocation guard": 12,
+      "differential checks": 26
+    },
+    "full_length": {
+      "rows": 4096,
+      "fixture": "use maps\n\nmain xs:*i > *i\npositions_map (map &{Cursor}{Outcome} xs n (pair (make Cursor label \"\" pos n) (tag Outcome finish)))\n\nrepeat_text xs:*i name:t > *t\nmap t xs unused name\n",
+      "too_many": {
+        "file": "/var/tmp/tide-map.q08j5P5I/audit/main.tide",
+        "code": "E_INPUT",
+        "message": "Invalid argument xs",
+        "line": 3,
+        "column": 1,
+        "expected": "*i",
+        "issue": {
+          "path": "/xs/4096",
+          "expected": "at most 4096 items",
+          "actual": "extra item"
+        }
+      },
+      "over_budget": {
+        "file": "/var/tmp/tide-map.q08j5P5I/audit/main.tide",
+        "code": "E_LIMIT",
+        "message": "Guest allocation budget exhausted",
+        "line": 7,
+        "column": 1,
+        "map_index": 4095
+      }
+    },
+    "repair": {
+      "hole": {
+        "revision": "d87af9456d97fd641b82f48810d86213ed381eec75fb1924cc3d30d80c386f5f",
+        "definition": "positions_map",
+        "records": {
+          "Cursor": {
+            "label": "t",
+            "pos": "i"
+          },
+          "Journal": {
+            "last": "?&{Cursor}{Outcome}",
+            "entries": "*&{Cursor}{Outcome}"
+          }
+        },
+        "variants": {
+          "Outcome": [
+            "finish",
+            "waiting"
+          ]
+        },
+        "expected_type": "i",
+        "bindings": {
+          "entries": "*&{Cursor}{Outcome}",
+          "item": "&{Cursor}{Outcome}"
+        },
+        "read_grants": [],
+        "draft_edit": {
+          "node": "4:21",
+          "replace": "__hole__"
+        }
+      },
+      "error": {
+        "file": "/var/tmp/tide-map.q08j5P5I/audit/maps.tide",
+        "code": "E_EXAMPLE",
+        "message": "Wrong output",
+        "line": 33,
+        "column": 1,
+        "example": "order",
+        "difference": {
+          "path": "/0",
+          "expected": 8,
+          "actual": 9
+        },
+        "repair": {
+          "revision": "b0c0a07fb9ed0fd33282355e8f8dac8f6c8a73fc19d50ab5399e5b9b196a1668",
+          "entry": "/var/tmp/tide-map.q08j5P5I/audit/maps.tide",
+          "target": "positions_map",
+          "inputs": {
+            "entries": [
+              [
+                {
+                  "label": "x",
+                  "pos": 8
+                },
+                "finish"
+              ],
+              [
+                {
+                  "label": "y",
+                  "pos": -2
+                },
+                "waiting"
+              ],
+              [
+                {
+                  "label": "Ω",
+                  "pos": 8
+                },
+                "finish"
+              ]
+            ]
+          },
+          "records": {
+            "Cursor": {
+              "label": "t",
+              "pos": "i"
+            }
+          },
+          "variants": {
+            "Outcome": [
+              "finish",
+              "waiting"
+            ]
+          },
+          "execution": {
+            "complete": true,
+            "branches": {}
+          },
+          "definitions": [
+            {
+              "node": "4:1",
+              "signature": "positions_map entries:*&{Cursor}{Outcome} > *i",
+              "body": "(map i entries item (+ 1 (get pos (first item))))"
+            }
+          ]
+        }
+      },
+      "edit": {
+        "base": "b0c0a07fb9ed0fd33282355e8f8dac8f6c8a73fc19d50ab5399e5b9b196a1668",
+        "revision": "d87af9456d97fd641b82f48810d86213ed381eec75fb1924cc3d30d80c386f5f",
+        "target": "maps.tide",
+        "examples": {
+          "passed": 20
+        },
+        "contract_changes": [],
+        "written": true
+      }
+    },
+    "space_invaders": {
+      "frames": 128,
+      "check": "byte-identical stdout for each tick plus start, seven draws, eighteen marches and five bunker hits; 11 application examples pass in each package",
+      "keys": "start on frames 0 and 72, pause on 70, right when i%29 < 5, left when 17 <= i%29 < 21, fire when i%5 == 1",
+      "signature": "561c7e16879cdd857a4b3f5660e1c940b394899616cc279e0518600e0f10d47d"
+    },
+    "build": {
+      "local_make_test": true,
+      "python_free_container": true,
+      "compiler_bootstrap_fixed_point": true,
+      "installed_suite": true,
+      "platform": "Linux x86-64",
+      "container_recipe": "native/bootstrap/no-python.Dockerfile"
+    }
+  },
+  "repair_contexts": {
+    "method": "Two changed defects in the three-module contracts from experiment 38. The older defects were fixed first. Seven public cases and 72 held-out cases per bug verified on each corrected implementation. Entries receive prepared projects and example inputs. Timing includes local process start, test and diagnostic generation. No model call. Python uses the external AST context builder from experiment 38 outside TIDE; the working directory replaces its sandbox mount. Python emits spaced JSON. Both raw tool and normalized payload tokens recorded.",
+    "python_context_preparer": "import ast, hashlib, importlib, inspect, json, os, resource, sys, textwrap\nresource.setrlimit(resource.RLIMIT_AS,(512*1024*1024,512*1024*1024))\nresource.setrlimit(resource.RLIMIT_CPU,(10,10))\nsys.path.insert(0,os.getcwd())\nop,target=sys.argv[1:]\ntests=json.load(sys.stdin)\nfiles={name:open(name,encoding=\"utf-8\").read() for name in sorted(os.listdir()) if name.endswith(\".py\")}\ndefs={n.name:(f,n) for f,src in files.items() for n in ast.parse(src).body if isinstance(n,ast.FunctionDef)}\nif op==\"apply\":\n    staged=dict(files)\n    pending={}\n    for edit in tests:\n        f,n=defs[edit[\"function\"]]\n        pending.setdefault(f,[]).append((n.body[0].lineno-1,n.end_lineno,textwrap.indent(textwrap.dedent(edit['body']).strip(),'    ')+'\\n'))\n    for f,patches in pending.items():\n        lines=files[f].splitlines(True)\n        for start,end,body in sorted(patches,reverse=True):\n            lines[start:end]=[body]\n        staged[f]=''.join(lines)\n        ast.parse(staged[f])\n    print(json.dumps({f:staged[f] for f in pending}))\nelse:\n    fn=getattr(importlib.import_module(\"panel\"),target)\n    if op==\"run\":\n        print(json.dumps([fn(**item) for item in tests]))\n    elif op==\"packet\":\n        fail=next(((q,got) for q in tests if (got:=fn(**q[\"inputs\"]))!=q[\"expect\"]),None)\n        if not fail: raise RuntimeError(\"expected a failing case\")\n        q,got=fail\n        seen=[target]; definitions=[]\n        for name in seen:\n            f,n=defs[name]\n            for call in ast.walk(n):\n                if isinstance(call,ast.Call) and isinstance(call.func,ast.Name) and call.func.id in defs and call.func.id not in seen: seen.append(call.func.id)\n            lines=files[f].splitlines()\n            definitions.append(dict(node=f+\":\"+str(n.body[0].lineno)+\":\"+str(n.body[0].col_offset+1),signature=lines[n.lineno-1],body=textwrap.dedent('\\n'.join(lines[n.body[0].lineno-1:n.end_lineno]))))\n        rev=hashlib.sha256(json.dumps(sorted(files.items()),separators=(',',':')).encode()).hexdigest()\n        print(json.dumps(dict(file=\"panel.py\",code=\"E_EXAMPLE\",message=\"Wrong output\",example=q[\"name\"],expected=q[\"expect\"],actual=got,repair=dict(revision=rev,entry=\"panel.py\",target=target,inputs=q[\"inputs\"],definitions=definitions))))\n",
+    "results": {
+      "locator": {
+        "contract": "Given an origin and a list of coordinates, return the coordinate at minimum absolute distance. If several coordinates are equally near, return the smallest coordinate. Empty input returns the origin. Coordinates are integers between -10000 and 10000 inclusive.",
+        "tide": {
+          "panel.tide": "use choice\n\nlocate origin:i marks:*i > i\ncase (at marks 0) origin initial (fold marks initial current row item (choose origin current item))\n",
+          "choice.tide": "use geometry\n\nchoose origin:i current:i item:i > i\nlet old distance origin current\nlet fresh distance origin item\nif (< fresh old) item (if (eq fresh old) (if (< item current) item current) current)\n",
+          "geometry.tide": "distance origin:i mark:i > i\nlet delta - mark origin\nif (< delta 0) (+ 1 (- 0 delta)) delta\n\nseparation a:i b:i > b\n< a b\n"
+        },
+        "python": {
+          "panel.py": "from choice import choose\n\ndef locate(origin, marks):\n    if not marks:\n        return origin\n    current = marks[0]\n    for item in marks:\n        current = choose(origin, current, item)\n    return current\n",
+          "choice.py": "from geometry import distance\n\ndef choose(origin, current, item):\n    old = distance(origin, current)\n    fresh = distance(origin, item)\n    if fresh < old:\n        return item\n    if fresh == old:\n        return item if item < current else current\n    return current\n",
+          "geometry.py": "def distance(origin, mark):\n    delta = mark - origin\n    return 1 - delta if delta < 0 else delta\n\ndef separation(a, b):\n    return a < b\n"
+        },
+        "public": [
+          {
+            "name": "symmetric",
+            "inputs": {
+              "origin": 10,
+              "marks": [
+                7,
+                13
+              ]
+            },
+            "expect": 7
+          },
+          {
+            "name": "case_0",
+            "inputs": {
+              "origin": 10,
+              "marks": [
+                13,
+                7
+              ]
+            },
+            "expect": 7
+          },
+          {
+            "name": "case_1",
+            "inputs": {
+              "origin": 10,
+              "marks": []
+            },
+            "expect": 10
+          },
+          {
+            "name": "case_2",
+            "inputs": {
+              "origin": -4,
+              "marks": [
+                -7,
+                -4,
+                -1
+              ]
+            },
+            "expect": -4
+          },
+          {
+            "name": "case_3",
+            "inputs": {
+              "origin": 0,
+              "marks": [
+                0,
+                0
+              ]
+            },
+            "expect": 0
+          },
+          {
+            "name": "case_4",
+            "inputs": {
+              "origin": 4,
+              "marks": [
+                7,
+                8
+              ]
+            },
+            "expect": 7
+          },
+          {
+            "name": "case_5",
+            "inputs": {
+              "origin": 0,
+              "marks": [
+                -2,
+                2,
+                9
+              ]
+            },
+            "expect": -2
+          }
+        ],
+        "verified_correct": 79,
+        "variants": {
+          "static": {
+            "ms": 5.482026,
+            "q1": 5.411845,
+            "q3": 5.640659,
+            "samples": [
+              5.636239,
+              5.571768,
+              5.426525,
+              5.240901,
+              5.361524,
+              5.351013,
+              7.483799,
+              5.692121,
+              5.65704,
+              5.411845,
+              5.482026,
+              5.286602,
+              5.640659,
+              5.505536,
+              5.329283,
+              5.455695,
+              5.837773,
+              5.915505,
+              5.431455,
+              5.432595,
+              5.540428
+            ],
+            "tool_tokens": 267,
+            "compact_json_tokens": 267,
+            "packet": {
+              "file": "panel.tide",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "line": 6,
+              "column": 1,
+              "example": "symmetric",
+              "expected": 7,
+              "actual": 13,
+              "repair": {
+                "revision": "4cd1609dff6f94722f93cd264db0881b00da100b6cc242b12f4043f60d2178a2",
+                "entry": "panel.tide",
+                "target": "locate",
+                "inputs": {
+                  "origin": 10,
+                  "marks": [
+                    7,
+                    13
+                  ]
+                },
+                "definitions": [
+                  {
+                    "node": "4:1",
+                    "signature": "locate origin:i marks:*i > i",
+                    "body": "(case (at marks 0) origin initial (fold marks initial current row item (choose origin current item)))"
+                  },
+                  {
+                    "node": "choice.tide:4:1",
+                    "signature": "choose origin:i current:i item:i > i",
+                    "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+                  },
+                  {
+                    "node": "geometry.tide:2:1",
+                    "signature": "distance origin:i mark:i > i",
+                    "body": "(let delta (- mark origin) (if (< delta 0) (+ 1 (- 0 delta)) delta))"
+                  }
+                ]
+              }
+            }
+          },
+          "executed": {
+            "ms": 5.643299,
+            "q1": 5.547368,
+            "q3": 5.726061,
+            "samples": [
+              5.588409,
+              5.677691,
+              5.568927,
+              5.398354,
+              5.439585,
+              5.363554,
+              6.346274,
+              6.812814,
+              5.726061,
+              5.635189,
+              5.521367,
+              5.391114,
+              5.643299,
+              5.857914,
+              5.547368,
+              5.715801,
+              5.685961,
+              5.802803,
+              5.618359,
+              5.67234,
+              5.742311
+            ],
+            "tool_tokens": 331,
+            "compact_json_tokens": 331,
+            "packet": {
+              "file": "panel.tide",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "line": 6,
+              "column": 1,
+              "example": "symmetric",
+              "expected": 7,
+              "actual": 13,
+              "repair": {
+                "revision": "4cd1609dff6f94722f93cd264db0881b00da100b6cc242b12f4043f60d2178a2",
+                "entry": "panel.tide",
+                "target": "locate",
+                "inputs": {
+                  "origin": 10,
+                  "marks": [
+                    7,
+                    13
+                  ]
+                },
+                "execution": {
+                  "complete": true,
+                  "branches": {
+                    "4:1": [
+                      "some"
+                    ],
+                    "geometry.tide:3:1": [
+                      "then",
+                      "else"
+                    ],
+                    "choice.tide:6:1": [
+                      "else",
+                      "then"
+                    ],
+                    "choice.tide:6:24": [
+                      "then"
+                    ],
+                    "choice.tide:6:43": [
+                      "else"
+                    ]
+                  }
+                },
+                "definitions": [
+                  {
+                    "node": "4:1",
+                    "signature": "locate origin:i marks:*i > i",
+                    "body": "(case (at marks 0) origin initial (fold marks initial current row item (choose origin current item)))"
+                  },
+                  {
+                    "node": "choice.tide:4:1",
+                    "signature": "choose origin:i current:i item:i > i",
+                    "body": "(let old (distance origin current) (let fresh (distance origin item) (if (< fresh old) item (if (eq fresh old) (if (< item current) item current) current))))"
+                  },
+                  {
+                    "node": "geometry.tide:2:1",
+                    "signature": "distance origin:i mark:i > i",
+                    "body": "(let delta (- mark origin) (if (< delta 0) (+ 1 (- 0 delta)) delta))"
+                  }
+                ]
+              }
+            }
+          },
+          "python": {
+            "ms": 16.956019,
+            "q1": 16.883607,
+            "q3": 17.059122,
+            "samples": [
+              16.927599,
+              16.902388,
+              16.883607,
+              16.819516,
+              16.728125,
+              16.851287,
+              20.429933,
+              18.682065,
+              17.300087,
+              17.042721,
+              17.049741,
+              17.059122,
+              16.926279,
+              17.283926,
+              16.857707,
+              16.934439,
+              16.956019,
+              17.009781,
+              17.672305,
+              16.806846,
+              17.00398
+            ],
+            "tool_tokens": 298,
+            "compact_json_tokens": 257,
+            "packet": {
+              "file": "panel.py",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "example": "symmetric",
+              "expected": 7,
+              "actual": 13,
+              "repair": {
+                "revision": "1381700ecbfe696064f5182af90c687ee8a031ed581f1af28e167a94942bf592",
+                "entry": "panel.py",
+                "target": "locate",
+                "inputs": {
+                  "origin": 10,
+                  "marks": [
+                    7,
+                    13
+                  ]
+                },
+                "definitions": [
+                  {
+                    "node": "panel.py:4:5",
+                    "signature": "def locate(origin, marks):",
+                    "body": "if not marks:\n    return origin\ncurrent = marks[0]\nfor item in marks:\n    current = choose(origin, current, item)\nreturn current"
+                  },
+                  {
+                    "node": "choice.py:4:5",
+                    "signature": "def choose(origin, current, item):",
+                    "body": "old = distance(origin, current)\nfresh = distance(origin, item)\nif fresh < old:\n    return item\nif fresh == old:\n    return item if item < current else current\nreturn current"
+                  },
+                  {
+                    "node": "geometry.py:2:5",
+                    "signature": "def distance(origin, mark):",
+                    "body": "delta = mark - origin\nreturn 1 - delta if delta < 0 else delta"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "dial": {
+        "contract": "Given a reading, a reference and a positive spacing, return the closest grid value reference + k * spacing for integer k. If a reading is exactly halfway between two grid values, choose the grid value farther from the reference. Inputs are integers: reading and reference in [-10000,10000], spacing in [1,100].",
+        "tide": {
+          "panel.tide": "use scale\n\ndisplay reading:i reference:i spacing:i > i\n+ reference (scale (- reading reference) spacing)\n",
+          "scale.tide": "use units\n\nscale delta:i width:i > i\nlet magnitude if (< delta 0) (- 0 delta) delta\nlet rounded * width (units magnitude width)\nif (< delta 0) (- 0 (* width (div magnitude width))) rounded\n",
+          "units.tide": "units magnitude:i width:i > i\nlet whole div magnitude width\nlet rest mod magnitude width\nif (< (* 2 rest) width) whole (+ whole 1)\n\nmultiple value:i width:i > b\neq (mod value width) 0\n"
+        },
+        "python": {
+          "panel.py": "from scale import scale\n\ndef display(reading, reference, spacing):\n    return reference + scale(reading - reference, spacing)\n",
+          "scale.py": "from units import units\n\ndef scale(delta, width):\n    magnitude = -delta if delta < 0 else delta\n    rounded = width * units(magnitude, width)\n    return -(width * (magnitude // width)) if delta < 0 else rounded\n",
+          "units.py": "def units(magnitude, width):\n    whole = magnitude // width\n    rest = magnitude % width\n    return whole if 2 * rest < width else whole + 1\n\ndef multiple(value, width):\n    return value % width == 0\n"
+        },
+        "public": [
+          {
+            "name": "negative_half",
+            "inputs": {
+              "reading": 95,
+              "reference": 100,
+              "spacing": 10
+            },
+            "expect": 90
+          },
+          {
+            "name": "case_0",
+            "inputs": {
+              "reading": 107,
+              "reference": 100,
+              "spacing": 5
+            },
+            "expect": 105
+          },
+          {
+            "name": "case_1",
+            "inputs": {
+              "reading": -4,
+              "reference": 0,
+              "spacing": 8
+            },
+            "expect": -8
+          },
+          {
+            "name": "case_2",
+            "inputs": {
+              "reading": 0,
+              "reference": 0,
+              "spacing": 6
+            },
+            "expect": 0
+          },
+          {
+            "name": "case_3",
+            "inputs": {
+              "reading": 95,
+              "reference": 100,
+              "spacing": 10
+            },
+            "expect": 90
+          },
+          {
+            "name": "case_4",
+            "inputs": {
+              "reading": 1,
+              "reference": 0,
+              "spacing": 3
+            },
+            "expect": 0
+          },
+          {
+            "name": "case_5",
+            "inputs": {
+              "reading": 9,
+              "reference": 8,
+              "spacing": 1
+            },
+            "expect": 9
+          }
+        ],
+        "verified_correct": 79,
+        "variants": {
+          "static": {
+            "ms": 5.390094,
+            "q1": 5.323103,
+            "q3": 5.473976,
+            "samples": [
+              5.577378,
+              5.471486,
+              5.323103,
+              5.415855,
+              5.167809,
+              5.283452,
+              5.283702,
+              6.552939,
+              5.578518,
+              5.331513,
+              5.331113,
+              5.275522,
+              5.69062,
+              5.345773,
+              5.518917,
+              5.326712,
+              5.473976,
+              5.286102,
+              5.431395,
+              5.465496,
+              5.390094
+            ],
+            "tool_tokens": 261,
+            "compact_json_tokens": 261,
+            "packet": {
+              "file": "panel.tide",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "line": 6,
+              "column": 1,
+              "example": "negative_half",
+              "expected": 90,
+              "actual": 100,
+              "repair": {
+                "revision": "94cbf4102ffc990be647e9cb015055fa23030178dbfa2608e99f7d3ec25a9351",
+                "entry": "panel.tide",
+                "target": "display",
+                "inputs": {
+                  "reading": 95,
+                  "reference": 100,
+                  "spacing": 10
+                },
+                "definitions": [
+                  {
+                    "node": "4:1",
+                    "signature": "display reading:i reference:i spacing:i > i",
+                    "body": "(+ reference (scale (- reading reference) spacing))"
+                  },
+                  {
+                    "node": "scale.tide:4:1",
+                    "signature": "scale delta:i width:i > i",
+                    "body": "(let magnitude (if (< delta 0) (- 0 delta) delta) (let rounded (* width (units magnitude width)) (if (< delta 0) (- 0 (* width (div magnitude width))) rounded)))"
+                  },
+                  {
+                    "node": "units.tide:2:1",
+                    "signature": "units magnitude:i width:i > i",
+                    "body": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* 2 rest) width) whole (+ whole 1))))"
+                  }
+                ]
+              }
+            }
+          },
+          "executed": {
+            "ms": 5.471366,
+            "q1": 5.385574,
+            "q3": 5.529547,
+            "samples": [
+              5.560038,
+              5.471366,
+              5.296782,
+              5.438135,
+              5.17516,
+              5.528557,
+              5.215631,
+              5.859774,
+              5.611998,
+              5.632759,
+              5.278431,
+              5.433065,
+              5.532997,
+              5.338524,
+              5.433885,
+              5.492156,
+              5.508417,
+              5.506337,
+              5.464576,
+              5.385574,
+              5.529547
+            ],
+            "tool_tokens": 303,
+            "compact_json_tokens": 303,
+            "packet": {
+              "file": "panel.tide",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "line": 6,
+              "column": 1,
+              "example": "negative_half",
+              "expected": 90,
+              "actual": 100,
+              "repair": {
+                "revision": "94cbf4102ffc990be647e9cb015055fa23030178dbfa2608e99f7d3ec25a9351",
+                "entry": "panel.tide",
+                "target": "display",
+                "inputs": {
+                  "reading": 95,
+                  "reference": 100,
+                  "spacing": 10
+                },
+                "execution": {
+                  "complete": true,
+                  "branches": {
+                    "scale.tide:4:15": [
+                      "then"
+                    ],
+                    "units.tide:4:1": [
+                      "else"
+                    ],
+                    "scale.tide:6:1": [
+                      "then"
+                    ]
+                  }
+                },
+                "definitions": [
+                  {
+                    "node": "4:1",
+                    "signature": "display reading:i reference:i spacing:i > i",
+                    "body": "(+ reference (scale (- reading reference) spacing))"
+                  },
+                  {
+                    "node": "scale.tide:4:1",
+                    "signature": "scale delta:i width:i > i",
+                    "body": "(let magnitude (if (< delta 0) (- 0 delta) delta) (let rounded (* width (units magnitude width)) (if (< delta 0) (- 0 (* width (div magnitude width))) rounded)))"
+                  },
+                  {
+                    "node": "units.tide:2:1",
+                    "signature": "units magnitude:i width:i > i",
+                    "body": "(let whole (div magnitude width) (let rest (mod magnitude width) (if (< (* 2 rest) width) whole (+ whole 1))))"
+                  }
+                ]
+              }
+            }
+          },
+          "python": {
+            "ms": 16.884517,
+            "q1": 16.752204,
+            "q3": 17.083141,
+            "samples": [
+              17.036951,
+              17.01112,
+              16.752204,
+              16.742894,
+              16.764635,
+              16.663533,
+              20.78177,
+              17.624903,
+              17.090732,
+              17.146393,
+              17.083141,
+              16.842267,
+              16.949809,
+              16.884517,
+              16.767465,
+              16.690694,
+              19.319909,
+              17.01424,
+              16.710884,
+              16.794606,
+              16.696033
+            ],
+            "tool_tokens": 288,
+            "compact_json_tokens": 245,
+            "packet": {
+              "file": "panel.py",
+              "code": "E_EXAMPLE",
+              "message": "Wrong output",
+              "example": "negative_half",
+              "expected": 90,
+              "actual": 100,
+              "repair": {
+                "revision": "6ff71c9dc661498d26abd1ceb6d896a1675026d03f39e8426e25c125fc6ee0d3",
+                "entry": "panel.py",
+                "target": "display",
+                "inputs": {
+                  "reading": 95,
+                  "reference": 100,
+                  "spacing": 10
+                },
+                "definitions": [
+                  {
+                    "node": "panel.py:4:5",
+                    "signature": "def display(reading, reference, spacing):",
+                    "body": "return reference + scale(reading - reference, spacing)"
+                  },
+                  {
+                    "node": "scale.py:4:5",
+                    "signature": "def scale(delta, width):",
+                    "body": "magnitude = -delta if delta < 0 else delta\nrounded = width * units(magnitude, width)\nreturn -(width * (magnitude // width)) if delta < 0 else rounded"
+                  },
+                  {
+                    "node": "units.py:2:5",
+                    "signature": "def units(magnitude, width):",
+                    "body": "whole = magnitude // width\nrest = magnitude % width\nreturn whole if 2 * rest < width else whole + 1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "hashes": {
+    "apps/invaders_game.tide": "bda06576229ab68cfdabe5a191b522ac09ee3ffd3c5eda4cb22da75ec241415c",
+    "native/bootstrap/seed.tide": "03e41fadd5365e1e35c8c1a74f89d76bdfe2f1797eb6d87500a8667f08aeafe6",
+    "native/bootstrap/syntax.tide": "85a569660d9c3778795105fb2db51a7f6cfb6fc3cda3b3c57dcf35cb1836fd0f",
+    "native/bootstrap/function_run.tide": "1a78096f828c3b6683749d4f78d76d3ef13dc20774aaf93622572114a2cbbf94",
+    "native/bootstrap/functions.tide": "b2609599637b7e3c7e1577b550f009017c7fdc71afb9f883831d5cd087e4bbe2",
+    "native/bootstrap/nodes.tide": "e21ea86d5e946c3ba3809bf425869ff0eb1ae51e51699cacd0a97efd40849500",
+    "native/bootstrap/value_tree.tide": "413e028c048f8ec16938e99ea12dd1d0a2df030924bbb14b1d2f53075834f3e0",
+    "native/bootstrap/compiler_checks.tide": "cede6bdf561027c02878791505ef1314d57bd7016a21a175bdac834917b85227",
+    "native/bootstrap/checks.tide": "03b61d5ffb6dbbe68a1daadf782d3a0b270781f13bbf43bfa2538e884af8a1cd",
+    "native/bootstrap/fixtures/functions/maps.tide": "1d5d12c7757e6e0683fa1e7b6c77c4c8eb370f1830400ada04794d01bc87b04b",
+    "native/catalog/release.tsv": "55c312fc629c22052d620d4efd1c1e9a2d64b0876434be8aa4614fc710472235",
+    "tide.lock": "e513717168c2780a3ba763a1a6c6f554ba028bc061f81a3b8afdccf34302a21d"
+  }
+}

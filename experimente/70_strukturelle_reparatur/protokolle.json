@@ -1,0 +1,4538 @@
+{
+  "cut": {
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rechne die Dauer eines Ausschnitts von begin bis end in Abtastpunkte um.",
+          "sources": {
+            "panel": "from route import samples\n\ndef main(begin: int, finish: int, rate: int) -> int:\n    return samples(begin, finish, rate)\n",
+            "route": "from rulebook import span\n\ndef samples(begin: int, finish: int, rate: int) -> int:\n    return rate * span(finish, begin)\n",
+            "rulebook": "def span(start: int, stop: int) -> int:\n    return stop - start\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "begin": 0,
+                "finish": 0,
+                "rate": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 1,
+                "finish": 1,
+                "rate": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 3,
+                "finish": 4,
+                "rate": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "begin": 123,
+                "finish": 164,
+                "rate": 5
+              },
+              "expect": 205
+            },
+            {
+              "inputs": {
+                "begin": 178,
+                "finish": 219,
+                "rate": 6
+              },
+              "expect": 246
+            },
+            {
+              "inputs": {
+                "begin": 280,
+                "finish": 317,
+                "rate": 1
+              },
+              "expect": 37
+            },
+            {
+              "inputs": {
+                "begin": 227,
+                "finish": 305,
+                "rate": 1
+              },
+              "expect": 78
+            },
+            {
+              "inputs": {
+                "begin": 215,
+                "finish": 219,
+                "rate": 13
+              },
+              "expect": 52
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "begin": 3,
+            "finish": 4,
+            "rate": 4
+          },
+          "expect": 4,
+          "actual": -4,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "panel.py:4:12:4:40",
+                "replace": "samples(finish, begin, rate)"
+              }
+            ],
+            [
+              {
+                "node": "route.py:4:19:4:38",
+                "replace": "span(begin, finish)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "panel.py:4:12:4:40",
+              "replace": "samples(finish, begin, rate)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rechne die Dauer eines Ausschnitts von begin bis end in Abtastpunkte um.",
+          "sources": {
+            "panel": "use route\n\nmain begin:i finish:i rate:i > i\nsamples begin finish rate\n",
+            "route": "use rulebook\n\nsamples begin:i finish:i rate:i > i\n* rate (span finish begin)\n",
+            "rulebook": "span start:i stop:i > i\n- stop start\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "begin": 0,
+                "finish": 0,
+                "rate": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 1,
+                "finish": 1,
+                "rate": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 3,
+                "finish": 4,
+                "rate": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "begin": 123,
+                "finish": 164,
+                "rate": 5
+              },
+              "expect": 205
+            },
+            {
+              "inputs": {
+                "begin": 178,
+                "finish": 219,
+                "rate": 6
+              },
+              "expect": 246
+            },
+            {
+              "inputs": {
+                "begin": 280,
+                "finish": 317,
+                "rate": 1
+              },
+              "expect": 37
+            },
+            {
+              "inputs": {
+                "begin": 227,
+                "finish": 305,
+                "rate": 1
+              },
+              "expect": 78
+            },
+            {
+              "inputs": {
+                "begin": 215,
+                "finish": 219,
+                "rate": 13
+              },
+              "expect": 52
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "begin": 3,
+            "finish": 4,
+            "rate": 4
+          },
+          "expect": 4,
+          "actual": -4,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rechne die Dauer eines Ausschnitts von begin bis end in Abtastpunkte um.",
+          "sources": {
+            "panel": "use route\n\nmain begin:i finish:i rate:i > i\nsamples begin finish rate\n",
+            "route": "use rulebook\n\nsamples begin:i finish:i rate:i > i\n* rate (span finish begin)\n",
+            "rulebook": "span start:i stop:i > i\n- stop start\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "begin": 0,
+                "finish": 0,
+                "rate": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 1,
+                "finish": 1,
+                "rate": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 3,
+                "finish": 4,
+                "rate": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "begin": 123,
+                "finish": 164,
+                "rate": 5
+              },
+              "expect": 205
+            },
+            {
+              "inputs": {
+                "begin": 178,
+                "finish": 219,
+                "rate": 6
+              },
+              "expect": 246
+            },
+            {
+              "inputs": {
+                "begin": 280,
+                "finish": 317,
+                "rate": 1
+              },
+              "expect": 37
+            },
+            {
+              "inputs": {
+                "begin": 227,
+                "finish": 305,
+                "rate": 1
+              },
+              "expect": 78
+            },
+            {
+              "inputs": {
+                "begin": 215,
+                "finish": 219,
+                "rate": 13
+              },
+              "expect": 52
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "begin": 3,
+            "finish": 4,
+            "rate": 4
+          },
+          "expect": 4,
+          "actual": -4,
+          "tested": [
+            12,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "4:1",
+                "replace": "(samples finish begin rate)"
+              }
+            ],
+            [
+              {
+                "node": "route.tide:4:9",
+                "replace": "(span begin finish)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "4:1",
+              "replace": "(samples finish begin rate)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Rechne die Dauer eines Ausschnitts von begin bis end in Abtastpunkte um.",
+          "sources": {
+            "panel": "from route import samples\n\ndef main(begin: int, finish: int, rate: int) -> int:\n    return samples(begin, finish, rate)\n",
+            "route": "from rulebook import span\n\ndef samples(begin: int, finish: int, rate: int) -> int:\n    return rate * span(finish, begin)\n",
+            "rulebook": "def span(start: int, stop: int) -> int:\n    return stop - start\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "begin": 0,
+                "finish": 0,
+                "rate": 1
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 1,
+                "finish": 1,
+                "rate": 2
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "begin": 3,
+                "finish": 4,
+                "rate": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "begin": 123,
+                "finish": 164,
+                "rate": 5
+              },
+              "expect": 205
+            },
+            {
+              "inputs": {
+                "begin": 178,
+                "finish": 219,
+                "rate": 6
+              },
+              "expect": 246
+            },
+            {
+              "inputs": {
+                "begin": 280,
+                "finish": 317,
+                "rate": 1
+              },
+              "expect": 37
+            },
+            {
+              "inputs": {
+                "begin": 227,
+                "finish": 305,
+                "rate": 1
+              },
+              "expect": 78
+            },
+            {
+              "inputs": {
+                "begin": 215,
+                "finish": 219,
+                "rate": 13
+              },
+              "expect": 52
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "begin": 3,
+            "finish": 4,
+            "rate": 4
+          },
+          "expect": 4,
+          "actual": -4,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ]
+  },
+  "tape": {
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Kodiere Bank, Spur und Sektor als dreistellige Dezimaladresse. Bank ist die Hunderterstelle.",
+          "sources": {
+            "panel": "use route\n\nmain bank:i track:i sector:i > i\naddress bank track sector\n",
+            "route": "use rulebook\n\naddress bank:i track:i sector:i > i\ndecimal_address sector track bank\n",
+            "rulebook": "decimal_address hundreds:i tens:i units:i > i\n+ (* hundreds 100) (+ (* tens 10) units)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 3
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 2,
+                "sector": 3
+              },
+              "expect": 123
+            },
+            {
+              "inputs": {
+                "bank": 8,
+                "track": 7,
+                "sector": 2
+              },
+              "expect": 872
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 9,
+                "sector": 7
+              },
+              "expect": 97
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 1,
+                "sector": 0
+              },
+              "expect": 110
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 4,
+                "sector": 1
+              },
+              "expect": 41
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "bank": 0,
+            "track": 0,
+            "sector": 1
+          },
+          "expect": 1,
+          "actual": 100,
+          "tested": [
+            18,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Kodiere Bank, Spur und Sektor als dreistellige Dezimaladresse. Bank ist die Hunderterstelle.",
+          "sources": {
+            "panel": "from route import address\n\ndef main(bank: int, track: int, sector: int) -> int:\n    return address(bank, track, sector)\n",
+            "route": "from rulebook import decimal_address\n\ndef address(bank: int, track: int, sector: int) -> int:\n    return decimal_address(sector, track, bank)\n",
+            "rulebook": "def decimal_address(hundreds: int, tens: int, units: int) -> int:\n    return hundreds * 100 + (tens * 10 + units)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 3
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 2,
+                "sector": 3
+              },
+              "expect": 123
+            },
+            {
+              "inputs": {
+                "bank": 8,
+                "track": 7,
+                "sector": 2
+              },
+              "expect": 872
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 9,
+                "sector": 7
+              },
+              "expect": 97
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 1,
+                "sector": 0
+              },
+              "expect": 110
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 4,
+                "sector": 1
+              },
+              "expect": 41
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "bank": 0,
+            "track": 0,
+            "sector": 1
+          },
+          "expect": 1,
+          "actual": 100,
+          "tested": [
+            18,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Kodiere Bank, Spur und Sektor als dreistellige Dezimaladresse. Bank ist die Hunderterstelle.",
+          "sources": {
+            "panel": "from route import address\n\ndef main(bank: int, track: int, sector: int) -> int:\n    return address(bank, track, sector)\n",
+            "route": "from rulebook import decimal_address\n\ndef address(bank: int, track: int, sector: int) -> int:\n    return decimal_address(sector, track, bank)\n",
+            "rulebook": "def decimal_address(hundreds: int, tens: int, units: int) -> int:\n    return hundreds * 100 + (tens * 10 + units)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 3
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 2,
+                "sector": 3
+              },
+              "expect": 123
+            },
+            {
+              "inputs": {
+                "bank": 8,
+                "track": 7,
+                "sector": 2
+              },
+              "expect": 872
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 9,
+                "sector": 7
+              },
+              "expect": 97
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 1,
+                "sector": 0
+              },
+              "expect": 110
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 4,
+                "sector": 1
+              },
+              "expect": 41
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "bank": 0,
+            "track": 0,
+            "sector": 1
+          },
+          "expect": 1,
+          "actual": 100,
+          "tested": [
+            24,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "panel.py:4:12:4:40",
+                "replace": "address(sector, track, bank)"
+              }
+            ],
+            [
+              {
+                "node": "route.py:4:12:4:48",
+                "replace": "decimal_address(bank, track, sector)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "panel.py:4:12:4:40",
+              "replace": "address(sector, track, bank)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Kodiere Bank, Spur und Sektor als dreistellige Dezimaladresse. Bank ist die Hunderterstelle.",
+          "sources": {
+            "panel": "use route\n\nmain bank:i track:i sector:i > i\naddress bank track sector\n",
+            "route": "use rulebook\n\naddress bank:i track:i sector:i > i\ndecimal_address sector track bank\n",
+            "rulebook": "decimal_address hundreds:i tens:i units:i > i\n+ (* hundreds 100) (+ (* tens 10) units)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 0,
+                "sector": 3
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 2,
+                "sector": 3
+              },
+              "expect": 123
+            },
+            {
+              "inputs": {
+                "bank": 8,
+                "track": 7,
+                "sector": 2
+              },
+              "expect": 872
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 9,
+                "sector": 7
+              },
+              "expect": 97
+            },
+            {
+              "inputs": {
+                "bank": 1,
+                "track": 1,
+                "sector": 0
+              },
+              "expect": 110
+            },
+            {
+              "inputs": {
+                "bank": 0,
+                "track": 4,
+                "sector": 1
+              },
+              "expect": 41
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "bank": 0,
+            "track": 0,
+            "sector": 1
+          },
+          "expect": 1,
+          "actual": 100,
+          "tested": [
+            24,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "4:1",
+                "replace": "(address sector track bank)"
+              }
+            ],
+            [
+              {
+                "node": "route.tide:4:1",
+                "replace": "(decimal_address bank track sector)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "4:1",
+              "replace": "(address sector track bank)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ]
+  },
+  "page": {
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Eine UTF-8-Nachricht belegt ganze Seiten zu je 8 Bytes. Zähle den drei Byte langen Vorspann mit.",
+          "sources": {
+            "panel": "from route import pages\n\ndef main(message: str) -> int:\n    return pages(message)\n",
+            "route": "from rulebook import used\n\ndef pages(message: str) -> int:\n    return (used(message) + 10) // 8\n",
+            "rulebook": "def used(message: str) -> int:\n    return len(message)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "message": ""
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "A1"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "猫猫123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "é872"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "éΩ4097"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "31110"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫55041"
+              },
+              "expect": 2
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "message": "猫猫3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Eine UTF-8-Nachricht belegt ganze Seiten zu je 8 Bytes. Zähle den drei Byte langen Vorspann mit.",
+          "sources": {
+            "panel": "use route\n\nmain message:t > i\npages message\n",
+            "route": "use rulebook\n\npages message:t > i\ndiv (+ (used message) 10) 8\n",
+            "rulebook": "used message:t > i\ntext_len message\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "message": ""
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "A1"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "猫猫123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "é872"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "éΩ4097"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "31110"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫55041"
+              },
+              "expect": 2
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "message": "猫猫3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            9,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "replace": "(byte_len (utf8_bytes message))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "replace": "(byte_len (utf8_bytes message))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Eine UTF-8-Nachricht belegt ganze Seiten zu je 8 Bytes. Zähle den drei Byte langen Vorspann mit.",
+          "sources": {
+            "panel": "use route\n\nmain message:t > i\npages message\n",
+            "route": "use rulebook\n\npages message:t > i\ndiv (+ (used message) 10) 8\n",
+            "rulebook": "used message:t > i\ntext_len message\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "message": ""
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "A1"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "猫猫123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "é872"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "éΩ4097"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "31110"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫55041"
+              },
+              "expect": 2
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "message": "猫猫3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Eine UTF-8-Nachricht belegt ganze Seiten zu je 8 Bytes. Zähle den drei Byte langen Vorspann mit.",
+          "sources": {
+            "panel": "from route import pages\n\ndef main(message: str) -> int:\n    return pages(message)\n",
+            "route": "from rulebook import used\n\ndef pages(message: str) -> int:\n    return (used(message) + 10) // 8\n",
+            "rulebook": "def used(message: str) -> int:\n    return len(message)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "message": ""
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "A1"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "猫猫123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "é872"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "éΩ4097"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "message": "31110"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "message": "猫猫55041"
+              },
+              "expect": 2
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "message": "猫猫3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            9,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:24",
+                "replace": "len(message.encode('utf-8'))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:24",
+              "replace": "len(message.encode('utf-8'))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ]
+  },
+  "ticket": {
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Kopie enthält die UTF-8-Bytes des Textes mit vorangestelltem Zeichen §. Ermittle die gesamte Bytezahl.",
+          "sources": {
+            "panel": "use route\n\nmain title:t copies:i > i\njob title copies\n",
+            "route": "use rulebook\n\njob title:t copies:i > i\n* copies (row_size title)\n",
+            "rulebook": "row_size title:t > i\ntext_len (concat \"§\" title)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "title": "",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "title": "A1",
+                "copies": 2
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "title": "猫猫3",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "title": "猫猫123",
+                "copies": 7
+              },
+              "expect": 77
+            },
+            {
+              "inputs": {
+                "title": "é872",
+                "copies": 9
+              },
+              "expect": 63
+            },
+            {
+              "inputs": {
+                "title": "éΩ4097",
+                "copies": 3
+              },
+              "expect": 33
+            },
+            {
+              "inputs": {
+                "title": "31110",
+                "copies": 7
+              },
+              "expect": 49
+            },
+            {
+              "inputs": {
+                "title": "猫猫55041",
+                "copies": 7
+              },
+              "expect": 91
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "title": "",
+            "copies": 1
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            5,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "replace": "(byte_len (utf8_bytes (concat \"§\" title)))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "replace": "(byte_len (utf8_bytes (concat \"§\" title)))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Kopie enthält die UTF-8-Bytes des Textes mit vorangestelltem Zeichen §. Ermittle die gesamte Bytezahl.",
+          "sources": {
+            "panel": "from route import job\n\ndef main(title: str, copies: int) -> int:\n    return job(title, copies)\n",
+            "route": "from rulebook import row_size\n\ndef job(title: str, copies: int) -> int:\n    return copies * row_size(title)\n",
+            "rulebook": "def row_size(title: str) -> int:\n    return len(f'§{title}')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "title": "",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "title": "A1",
+                "copies": 2
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "title": "猫猫3",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "title": "猫猫123",
+                "copies": 7
+              },
+              "expect": 77
+            },
+            {
+              "inputs": {
+                "title": "é872",
+                "copies": 9
+              },
+              "expect": 63
+            },
+            {
+              "inputs": {
+                "title": "éΩ4097",
+                "copies": 3
+              },
+              "expect": 33
+            },
+            {
+              "inputs": {
+                "title": "31110",
+                "copies": 7
+              },
+              "expect": 49
+            },
+            {
+              "inputs": {
+                "title": "猫猫55041",
+                "copies": 7
+              },
+              "expect": 91
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "title": "",
+            "copies": 1
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            5,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:29",
+                "replace": "len(f'§{title}'.encode('utf-8'))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:29",
+              "replace": "len(f'§{title}'.encode('utf-8'))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Kopie enthält die UTF-8-Bytes des Textes mit vorangestelltem Zeichen §. Ermittle die gesamte Bytezahl.",
+          "sources": {
+            "panel": "from route import job\n\ndef main(title: str, copies: int) -> int:\n    return job(title, copies)\n",
+            "route": "from rulebook import row_size\n\ndef job(title: str, copies: int) -> int:\n    return copies * row_size(title)\n",
+            "rulebook": "def row_size(title: str) -> int:\n    return len(f'§{title}')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "title": "",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "title": "A1",
+                "copies": 2
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "title": "猫猫3",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "title": "猫猫123",
+                "copies": 7
+              },
+              "expect": 77
+            },
+            {
+              "inputs": {
+                "title": "é872",
+                "copies": 9
+              },
+              "expect": 63
+            },
+            {
+              "inputs": {
+                "title": "éΩ4097",
+                "copies": 3
+              },
+              "expect": 33
+            },
+            {
+              "inputs": {
+                "title": "31110",
+                "copies": 7
+              },
+              "expect": 49
+            },
+            {
+              "inputs": {
+                "title": "猫猫55041",
+                "copies": 7
+              },
+              "expect": 91
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "title": "",
+            "copies": 1
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Jede Kopie enthält die UTF-8-Bytes des Textes mit vorangestelltem Zeichen §. Ermittle die gesamte Bytezahl.",
+          "sources": {
+            "panel": "use route\n\nmain title:t copies:i > i\njob title copies\n",
+            "route": "use rulebook\n\njob title:t copies:i > i\n* copies (row_size title)\n",
+            "rulebook": "row_size title:t > i\ntext_len (concat \"§\" title)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "title": "",
+                "copies": 1
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "title": "A1",
+                "copies": 2
+              },
+              "expect": 8
+            },
+            {
+              "inputs": {
+                "title": "猫猫3",
+                "copies": 4
+              },
+              "expect": 36
+            },
+            {
+              "inputs": {
+                "title": "猫猫123",
+                "copies": 7
+              },
+              "expect": 77
+            },
+            {
+              "inputs": {
+                "title": "é872",
+                "copies": 9
+              },
+              "expect": 63
+            },
+            {
+              "inputs": {
+                "title": "éΩ4097",
+                "copies": 3
+              },
+              "expect": 33
+            },
+            {
+              "inputs": {
+                "title": "31110",
+                "copies": 7
+              },
+              "expect": 49
+            },
+            {
+              "inputs": {
+                "title": "猫猫55041",
+                "copies": 7
+              },
+              "expect": 91
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "title": "",
+            "copies": 1
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ]
+  },
+  "namespace": {
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die einsbasierte Zeichenposition des letzten Doppelkolons. Fehlt es, ist das Ergebnis null.",
+          "sources": {
+            "panel": "from route import position\n\ndef main(name: str) -> int:\n    return position(name)\n",
+            "route": "from rulebook import marker\n\ndef position(name: str) -> int:\n    return marker(name) + 1\n",
+            "rulebook": "def marker(name: str) -> int:\n    return name.find('::')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "name": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": ":::3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": ":::123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": "872"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::4097"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": "outer::域::31110"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "name": "srv::55041"
+              },
+              "expect": 4
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "name": ":::3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            5,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:27",
+                "replace": "name.rfind('::')"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:27",
+              "replace": "name.rfind('::')"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die einsbasierte Zeichenposition des letzten Doppelkolons. Fehlt es, ist das Ergebnis null.",
+          "sources": {
+            "panel": "use route\n\nmain name:t > i\nposition name\n",
+            "route": "use rulebook\n\nposition name:t > i\n+ (marker name) 1\n",
+            "rulebook": "marker name:t > i\ncase (text_find name \"::\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "name": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": ":::3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": ":::123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": "872"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::4097"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": "outer::域::31110"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "name": "srv::55041"
+              },
+              "expect": 4
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "name": ":::3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die einsbasierte Zeichenposition des letzten Doppelkolons. Fehlt es, ist das Ergebnis null.",
+          "sources": {
+            "panel": "use route\n\nmain name:t > i\nposition name\n",
+            "route": "use rulebook\n\nposition name:t > i\n+ (marker name) 1\n",
+            "rulebook": "marker name:t > i\ncase (text_find name \"::\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "name": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": ":::3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": ":::123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": "872"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::4097"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": "outer::域::31110"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "name": "srv::55041"
+              },
+              "expect": 4
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "name": ":::3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            5,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:7",
+                "replace": "(text_rfind name \"::\" (text_len name))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:7",
+              "replace": "(text_rfind name \"::\" (text_len name))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Liefere die einsbasierte Zeichenposition des letzten Doppelkolons. Fehlt es, ist das Ergebnis null.",
+          "sources": {
+            "panel": "from route import position\n\ndef main(name: str) -> int:\n    return position(name)\n",
+            "route": "from rulebook import marker\n\ndef position(name: str) -> int:\n    return marker(name) + 1\n",
+            "rulebook": "def marker(name: str) -> int:\n    return name.find('::')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "name": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": ":::3"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": ":::123"
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "name": "872"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "name": "srv::4097"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "name": "outer::域::31110"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "name": "srv::55041"
+              },
+              "expect": 4
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "name": ":::3"
+          },
+          "expect": 2,
+          "actual": 1,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ]
+  },
+  "annotation": {
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Stelle dem Logtext das Zeichen > voran. Liefere den nullbasierten Index der letzten Raute oder −1.",
+          "sources": {
+            "panel": "use route\n\nmain text:t > i\nboundary text\n",
+            "route": "use rulebook\n\nboundary text:t > i\nlocate text\n",
+            "rulebook": "locate text:t > i\ncase (text_find (concat \">\" text) \"#\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "text": ""
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "##a#3"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "##a#123"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "872"
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#4097"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "猫#id#31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "text": "#55041"
+              },
+              "expect": 1
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "text": "##a#3"
+          },
+          "expect": 4,
+          "actual": 1,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Stelle dem Logtext das Zeichen > voran. Liefere den nullbasierten Index der letzten Raute oder −1.",
+          "sources": {
+            "panel": "from route import boundary\n\ndef main(text: str) -> int:\n    return boundary(text)\n",
+            "route": "from rulebook import locate\n\ndef boundary(text: str) -> int:\n    return locate(text)\n",
+            "rulebook": "def locate(text: str) -> int:\n    return f'>{text}'.find('#')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "text": ""
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "##a#3"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "##a#123"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "872"
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#4097"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "猫#id#31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "text": "#55041"
+              },
+              "expect": 1
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "text": "##a#3"
+          },
+          "expect": 4,
+          "actual": 1,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Stelle dem Logtext das Zeichen > voran. Liefere den nullbasierten Index der letzten Raute oder −1.",
+          "sources": {
+            "panel": "from route import boundary\n\ndef main(text: str) -> int:\n    return boundary(text)\n",
+            "route": "from rulebook import locate\n\ndef boundary(text: str) -> int:\n    return locate(text)\n",
+            "rulebook": "def locate(text: str) -> int:\n    return f'>{text}'.find('#')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "text": ""
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "##a#3"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "##a#123"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "872"
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#4097"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "猫#id#31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "text": "#55041"
+              },
+              "expect": 1
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "text": "##a#3"
+          },
+          "expect": 4,
+          "actual": 1,
+          "tested": [
+            1,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:32",
+                "replace": "f'>{text}'.rfind('#')"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:32",
+              "replace": "f'>{text}'.rfind('#')"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Stelle dem Logtext das Zeichen > voran. Liefere den nullbasierten Index der letzten Raute oder −1.",
+          "sources": {
+            "panel": "use route\n\nmain text:t > i\nboundary text\n",
+            "route": "use rulebook\n\nboundary text:t > i\nlocate text\n",
+            "rulebook": "locate text:t > i\ncase (text_find (concat \">\" text) \"#\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "text": ""
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "##a#3"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "##a#123"
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "text": "872"
+              },
+              "expect": -1
+            },
+            {
+              "inputs": {
+                "text": "#4097"
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "text": "猫#id#31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "text": "#55041"
+              },
+              "expect": 1
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "text": "##a#3"
+          },
+          "expect": 4,
+          "actual": 1,
+          "tested": [
+            1,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:7",
+                "replace": "(text_rfind (concat \">\" text) \"#\" 9223372036854775807)"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:7",
+              "replace": "(text_rfind (concat \">\" text) \"#\" 9223372036854775807)"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ]
+  },
+  "telemetry": {
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Addiere zur vorzeichenbehafteten Differenz inbound minus outbound die UTF-8-Bytezahl der Kennung.",
+          "sources": {
+            "panel": "from route import adjust\n\ndef main(label: str, inbound: int, outbound: int) -> int:\n    return adjust(label, inbound, outbound)\n",
+            "route": "from rulebook import difference, size\n\ndef adjust(label: str, inbound: int, outbound: int) -> int:\n    return difference(outbound, inbound) + size(label)\n",
+            "rulebook": "def difference(a: int, b: int) -> int:\n    return a - b\n\ndef size(label: str) -> int:\n    return len(label)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "",
+                "inbound": 0,
+                "outbound": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "inbound": 1,
+                "outbound": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫猫3",
+                "inbound": 3,
+                "outbound": 0
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "label": "猫猫123",
+                "inbound": 12,
+                "outbound": 24
+              },
+              "expect": -3
+            },
+            {
+              "inputs": {
+                "label": "é872",
+                "inbound": 21,
+                "outbound": 19
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "label": "éΩ4097",
+                "inbound": 27,
+                "outbound": 13
+              },
+              "expect": 23
+            },
+            {
+              "inputs": {
+                "label": "31110",
+                "inbound": 30,
+                "outbound": 22
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "label": "猫猫55041",
+                "inbound": 22,
+                "outbound": 3
+              },
+              "expect": 30
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "A1",
+            "inbound": 1,
+            "outbound": 0
+          },
+          "expect": 3,
+          "actual": 1,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Addiere zur vorzeichenbehafteten Differenz inbound minus outbound die UTF-8-Bytezahl der Kennung.",
+          "sources": {
+            "panel": "use route\n\nmain label:t inbound:i outbound:i > i\nadjust label inbound outbound\n",
+            "route": "use rulebook\n\nadjust label:t inbound:i outbound:i > i\n+ (difference outbound inbound) (size label)\n",
+            "rulebook": "difference a:i b:i > i\n- a b\n\nsize label:t > i\ntext_len label\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "",
+                "inbound": 0,
+                "outbound": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "inbound": 1,
+                "outbound": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫猫3",
+                "inbound": 3,
+                "outbound": 0
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "label": "猫猫123",
+                "inbound": 12,
+                "outbound": 24
+              },
+              "expect": -3
+            },
+            {
+              "inputs": {
+                "label": "é872",
+                "inbound": 21,
+                "outbound": 19
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "label": "éΩ4097",
+                "inbound": 27,
+                "outbound": 13
+              },
+              "expect": 23
+            },
+            {
+              "inputs": {
+                "label": "31110",
+                "inbound": 30,
+                "outbound": 22
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "label": "猫猫55041",
+                "inbound": 22,
+                "outbound": 3
+              },
+              "expect": 30
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "A1",
+            "inbound": 1,
+            "outbound": 0
+          },
+          "expect": 3,
+          "actual": 1,
+          "tested": [
+            11,
+            35
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "4:1",
+                "replace": "(adjust label outbound inbound)"
+              },
+              {
+                "node": "rulebook.tide:5:1",
+                "replace": "(byte_len (utf8_bytes label))"
+              }
+            ],
+            [
+              {
+                "node": "route.tide:4:4",
+                "replace": "(difference inbound outbound)"
+              },
+              {
+                "node": "rulebook.tide:5:1",
+                "replace": "(byte_len (utf8_bytes label))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "4:1",
+              "replace": "(adjust label outbound inbound)"
+            },
+            {
+              "node": "rulebook.tide:5:1",
+              "replace": "(byte_len (utf8_bytes label))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Addiere zur vorzeichenbehafteten Differenz inbound minus outbound die UTF-8-Bytezahl der Kennung.",
+          "sources": {
+            "panel": "use route\n\nmain label:t inbound:i outbound:i > i\nadjust label inbound outbound\n",
+            "route": "use rulebook\n\nadjust label:t inbound:i outbound:i > i\n+ (difference outbound inbound) (size label)\n",
+            "rulebook": "difference a:i b:i > i\n- a b\n\nsize label:t > i\ntext_len label\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "",
+                "inbound": 0,
+                "outbound": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "inbound": 1,
+                "outbound": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫猫3",
+                "inbound": 3,
+                "outbound": 0
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "label": "猫猫123",
+                "inbound": 12,
+                "outbound": 24
+              },
+              "expect": -3
+            },
+            {
+              "inputs": {
+                "label": "é872",
+                "inbound": 21,
+                "outbound": 19
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "label": "éΩ4097",
+                "inbound": 27,
+                "outbound": 13
+              },
+              "expect": 23
+            },
+            {
+              "inputs": {
+                "label": "31110",
+                "inbound": 30,
+                "outbound": 22
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "label": "猫猫55041",
+                "inbound": 22,
+                "outbound": 3
+              },
+              "expect": 30
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "A1",
+            "inbound": 1,
+            "outbound": 0
+          },
+          "expect": 3,
+          "actual": 1,
+          "tested": [
+            8,
+            16
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Addiere zur vorzeichenbehafteten Differenz inbound minus outbound die UTF-8-Bytezahl der Kennung.",
+          "sources": {
+            "panel": "from route import adjust\n\ndef main(label: str, inbound: int, outbound: int) -> int:\n    return adjust(label, inbound, outbound)\n",
+            "route": "from rulebook import difference, size\n\ndef adjust(label: str, inbound: int, outbound: int) -> int:\n    return difference(outbound, inbound) + size(label)\n",
+            "rulebook": "def difference(a: int, b: int) -> int:\n    return a - b\n\ndef size(label: str) -> int:\n    return len(label)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "label": "",
+                "inbound": 0,
+                "outbound": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "label": "A1",
+                "inbound": 1,
+                "outbound": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "label": "猫猫3",
+                "inbound": 3,
+                "outbound": 0
+              },
+              "expect": 10
+            },
+            {
+              "inputs": {
+                "label": "猫猫123",
+                "inbound": 12,
+                "outbound": 24
+              },
+              "expect": -3
+            },
+            {
+              "inputs": {
+                "label": "é872",
+                "inbound": 21,
+                "outbound": 19
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "label": "éΩ4097",
+                "inbound": 27,
+                "outbound": 13
+              },
+              "expect": 23
+            },
+            {
+              "inputs": {
+                "label": "31110",
+                "inbound": 30,
+                "outbound": 22
+              },
+              "expect": 13
+            },
+            {
+              "inputs": {
+                "label": "猫猫55041",
+                "inbound": 22,
+                "outbound": 3
+              },
+              "expect": 30
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "label": "A1",
+            "inbound": 1,
+            "outbound": 0
+          },
+          "expect": 3,
+          "actual": 1,
+          "tested": [
+            11,
+            35
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "panel.py:4:12:4:44",
+                "replace": "adjust(label, outbound, inbound)"
+              },
+              {
+                "node": "rulebook.py:5:12:5:22",
+                "replace": "len(label.encode('utf-8'))"
+              }
+            ],
+            [
+              {
+                "node": "route.py:4:12:4:41",
+                "replace": "difference(inbound, outbound)"
+              },
+              {
+                "node": "rulebook.py:5:12:5:22",
+                "replace": "len(label.encode('utf-8'))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "panel.py:4:12:4:44",
+              "replace": "adjust(label, outbound, inbound)"
+            },
+            {
+              "node": "rulebook.py:5:12:5:22",
+              "replace": "len(label.encode('utf-8'))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ]
+  },
+  "trailer": {
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Feld steht nach der letzten senkrechten Linie. Gib die UTF-8-Bytezahl dieses Felds an. Ohne Linie gilt der ganze Text.",
+          "sources": {
+            "panel": "use route\n\nmain frame:t > i\ntrailer frame\n",
+            "route": "use rulebook\n\ntrailer frame:t > i\nlet start + 1 (marker frame)\ntext_len (text_slice frame start (text_len frame))\n",
+            "rulebook": "marker frame:t > i\ncase (text_find frame \"|\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "frame": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "meta|"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫3"
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫123"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "é872"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|éΩ4097"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "ä|α|31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|猫猫55041"
+              },
+              "expect": 11
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "frame": "||猫猫3"
+          },
+          "expect": 7,
+          "actual": 4,
+          "tested": [
+            7,
+            6
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.tide:5:1",
+                "replace": "(byte_len (utf8_bytes (text_slice frame start (text_len frame))))"
+              },
+              {
+                "node": "rulebook.tide:2:7",
+                "replace": "(text_rfind frame \"|\" (text_len frame))"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.tide:5:1",
+              "replace": "(byte_len (utf8_bytes (text_slice frame start (text_len frame))))"
+            },
+            {
+              "node": "rulebook.tide:2:7",
+              "replace": "(text_rfind frame \"|\" (text_len frame))"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Feld steht nach der letzten senkrechten Linie. Gib die UTF-8-Bytezahl dieses Felds an. Ohne Linie gilt der ganze Text.",
+          "sources": {
+            "panel": "from route import trailer\n\ndef main(frame: str) -> int:\n    return trailer(frame)\n",
+            "route": "from rulebook import marker\n\ndef trailer(frame: str) -> int:\n    start = 1 + marker(frame)\n    return len(frame[start:len(frame)])\n",
+            "rulebook": "def marker(frame: str) -> int:\n    return frame.find('|')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "frame": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "meta|"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫3"
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫123"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "é872"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|éΩ4097"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "ä|α|31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|猫猫55041"
+              },
+              "expect": 11
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "frame": "||猫猫3"
+          },
+          "expect": 7,
+          "actual": 4,
+          "tested": [
+            7,
+            6
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "route.py:5:12:5:40",
+                "replace": "len(frame[start:len(frame)].encode('utf-8'))"
+              },
+              {
+                "node": "rulebook.py:2:12:2:27",
+                "replace": "frame.rfind('|')"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "route.py:5:12:5:40",
+              "replace": "len(frame[start:len(frame)].encode('utf-8'))"
+            },
+            {
+              "node": "rulebook.py:2:12:2:27",
+              "replace": "frame.rfind('|')"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Feld steht nach der letzten senkrechten Linie. Gib die UTF-8-Bytezahl dieses Felds an. Ohne Linie gilt der ganze Text.",
+          "sources": {
+            "panel": "from route import trailer\n\ndef main(frame: str) -> int:\n    return trailer(frame)\n",
+            "route": "from rulebook import marker\n\ndef trailer(frame: str) -> int:\n    start = 1 + marker(frame)\n    return len(frame[start:len(frame)])\n",
+            "rulebook": "def marker(frame: str) -> int:\n    return frame.find('|')\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "frame": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "meta|"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫3"
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫123"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "é872"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|éΩ4097"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "ä|α|31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|猫猫55041"
+              },
+              "expect": 11
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "frame": "||猫猫3"
+          },
+          "expect": 7,
+          "actual": 4,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Ein Feld steht nach der letzten senkrechten Linie. Gib die UTF-8-Bytezahl dieses Felds an. Ohne Linie gilt der ganze Text.",
+          "sources": {
+            "panel": "use route\n\nmain frame:t > i\ntrailer frame\n",
+            "route": "use rulebook\n\ntrailer frame:t > i\nlet start + 1 (marker frame)\ntext_len (text_slice frame start (text_len frame))\n",
+            "rulebook": "marker frame:t > i\ncase (text_find frame \"|\" 0) -1 hit hit\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "frame": ""
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "meta|"
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫3"
+              },
+              "expect": 7
+            },
+            {
+              "inputs": {
+                "frame": "||猫猫123"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "é872"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|éΩ4097"
+              },
+              "expect": 9
+            },
+            {
+              "inputs": {
+                "frame": "ä|α|31110"
+              },
+              "expect": 5
+            },
+            {
+              "inputs": {
+                "frame": "meta|猫猫55041"
+              },
+              "expect": 11
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "frame": "||猫猫3"
+          },
+          "expect": 7,
+          "actual": 4,
+          "tested": [
+            4,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ]
+  },
+  "thermal": {
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Berechne den Anfangsbestand plus die je Intervall aufgelaufenen Einheiten.",
+          "sources": {
+            "panel": "from route import balance\n\ndef main(start: int, intervals: int, units: int) -> int:\n    return balance(start, intervals, units)\n",
+            "route": "from rulebook import change\n\ndef balance(start: int, intervals: int, units: int) -> int:\n    return start + change(intervals, units)\n",
+            "rulebook": "def change(count: int, units: int) -> int:\n    return count + units\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "start": 0,
+                "intervals": 0,
+                "units": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "start": 1,
+                "intervals": 1,
+                "units": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "start": 3,
+                "intervals": 3,
+                "units": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "start": 123,
+                "intervals": 3,
+                "units": 17
+              },
+              "expect": 174
+            },
+            {
+              "inputs": {
+                "start": 101,
+                "intervals": 8,
+                "units": 9
+              },
+              "expect": 173
+            },
+            {
+              "inputs": {
+                "start": 242,
+                "intervals": 5,
+                "units": 10
+              },
+              "expect": 292
+            },
+            {
+              "inputs": {
+                "start": 13,
+                "intervals": 6,
+                "units": 5
+              },
+              "expect": 43
+            },
+            {
+              "inputs": {
+                "start": 43,
+                "intervals": 9,
+                "units": 20
+              },
+              "expect": 223
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "start": 1,
+            "intervals": 1,
+            "units": 0
+          },
+          "expect": 1,
+          "actual": 2,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:25",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:25",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Berechne den Anfangsbestand plus die je Intervall aufgelaufenen Einheiten.",
+          "sources": {
+            "panel": "use route\n\nmain start:i intervals:i units:i > i\nbalance start intervals units\n",
+            "route": "use rulebook\n\nbalance start:i intervals:i units:i > i\n+ start (change intervals units)\n",
+            "rulebook": "change count:i units:i > i\n+ count units\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "start": 0,
+                "intervals": 0,
+                "units": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "start": 1,
+                "intervals": 1,
+                "units": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "start": 3,
+                "intervals": 3,
+                "units": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "start": 123,
+                "intervals": 3,
+                "units": 17
+              },
+              "expect": 174
+            },
+            {
+              "inputs": {
+                "start": 101,
+                "intervals": 8,
+                "units": 9
+              },
+              "expect": 173
+            },
+            {
+              "inputs": {
+                "start": 242,
+                "intervals": 5,
+                "units": 10
+              },
+              "expect": 292
+            },
+            {
+              "inputs": {
+                "start": 13,
+                "intervals": 6,
+                "units": 5
+              },
+              "expect": 43
+            },
+            {
+              "inputs": {
+                "start": 43,
+                "intervals": 9,
+                "units": 20
+              },
+              "expect": 223
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "start": 1,
+            "intervals": 1,
+            "units": 0
+          },
+          "expect": 1,
+          "actual": 2,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Berechne den Anfangsbestand plus die je Intervall aufgelaufenen Einheiten.",
+          "sources": {
+            "panel": "use route\n\nmain start:i intervals:i units:i > i\nbalance start intervals units\n",
+            "route": "use rulebook\n\nbalance start:i intervals:i units:i > i\n+ start (change intervals units)\n",
+            "rulebook": "change count:i units:i > i\n+ count units\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "start": 0,
+                "intervals": 0,
+                "units": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "start": 1,
+                "intervals": 1,
+                "units": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "start": 3,
+                "intervals": 3,
+                "units": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "start": 123,
+                "intervals": 3,
+                "units": 17
+              },
+              "expect": 174
+            },
+            {
+              "inputs": {
+                "start": 101,
+                "intervals": 8,
+                "units": 9
+              },
+              "expect": 173
+            },
+            {
+              "inputs": {
+                "start": 242,
+                "intervals": 5,
+                "units": 10
+              },
+              "expect": 292
+            },
+            {
+              "inputs": {
+                "start": 13,
+                "intervals": 6,
+                "units": 5
+              },
+              "expect": 43
+            },
+            {
+              "inputs": {
+                "start": 43,
+                "intervals": 9,
+                "units": 20
+              },
+              "expect": 223
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "start": 1,
+            "intervals": 1,
+            "units": 0
+          },
+          "expect": 1,
+          "actual": 2,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.tide:2:1",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.tide:2:1",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Berechne den Anfangsbestand plus die je Intervall aufgelaufenen Einheiten.",
+          "sources": {
+            "panel": "from route import balance\n\ndef main(start: int, intervals: int, units: int) -> int:\n    return balance(start, intervals, units)\n",
+            "route": "from rulebook import change\n\ndef balance(start: int, intervals: int, units: int) -> int:\n    return start + change(intervals, units)\n",
+            "rulebook": "def change(count: int, units: int) -> int:\n    return count + units\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "start": 0,
+                "intervals": 0,
+                "units": 0
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "start": 1,
+                "intervals": 1,
+                "units": 0
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "start": 3,
+                "intervals": 3,
+                "units": 0
+              },
+              "expect": 3
+            },
+            {
+              "inputs": {
+                "start": 123,
+                "intervals": 3,
+                "units": 17
+              },
+              "expect": 174
+            },
+            {
+              "inputs": {
+                "start": 101,
+                "intervals": 8,
+                "units": 9
+              },
+              "expect": 173
+            },
+            {
+              "inputs": {
+                "start": 242,
+                "intervals": 5,
+                "units": 10
+              },
+              "expect": 292
+            },
+            {
+              "inputs": {
+                "start": 13,
+                "intervals": 6,
+                "units": 5
+              },
+              "expect": 43
+            },
+            {
+              "inputs": {
+                "start": 43,
+                "intervals": 9,
+                "units": 20
+              },
+              "expect": 223
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "start": 1,
+            "intervals": 1,
+            "units": 0
+          },
+          "expect": 1,
+          "actual": 2,
+          "tested": [
+            8,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": [
+            [
+              {
+                "node": "rulebook.py:2:12:2:25",
+                "op": "*"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "edits": [
+            {
+              "node": "rulebook.py:2:12:2:25",
+              "op": "*"
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "accepted",
+          "public": 8,
+          "hidden_passed": 64
+        }
+      }
+    ]
+  },
+  "flag": {
+    "tide_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zähle für das Kennzeichen ON in beliebiger ASCII-Gross-/Kleinschreibung alle Pakete, sonst null.",
+          "sources": {
+            "panel": "use route\n\nmain mode:t packets:i > i\ncount mode packets\n",
+            "route": "use rulebook\n\ncount mode:t packets:i > i\nif (active mode) packets 0\n",
+            "rulebook": "active mode:t > b\ntext_eq mode \"ON\"\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "mode": "on",
+                "packets": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 124
+              },
+              "expect": 124
+            },
+            {
+              "inputs": {
+                "mode": "On",
+                "packets": 873
+              },
+              "expect": 873
+            },
+            {
+              "inputs": {
+                "mode": "",
+                "packets": 4098
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 31111
+              },
+              "expect": 31111
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 55042
+              },
+              "expect": 55042
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "mode": "on",
+            "packets": 2
+          },
+          "expect": 2,
+          "actual": 0,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_before": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zähle für das Kennzeichen ON in beliebiger ASCII-Gross-/Kleinschreibung alle Pakete, sonst null.",
+          "sources": {
+            "panel": "from route import count\n\ndef main(mode: str, packets: int) -> int:\n    return count(mode, packets)\n",
+            "route": "from rulebook import active\n\ndef count(mode: str, packets: int) -> int:\n    return packets if active(mode) else 0\n",
+            "rulebook": "def active(mode: str) -> bool:\n    return mode in ('ON',)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "mode": "on",
+                "packets": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 124
+              },
+              "expect": 124
+            },
+            {
+              "inputs": {
+                "mode": "On",
+                "packets": 873
+              },
+              "expect": 873
+            },
+            {
+              "inputs": {
+                "mode": "",
+                "packets": 4098
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 31111
+              },
+              "expect": 31111
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 55042
+              },
+              "expect": 55042
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "mode": "on",
+            "packets": 2
+          },
+          "expect": 2,
+          "actual": 0,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "python_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zähle für das Kennzeichen ON in beliebiger ASCII-Gross-/Kleinschreibung alle Pakete, sonst null.",
+          "sources": {
+            "panel": "from route import count\n\ndef main(mode: str, packets: int) -> int:\n    return count(mode, packets)\n",
+            "route": "from rulebook import active\n\ndef count(mode: str, packets: int) -> int:\n    return packets if active(mode) else 0\n",
+            "rulebook": "def active(mode: str) -> bool:\n    return mode in ('ON',)\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "mode": "on",
+                "packets": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 124
+              },
+              "expect": 124
+            },
+            {
+              "inputs": {
+                "mode": "On",
+                "packets": 873
+              },
+              "expect": 873
+            },
+            {
+              "inputs": {
+                "mode": "",
+                "packets": 4098
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 31111
+              },
+              "expect": 31111
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 55042
+              },
+              "expect": 55042
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "mode": "on",
+            "packets": 2
+          },
+          "expect": 2,
+          "actual": 0,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ],
+    "tide_after": [
+      {
+        "role": "input",
+        "body": {
+          "auftrag": "Zähle für das Kennzeichen ON in beliebiger ASCII-Gross-/Kleinschreibung alle Pakete, sonst null.",
+          "sources": {
+            "panel": "use route\n\nmain mode:t packets:i > i\ncount mode packets\n",
+            "route": "use rulebook\n\ncount mode:t packets:i > i\nif (active mode) packets 0\n",
+            "rulebook": "active mode:t > b\ntext_eq mode \"ON\"\n"
+          },
+          "public": [
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 1
+              },
+              "expect": 1
+            },
+            {
+              "inputs": {
+                "mode": "on",
+                "packets": 2
+              },
+              "expect": 2
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 4
+              },
+              "expect": 4
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 124
+              },
+              "expect": 124
+            },
+            {
+              "inputs": {
+                "mode": "On",
+                "packets": 873
+              },
+              "expect": 873
+            },
+            {
+              "inputs": {
+                "mode": "",
+                "packets": 4098
+              },
+              "expect": 0
+            },
+            {
+              "inputs": {
+                "mode": "ON",
+                "packets": 31111
+              },
+              "expect": 31111
+            },
+            {
+              "inputs": {
+                "mode": "oN",
+                "packets": 55042
+              },
+              "expect": 55042
+            }
+          ]
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "inputs": {
+            "mode": "on",
+            "packets": 2
+          },
+          "expect": 2,
+          "actual": 0,
+          "tested": [
+            0,
+            0
+          ],
+          "truncated": [
+            false,
+            false
+          ],
+          "candidates": []
+        }
+      },
+      {
+        "role": "output",
+        "body": {
+          "action": "abstain"
+        }
+      },
+      {
+        "role": "input",
+        "body": {
+          "status": "no_candidate",
+          "public": 8,
+          "hidden_passed": null
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,112 @@
+use samples
+
+record ValueDifference
+path:t aspect:t expected:t actual:t offset:i
+
+difference_at path:t aspect:t expected:t actual:t > ?{ValueDifference}
+some (make ValueDifference path path aspect aspect expected expected actual actual offset -1)
+
+point_wire value:t index:i > t
+if (eq index (text_len value)) "null" (json_string (text_slice value index (+ index 1)))
+
+text_difference a:t b:t path:t > ?{ValueDifference}
+if (text_eq a b) (nil {ValueDifference})
+let na text_len a
+let nb text_len b
+if (and (not (> na 64)) (not (> nb 64))) (difference_at path "" (json_string a) (json_string b))
+let size if (< na nb) na nb
+let bounds fold (indices 32) (pair 0 (+ size 1)) previous step unused
+  let lo first previous
+  let hi second previous
+  if (eq (+ lo 1) hi) previous
+  let mid div (+ lo hi) 2
+  if (text_eq (text_slice a lo mid) (text_slice b lo mid)) (pair mid hi) (pair lo mid)
+let i first bounds
+some (make ValueDifference path path aspect "codepoint" expected (point_wire a i) actual (point_wire b i) offset i)
+
+atom_difference a:{EvalValue} b:{EvalValue} kind:t path:t > ?{ValueDifference}
+if (text_eq kind "t") (text_difference (get text a) (get text b) path)
+if (eq (get num a) (get num b)) (nil {ValueDifference})
+difference_at path "" (wire_number (get num a) kind) (wire_number (get num b) kind)
+
+local_difference a:{EvalValue} b:{EvalValue} kind:t > ?{ValueDifference}
+let optional text_eq (text_slice kind 0 1) "?"
+if (and optional (if (get present a) (not (get present b)) (get present b)))
+  (difference_at "" "option" (json_string (if (get present a) "some" "none")) (json_string (if (get present b) "some" "none")))
+if (and optional (not (get present a))) (nil {ValueDifference})
+let typ if optional (text_slice kind 1 (text_len kind)) kind
+let path if optional "/some" ""
+if (text_eq typ "z") (text_difference (get text a) (get text b) path)
+if (text_eq typ "q") (if (eq (get num a) (get num b)) (nil {ValueDifference}) (difference_at path "" (fixed_text (get num a)) (fixed_text (get num b))))
+if (text_eq typ "y") (text_difference (octet_hex (get text a)) (octet_hex (get text b)) path)
+if (dict_kind typ)
+  (let x scalar_wire a typ
+   let ywire scalar_wire b typ
+   if (text_eq x ywire) (nil {ValueDifference}) (difference_at path "" x ywire))
+if (atom_type typ) (atom_difference a b typ path)
+if (named_kind typ) (text_difference (get text a) (get text b) path)
+if (text_eq (text_slice typ 0 1) "&")
+  (if (> (text_len typ) 3) (nil {ValueDifference})
+   case (atom_difference a b (text_slice typ 1 2) (concat path "/0"))
+     (let right text_slice typ 2 3
+      atom_difference (pair_member a false right) (pair_member b false right) right (concat path "/1")) mismatch (some mismatch))
+let na sequence_size a
+let nb sequence_size b
+if (not (eq na nb)) (difference_at path "length" (decimal na) (decimal nb))
+let element text_slice typ 1 (text_len typ)
+if (or (named_kind element) (text_eq (text_slice element 0 1) "&")) (nil {ValueDifference})
+if (text_eq element "t")
+  (let values get texts b
+   let i fold (get texts a) -1 diff row v if (or (> diff -1) (text_eq v (need (at values (- row 1)) "text_item" 0))) diff (- row 1)
+   if (< i 0) (nil {ValueDifference})
+   text_difference (need (at (get texts a) i) "expected_text" 0) (need (at values i) "actual_text" 0) (concat path (concat "/" (decimal i))))
+let values get items b
+let i fold (get items a) -1 diff row v if (or (> diff -1) (eq v (need (at values (- row 1)) "list_item" 0))) diff (- row 1)
+if (< i 0) (nil {ValueDifference})
+difference_at (concat path (concat "/" (decimal i))) "" (wire_number (need (at (get items a) i) "expected_item" 0) element) (wire_number (need (at values i) "actual_item" 0) element)
+
+record DifferencePath
+next:i slot:i path:t
+
+difference_path root:{EvalValue} kind:t index:i > t
+let initial make DifferencePath next 0 slot 0 path (if (text_eq (text_slice kind 0 1) "?") "/some" "")
+let end + index 1
+let result fold (indices (chunk_count end)) initial before page unused
+  let base * (- page 1) 2048
+  let left - end base
+  fold (indices (if (> left 2048) 2048 left)) before state row skip
+    let pos + base (- row 1)
+    if (not (eq pos (get next state))) state
+    let cell tape_at (get tape root) (+ (get offset root) pos)
+    let last + pos (get span cell)
+    if (< last index) (make DifferencePath next (+ last 1) slot (+ 1 (get slot state)) path (get path state))
+    let key get name cell
+    let part if (text_eq key "") (decimal (get slot state)) key
+    let inside if (and (< pos index) (text_eq (text_slice (get kind cell) 0 1) "?")) "/some" ""
+    make DifferencePath next (+ pos 1) slot 0 path (cat3 (get path state) "/" (concat part inside))
+get path result
+
+value_difference a:{EvalValue} b:{EvalValue} kind:t > ?{ValueDifference}
+let first_diff local_difference a b kind
+let n get span a
+if (or (eq n 0) (case first_diff false diff true)) first_diff
+fold (indices (chunk_count n)) first_diff before page unused
+  if (case before false diff true) before
+  let base * (- page 1) 2048
+  let left - n base
+  fold (indices (if (> left 2048) 2048 left)) before found row skip
+    if (case found false diff true) found
+    let i + base (- row 1)
+    let ai + (get offset a) i
+    let bi + (get offset b) i
+    let cell tape_at (get tape a) ai
+    let expected unpack_cell (get tape a) ai cell
+    let actual unpack_cell (get tape b) bi (tape_at (get tape b) bi)
+    case (local_difference expected actual (get kind cell)) (nil {ValueDifference}) diff
+      some (with path diff (concat (difference_path a kind i) (get path diff)))
+
+difference_fields diff:{ValueDifference} > t
+let kind get aspect diff
+let details concat (if (text_eq kind "") "" (concat ",\"aspect\":" (json_string kind)))
+  (if (< (get offset diff) 0) "" (concat ",\"offset\":" (decimal (get offset diff))))
+cat3 "\"difference\":{\"path\":" (json_string (get path diff)) (cat3 details ",\"expected\":" (cat3 (get expected diff) ",\"actual\":" (concat (get actual diff) "}")))

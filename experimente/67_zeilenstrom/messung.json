@@ -1,0 +1,1016 @@
+{
+  "tide": "TIDE 0.6.2",
+  "python": "Python 3.14.10",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "platform": "7.3.4-1-cachyos",
+  "clock": "zsh 5.9.2 (x86_64-pc-linux-gnu)",
+  "compiler": "16.2.1",
+  "runs": [
+    {
+      "mib": 1,
+      "pair": 1,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 1,
+      "arm": "python",
+      "wall_s": 0.05,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 1,
+      "pair": 2,
+      "arm": "python",
+      "wall_s": 0.05,
+      "peak_rss_kib": 11344
+    },
+    {
+      "mib": 1,
+      "pair": 2,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 3,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 3,
+      "arm": "python",
+      "wall_s": 0.051,
+      "peak_rss_kib": 11424
+    },
+    {
+      "mib": 1,
+      "pair": 4,
+      "arm": "python",
+      "wall_s": 0.05,
+      "peak_rss_kib": 11424
+    },
+    {
+      "mib": 1,
+      "pair": 4,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 5,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 5,
+      "arm": "python",
+      "wall_s": 0.051,
+      "peak_rss_kib": 11440
+    },
+    {
+      "mib": 1,
+      "pair": 6,
+      "arm": "python",
+      "wall_s": 0.051,
+      "peak_rss_kib": 11388
+    },
+    {
+      "mib": 1,
+      "pair": 6,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 7,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 1,
+      "pair": 7,
+      "arm": "python",
+      "wall_s": 0.05,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 1,
+      "pair": 8,
+      "arm": "python",
+      "wall_s": 0.05,
+      "peak_rss_kib": 11420
+    },
+    {
+      "mib": 1,
+      "pair": 8,
+      "arm": "tide",
+      "wall_s": 0.008,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 1,
+      "arm": "tide",
+      "wall_s": 0.078,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 1,
+      "arm": "python",
+      "wall_s": 0.426,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 10,
+      "pair": 2,
+      "arm": "python",
+      "wall_s": 0.407,
+      "peak_rss_kib": 11360
+    },
+    {
+      "mib": 10,
+      "pair": 2,
+      "arm": "tide",
+      "wall_s": 0.077,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 3,
+      "arm": "tide",
+      "wall_s": 0.077,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 3,
+      "arm": "python",
+      "wall_s": 0.403,
+      "peak_rss_kib": 11440
+    },
+    {
+      "mib": 10,
+      "pair": 4,
+      "arm": "python",
+      "wall_s": 0.406,
+      "peak_rss_kib": 11312
+    },
+    {
+      "mib": 10,
+      "pair": 4,
+      "arm": "tide",
+      "wall_s": 0.078,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 5,
+      "arm": "tide",
+      "wall_s": 0.077,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 5,
+      "arm": "python",
+      "wall_s": 0.402,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 10,
+      "pair": 6,
+      "arm": "python",
+      "wall_s": 0.403,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 10,
+      "pair": 6,
+      "arm": "tide",
+      "wall_s": 0.078,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 7,
+      "arm": "tide",
+      "wall_s": 0.077,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 10,
+      "pair": 7,
+      "arm": "python",
+      "wall_s": 0.4,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 10,
+      "pair": 8,
+      "arm": "python",
+      "wall_s": 0.405,
+      "peak_rss_kib": 11420
+    },
+    {
+      "mib": 10,
+      "pair": 8,
+      "arm": "tide",
+      "wall_s": 0.077,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 1,
+      "arm": "tide",
+      "wall_s": 0.765,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 1,
+      "arm": "python",
+      "wall_s": 3.945,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 100,
+      "pair": 2,
+      "arm": "python",
+      "wall_s": 3.903,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 100,
+      "pair": 2,
+      "arm": "tide",
+      "wall_s": 0.764,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 3,
+      "arm": "tide",
+      "wall_s": 0.771,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 3,
+      "arm": "python",
+      "wall_s": 3.888,
+      "peak_rss_kib": 11352
+    },
+    {
+      "mib": 100,
+      "pair": 4,
+      "arm": "python",
+      "wall_s": 3.909,
+      "peak_rss_kib": 11396
+    },
+    {
+      "mib": 100,
+      "pair": 4,
+      "arm": "tide",
+      "wall_s": 0.764,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 5,
+      "arm": "tide",
+      "wall_s": 0.763,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 5,
+      "arm": "python",
+      "wall_s": 3.988,
+      "peak_rss_kib": 11420
+    },
+    {
+      "mib": 100,
+      "pair": 6,
+      "arm": "python",
+      "wall_s": 3.907,
+      "peak_rss_kib": 11432
+    },
+    {
+      "mib": 100,
+      "pair": 6,
+      "arm": "tide",
+      "wall_s": 0.762,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 7,
+      "arm": "tide",
+      "wall_s": 0.761,
+      "peak_rss_kib": 1888
+    },
+    {
+      "mib": 100,
+      "pair": 7,
+      "arm": "python",
+      "wall_s": 3.94,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 100,
+      "pair": 8,
+      "arm": "python",
+      "wall_s": 3.884,
+      "peak_rss_kib": 11376
+    },
+    {
+      "mib": 100,
+      "pair": 8,
+      "arm": "tide",
+      "wall_s": 0.761,
+      "peak_rss_kib": 1888
+    }
+  ],
+  "cases": [
+    {
+      "name": "empty",
+      "bytes": 0,
+      "observations": {
+        "tide": "{\"above\":0,\"peak\":{\"none\":true}}",
+        "python": "{\"above\":0,\"peak\":{\"none\":true}}",
+        "cli": "{\"above\":0,\"peak\":{\"none\":true}}"
+      }
+    },
+    {
+      "name": "budget-zero",
+      "bytes": 0,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream byte budget exhausted",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_LIMIT",
+          "input_line": 1
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream byte budget exhausted",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "negative-budget",
+      "bytes": -1,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Invalid stream byte budget",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_LIMIT",
+          "input_line": 1
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Invalid stream byte budget",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "budget-too-large",
+      "bytes": 134217729,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Invalid stream byte budget",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_LIMIT",
+          "input_line": 1
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Invalid stream byte budget",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "final-unterminated",
+      "bytes": 6,
+      "observations": {
+        "tide": "{\"above\":1,\"peak\":{\"some\":81}}",
+        "python": "{\"above\":1,\"peak\":{\"some\":81}}",
+        "cli": "{\"above\":1,\"peak\":{\"some\":81}}"
+      }
+    },
+    {
+      "name": "budget-one-short",
+      "bytes": 5,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream byte budget exhausted",
+          "line": 7,
+          "column": 1,
+          "input_line": 2
+        },
+        "python": {
+          "code": "E_LIMIT",
+          "input_line": 2
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream byte budget exhausted",
+          "line": 7,
+          "column": 1,
+          "input_line": 2
+        }
+      }
+    },
+    {
+      "name": "empty-line",
+      "bytes": 4,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 2
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 2,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 2
+        }
+      }
+    },
+    {
+      "name": "bad-before-budget",
+      "bytes": 3,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "unicode-digit",
+      "bytes": 4,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "bad-utf8",
+      "bytes": 5,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_UTF8",
+          "message": "Invalid UTF-8 input",
+          "line": 7,
+          "column": 1,
+          "input_line": 2
+        },
+        "python": {
+          "code": "E_UTF8",
+          "input_line": 2
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_UTF8",
+          "message": "Invalid UTF-8 input",
+          "line": 7,
+          "column": 1,
+          "input_line": 2
+        }
+      }
+    },
+    {
+      "name": "bare-cr",
+      "bytes": 3,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "overflow",
+      "bytes": 20,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "split-crlf",
+      "bytes": 65540,
+      "observations": {
+        "tide": "{\"above\":1,\"peak\":{\"some\":81}}",
+        "python": "{\"above\":1,\"peak\":{\"some\":81}}",
+        "cli": "{\"above\":1,\"peak\":{\"some\":81}}"
+      }
+    },
+    {
+      "name": "max-line",
+      "bytes": 131072,
+      "observations": {
+        "tide": "{\"above\":0,\"peak\":{\"some\":0}}",
+        "python": "{\"above\":0,\"peak\":{\"some\":0}}",
+        "cli": "{\"above\":0,\"peak\":{\"some\":0}}"
+      }
+    },
+    {
+      "name": "overlong",
+      "bytes": 131073,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream line byte limit",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_LIMIT",
+          "input_line": 1
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_LIMIT",
+          "message": "Stream line byte limit",
+          "line": 7,
+          "column": 1,
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "split-utf8",
+      "bytes": 65538,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1,
+          "reason": "invalid_integer"
+        },
+        "cli": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1
+        }
+      }
+    },
+    {
+      "name": "grant-missing",
+      "bytes": 64,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_CAPABILITY",
+          "message": "Supply the declared read grants separately",
+          "line": 6,
+          "column": 1,
+          "required": [
+            "input"
+          ]
+        },
+        "python": {
+          "code": "E_CAPABILITY"
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_CAPABILITY",
+          "message": "Supply the declared read grants separately",
+          "line": 6,
+          "column": 1,
+          "required": [
+            "input"
+          ]
+        }
+      }
+    },
+    {
+      "name": "not-regular",
+      "bytes": 64,
+      "observations": {
+        "tide": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_CAPABILITY",
+          "message": "A grant must name a regular file",
+          "line": 6,
+          "column": 1
+        },
+        "python": {
+          "code": "E_CAPABILITY"
+        },
+        "cli": {
+          "file": "apps/report_packages/stream_report.tide",
+          "code": "E_CAPABILITY",
+          "message": "A grant must name a regular file",
+          "line": 6,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "late-error-1",
+      "bytes": 1048576,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 131071
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 131071,
+          "reason": "invalid_integer"
+        }
+      }
+    },
+    {
+      "name": "late-error-10",
+      "bytes": 10485760,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 1310719
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 1310719,
+          "reason": "invalid_integer"
+        }
+      }
+    },
+    {
+      "name": "late-error-100",
+      "bytes": 104857600,
+      "observations": {
+        "tide": {
+          "file": "vendor/measurements/1.3.0/package.tide",
+          "code": "E_DATA",
+          "message": "A value is required",
+          "line": 9,
+          "column": 1,
+          "reason": "invalid_integer",
+          "input_line": 13107199
+        },
+        "python": {
+          "code": "E_DATA",
+          "input_line": 13107199,
+          "reason": "invalid_integer"
+        }
+      }
+    }
+  ],
+  "fixtures": [
+    {
+      "mib": 1,
+      "bytes": 1048576,
+      "expected": "{\"above\":65536,\"peak\":{\"some\":9223372036854775807}}",
+      "bad_row": 131071,
+      "sha256": "36044282ce2286035c26203a7dce8f394500199018a524fc011782cd71c087c4",
+      "bad_sha256": "32924e2069d9f08d2591afed0f0fe346f399689627de3932ca5b1ad71264c99f"
+    },
+    {
+      "mib": 10,
+      "bytes": 10485760,
+      "expected": "{\"above\":655360,\"peak\":{\"some\":9223372036854775807}}",
+      "bad_row": 1310719,
+      "sha256": "b836f2c491f67f115878294f987760fee51c4a8a1a2644dae5fa8cc2c763f942",
+      "bad_sha256": "3caf8162f10a3bbb170744ce33abcde3fca51c350a3934515b57c89863457966"
+    },
+    {
+      "mib": 100,
+      "bytes": 104857600,
+      "expected": "{\"above\":6553600,\"peak\":{\"some\":9223372036854775807}}",
+      "bad_row": 13107199,
+      "sha256": "d3a2a88670923df20f9c72d29b36b91183a857e25164a101d8169ac9598274d7",
+      "bad_sha256": "c3aa19a6fe8b08d157fb9768f8052c6f33bfac8d08327a81687fd6b08836da10"
+    }
+  ],
+  "memory_crosscheck": {
+    "method": "Three extra fresh processes per arm and size. Observer on CPU 26, target on CPU 24. Poll /proc/PID/status (VmHWM) and /proc/PID/smaps_rollup (Rss) after exec, at ~1 ms intervals. Separate from timed pairs.",
+    "samples": [
+      {
+        "mib": 1,
+        "rep": 1,
+        "arm": "tide",
+        "vmhwm_kib": 1180,
+        "sampled_smaps_rss_kib": 1180,
+        "observations": 7
+      },
+      {
+        "mib": 1,
+        "rep": 1,
+        "arm": "python",
+        "vmhwm_kib": 11608,
+        "sampled_smaps_rss_kib": 11608,
+        "observations": 46
+      },
+      {
+        "mib": 10,
+        "rep": 1,
+        "arm": "tide",
+        "vmhwm_kib": 1180,
+        "sampled_smaps_rss_kib": 1180,
+        "observations": 71
+      },
+      {
+        "mib": 10,
+        "rep": 1,
+        "arm": "python",
+        "vmhwm_kib": 11648,
+        "sampled_smaps_rss_kib": 11648,
+        "observations": 363
+      },
+      {
+        "mib": 100,
+        "rep": 1,
+        "arm": "tide",
+        "vmhwm_kib": 1188,
+        "sampled_smaps_rss_kib": 1188,
+        "observations": 709
+      },
+      {
+        "mib": 100,
+        "rep": 1,
+        "arm": "python",
+        "vmhwm_kib": 11632,
+        "sampled_smaps_rss_kib": 11632,
+        "observations": 3625
+      },
+      {
+        "mib": 1,
+        "rep": 2,
+        "arm": "tide",
+        "vmhwm_kib": 1184,
+        "sampled_smaps_rss_kib": 1184,
+        "observations": 7
+      },
+      {
+        "mib": 1,
+        "rep": 2,
+        "arm": "python",
+        "vmhwm_kib": 11640,
+        "sampled_smaps_rss_kib": 11640,
+        "observations": 48
+      },
+      {
+        "mib": 10,
+        "rep": 2,
+        "arm": "tide",
+        "vmhwm_kib": 1180,
+        "sampled_smaps_rss_kib": 1180,
+        "observations": 70
+      },
+      {
+        "mib": 10,
+        "rep": 2,
+        "arm": "python",
+        "vmhwm_kib": 11636,
+        "sampled_smaps_rss_kib": 11636,
+        "observations": 365
+      },
+      {
+        "mib": 100,
+        "rep": 2,
+        "arm": "tide",
+        "vmhwm_kib": 1184,
+        "sampled_smaps_rss_kib": 1184,
+        "observations": 721
+      },
+      {
+        "mib": 100,
+        "rep": 2,
+        "arm": "python",
+        "vmhwm_kib": 11616,
+        "sampled_smaps_rss_kib": 11616,
+        "observations": 3534
+      },
+      {
+        "mib": 1,
+        "rep": 3,
+        "arm": "tide",
+        "vmhwm_kib": 1184,
+        "sampled_smaps_rss_kib": 1184,
+        "observations": 7
+      },
+      {
+        "mib": 1,
+        "rep": 3,
+        "arm": "python",
+        "vmhwm_kib": 11616,
+        "sampled_smaps_rss_kib": 11616,
+        "observations": 46
+      },
+      {
+        "mib": 10,
+        "rep": 3,
+        "arm": "tide",
+        "vmhwm_kib": 1180,
+        "sampled_smaps_rss_kib": 1184,
+        "observations": 72
+      },
+      {
+        "mib": 10,
+        "rep": 3,
+        "arm": "python",
+        "vmhwm_kib": 11648,
+        "sampled_smaps_rss_kib": 11648,
+        "observations": 357
+      },
+      {
+        "mib": 100,
+        "rep": 3,
+        "arm": "tide",
+        "vmhwm_kib": 1184,
+        "sampled_smaps_rss_kib": 1184,
+        "observations": 697
+      },
+      {
+        "mib": 100,
+        "rep": 3,
+        "arm": "python",
+        "vmhwm_kib": 11628,
+        "sampled_smaps_rss_kib": 11628,
+        "observations": 3485
+      }
+    ]
+  },
+  "two_pass_budget": {
+    "per_run_cap_bytes": 134217728,
+    "program": "native/bootstrap/fixtures/functions/stream_lines.tide",
+    "exact_file_bytes": 67108864,
+    "exact_result": 16777216,
+    "excess_file_bytes": 68157440,
+    "failure": {
+      "file": "native/bootstrap/fixtures/functions/stream_lines.tide",
+      "code": "E_LIMIT",
+      "message": "Stream byte budget exhausted",
+      "line": 2,
+      "column": 1,
+      "input_line": 8257537
+    }
+  }
+}

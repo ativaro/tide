@@ -1,0 +1,38 @@
+main rows:**i > i
+fold rows 0 sum n row (+ sum (fold row 0 acc index item (+ acc item)))
+
+grow limit:i > i
+while 1 value (< value limit) (* value 2)
+
+endless > i
+while 1 value true value
+
+nested > **i
+list *i 2 (list i 0) (list i 2 7 8)
+
+example total main
+{"inputs":{"rows":[[1,2],[],[3]]},"expect":6}
+
+example result nested
+{"inputs":{},"expect":[[],[7,8]]}
+
+example doubles grow
+{"inputs":{"limit":10},"expect":16}
+
+example zero_steps grow
+{"inputs":{"limit":0},"expect":1}
+
+example bounded endless
+{"inputs":{},"expect_error":{"code":"E_LIMIT"}}
+
+factorial n:i > i
+if (< n 2) 1 (* n (recur (- n 1)))
+
+depth n:i > i
+if (eq n 0) 0 (+ 1 (recur (- n 1)))
+
+example recursion factorial
+{"inputs":{"n":6},"expect":720}
+
+example depth_limit depth
+{"inputs":{"n":49},"expect_error":{"code":"E_LIMIT"}}

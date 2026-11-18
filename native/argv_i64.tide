@@ -1,0 +1,43 @@
+use scalar
+
+input_guard pass:t > t
+skip_if pass "41ffe5"
+
+decimal_argument > t
+let digit concat "0fb61383ea3083fa09" (input_guard "76")
+let times_ten concat "486bc00a" (input_guard "71")
+let subtract_digit concat "4829d0" (input_guard "71")
+let digits back_if "75" (concat digit (concat times_ten (concat subtract_digit "48ffc3803b00")))
+let sign concat "488b1f31c0803b2d410f94c1" (skip_if "75" "48ffc3")
+let positive skip_if "75" (concat "48f7d8" (input_guard "71"))
+concat sign (concat digits (concat "4584c9" positive))
+
+decode_arguments > t
+let missing diagnostic_exit "7b22636f6465223a22455f494e505554222c22726561736f6e223a226d697373696e675f73656564227d0a"
+let too_many diagnostic_exit "7b22636f6465223a22455f494e505554222c22726561736f6e223a226c6973745f746f6f5f6c6f6e67222c226c696d6974223a343039367d0a"
+let seed_required concat "488b0c244883f902" (skip_if "73" missing)
+let list_limit concat "4883e9024881f9" (concat (le32 4096) (skip_if "76" too_many))
+let slots "488d7424104889f74c8d54ce08"
+let numbers back_if "72" (concat decimal_argument "4889074883c7084c39d7")
+concat seed_required (concat list_limit (concat slots (concat numbers "4c8b064883c608")))
+
+numbered_error prefix:t load_number:t > t
+let size bytes_in prefix
+if (> size 106) fail "diagnostic_prefix_range"
+let index_text concat load_number (integer_text "488d7424fe66c7067d0ab902000000")
+let buffer concat "488d7e" (concat (byte_hex (- 0 size)) (concat "4989f88d51" (byte_hex size)))
+let write concat "b9" (concat (le32 size) (concat "fcf3a44c89c6bf02000000b8010000000f05" (exit_process 1)))
+concat index_text (concat buffer (concat "488d35" (concat (le32 (bytes_in write)) (concat write prefix))))
+
+bad_argument > t
+numbered_error "7b22636f6465223a22455f494e505554222c22726561736f6e223a2265787065637465645f693634222c22617267756d656e74223a" "4889f84829f048c1e80348ffc0"
+
+argv_image step:t metered:b setup_cost:i > t
+let input_error bad_argument
+let limit_error if metered (diagnostic_exit "7b22636f6465223a22455f4c494d4954227d0a") ""
+let output print_integer
+let call_kernel concat "e8" (le32 (bytes_in output))
+let run_code concat call_kernel (concat output (scalar_kernel step))
+let budget if metered (concat "bd" (concat (le32 (- 100000 setup_cost)) (concat "4c8d25" (le32 (bytes_in run_code))))) ""
+let program concat decode_arguments (concat budget (concat run_code limit_error))
+elf_image (concat "4c8d2d" (concat (le32 (bytes_in program)) (concat program input_error)))

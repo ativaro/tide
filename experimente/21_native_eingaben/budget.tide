@@ -1,0 +1,6 @@
+main opening:i values:*i > i
+fold values opening acc row x
+  if (and true (eq x 0)) acc (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ 0 (+ acc x))))))))))
+
+example both_paths main
+{"inputs":{"opening":3,"values":[0,1,-2]},"expect":2}

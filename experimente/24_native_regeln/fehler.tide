@@ -1,0 +1,19 @@
+rule decisions incoming:i > i
+state first_value:i=9223372036854775807 second_value:i=0
+when eq incoming 1 -> second_value=set (div 1 0), first_value=set (+ first_value 1)
+when eq incoming 2 -> first_value=keep, second_value=set (div 1 0)
+when eq incoming 3 -> first_value=keep, second_value=set -1
+else -> first_value=keep, second_value=reset
+out if (< second_value 0) (+ first_value 1) second_value
+
+main values:*i > *i
+scan decisions values
+
+example order decisions
+{"events":[0,1],"expect_error":{"code":"E_OVERFLOW"}}
+
+example division decisions
+{"events":[0,2],"expect_error":{"code":"E_DATA","reason":"division_by_zero"}}
+
+example output_error decisions
+{"events":[0,0,3],"expect_error":{"code":"E_OVERFLOW"}}

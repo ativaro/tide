@@ -1,0 +1,21 @@
+rule light motion:b > b
+state on:b=false missed:i=0
+when motion -> on=set true, missed=reset
+when eq missed 0 -> on=keep, missed=set 1
+else -> on=set false, missed=set 2
+out on
+
+simulate events:*b > *b
+scan light events
+
+main > *b
+simulate list b 6 false true false false true false
+
+example two_misses light
+{"events":[false,true,false,false,true,false],"expect":[false,true,true,false,true,true]}
+
+example restart light
+{"events":[true,false,true,false,false],"expect":[true,true,true,true,false]}
+
+example empty simulate
+{"inputs":{"events":[]},"expect":[]}

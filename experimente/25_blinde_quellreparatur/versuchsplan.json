@@ -1,0 +1,3042 @@
+{
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "tier": "priority",
+  "design": "G grouped TIDE, S source TIDE, P Python fragments. 3 blocks per family, serial balanced Latin squares with inverse orders across families. Fresh ephemeral context and project each time. All arms receive checked source, same contract, first public failure, file order and fragment schema. G historical guide, S shorter source guide, P equivalent concise guide. Up to three attempts from the original source; charge all calls. Paired S minus G and S minus P wall time through first green public gate and provider input plus output, report hidden replay and failures. Preparation inside timer. No fault location.",
+  "seq": [
+    [
+      "jury",
+      1,
+      "GSP"
+    ],
+    [
+      "depot",
+      1,
+      "PSG"
+    ],
+    [
+      "depot",
+      2,
+      "SGP"
+    ],
+    [
+      "jury",
+      2,
+      "SPG"
+    ],
+    [
+      "jury",
+      3,
+      "PGS"
+    ],
+    [
+      "depot",
+      3,
+      "GPS"
+    ]
+  ],
+  "families": {
+    "jury": {
+      "contract": "Return two badge IDs. The award goes to the highest points, and the reserve place to the earliest slot. Each profile breaks ties using the smallest numeric badge, independently of input order. Badges are distinct positive integers. Return zero in both fields for an empty list. Points and slots are small nonnegative integers.",
+      "canonical": {
+        "tide/summary.tide": "use award\n\nuse reserve\n\nrecord Winners\naward:i reserve:i\n\nreport entries:*{Entry} > {Winners}\nmake Winners award (award_id entries) reserve (reserve_id entries)\n\nmain batches:**{Entry} > *{Winners}\nfold batches (list {Winners} 0) acc row batch append acc (report batch)\n",
+        "python/summary.py": "from award import award_id\nfrom reserve import reserve_id\n\n\ndef report(entries):\n    return {'award': award_id(entries), 'reserve': reserve_id(entries)}\n\n\ndef main(batches):\n    return [report(batch) for batch in batches]\n",
+        "tide/entries.tide": "record Entry\nbadge:i points:i slot:i\n\nfirst_entry xs:*{Entry} > {Entry}\ncase (at xs 0) (make Entry badge 0 points 0 slot 0) e e\n",
+        "python/entries.py": "def first_entry(xs):\n    return xs[0] if xs else {\"badge\": 0, \"points\": 0, \"slot\": 0}\n",
+        "tide/award.tide": "use entries\n\naward_id entries:*{Entry} > i\nlet win fold entries (first_entry entries) best row e\n  if (if (eq (get points e) (get points best))\n       (< (get badge e) (get badge best))\n       (> (get points e) (get points best))) e best\nget badge win\n",
+        "python/award.py": "from entries import first_entry\n\n\ndef award_id(entries):\n    win = min(entries, key=lambda e: (-e[\"points\"], e[\"badge\"]), default=first_entry(entries))\n    return win[\"badge\"]\n",
+        "tide/reserve.tide": "use entries\n\nreserve_id entries:*{Entry} > i\nlet win fold entries (first_entry entries) best row e\n  if (if (eq (get slot e) (get slot best))\n       (< (get badge e) (get badge best))\n       (< (get slot e) (get slot best))) e best\nget badge win\n",
+        "python/reserve.py": "from entries import first_entry\n\n\ndef reserve_id(entries):\n    win = min(entries, key=lambda e: (e[\"slot\"], e[\"badge\"]), default=first_entry(entries))\n    return win[\"badge\"]\n"
+      },
+      "mutations": {
+        "tide": [
+          [
+            "award.tide",
+            "(< (get badge e) (get badge best))",
+            "(< (get slot e) (get slot best))"
+          ],
+          [
+            "reserve.tide",
+            "(< (get badge e) (get badge best))",
+            "(> (get badge e) (get badge best))"
+          ]
+        ],
+        "python": [
+          [
+            "award.py",
+            "-e[\"points\"], e[\"badge\"]",
+            "-e[\"points\"], e[\"slot\"]"
+          ],
+          [
+            "reserve.py",
+            "e[\"slot\"], e[\"badge\"]",
+            "e[\"slot\"], -e[\"badge\"]"
+          ]
+        ]
+      },
+      "public": [
+        {
+          "input": [
+            {
+              "badge": 31,
+              "points": 8,
+              "slot": 2
+            },
+            {
+              "badge": 7,
+              "points": 8,
+              "slot": 4
+            },
+            {
+              "badge": 2,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 2
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "award": 0,
+            "reserve": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 53,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 65,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 63,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 17,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 17,
+            "reserve": 17
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 28,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 28,
+            "reserve": 28
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 27,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 28,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 44,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 27,
+            "reserve": 27
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 23,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 27,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 27,
+            "reserve": 23
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 39,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 43,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 39,
+            "reserve": 39
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 56,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 52,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 56,
+            "reserve": 52
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 15,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 45,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 15,
+            "reserve": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 12,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 14,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 13,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 12,
+            "reserve": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 53,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 53,
+            "reserve": 53
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 4,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 35,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 65,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 61,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 35,
+            "reserve": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 27,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 9,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 37,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 15,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 27,
+            "reserve": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 66,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 39,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 39,
+            "reserve": 66
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 38,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 38,
+            "reserve": 38
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 63,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 7,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 4,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 19,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 4,
+            "reserve": 19
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 1,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 1,
+            "reserve": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 49,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 5,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 6,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 22,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 46,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 5,
+            "reserve": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 65,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 28,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 1,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 3,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 28,
+            "reserve": 28
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 8,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 8,
+            "reserve": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 64,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 21,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 13,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 58,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 13,
+            "reserve": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 7,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 36,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 36,
+            "reserve": 36
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 61,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 18,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 19,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 58,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 23,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 19,
+            "reserve": 19
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 69,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 57,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 23,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 18,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 58,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 18,
+            "reserve": 23
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 21,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 21,
+            "reserve": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 54,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 41,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 41,
+            "reserve": 41
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 16,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 27,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 16,
+            "reserve": 27
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 48,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 10,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 30,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 13,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 10,
+            "reserve": 30
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 45,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 45,
+            "reserve": 45
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 53,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 13,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 33,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 38,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 13,
+            "reserve": 38
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 47,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 47,
+            "reserve": 47
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 46,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 48,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 25,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 48,
+            "reserve": 25
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 23,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 31,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 3,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 23,
+            "reserve": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 34,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 34,
+            "reserve": 34
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 35,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 7,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 29,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 29
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 48,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 23,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 7,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 31,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 61,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 48
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 25,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 34,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 15,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 36,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 16,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 15,
+            "reserve": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 61,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 25,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 31,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 56,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 25,
+            "reserve": 56
+          }
+        }
+      ],
+      "hidden": [
+        {
+          "input": [
+            {
+              "badge": 6,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 48,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 42,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 11,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 48,
+            "reserve": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 8,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 41,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 49,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 29,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 39,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 39,
+            "reserve": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 39,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 11,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 33,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 24,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 24,
+            "reserve": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 45,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 6,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 45,
+            "reserve": 45
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 62,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 62,
+            "reserve": 62
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 62,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 13,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 47,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 63,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 54,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 13,
+            "reserve": 47
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 13,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 48,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 15,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 14,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 46,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 14,
+            "reserve": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 37,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 37,
+            "reserve": 37
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 61,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 19,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 25,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 28,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 25,
+            "reserve": 25
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 9,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 28,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 43,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 54,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 38,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 9,
+            "reserve": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 44,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 46,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 46,
+            "reserve": 46
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 38,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 10,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 38,
+            "reserve": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 38,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 55,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 20,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 20,
+            "reserve": 20
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 36,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 25,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 64,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 39,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 39,
+            "reserve": 25
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 14,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 33,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 41,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 52,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 30,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 30,
+            "reserve": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 66,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 46,
+              "points": 1,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 46,
+            "reserve": 46
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 67,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 67,
+            "reserve": 67
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 17,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 68,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 13,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 63,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 61,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 13,
+            "reserve": 68
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 23,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 21,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 15,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 21,
+            "reserve": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 55,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 54,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 30,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 60,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 60,
+            "reserve": 30
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 44,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 52,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 7,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 52,
+            "reserve": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 24,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 16,
+              "points": 0,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 24,
+            "reserve": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 66,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 16,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 16,
+            "reserve": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 31,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 51,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 53,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 57,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 31,
+            "reserve": 51
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 41,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 7,
+              "points": 1,
+              "slot": 0
+            },
+            {
+              "badge": 57,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 53,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 66,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 7,
+            "reserve": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 37,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 15,
+              "points": 0,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 15,
+            "reserve": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 27,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 15,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 41,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 9,
+              "points": 2,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 9,
+            "reserve": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 41,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 62,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 32,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 13,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 46,
+              "points": 1,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 41,
+            "reserve": 32
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 2,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 2,
+            "reserve": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 51,
+              "points": 0,
+              "slot": 2
+            },
+            {
+              "badge": 65,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 53,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 56,
+              "points": 1,
+              "slot": 2
+            },
+            {
+              "badge": 30,
+              "points": 2,
+              "slot": 1
+            }
+          ],
+          "expect": {
+            "award": 30,
+            "reserve": 65
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 52,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 34,
+              "points": 0,
+              "slot": 1
+            },
+            {
+              "badge": 44,
+              "points": 2,
+              "slot": 2
+            },
+            {
+              "badge": 9,
+              "points": 2,
+              "slot": 0
+            },
+            {
+              "badge": 13,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 9,
+            "reserve": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 29,
+              "points": 0,
+              "slot": 0
+            },
+            {
+              "badge": 44,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 31,
+              "points": 2,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 31,
+            "reserve": 29
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 34,
+              "points": 2,
+              "slot": 1
+            },
+            {
+              "badge": 22,
+              "points": 1,
+              "slot": 1
+            },
+            {
+              "badge": 56,
+              "points": 0,
+              "slot": 2
+            }
+          ],
+          "expect": {
+            "award": 34,
+            "reserve": 22
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 60,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 60,
+            "reserve": 60
+          }
+        },
+        {
+          "input": [
+            {
+              "badge": 8,
+              "points": 1,
+              "slot": 0
+            }
+          ],
+          "expect": {
+            "award": 8,
+            "reserve": 8
+          }
+        }
+      ]
+    },
+    "depot": {
+      "contract": "A depot reports two integer totals for a list of deliveries with small nonnegative amounts. For units, sum the amounts, divide by ten and round to nearest integer, breaking an exact half toward the even integer. For billable, each delivery has its own four-unit allowance. Sum the excess above four for each delivery. Empty lists return two zeros.",
+      "canonical": {
+        "tide/summary.tide": "use rate\n\nuse allowance\n\nrecord Bill\nunits:i billable:i\n\nreport loads:*{Delivery} > {Bill}\nmake Bill units (rounded_total loads) billable (billable_total loads)\n\nmain batches:**{Delivery} > *{Bill}\nfold batches (list {Bill} 0) acc row batch append acc (report batch)\n",
+        "python/summary.py": "from rate import rounded_total\nfrom allowance import billable_total\n\n\ndef report(loads):\n    return {'units': rounded_total(loads), 'billable': billable_total(loads)}\n\n\ndef main(batches):\n    return [report(batch) for batch in batches]\n",
+        "tide/delivery.tide": "record Delivery\namount:i\n\namount_total loads:*{Delivery} > i\nfold loads 0 total row load + total (get amount load)\n",
+        "python/delivery.py": "def amount_total(loads):\n    return sum(load[\"amount\"] for load in loads)\n",
+        "tide/rate.tide": "use delivery\n\nrounded_total loads:*{Delivery} > i\nlet amount amount_total loads\nlet whole div amount 10\nlet tail mod amount 10\nif (> tail 5) (+ whole 1) (if (< tail 5) whole (+ whole (mod whole 2)))\n",
+        "python/rate.py": "from delivery import amount_total\n\n\ndef rounded_total(loads):\n    whole, tail = divmod(amount_total(loads), 10)\n    return whole + (tail > 5 or (tail == 5 and whole % 2 == 1))\n",
+        "tide/allowance.tide": "use delivery\n\nbillable_total loads:*{Delivery} > i\nfold loads 0 total row load\n  let amount get amount load\n  + total (if (> amount 4) (- amount 4) 0)\n",
+        "python/allowance.py": "from delivery import amount_total\n\n\ndef billable_total(loads):\n    return sum(max(load[\"amount\"] - 4, 0) for load in loads)\n"
+      },
+      "mutations": {
+        "tide": [
+          [
+            "rate.tide",
+            "(mod whole 2)",
+            "(mod tail 2)"
+          ],
+          [
+            "allowance.tide",
+            "fold loads 0 total row load\n  let amount get amount load\n  + total (if (> amount 4) (- amount 4) 0)",
+            "let amount amount_total loads\nif (> amount 4) (- amount 4) 0"
+          ]
+        ],
+        "python": [
+          [
+            "rate.py",
+            "whole % 2",
+            "tail % 2"
+          ],
+          [
+            "allowance.py",
+            "sum(max(load[\"amount\"] - 4, 0) for load in loads)",
+            "max(amount_total(loads) - 4, 0)"
+          ]
+        ]
+      },
+      "public": [
+        {
+          "input": [
+            {
+              "amount": 2
+            },
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 0
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 4
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 10
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 14
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 15
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 16
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 12
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 24
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 20
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 25
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 26
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 22
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 35
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 31
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 2
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 10
+            },
+            {
+              "amount": 4
+            },
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 0
+            },
+            {
+              "amount": 3
+            },
+            {
+              "amount": 16
+            },
+            {
+              "amount": 1
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 12
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 1
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 17
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 32
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 6
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 15
+            },
+            {
+              "amount": 6
+            },
+            {
+              "amount": 19
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 30
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 10
+            },
+            {
+              "amount": 10
+            },
+            {
+              "amount": 6
+            },
+            {
+              "amount": 12
+            },
+            {
+              "amount": 8
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 26
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 13
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 2
+            },
+            {
+              "amount": 16
+            },
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 12
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 9
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 16
+            },
+            {
+              "amount": 8
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 12
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 5
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 24
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 14
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 0
+            },
+            {
+              "amount": 18
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 7
+            },
+            {
+              "amount": 16
+            },
+            {
+              "amount": 10
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 7
+            },
+            {
+              "amount": 14
+            },
+            {
+              "amount": 2
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 9
+            },
+            {
+              "amount": 2
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 18
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 17
+            },
+            {
+              "amount": 15
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 13
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 33
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 19
+            },
+            {
+              "amount": 0
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 1
+            },
+            {
+              "amount": 19
+            },
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 11
+            },
+            {
+              "amount": 10
+            },
+            {
+              "amount": 11
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 20
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 13
+            },
+            {
+              "amount": 9
+            },
+            {
+              "amount": 11
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 23
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 1
+            },
+            {
+              "amount": 15
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 7
+            },
+            {
+              "amount": 1
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 11
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 16
+            },
+            {
+              "amount": 5
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 20
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 19
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 15
+          }
+        }
+      ],
+      "hidden": [
+        {
+          "input": [
+            {
+              "amount": 7
+            },
+            {
+              "amount": 11
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 11
+            },
+            {
+              "amount": 17
+            }
+          ],
+          "expect": {
+            "units": 6,
+            "billable": 44
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 8
+            },
+            {
+              "amount": 19
+            },
+            {
+              "amount": 17
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 4
+            }
+          ],
+          "expect": {
+            "units": 7,
+            "billable": 46
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 14
+            },
+            {
+              "amount": 17
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 7,
+            "billable": 53
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 6
+            },
+            {
+              "amount": 16
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 2
+            },
+            {
+              "amount": 11
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 2
+            },
+            {
+              "amount": 10
+            },
+            {
+              "amount": 1
+            },
+            {
+              "amount": 2
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 6
+            },
+            {
+              "amount": 15
+            },
+            {
+              "amount": 8
+            },
+            {
+              "amount": 10
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 24
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 11
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 11
+            },
+            {
+              "amount": 9
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 33
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 19
+            },
+            {
+              "amount": 19
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 35
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 15
+            },
+            {
+              "amount": 9
+            },
+            {
+              "amount": 9
+            },
+            {
+              "amount": 12
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 29
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 16
+            },
+            {
+              "amount": 19
+            },
+            {
+              "amount": 18
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 41
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 7
+            },
+            {
+              "amount": 3
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 2
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 7
+            }
+          ],
+          "expect": {
+            "units": 1,
+            "billable": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 0
+            },
+            {
+              "amount": 4
+            },
+            {
+              "amount": 6
+            },
+            {
+              "amount": 9
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 14
+            },
+            {
+              "amount": 10
+            },
+            {
+              "amount": 11
+            },
+            {
+              "amount": 4
+            },
+            {
+              "amount": 7
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 26
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 13
+            },
+            {
+              "amount": 19
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 24
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 1
+            },
+            {
+              "amount": 10
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 14
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 33
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 17
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 3
+            },
+            {
+              "amount": 1
+            },
+            {
+              "amount": 5
+            },
+            {
+              "amount": 12
+            },
+            {
+              "amount": 5
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 18
+            },
+            {
+              "amount": 12
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 13
+            },
+            {
+              "amount": 17
+            }
+          ],
+          "expect": {
+            "units": 7,
+            "billable": 47
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 13
+            },
+            {
+              "amount": 14
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 18
+            },
+            {
+              "amount": 1
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 36
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 14
+            },
+            {
+              "amount": 15
+            },
+            {
+              "amount": 1
+            },
+            {
+              "amount": 19
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 36
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 13
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 5
+            },
+            {
+              "amount": 4
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 8
+            },
+            {
+              "amount": 2
+            },
+            {
+              "amount": 14
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 0
+            },
+            {
+              "amount": 5
+            },
+            {
+              "amount": 12
+            },
+            {
+              "amount": 8
+            },
+            {
+              "amount": 0
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 19
+            },
+            {
+              "amount": 7
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 18
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 5
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 7
+            },
+            {
+              "amount": 11
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 14
+            },
+            {
+              "amount": 12
+            }
+          ],
+          "expect": {
+            "units": 3,
+            "billable": 18
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 15
+            },
+            {
+              "amount": 19
+            },
+            {
+              "amount": 14
+            },
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 5,
+            "billable": 36
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 3
+            },
+            {
+              "amount": 13
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 6
+            },
+            {
+              "amount": 5
+            },
+            {
+              "amount": 14
+            },
+            {
+              "amount": 18
+            }
+          ],
+          "expect": {
+            "units": 4,
+            "billable": 27
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 4
+            },
+            {
+              "amount": 6
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 12
+            },
+            {
+              "amount": 13
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 17
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 5
+            },
+            {
+              "amount": 19
+            }
+          ],
+          "expect": {
+            "units": 2,
+            "billable": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "amount": 3
+            }
+          ],
+          "expect": {
+            "units": 0,
+            "billable": 0
+          }
+        }
+      ]
+    }
+  }
+}

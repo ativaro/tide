@@ -1,0 +1,4293 @@
+{
+  "model": "gpt-6-astra",
+  "reasoning": "xhigh",
+  "service_tier": "priority",
+  "cli": "0.157.1",
+  "versions": {
+    "tide": "0.5.0",
+    "python": "3.14.10"
+  },
+  "schedule": [
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "arm": "tide-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "arm": "python-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "arm": "python-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 1,
+      "arm": "tide-name"
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "arm": "tide-name"
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "arm": "python-name"
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "arm": "python-text"
+    },
+    {
+      "family": "press",
+      "repetition": 1,
+      "arm": "tide-text"
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "arm": "python-name"
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "arm": "tide-text"
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "arm": "tide-name"
+    },
+    {
+      "family": "press",
+      "repetition": 2,
+      "arm": "python-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "arm": "python-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "arm": "tide-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "arm": "tide-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 2,
+      "arm": "python-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "arm": "tide-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "arm": "python-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "arm": "python-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 3,
+      "arm": "tide-text"
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "arm": "tide-text"
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "arm": "python-text"
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "arm": "python-name"
+    },
+    {
+      "family": "press",
+      "repetition": 3,
+      "arm": "tide-name"
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "arm": "python-text"
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "arm": "tide-name"
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "arm": "tide-text"
+    },
+    {
+      "family": "press",
+      "repetition": 4,
+      "arm": "python-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "arm": "python-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "arm": "tide-text"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "arm": "tide-name"
+    },
+    {
+      "family": "dispatch",
+      "repetition": 4,
+      "arm": "python-text"
+    }
+  ],
+  "design": "Two fresh bug families, four repetitions of four workflows. Serial fresh isolated sessions. Per family a balanced Williams square: every arm in each position once and each ordered adjacency once within blocks. Same customer contract, observation and alphabetically ordered modules, no defect location or reference patches. Old TIDE and Python use original file+old+replacement. Named TIDE gets checked fully grouped bodies, named edit and protocol note. Named Python receives original source and accepts named multiline bodies. Tool use optional in all groups.",
+  "outcomes": "Primary: within-block median (TIDE named minus TIDE text, and TIDE named minus Python named), gross tokens and end-to-end seconds, wins. Report paired Python before/after, additional old-Python comparison, reasoning/output/cache counts, regression tests and holdouts. Start before failing verification and source preparation, end after external green. Max three attempts at 180s, include failures. Four repeats nested in two bugs.",
+  "text_instruction": "Find and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.",
+  "named_instruction": "Find and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.",
+  "python_guide": "The reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.",
+  "text_schema": {
+    "type": "object",
+    "properties": {
+      "edits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "old": {
+              "type": "string"
+            },
+            "replacement": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "file",
+            "old",
+            "replacement"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "additionalProperties": false
+  },
+  "named_schema": {
+    "type": "object",
+    "properties": {
+      "edits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "body"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "additionalProperties": false
+  },
+  "families": {
+    "dispatch": {
+      "task": "A router reports fast=4 and green=4 for routes (id 8, delay 2, watts 7) and (id 4, delay 6, watts 3), in that order. The fast profile must select route 8, and the green profile route 4. Fast minimizes delay, then watts. Green minimizes watts, then delay. If both values tie, the earlier input wins. Empty batches return zero IDs. All measurements are small nonnegative integers.",
+      "sources": {
+        "tide/routes.tide": "record Route\nid:i delay:i watts:i\n\ninitial routes:*{Route} > {Route}\ncase (at routes 0) (make Route id 0 delay 0 watts 0) head head\n",
+        "python/routes.py": "def initial(routes):\n    return routes[0] if routes else {\"id\": 0, \"delay\": 0, \"watts\": 0}\n",
+        "tide/interactive.tide": "use routes\n\ninteractive routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get delay next) (get delay best)) (< (get watts next) (get watts best))) next best\nget id chosen\n",
+        "python/interactive.py": "from routes import initial\n\n\ndef interactive(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]:\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/eco.tide": "use routes\n\neco routes:*{Route} > i\nlet chosen fold routes (initial routes) best row next\n  if (or (< (get watts next) (get watts best)) (< (get delay next) (get delay best))) next best\nget id chosen\n",
+        "python/eco.py": "from routes import initial\n\n\ndef eco(routes):\n    best = initial(routes)\n    for candidate in routes:\n        if candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]:\n            best = candidate\n    return best[\"id\"]\n",
+        "tide/summary.tide": "use eco\n\nuse interactive\n\nrecord Choice\nfast:i green:i\n\nchoose routes:*{Route} > {Choice}\nmake Choice fast (interactive routes) green (eco routes)\n\nmain batches:**{Route} > *{Choice}\nfold batches (list {Choice} 0) acc row batch append acc (choose batch)\n",
+        "python/summary.py": "from eco import eco\nfrom interactive import interactive\n\n\ndef choose(routes):\n    return {\"fast\": interactive(routes), \"green\": eco(routes)}\n\n\ndef main(batches):\n    return [choose(batch) for batch in batches]\n"
+      },
+      "fixes": {
+        "tide": [
+          {
+            "file": "interactive.tide",
+            "old": "(or (< (get delay next) (get delay best)) (< (get watts next) (get watts best)))",
+            "replacement": "(or (< (get delay next) (get delay best)) (and (eq (get delay next) (get delay best)) (< (get watts next) (get watts best))))"
+          },
+          {
+            "file": "eco.tide",
+            "old": "(or (< (get watts next) (get watts best)) (< (get delay next) (get delay best)))",
+            "replacement": "(or (< (get watts next) (get watts best)) (and (eq (get watts next) (get watts best)) (< (get delay next) (get delay best))))"
+          }
+        ],
+        "python": [
+          {
+            "file": "interactive.py",
+            "old": "candidate[\"delay\"] < best[\"delay\"] or candidate[\"watts\"] < best[\"watts\"]",
+            "replacement": "(candidate[\"delay\"], candidate[\"watts\"]) < (best[\"delay\"], best[\"watts\"])"
+          },
+          {
+            "file": "eco.py",
+            "old": "candidate[\"watts\"] < best[\"watts\"] or candidate[\"delay\"] < best[\"delay\"]",
+            "replacement": "(candidate[\"watts\"], candidate[\"delay\"]) < (best[\"watts\"], best[\"delay\"])"
+          }
+        ]
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 7
+            },
+            {
+              "id": 4,
+              "delay": 6,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 8,
+            "green": 4
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "fast": 0,
+            "green": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2,
+              "delay": 1,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 2,
+            "green": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 8,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 1,
+              "delay": 2,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 8,
+            "green": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 10,
+              "delay": 2,
+              "watts": 9
+            },
+            {
+              "id": 5,
+              "delay": 2,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 5,
+            "green": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 9,
+              "delay": 5,
+              "watts": 2
+            },
+            {
+              "id": 3,
+              "delay": 1,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 3,
+            "green": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1,
+              "delay": 6,
+              "watts": 3
+            },
+            {
+              "id": 2,
+              "delay": 2,
+              "watts": 7
+            }
+          ],
+          "expect": {
+            "fast": 2,
+            "green": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 7,
+              "delay": 0,
+              "watts": 0
+            },
+            {
+              "id": 9,
+              "delay": 3,
+              "watts": 8
+            }
+          ],
+          "expect": {
+            "fast": 7,
+            "green": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 8,
+              "delay": 3,
+              "watts": 8
+            },
+            {
+              "id": 2,
+              "delay": 0,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2,
+            "green": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 59,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 47,
+              "delay": 4,
+              "watts": 3
+            },
+            {
+              "id": 35,
+              "delay": 2,
+              "watts": 2
+            },
+            {
+              "id": 23,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 11,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 59,
+            "green": 59
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 138,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 126,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 114,
+              "delay": 3,
+              "watts": 2
+            },
+            {
+              "id": 102,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 90,
+              "delay": 2,
+              "watts": 1
+            },
+            {
+              "id": 78,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 66,
+              "delay": 0,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 66,
+            "green": 138
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 179,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 167,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 155,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 143,
+              "delay": 4,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 155,
+            "green": 179
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 199,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 187,
+              "delay": 4,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 199,
+            "green": 187
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 257,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 245,
+              "delay": 5,
+              "watts": 4
+            },
+            {
+              "id": 233,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 221,
+              "delay": 1,
+              "watts": 4
+            },
+            {
+              "id": 209,
+              "delay": 0,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 209,
+            "green": 209
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 300,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 288,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 276,
+              "delay": 0,
+              "watts": 3
+            },
+            {
+              "id": 264,
+              "delay": 4,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 276,
+            "green": 300
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 356,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 344,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 332,
+              "delay": 5,
+              "watts": 2
+            },
+            {
+              "id": 320,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 308,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 320,
+            "green": 356
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 399,
+              "delay": 4,
+              "watts": 3
+            },
+            {
+              "id": 387,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 375,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 363,
+              "delay": 4,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 363,
+            "green": 363
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 467,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 455,
+              "delay": 0,
+              "watts": 1
+            },
+            {
+              "id": 443,
+              "delay": 1,
+              "watts": 5
+            },
+            {
+              "id": 431,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 419,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 407,
+              "delay": 2,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 455,
+            "green": 467
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 521,
+              "delay": 2,
+              "watts": 1
+            },
+            {
+              "id": 509,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 497,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 485,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 473,
+              "delay": 4,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 521,
+            "green": 521
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 588,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 576,
+              "delay": 5,
+              "watts": 0
+            },
+            {
+              "id": 564,
+              "delay": 1,
+              "watts": 5
+            },
+            {
+              "id": 552,
+              "delay": 1,
+              "watts": 5
+            },
+            {
+              "id": 540,
+              "delay": 5,
+              "watts": 4
+            },
+            {
+              "id": 528,
+              "delay": 5,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 564,
+            "green": 576
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 618,
+              "delay": 2,
+              "watts": 2
+            },
+            {
+              "id": 606,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 594,
+              "delay": 2,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 618,
+            "green": 618
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 663,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 651,
+              "delay": 0,
+              "watts": 1
+            },
+            {
+              "id": 639,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 627,
+              "delay": 1,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 651,
+            "green": 651
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 731,
+              "delay": 3,
+              "watts": 2
+            },
+            {
+              "id": 719,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 707,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 695,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 683,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 671,
+              "delay": 0,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 671,
+            "green": 671
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 797,
+              "delay": 4,
+              "watts": 0
+            },
+            {
+              "id": 785,
+              "delay": 0,
+              "watts": 0
+            },
+            {
+              "id": 773,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 761,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 749,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 737,
+              "delay": 1,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 785,
+            "green": 785
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 851,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 839,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 827,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 815,
+              "delay": 1,
+              "watts": 3
+            },
+            {
+              "id": 803,
+              "delay": 0,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 803,
+            "green": 815
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 882,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 870,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 858,
+              "delay": 2,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 858,
+            "green": 882
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 939,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 927,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 915,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 903,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 891,
+              "delay": 4,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 915,
+            "green": 915
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1006,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 994,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 982,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 970,
+              "delay": 2,
+              "watts": 1
+            },
+            {
+              "id": 958,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 946,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 982,
+            "green": 958
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1060,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 1048,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 1036,
+              "delay": 1,
+              "watts": 3
+            },
+            {
+              "id": 1024,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 1012,
+              "delay": 3,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1060,
+            "green": 1048
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1127,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 1115,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 1103,
+              "delay": 1,
+              "watts": 1
+            },
+            {
+              "id": 1091,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 1079,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 1067,
+              "delay": 5,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 1091,
+            "green": 1103
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1145,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 1133,
+              "delay": 0,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 1133,
+            "green": 1133
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1215,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 1203,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 1191,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 1179,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 1167,
+              "delay": 3,
+              "watts": 2
+            },
+            {
+              "id": 1155,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 1215,
+            "green": 1215
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1281,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 1269,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 1257,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 1245,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 1233,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 1221,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1281,
+            "green": 1257
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1311,
+              "delay": 5,
+              "watts": 4
+            },
+            {
+              "id": 1299,
+              "delay": 2,
+              "watts": 2
+            },
+            {
+              "id": 1287,
+              "delay": 0,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1287,
+            "green": 1287
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1344,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 1332,
+              "delay": 4,
+              "watts": 0
+            },
+            {
+              "id": 1320,
+              "delay": 4,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 1344,
+            "green": 1332
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1401,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 1389,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 1377,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 1365,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 1353,
+              "delay": 4,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 1401,
+            "green": 1377
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1468,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 1456,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 1444,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 1432,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 1420,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 1408,
+              "delay": 2,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1468,
+            "green": 1408
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1546,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 1534,
+              "delay": 1,
+              "watts": 4
+            },
+            {
+              "id": 1522,
+              "delay": 1,
+              "watts": 3
+            },
+            {
+              "id": 1510,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 1498,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 1486,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 1474,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1510,
+            "green": 1486
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1587,
+              "delay": 5,
+              "watts": 2
+            },
+            {
+              "id": 1575,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 1563,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 1551,
+              "delay": 1,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 1551,
+            "green": 1551
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1619,
+              "delay": 0,
+              "watts": 1
+            },
+            {
+              "id": 1607,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 1595,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 1619,
+            "green": 1619
+          }
+        }
+      ],
+      "holdout": [
+        {
+          "input": [
+            {
+              "id": 1652,
+              "delay": 2,
+              "watts": 2
+            },
+            {
+              "id": 1640,
+              "delay": 1,
+              "watts": 3
+            },
+            {
+              "id": 1628,
+              "delay": 3,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 1640,
+            "green": 1652
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1733,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 1721,
+              "delay": 2,
+              "watts": 2
+            },
+            {
+              "id": 1709,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 1697,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 1685,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 1673,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 1661,
+              "delay": 0,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 1661,
+            "green": 1661
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1798,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 1786,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 1774,
+              "delay": 1,
+              "watts": 4
+            },
+            {
+              "id": 1762,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 1750,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 1738,
+              "delay": 0,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 1738,
+            "green": 1738
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1816,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 1804,
+              "delay": 2,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 1816,
+            "green": 1816
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1838,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 1826,
+              "delay": 5,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 1838,
+            "green": 1826
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1860,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 1848,
+              "delay": 4,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 1860,
+            "green": 1860
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1930,
+              "delay": 5,
+              "watts": 0
+            },
+            {
+              "id": 1918,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 1906,
+              "delay": 4,
+              "watts": 0
+            },
+            {
+              "id": 1894,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 1882,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 1870,
+              "delay": 3,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 1894,
+            "green": 1894
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 1972,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 1960,
+              "delay": 5,
+              "watts": 4
+            },
+            {
+              "id": 1948,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 1936,
+              "delay": 3,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 1936,
+            "green": 1936
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2028,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 2016,
+              "delay": 4,
+              "watts": 5
+            },
+            {
+              "id": 2004,
+              "delay": 0,
+              "watts": 3
+            },
+            {
+              "id": 1992,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 1980,
+              "delay": 3,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 2004,
+            "green": 2028
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2047,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 2035,
+              "delay": 1,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2035,
+            "green": 2035
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2105,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 2093,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 2081,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 2069,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 2057,
+              "delay": 1,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 2069,
+            "green": 2105
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2184,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 2172,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 2160,
+              "delay": 2,
+              "watts": 1
+            },
+            {
+              "id": 2148,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 2136,
+              "delay": 4,
+              "watts": 1
+            },
+            {
+              "id": 2124,
+              "delay": 5,
+              "watts": 0
+            },
+            {
+              "id": 2112,
+              "delay": 3,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 2148,
+            "green": 2124
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2225,
+              "delay": 3,
+              "watts": 1
+            },
+            {
+              "id": 2213,
+              "delay": 2,
+              "watts": 4
+            },
+            {
+              "id": 2201,
+              "delay": 1,
+              "watts": 0
+            },
+            {
+              "id": 2189,
+              "delay": 0,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 2189,
+            "green": 2201
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2269,
+              "delay": 3,
+              "watts": 3
+            },
+            {
+              "id": 2257,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 2245,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 2233,
+              "delay": 3,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 2269,
+            "green": 2269
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2301,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 2289,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 2277,
+              "delay": 5,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 2301,
+            "green": 2289
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2334,
+              "delay": 3,
+              "watts": 4
+            },
+            {
+              "id": 2322,
+              "delay": 1,
+              "watts": 5
+            },
+            {
+              "id": 2310,
+              "delay": 3,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2322,
+            "green": 2310
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2403,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 2391,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 2379,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 2367,
+              "delay": 1,
+              "watts": 4
+            },
+            {
+              "id": 2355,
+              "delay": 3,
+              "watts": 0
+            },
+            {
+              "id": 2343,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2403,
+            "green": 2355
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2421,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 2409,
+              "delay": 3,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 2421,
+            "green": 2421
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2467,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 2455,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 2443,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 2431,
+              "delay": 0,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 2443,
+            "green": 2443
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2499,
+              "delay": 0,
+              "watts": 4
+            },
+            {
+              "id": 2487,
+              "delay": 0,
+              "watts": 3
+            },
+            {
+              "id": 2475,
+              "delay": 2,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 2487,
+            "green": 2475
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2520,
+              "delay": 5,
+              "watts": 0
+            },
+            {
+              "id": 2508,
+              "delay": 1,
+              "watts": 5
+            }
+          ],
+          "expect": {
+            "fast": 2508,
+            "green": 2520
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2566,
+              "delay": 2,
+              "watts": 3
+            },
+            {
+              "id": 2554,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 2542,
+              "delay": 5,
+              "watts": 4
+            },
+            {
+              "id": 2530,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 2554,
+            "green": 2554
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2610,
+              "delay": 1,
+              "watts": 5
+            },
+            {
+              "id": 2598,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 2586,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 2574,
+              "delay": 4,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2586,
+            "green": 2574
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2666,
+              "delay": 4,
+              "watts": 4
+            },
+            {
+              "id": 2654,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 2642,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 2630,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 2618,
+              "delay": 3,
+              "watts": 4
+            }
+          ],
+          "expect": {
+            "fast": 2654,
+            "green": 2630
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2733,
+              "delay": 2,
+              "watts": 0
+            },
+            {
+              "id": 2721,
+              "delay": 2,
+              "watts": 1
+            },
+            {
+              "id": 2709,
+              "delay": 5,
+              "watts": 3
+            },
+            {
+              "id": 2697,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 2685,
+              "delay": 3,
+              "watts": 5
+            },
+            {
+              "id": 2673,
+              "delay": 5,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2733,
+            "green": 2733
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2775,
+              "delay": 0,
+              "watts": 3
+            },
+            {
+              "id": 2763,
+              "delay": 4,
+              "watts": 2
+            },
+            {
+              "id": 2751,
+              "delay": 0,
+              "watts": 0
+            },
+            {
+              "id": 2739,
+              "delay": 0,
+              "watts": 3
+            }
+          ],
+          "expect": {
+            "fast": 2751,
+            "green": 2751
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2831,
+              "delay": 5,
+              "watts": 1
+            },
+            {
+              "id": 2819,
+              "delay": 5,
+              "watts": 5
+            },
+            {
+              "id": 2807,
+              "delay": 0,
+              "watts": 5
+            },
+            {
+              "id": 2795,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 2783,
+              "delay": 0,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 2783,
+            "green": 2783
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2850,
+              "delay": 1,
+              "watts": 2
+            },
+            {
+              "id": 2838,
+              "delay": 0,
+              "watts": 0
+            }
+          ],
+          "expect": {
+            "fast": 2838,
+            "green": 2838
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2872,
+              "delay": 0,
+              "watts": 2
+            },
+            {
+              "id": 2860,
+              "delay": 5,
+              "watts": 1
+            }
+          ],
+          "expect": {
+            "fast": 2872,
+            "green": 2860
+          }
+        },
+        {
+          "input": [
+            {
+              "id": 2906,
+              "delay": 4,
+              "watts": 3
+            },
+            {
+              "id": 2894,
+              "delay": 2,
+              "watts": 5
+            },
+            {
+              "id": 2882,
+              "delay": 0,
+              "watts": 2
+            }
+          ],
+          "expect": {
+            "fast": 2882,
+            "green": 2882
+          }
+        }
+      ]
+    },
+    "press": {
+      "task": "A print order has two independent jobs. Job A contains colour page runs [1] and mono runs [1,1]. Job B contains colour runs [1] and mono runs [2,1]. The stock report gives 1 colour sheet and 4 mono sheets; the customer expects 2 of each. Within one job, runs of the same kind may share sheets. A colour sheet holds four pages; a mono sheet holds three. Sheets cannot be shared between jobs or kinds. Empty runs and jobs use no sheets. Counts are nonnegative small integers.",
+      "sources": {
+        "tide/job.tide": "record Job\ncolour:*i mono:*i\n\npages runs:*i > i\nfold runs 0 total row n + total n\n\nsheets n:i capacity:i > i\ndiv (+ n (- capacity 1)) capacity\n",
+        "python/job.py": "def pages(runs):\n    return sum(runs)\n\n\ndef sheets(n, capacity):\n    return (n + capacity - 1) // capacity\n",
+        "tide/colour.tide": "use job\n\ncolour_total jobs:*{Job} > i\nlet count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4\n",
+        "python/colour.py": "from job import pages, sheets\n\n\ndef colour_total(jobs):\n    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)\n",
+        "tide/mono.tide": "use job\n\nmono_total jobs:*{Job} > i\nfold jobs 0 total row job\n  + total (fold (get mono job) 0 used run n + used (sheets n 3))\n",
+        "python/mono.py": "from job import sheets\n\n\ndef mono_total(jobs):\n    return sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])\n",
+        "tide/summary.tide": "use colour\n\nuse mono\n\nrecord Stock\ncolour_sheets:i mono_sheets:i\n\nstock jobs:*{Job} > {Stock}\nmake Stock colour_sheets (colour_total jobs) mono_sheets (mono_total jobs)\n\nmain batches:**{Job} > *{Stock}\nfold batches (list {Stock} 0) acc row jobs append acc (stock jobs)\n",
+        "python/summary.py": "from colour import colour_total\nfrom mono import mono_total\n\n\ndef stock(jobs):\n    return {\"colour_sheets\": colour_total(jobs), \"mono_sheets\": mono_total(jobs)}\n\n\ndef main(batches):\n    return [stock(jobs) for jobs in batches]\n"
+      },
+      "fixes": {
+        "tide": [
+          {
+            "file": "colour.tide",
+            "old": "let count fold jobs 0 total row job + total (pages (get colour job))\nsheets count 4",
+            "replacement": "fold jobs 0 total row job + total (sheets (pages (get colour job)) 4)"
+          },
+          {
+            "file": "mono.tide",
+            "old": "(fold (get mono job) 0 used run n + used (sheets n 3))",
+            "replacement": "(sheets (pages (get mono job)) 3)"
+          }
+        ],
+        "python": [
+          {
+            "file": "colour.py",
+            "old": "    count = sum(pages(job[\"colour\"]) for job in jobs)\n    return sheets(count, 4)",
+            "replacement": "    return sum(sheets(pages(job[\"colour\"]), 4) for job in jobs)"
+          },
+          {
+            "file": "mono.py",
+            "old": "sum(sheets(n, 3) for job in jobs for n in job[\"mono\"])",
+            "replacement": "sum(sheets(sum(job[\"mono\"]), 3) for job in jobs)"
+          }
+        ]
+      },
+      "cases": [
+        {
+          "input": [
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                1,
+                1
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                2,
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                0,
+                0
+              ],
+              "mono": [
+                0
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4,
+                4
+              ],
+              "mono": [
+                3,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                2
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                2
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                5
+              ],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [
+                9
+              ],
+              "mono": [
+                6,
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                3,
+                1
+              ],
+              "mono": [
+                4,
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 1,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": []
+            },
+            {
+              "colour": [
+                7,
+                3
+              ],
+              "mono": [
+                3,
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 3,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                3,
+                3
+              ],
+              "mono": [
+                6
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                0,
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                6
+              ],
+              "mono": [
+                8,
+                4
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                1,
+                1
+              ],
+              "mono": [
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": []
+            },
+            {
+              "colour": [
+                2
+              ],
+              "mono": [
+                6,
+                7,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 1,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                8
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                7,
+                2,
+                4
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                0,
+                3
+              ]
+            },
+            {
+              "colour": [
+                3,
+                7
+              ],
+              "mono": [
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                1
+              ],
+              "mono": [
+                8,
+                4,
+                8
+              ]
+            },
+            {
+              "colour": [
+                1,
+                3
+              ],
+              "mono": [
+                7
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                8
+              ]
+            },
+            {
+              "colour": [
+                3,
+                1,
+                5
+              ],
+              "mono": [
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                2,
+                2
+              ],
+              "mono": [
+                3,
+                4,
+                6
+              ]
+            },
+            {
+              "colour": [
+                7,
+                4,
+                7
+              ],
+              "mono": [
+                5,
+                5
+              ]
+            },
+            {
+              "colour": [
+                7
+              ],
+              "mono": [
+                5,
+                6,
+                5
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                8,
+                6,
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 10,
+            "mono_sheets": 21
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                0
+              ],
+              "mono": []
+            },
+            {
+              "colour": [],
+              "mono": [
+                1,
+                4
+              ]
+            },
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                7,
+                1,
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 1,
+            "mono_sheets": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                2,
+                5
+              ],
+              "mono": [
+                4,
+                0
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                1,
+                6,
+                3
+              ]
+            },
+            {
+              "colour": [
+                2,
+                6,
+                5
+              ],
+              "mono": [
+                7,
+                8,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                3,
+                7
+              ]
+            },
+            {
+              "colour": [
+                3,
+                1
+              ],
+              "mono": [
+                5,
+                8,
+                4
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 1,
+            "mono_sheets": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                1,
+                0,
+                0
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 1
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5,
+                1
+              ],
+              "mono": [
+                7,
+                7,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                4,
+                0,
+                7
+              ]
+            },
+            {
+              "colour": [
+                5,
+                5
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                7
+              ],
+              "mono": [
+                7,
+                7
+              ]
+            },
+            {
+              "colour": [
+                7,
+                3,
+                7
+              ],
+              "mono": [
+                7,
+                5,
+                5
+              ]
+            },
+            {
+              "colour": [
+                4,
+                7
+              ],
+              "mono": [
+                4,
+                0
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 10,
+            "mono_sheets": 13
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                7
+              ],
+              "mono": [
+                0,
+                8,
+                5
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [
+                0
+              ],
+              "mono": [
+                7,
+                4,
+                3
+              ]
+            },
+            {
+              "colour": [
+                4,
+                6
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                4,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                0,
+                3,
+                0
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                3,
+                6,
+                2
+              ],
+              "mono": [
+                3,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                2,
+                2,
+                8
+              ]
+            },
+            {
+              "colour": [
+                1,
+                8,
+                3
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                7,
+                3
+              ],
+              "mono": [
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                4,
+                3,
+                5
+              ]
+            },
+            {
+              "colour": [],
+              "mono": []
+            },
+            {
+              "colour": [
+                0
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                4,
+                8
+              ],
+              "mono": [
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "colour": [
+                7,
+                1,
+                8
+              ],
+              "mono": []
+            },
+            {
+              "colour": [],
+              "mono": [
+                6,
+                0
+              ]
+            },
+            {
+              "colour": [
+                3
+              ],
+              "mono": [
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 9,
+            "mono_sheets": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4,
+                6,
+                8
+              ],
+              "mono": [
+                2,
+                1,
+                6
+              ]
+            },
+            {
+              "colour": [
+                0,
+                0
+              ],
+              "mono": [
+                0,
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                8,
+                3,
+                2
+              ]
+            },
+            {
+              "colour": [
+                4
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5
+              ],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [
+                0,
+                7,
+                0
+              ],
+              "mono": []
+            },
+            {
+              "colour": [],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [
+                1
+              ],
+              "mono": [
+                0
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                7,
+                6
+              ],
+              "mono": [
+                8,
+                7,
+                7
+              ]
+            },
+            {
+              "colour": [
+                0,
+                8,
+                0
+              ],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                1,
+                2,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 11
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                7,
+                2,
+                6
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                3,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                8,
+                4,
+                0
+              ],
+              "mono": [
+                8,
+                8,
+                4
+              ]
+            },
+            {
+              "colour": [
+                7,
+                5,
+                6
+              ],
+              "mono": [
+                8,
+                6,
+                8
+              ]
+            },
+            {
+              "colour": [
+                7,
+                1,
+                5
+              ],
+              "mono": [
+                5,
+                5
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 12,
+            "mono_sheets": 19
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                8,
+                3,
+                8
+              ]
+            },
+            {
+              "colour": [],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                4,
+                1,
+                7
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                4,
+                8,
+                0
+              ]
+            },
+            {
+              "colour": [
+                1,
+                0
+              ],
+              "mono": [
+                8,
+                7,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                8,
+                2,
+                3
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                3,
+                8,
+                8
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 7
+          }
+        }
+      ],
+      "holdout": [
+        {
+          "input": [
+            {
+              "colour": [
+                2
+              ],
+              "mono": [
+                6,
+                7,
+                3
+              ]
+            },
+            {
+              "colour": [
+                3
+              ],
+              "mono": [
+                6,
+                2
+              ]
+            },
+            {
+              "colour": [
+                4,
+                0
+              ],
+              "mono": [
+                6,
+                1,
+                7
+              ]
+            },
+            {
+              "colour": [],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 3,
+            "mono_sheets": 14
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                3
+              ],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [
+                3,
+                1
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                8
+              ],
+              "mono": [
+                7,
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                7,
+                0
+              ],
+              "mono": [
+                8,
+                5,
+                2
+              ]
+            },
+            {
+              "colour": [
+                7,
+                1
+              ],
+              "mono": [
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5,
+                7,
+                7
+              ],
+              "mono": [
+                7,
+                1
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [
+                1,
+                2,
+                3
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                4
+              ],
+              "mono": [
+                8,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 8,
+            "mono_sheets": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                7,
+                3,
+                1
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                1,
+                3
+              ],
+              "mono": [
+                1
+              ]
+            },
+            {
+              "colour": [],
+              "mono": []
+            },
+            {
+              "colour": [
+                1,
+                8,
+                7
+              ],
+              "mono": [
+                0,
+                6,
+                8
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 8,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                0
+              ]
+            },
+            {
+              "colour": [
+                5,
+                5,
+                2
+              ],
+              "mono": [
+                6
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 3,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                1,
+                7
+              ],
+              "mono": [
+                1,
+                3
+              ]
+            },
+            {
+              "colour": [
+                5
+              ],
+              "mono": [
+                1,
+                6,
+                6
+              ]
+            },
+            {
+              "colour": [
+                5,
+                1,
+                0
+              ],
+              "mono": [
+                5
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 8,
+            "mono_sheets": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                6
+              ],
+              "mono": [
+                7,
+                8
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 3,
+            "mono_sheets": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                4,
+                6
+              ],
+              "mono": [
+                8,
+                8
+              ]
+            },
+            {
+              "colour": [
+                5
+              ],
+              "mono": [
+                4,
+                0
+              ]
+            },
+            {
+              "colour": [
+                6,
+                4,
+                6
+              ],
+              "mono": [
+                8,
+                5,
+                6
+              ]
+            },
+            {
+              "colour": [
+                6,
+                1,
+                4
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 12,
+            "mono_sheets": 15
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                3,
+                7
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                8,
+                8
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5,
+                5,
+                1
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 3,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                3,
+                8,
+                0
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5,
+                8,
+                2
+              ],
+              "mono": [
+                2,
+                1,
+                3
+              ]
+            },
+            {
+              "colour": [
+                8,
+                3
+              ],
+              "mono": [
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                2
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                5,
+                5
+              ],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                6,
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 4
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                3
+              ],
+              "mono": [
+                4,
+                5,
+                2
+              ]
+            },
+            {
+              "colour": [
+                4,
+                0
+              ],
+              "mono": [
+                1
+              ]
+            },
+            {
+              "colour": [
+                0,
+                0
+              ],
+              "mono": [
+                2,
+                0,
+                0
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 6
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                3
+              ],
+              "mono": [
+                8,
+                2,
+                1
+              ]
+            },
+            {
+              "colour": [
+                2,
+                4,
+                3
+              ],
+              "mono": [
+                5,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                8,
+                8
+              ],
+              "mono": [
+                3,
+                6
+              ]
+            },
+            {
+              "colour": [
+                7,
+                4
+              ],
+              "mono": [
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "colour": [
+                8
+              ],
+              "mono": [
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 9,
+            "mono_sheets": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                3,
+                1,
+                2
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                7,
+                7
+              ]
+            },
+            {
+              "colour": [
+                8,
+                6,
+                6
+              ],
+              "mono": [
+                8,
+                4,
+                2
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                7,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 16
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                3,
+                8
+              ],
+              "mono": [
+                4,
+                3,
+                5
+              ]
+            },
+            {
+              "colour": [
+                1,
+                5,
+                3
+              ],
+              "mono": [
+                1,
+                4,
+                4
+              ]
+            },
+            {
+              "colour": [
+                0
+              ],
+              "mono": [
+                7
+              ]
+            },
+            {
+              "colour": [
+                3
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 10
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                1,
+                2,
+                5
+              ],
+              "mono": [
+                0,
+                3,
+                7
+              ]
+            },
+            {
+              "colour": [
+                5,
+                7
+              ],
+              "mono": []
+            },
+            {
+              "colour": [
+                5
+              ],
+              "mono": [
+                1,
+                5,
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 7,
+            "mono_sheets": 9
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                8
+              ],
+              "mono": [
+                4
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                6,
+                6,
+                4
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 8
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                2
+              ]
+            },
+            {
+              "colour": [
+                6
+              ],
+              "mono": [
+                1
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                7,
+                6
+              ],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [],
+              "mono": []
+            },
+            {
+              "colour": [],
+              "mono": [
+                3
+              ]
+            },
+            {
+              "colour": [
+                0,
+                3,
+                1
+              ],
+              "mono": [
+                0,
+                7
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 5,
+            "mono_sheets": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                5
+              ],
+              "mono": [
+                5,
+                3
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 2,
+            "mono_sheets": 3
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                6,
+                8
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                2,
+                6
+              ]
+            },
+            {
+              "colour": [],
+              "mono": [
+                0,
+                2,
+                8
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 0,
+            "mono_sheets": 7
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                7,
+                7
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 0
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                0,
+                2,
+                5
+              ],
+              "mono": [
+                0
+              ]
+            },
+            {
+              "colour": [
+                3,
+                8,
+                3
+              ],
+              "mono": [
+                1,
+                2,
+                2
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 2
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [
+                0
+              ],
+              "mono": [
+                4,
+                7,
+                3
+              ]
+            },
+            {
+              "colour": [
+                6,
+                3,
+                5
+              ],
+              "mono": []
+            }
+          ],
+          "expect": {
+            "colour_sheets": 4,
+            "mono_sheets": 5
+          }
+        },
+        {
+          "input": [
+            {
+              "colour": [],
+              "mono": [
+                6,
+                7
+              ]
+            },
+            {
+              "colour": [
+                8
+              ],
+              "mono": [
+                7,
+                3,
+                8
+              ]
+            },
+            {
+              "colour": [
+                8,
+                6
+              ],
+              "mono": [
+                8,
+                3,
+                5
+              ]
+            }
+          ],
+          "expect": {
+            "colour_sheets": 6,
+            "mono_sheets": 17
+          }
+        }
+      ]
+    }
+  }
+}

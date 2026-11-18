@@ -1,0 +1,45 @@
+use adjustment
+
+recover value:i > i
+catch E_OVERFLOW (adjust value 1) _ 0
+
+preserve row:i > i
+catch E_DATA (catch E_DATA (need (nil i) "bad_row" row) inner (raise inner))
+  outer (case (input_line outer) (fail "missing_line") n n)
+
+alternate > b
+catch E_DATA (catch E_DATA (fail "first") inner (fail "replacement"))
+  outer (has_reason outer "replacement")
+
+lazy flag:b > i
+catch E_DATA (if flag 7 (fail "")) e (if (has_reason e "") 8 (raise e))
+
+other_code > i
+catch E_DATA (adjust 9223372036854775807 1) _ 0
+
+no_reason > b
+catch E_OVERFLOW (eq (adjust 9223372036854775807 1) 0) e (has_reason e "")
+
+example untouched recover
+{"inputs":{"value":3},"expect":4}
+
+example overflow recover
+{"inputs":{"value":9223372036854775807},"expect":0}
+
+example same_origin preserve
+{"inputs":{"row":-2},"expect":-2}
+
+example fallback_fails alternate
+{"inputs":{},"expect":true}
+
+example skipped lazy
+{"inputs":{"flag":true},"expect":7}
+
+example empty_reason lazy
+{"inputs":{"flag":false},"expect":8}
+
+example propagate other_code
+{"inputs":{},"expect_error":{"code":"E_OVERFLOW"}}
+
+example absent_reason no_reason
+{"inputs":{},"expect":false}

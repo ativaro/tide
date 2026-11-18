@@ -1,0 +1,2 @@
+delta from_qty:i to_qty:i > i
+- to_qty from_qty

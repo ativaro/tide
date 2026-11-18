@@ -1,0 +1,1950 @@
+{
+  "tool_sha256": "aaa1bafdc78d797ea239c2298e87c68f36ad4b83a22716de01f35ef0e882362b",
+  "source_measurement_sha256": "a88a6e73f3121387055ce9b295f0a364defec2c2fb637519a17c09101e15fa6d",
+  "protocol": "#!/usr/bin/env bash\nset -euo pipefail\nexport LC_ALL=C.UTF-8\nroot=$(cd \"$(dirname \"$0\")\" && pwd)\nrepo=$(pwd)\nold=/var/tmp/tide-ordering-y8PzxCLV\ndata=\"$repo/experimente/17_prioritaeten/messung.json\"\ntide=\"$repo/tide\"\nworkbench=\"$repo/workbench/function_body.tide\"\nstamp() { perl -MTime::HiRes=clock_gettime,CLOCK_MONOTONIC -e 'printf(\"%.9f\\n\",clock_gettime(CLOCK_MONOTONIC))'; }\nprepare() {\n  family=$1; rep=$2; arm=$3; tag=$family-$rep-$arm\n  oldrun=\"$old/results/$tag\"\n  cp \"$oldrun/forms\" \"$root/forms\"\n  jq -c '.units' \"$oldrun/input\" > \"$root/basis\"\n  mkdir -p \"$root/project\"\n  find \"$root/project\" -mindepth 1 -maxdepth 1 -type f -delete\n  cp \"$old/seeds/$family/$arm\"/*.tide \"$root/project/\"\n  jq -c --arg f \"$family\" --argjson r \"$rep\" --arg a \"$arm\" '.runs[]|select(.family==$f and .repetition==$r and .arm==$a)|.attempts[-1].answer' \"$data\" > \"$root/good\"\n}\nmaterialize() {\n  local payload unit\n  payload=$(jq -nc --slurpfile b \"$root/basis\" --slurpfile f \"$root/forms\" --slurpfile a \"$1\" '{files:$b[0],forms:$f[0],edits:$a[0].edits}')\n  \"$tide\" run \"$workbench\" --call candidate_files --inputs \"$payload\" > \"$root/files\"\n  for unit in \"$root/project\"/*.tide; do\n    jq -ejr --arg f \"${unit##*/}\" '.[]|select(.file==$f)|.source' \"$root/files\" > \"$unit\"\n  done\n}\nverify() {\n  (cd \"$root/project\" && \"$old/$1/$family/verify\")\n}\nproposal() {\n  local payload\n  payload=$(jq -nc --slurpfile f \"$root/files\" --slurpfile a \"$root/bad\" --slurpfile d \"$root/diagnostic\" '{files:$f[0],edits:$a[0].edits,diagnostic:($d[0]|{file,code,message,line,column})}')\n  \"$tide\" run \"$workbench\" --call closing_retry --inputs \"$payload\" > \"$root/proposal\"\n}\nretry() {\n  outcome=invalid; proposed=false\n  materialize \"$root/bad\"\n  if verify control > \"$root/red_result\" 2> \"$root/diagnostic\"; then outcome=already_green; return; fi\n  if [[ ! -s \"$root/diagnostic\" ]]; then outcome=public_rejected; return; fi\n  proposal\n  if ! jq -e 'has(\"some\")' \"$root/proposal\" >/dev/null; then outcome=no_proposal; return; fi\n  proposed=true\n  jq -c '{edits:.some}' \"$root/proposal\" > \"$root/corrected\"\n  materialize \"$root/corrected\"\n  if verify control > \"$root/public\" 2> \"$root/retry_diagnostic\"; then\n    outcome=passed\n  elif [[ -s \"$root/retry_diagnostic\" ]]; then\n    outcome=compiler_rejected\n  else\n    outcome=public_rejected\n  fi\n}\ncanonical_equal() { diff -q <(jq -Sc . \"$root/corrected\") <(jq -Sc . \"$root/good\") >/dev/null; }\nif [[ \"$1\" == natural ]]; then\n  prepare journal 3 tide-lib\n  jq -c '.runs[]|select(.family==\"journal\" and .repetition==3 and .arm==\"tide-lib\")|.attempts[0].answer' \"$data\" > \"$root/bad\"\n  for iteration in {1..12}; do\n    start=$(stamp)\n    retry\n    end=$(stamp)\n    [[ \"$outcome\" == passed ]]\n    canonical_equal\n    verify holdout > \"$root/holdout\"\n    jq -nc --argjson iteration \"$iteration\" --argjson start \"$start\" --argjson end \"$end\" --slurpfile issue \"$root/diagnostic\" --slurpfile p \"$root/public\" --slurpfile h \"$root/holdout\" '{iteration:$iteration,seconds:($end-$start),start:$start,end:$end,issue:$issue[0],public:$p[0],holdout:$h[0]}' >> \"$root/natural.ndjson\"\n  done\nelif [[ \"$1\" == controls ]]; then\n  prepare journal 3 tide-lib\n  for fault in missing_operand two_closers extra_closer wrong_type wrong_result; do\n    case \"$fault\" in\n     missing_operand) expr=\"(eq 1\";;\n     two_closers) expr=\"(not (not true\";;\n     extra_closer) expr=\"(not true))\";;\n     wrong_type) expr=\"0\";;\n     wrong_result) expr=\"(not true\";;\n    esac\n    jq -c --arg body \"$expr\" '(.edits[]|select(.name==\"earlier\").body)=$body' \"$root/good\" > \"$root/bad\"\n    retry\n    if [[ \"$fault\" == wrong_result ]]; then [[ \"$outcome\" == public_rejected ]] && jq -e '.failed>0' \"$root/public\" >/dev/null || exit 7\n    else\n      [[ \"$outcome\" == compiler_rejected || \"$outcome\" == no_proposal ]]\n      (cd \"$root/project\" && ! \"$tide\" check summary.tide >/dev/null 2>\"$root/still_red\")\n    fi\n    jq -nc --arg fault \"$fault\" --arg body \"$expr\" --argjson proposed \"$proposed\" --arg outcome \"$outcome\" --slurpfile issue \"$root/diagnostic\" --argjson final \"$(if [[ \"$outcome\" == public_rejected ]]; then cat \"$root/public\"; else cat \"$root/still_red\"; fi)\" '{fault:$fault,body:$body,offered:$proposed,outcome:$outcome,issue:$issue[0],final:$final}' >> \"$root/controls.ndjson\"\n  done\nelif [[ \"$1\" == campaign ]]; then\n  while read -r f i a; do\n    prepare \"$f\" \"$i\" \"$a\"\n    materialize \"$root/good\"\n    verify control > \"$root/public\"\n    verify holdout > \"$root/holdout\"\n    jq -nc --arg run \"$tag\" --slurpfile p \"$root/public\" --slurpfile h \"$root/holdout\" '{run:$run,public:$p[0],holdout:$h[0]}' >> \"$root/unchanged.ndjson\"\n    while read -r target; do\n      jq -c --arg t \"$target\" '(.edits[] | select(.name==$t).body) |= .[0:-1]' \"$root/good\" > \"$root/bad\"\n      retry\n      [[ \"$outcome\" == passed ]]\n      canonical_equal\n      verify holdout > \"$root/holdout\"\n      jq -nc --arg run \"$tag\" --arg target \"$target\" --arg hash \"$(jq -cS . \"$root/bad\" | sha256sum | cut -d' ' -f1)\" --slurpfile issue \"$root/diagnostic\" --slurpfile p \"$root/public\" --slurpfile h \"$root/holdout\" '{run:$run,target:$target,edit_set_sha256:$hash,edits_match:true,issue:$issue[0],public:$p[0],holdout:$h[0]}' >> \"$root/mutations.ndjson\"\n    done < <(jq -r '.edits[] | select((.body|startswith(\"(\")) and (.body|endswith(\")\")))|.name' \"$root/good\")\n  done < <(jq -r '.runs[]|select(.arm|startswith(\"tide-\"))|[.family,.repetition,.arm]|@tsv' \"$data\")\nfi\n",
+  "natural": [
+    {
+      "iteration": 1,
+      "seconds": 0.24271926600022198,
+      "start": 2274.579824608,
+      "end": 2274.822543874,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 2,
+      "seconds": 0.24200889000030656,
+      "start": 2274.876879731,
+      "end": 2275.118888621,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 3,
+      "seconds": 0.24362346499992782,
+      "start": 2275.175423013,
+      "end": 2275.419046478,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 4,
+      "seconds": 0.23776479699972697,
+      "start": 2275.474698027,
+      "end": 2275.712462824,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 5,
+      "seconds": 0.24274723400003495,
+      "start": 2275.767238939,
+      "end": 2276.009986173,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 6,
+      "seconds": 0.25193985899977633,
+      "start": 2276.063853046,
+      "end": 2276.315792905,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 7,
+      "seconds": 0.25084798199986835,
+      "start": 2276.372104095,
+      "end": 2276.622952077,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 8,
+      "seconds": 0.2517612060000829,
+      "start": 2276.680955343,
+      "end": 2276.932716549,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 9,
+      "seconds": 0.24274706400001378,
+      "start": 2276.987634769,
+      "end": 2277.230381833,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 10,
+      "seconds": 0.23974334800004726,
+      "start": 2277.284587843,
+      "end": 2277.524331191,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 11,
+      "seconds": 0.2458928430000924,
+      "start": 2277.581438055,
+      "end": 2277.827330898,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "iteration": 12,
+      "seconds": 0.24587315700000545,
+      "start": 2277.884049326,
+      "end": 2278.129922483,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ],
+  "controls": [
+    {
+      "fault": "missing_operand",
+      "body": "(eq 1",
+      "offered": true,
+      "outcome": "compiler_rejected",
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 6
+      },
+      "final": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Unexpected token: )",
+        "line": 4,
+        "column": 6
+      }
+    },
+    {
+      "fault": "two_closers",
+      "body": "(not (not true",
+      "offered": true,
+      "outcome": "compiler_rejected",
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 15
+      },
+      "final": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 16
+      }
+    },
+    {
+      "fault": "extra_closer",
+      "body": "(not true))",
+      "offered": false,
+      "outcome": "no_proposal",
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Extra operand",
+        "line": 4,
+        "column": 11
+      },
+      "final": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Extra operand",
+        "line": 4,
+        "column": 11
+      }
+    },
+    {
+      "fault": "wrong_type",
+      "body": "0",
+      "offered": false,
+      "outcome": "no_proposal",
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected type",
+        "expected": "b",
+        "actual": "i",
+        "line": 4,
+        "column": 1
+      },
+      "final": {
+        "file": "sequence.tide",
+        "code": "E_TYPE",
+        "message": "Unexpected type",
+        "expected": "b",
+        "actual": "i",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "fault": "wrong_result",
+      "body": "(not true",
+      "offered": true,
+      "outcome": "public_rejected",
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 10
+      },
+      "final": {
+        "passed": 7,
+        "failed": 33,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": 7,
+              "serial": 4
+            },
+            {
+              "minute": 2,
+              "priority": 8,
+              "serial": 1
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 4,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 5,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 1,
+            "longest": 4
+          },
+          "actual": {
+            "breaks": 0,
+            "longest": 5
+          }
+        }
+      }
+    }
+  ],
+  "unchanged": [
+    {
+      "run": "allocation-1-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-1-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-lib",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-plain",
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "run": "allocation-1-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-1-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-1-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-1-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-1-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-2-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-2-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "e832f67e3fa4e8b3bb7dfcbba8bb580a51911c3a5d3ecdcf845e78db340005e5",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 255
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-3-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "d406da2db3ce8c74dea8570088be2ee9f8dcaefe0c310d3d75892f503cb046b5",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 255
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-3-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-4-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-4-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-5-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-5-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-lib",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-lib",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-plain",
+      "target": "earlier",
+      "edit_set_sha256": "e466fad8beb253fde2429a6a581d0d5732856848f97f061c484e2dfa45f901f9",
+      "edits_match": true,
+      "issue": {
+        "file": "sequence.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 274
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "journal-6-tide-plain",
+      "target": "advance",
+      "edit_set_sha256": "ed4e9e56d1e42fdc744f9442e67ecd613fd0b98e3be5bb6526a6fd138ee232b5",
+      "edits_match": true,
+      "issue": {
+        "file": "streak.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 7,
+        "column": 330
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-lib",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-lib",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-plain",
+      "target": "urgent",
+      "edit_set_sha256": "bb0283b5abde5287d5438aa9f6df1b81a5c75a13cdcc586666c63a0ea6d5118b",
+      "edits_match": true,
+      "issue": {
+        "file": "urgent.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "run": "allocation-6-tide-plain",
+      "target": "nearby",
+      "edit_set_sha256": "06bdce5b059886fe8e3119930cea7c12ff3bd8249c6f44b07d9db56ce130ece1",
+      "edits_match": true,
+      "issue": {
+        "file": "nearby.tide",
+        "code": "E_SYNTAX",
+        "message": "Missing operand",
+        "line": 4,
+        "column": 381
+      },
+      "public": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 40,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ],
+  "summary": {
+    "original_elapsed_s": 31.0903444999999,
+    "original_gross": 40948,
+    "first_response_gross": 20240,
+    "first_response_s": 13.46127810500002,
+    "local_median_s": 0.24318534949998138,
+    "reconstructed_elapsed_s": 13.7044634545,
+    "avoided_gross": 20708,
+    "unique_mutated_submissions": 6
+  },
+  "natural_input": {
+    "files": [
+      {
+        "file": "event.tide",
+        "source": "record Event\nminute:i priority:i serial:i\n"
+      },
+      {
+        "file": "ordering.tide",
+        "source": "prefer_min candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (< candidate current)\n\nprefer_max candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (> candidate current)\n\nexample earlier_min prefer_min\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":false},\"expect\":true}\n\nexample later_min prefer_min\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":true},\"expect\":false}\n\nexample equal_keep prefer_min\n{\"inputs\":{\"candidate\":0,\"current\":0,\"on_equal\":false},\"expect\":false}\n\nexample equal_take prefer_min\n{\"inputs\":{\"candidate\":-5,\"current\":-5,\"on_equal\":true},\"expect\":true}\n\nexample larger_max prefer_max\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":false},\"expect\":true}\n\nexample smaller_max prefer_max\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":true},\"expect\":false}\n\nexample equal_first_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":false},\"expect\":false}\n\nexample equal_second_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":true},\"expect\":true}\n"
+      },
+      {
+        "file": "sequence.tide",
+        "source": "use event\n\nearlier incoming:{Event} prior:{Event} > b\n(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior)))))\n"
+      },
+      {
+        "file": "streak.tide",
+        "source": "use sequence\n\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n"
+      },
+      {
+        "file": "summary.tide",
+        "source": "use ordering\n\nuse streak\n\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\nlet empty make Progress prior (nil {Event}) breaks 0 current 0 longest 0\nlet state_value fold events empty totals row item advance totals item\nmake Report breaks (get breaks state_value) longest (get longest state_value)\n\nmain batches:**{Event} > *{Report}\nfold batches (list {Report} 0) reports row batch append reports (journal batch)\n"
+      }
+    ],
+    "edits": [
+      {
+        "name": "earlier",
+        "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior)))))"
+      },
+      {
+        "name": "advance",
+        "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+      }
+    ],
+    "diagnostic": {
+      "file": "sequence.tide",
+      "code": "E_SYNTAX",
+      "message": "Missing operand",
+      "line": 4,
+      "column": 274
+    }
+  },
+  "expected_corrected_edits": [
+    {
+      "name": "earlier",
+      "body": "(if (< (get minute incoming) (get minute prior)) true (if (> (get minute incoming) (get minute prior)) false (if (> (get priority incoming) (get priority prior)) true (if (< (get priority incoming) (get priority prior)) false (< (get serial incoming) (get serial prior))))))"
+    },
+    {
+      "name": "advance",
+      "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+    }
+  ],
+  "natural_base": {
+    "files": [
+      {
+        "file": "summary.tide",
+        "source": "use ordering\n\nuse streak\n\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\nlet empty make Progress prior (nil {Event}) breaks 0 current 0 longest 0\nlet state_value fold events empty totals row item advance totals item\nmake Report breaks (get breaks state_value) longest (get longest state_value)\n\nmain batches:**{Event} > *{Report}\nfold batches (list {Report} 0) reports row batch append reports (journal batch)\n"
+      },
+      {
+        "file": "ordering.tide",
+        "source": "prefer_min candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (< candidate current)\n\nprefer_max candidate:i current:i on_equal:b > b\nif (eq candidate current) on_equal (> candidate current)\n\nexample earlier_min prefer_min\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":false},\"expect\":true}\n\nexample later_min prefer_min\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":true},\"expect\":false}\n\nexample equal_keep prefer_min\n{\"inputs\":{\"candidate\":0,\"current\":0,\"on_equal\":false},\"expect\":false}\n\nexample equal_take prefer_min\n{\"inputs\":{\"candidate\":-5,\"current\":-5,\"on_equal\":true},\"expect\":true}\n\nexample larger_max prefer_max\n{\"inputs\":{\"candidate\":9223372036854775807,\"current\":-9223372036854775808,\"on_equal\":false},\"expect\":true}\n\nexample smaller_max prefer_max\n{\"inputs\":{\"candidate\":-9223372036854775808,\"current\":9223372036854775807,\"on_equal\":true},\"expect\":false}\n\nexample equal_first_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":false},\"expect\":false}\n\nexample equal_second_max prefer_max\n{\"inputs\":{\"candidate\":7,\"current\":7,\"on_equal\":true},\"expect\":true}\n"
+      },
+      {
+        "file": "streak.tide",
+        "source": "use sequence\n\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\nlet backward case (get prior state_value) false previous (earlier incoming previous)\nlet count if backward 0 (+ (get current state_value) 1)\nlet peak get longest state_value\nmake Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0))\n  current count longest (if (> count peak) count peak)\n"
+      },
+      {
+        "file": "sequence.tide",
+        "source": "use event\n\nearlier incoming:{Event} prior:{Event} > b\n< (get minute incoming) (get minute prior)\n"
+      },
+      {
+        "file": "event.tide",
+        "source": "record Event\nminute:i priority:i serial:i\n"
+      }
+    ],
+    "forms": [
+      {
+        "name": "main",
+        "file": "summary.tide",
+        "body": "(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))"
+      },
+      {
+        "name": "journal",
+        "file": "summary.tide",
+        "body": "(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))"
+      },
+      {
+        "name": "advance",
+        "file": "streak.tide",
+        "body": "(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 0 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))"
+      },
+      {
+        "name": "earlier",
+        "file": "sequence.tide",
+        "body": "(< (get minute incoming) (get minute prior))"
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+use score
+
+prefer left:{Ticket} right:{Ticket} > b
+> (score left) (score right)

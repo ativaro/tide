@@ -1,0 +1,400 @@
+#!/bin/sh
+# Package entry point. The build is defined in the Makefile.
+set -eu
+launcher=$(realpath -- "$0")
+root=${launcher%/*}
+root=${root:-/}
+tool_dir=$root/bin
+if [ -f "$root/Makefile" ]; then tool_dir=$root/build/native; fi
+prepare() {
+    if [ "$tool_dir" = "$root/build/native" ]; then
+        make -s --no-print-directory -C "$root" BUILD=build/native "$1" >&2
+    fi
+}
+catalog() {
+    prepare catalog
+    exec "$tool_dir/catalog" "$1" < "$root/native/catalog/${2:-release.tsv}"
+}
+usage() {
+    (catalog "help.${1:-tide}" help.tsv) >&2
+    exit 2
+}
+unavailable() {
+    case ${1-} in
+        play) detail="Interactive terminal and document I/O still require a native implementation." ;;
+        *) detail="This invocation is unavailable in the native TIDE package." ;;
+    esac
+    printf '{"code":"E_BACKEND","message":"%s"}\n' "$detail" >&2
+    exit 1
+}
+resolved_path() {
+    realpath -m -- "$1" && printf .
+}
+verify_pin() {
+    # $1 is the resolved project path. $2 is the diagnostic file or empty for describe.
+    folder=${1%/*}
+    while :; do
+        lock=$folder/tide.lock
+        if [ -e "$lock" ] || [ -L "$lock" ]; then
+            pin=$("$tool_dir/checker" --read-file "$lock" "=$identity" 2>/dev/null) || return 3
+            case $pin in
+                ok) return 0 ;;
+                '!'*)
+                    pin_file=null
+                    if [ -n "$2" ]; then
+                        pin_file=$(printf %s "$2" | "$tool_dir/checker" quote) || return 3
+                    fi
+                    pin_path=$(printf %s "$lock" | "$tool_dir/checker" quote) || return 3
+                    printf '{"file":%s,"code":"E_VERSION","message":"Project pins a different TIDE tool or catalog","expected":%s,"actual":%s,"lock":%s}\n' \
+                        "$pin_file" "${pin#?}" "$identity" "$pin_path" >&2
+                    return 1 ;;
+                *) return 3 ;;
+            esac
+        fi
+        [ -n "$folder" ] || return 0
+        folder=${folder%/*}
+    done
+}
+describe() (
+    shift
+    project= name= have_name=no
+    while [ "$#" -gt 0 ]; do
+        case $1 in
+            --json) ;;
+            --project)
+                shift
+                [ "$#" -gt 0 ] || exit 2
+                case $1 in -?*) exit 2 ;; esac
+                project=$1 ;;
+            --project=*) project=${1#*=} ;;
+            --)
+                shift
+                if [ "$#" = 0 ]; then break; fi
+                if [ "$#" != 1 ] || [ "$have_name" = yes ]; then exit 2; fi
+                name=$1; have_name=yes; break ;;
+            -?*) exit 2 ;;
+            *) [ "$have_name" = no ] || exit 2
+               name=$1; have_name=yes ;;
+        esac
+        shift
+    done
+    if [ -n "$project" ]; then
+        prepare checker && prepare catalog || exit 1
+        identity=$("$tool_dir/catalog" release.lock < "$root/native/catalog/release.tsv") || exit 1
+        marked=$(resolved_path "$project") || exit 3
+        verify_pin "${marked%??}" '' || exit "$?"
+    fi
+    if [ "$have_name" = no ]; then catalog release.describe; fi
+    catalog "op.$name"
+)
+
+project_command() (
+    action=$1 file=$2
+    shift 2
+    backend=checker
+    case $action in edit) mode=:; backend=editor ;; context|hole) mode=:; backend=inspector ;; check) mode=: ;; fmt) mode='~' ;; test) mode='?' ;; modules) mode='#' ;; run) mode='!' ;; trace) mode='^' ;; aot) mode=A ;; service) mode=S ;; esac
+    if [ "$action" = test ] && { [ "$explain" != no ] || [ -n "$diff" ]; }; then
+        backend=inspector; mode=:; set -- "$diff" "$explain"
+    fi
+    prepare checker || exit 1
+    if [ "$backend" != checker ]; then prepare "$backend" || exit 1; fi
+    # Keep the final newline in unusual path names through command substitution.
+    marked=$(resolved_path "$file") || exit 3
+    resolved=${marked%??}
+    prepare catalog || exit 1
+    identity=$("$tool_dir/catalog" release.lock < "$root/native/catalog/release.tsv") || exit 1
+    verify_pin "$resolved" "$file" || exit "$?"
+    protocol=--read-project
+    if [ "$action" = edit ]; then protocol=$1; shift; fi
+    case $action in
+        edit|fmt|test|run|trace|aot|service) exec 3>&1 ;;
+        *) tmp=$(mktemp -d) || exit 1
+           trap 'rm -rf -- "$tmp"' EXIT
+           exec 3>"$tmp/unit" ;;
+    esac
+    # The backend emits the result after evaluation and reports write failures separately.
+    result=0
+    reply=$("$tool_dir/$backend" "$protocol" "$resolved" "$mode$file" "$@" 2>&1 >&3 3>&-) || result=$?
+    exec 3>&-
+    if [ "$result" != 0 ]; then
+        case $result in
+            74) printf '%s\n' 'Could not write TIDE output.' >&2; exit 1 ;;
+            141) exit 141 ;;
+        esac
+        case $reply in
+            '{"file":'*) printf '%s\n' "$reply" >&2 ;;
+            E_UTF8|input_limit|regular_file_required)
+                formatted=$(printf %s "$file" | "$tool_dir/checker" "$reply" 2>/dev/null) || exit 3
+                printf '%s\n' "$formatted" >&2 ;;
+            *) exit 3 ;;
+        esac
+        exit 1
+    fi
+    case $action in edit|fmt|test|run|trace|aot|service) exit 0 ;; esac
+    {
+        IFS= read -r fields || exit 1
+        digest=$(sha256sum) || exit 1
+    } < "$tmp/unit"
+    case $action in
+        context) printf '{"version":%s,"revision":"%s",%s}\n' "$identity" "${digest%% *}" "$fields"; exit ;;
+        hole) printf '{"revision":"%s",%s}\n' "${digest%% *}" "$fields"; exit ;;
+    esac
+    version=$("$tool_dir/catalog" release.version < "$root/native/catalog/release.tsv") || exit 1
+    printf '{"tool":"%s","version":%s,"revision":"%s",%s}\n' "$version" "$identity" "${digest%% *}" "$fields"
+)
+build_aot() (
+    file=$1 output=$2 entry=$3 backend=${4:-aot}
+    source_mark=$(resolved_path "$file")
+    output_mark=$(resolved_path "$output")
+    source_real=${source_mark%??} output_real=${output_mark%??}
+    source_folder=${source_real%/*}
+    blocked=
+    case $output_real in "$source_folder"/*) blocked=${output_real#"$source_folder"/} ;; esac
+    runtime=$root/native/aot-runtime.cpp
+    if [ "$tool_dir" = "$root/build/native" ]; then
+        prepare aot-runtime || exit 1
+        runtime=$tool_dir/aot-runtime.cpp
+    fi
+    work=$(mktemp -- "$output.aot.XXXXXXXX")
+    binary=
+    trap 'rm -f -- "$work"; if [ -n "$binary" ]; then rm -f -- "$binary"; fi' EXIT
+    explain=no diff=
+    cat "$runtime" > "$work"
+    project_command "$backend" "$file" "$entry" "$blocked" >> "$work" || exit 1
+    binary=$(mktemp -- "$output.XXXXXXXX")
+    if [ "$backend" = service ]; then set -- -DTIDE_SERVICE -lmicrohttpd; else set -- -static; fi
+    "${CXX:-c++}" -x c++ -std=c++20 -O2 -fno-ident -ffunction-sections -fdata-sections -Wl,--gc-sections,--build-id=none -s -I"${runtime%/*}" "$work" -x none "${runtime%/*}/sqlite3.o" "$@" -lm -pthread -o "$binary"
+    chmod 755 "$binary"
+    mv -fT -- "$binary" "$output"
+)
+if [ "$(uname -sm)" != "Linux x86_64" ]; then
+    if [ "${1-}" = build ]; then
+        echo 'The native bootstrap requires Linux x86-64.' >&2
+        exit 1
+    fi
+    unavailable
+fi
+if [ "$#" = 2 ]; then
+    case $2 in
+        --help|-h)
+            case $1 in
+                build|forms|check|test|run|play|context|hole|trace|edit|fmt|describe|lock|modules)
+                    catalog "help.$1" help.tsv ;;
+            esac ;;
+    esac
+fi
+case ${1-} in
+    check|fmt|test|modules|run|trace|context|hole|edit)
+        if (
+            action=$1
+            shift
+            file= options=yes explain=no diff= call=main inputs='{}' step= field_option= have_example=no have_function=no node_option= example_index=no selected_example= have_selected=no
+            base= have_base=no edit_mode= candidate= write=no change_examples=no
+            grants=0 have_probes=no probes= pairs=no have_probe_range=no probe_range=
+            while [ "$#" -gt "$grants" ]; do
+                arg=$1
+                shift
+                if [ "$options" = yes ]; then
+                    if [ "$action" = edit ] && [ "$arg" = --write ]; then write=yes; continue; fi
+                    case $arg in
+                        --explain) [ "$action" = test ] || exit 2; explain=explain; continue ;;
+                        --explain=executed) [ "$action" = test ] || exit 2; explain=executed; continue ;;
+                        --explain=nodes) [ "$action" = test ] || exit 2; explain=nodes; continue ;;
+                        --explain=candidates) [ "$action" = test ] || exit 2; explain=candidates; continue ;;
+                        --pairs) [ "$action" = test ] && [ "$pairs" = no ] || exit 2; pairs=yes; continue ;;
+                        --probe-range|--probe-range=*)
+                            [ "$action" = test ] && [ "$have_probe_range" = no ] || exit 2
+                            case $arg in
+                                --probe-range=*) probe_range=${arg#*=} ;;
+                                *) [ "$#" -gt "$grants" ] || exit 2; probe_range=$1; shift ;;
+                            esac
+                            [ -n "$probe_range" ] || exit 2
+                            have_probe_range=yes
+                            continue ;;
+                        --probes|--probes=*)
+                            [ "$action" = test ] && [ "$have_probes" = no ] || exit 2
+                            case $arg in
+                                --probes=*) probes=${arg#*=} ;;
+                                *) [ "$#" -gt 0 ] || exit 2; probes=$1; shift ;;
+                            esac
+                            have_probes=yes
+                            continue ;;
+                        --diff) [ "$action" = test ] || exit 2; diff=--diff; continue ;;
+                        --json) [ "$action" != fmt ] || exit 2; continue ;;
+                        --change-examples)
+                            [ "$action" = edit ] || exit 2
+                            change_examples=yes
+                            continue ;;
+                        --base|--base=*|--source|--source=*|--edits|--edits=*)
+                            [ "$action" = edit ] || exit 2
+                            case $arg in
+                                *=*) value=${arg#*=} ;;
+                                *) [ "$#" -gt 0 ] || exit 2
+                                   case $1 in -?*) exit 2 ;; esac
+                                   value=$1; shift ;;
+                            esac
+                            key=${arg%%=*}
+                            if [ "$key" = --base ]; then base=$value; have_base=yes
+                            else
+                                [ -z "$edit_mode" ] || [ "$edit_mode" = "$key" ] || exit 2
+                                edit_mode=$key; candidate=$value
+                            fi
+                            continue ;;
+                        --example-index)
+                            [ "$action" = context ] || exit 2
+                            example_index=yes; continue ;;
+                        --function|--node|--function=*|--node=*)
+                            case $action in context|hole) ;; *) exit 2 ;; esac
+                            case $arg in
+                                *=*) value=${arg#*=} ;;
+                                *) [ "$#" -gt 0 ] || exit 2
+                                   case $1 in -?*) exit 2 ;; esac
+                                   value=$1; shift ;;
+                            esac
+                            case ${arg%%=*} in
+                                --function) call=$value; have_function=yes ;;
+                                --node) node_option="+$value";;
+                            esac
+                            continue ;;
+                        --step|--fields|--example|--step=*|--fields=*|--example=*)
+                            case $action:${arg%%=*} in trace:*|context:--example) ;; *) exit 2 ;; esac
+                            case $arg in
+                                *=*) value=${arg#*=} ;;
+                                *) [ "$#" -gt 0 ] || exit 2
+                                   case $1 in --*) exit 2 ;; esac
+                                   value=$1; shift ;;
+                            esac
+                            case ${arg%%=*} in
+                                --example)
+                                    if [ "$action" = context ]; then selected_example=$value; have_selected=yes
+                                    else call=$value; have_example=yes; fi ;;
+                                --step) step=$value ;;
+                                --fields) field_option="|$value" ;;
+                            esac
+                            continue ;;
+                        --call|--inputs)
+                            [ "$action" = run ] && [ "$#" -gt "$grants" ] || exit 2
+                            case $1 in -?*) exit 2 ;; esac
+                            case $arg in --call) call=$1 ;; --inputs) inputs=$1 ;; esac
+                            shift; continue ;;
+                        --call=*) [ "$action" = run ] || exit 2; call=${arg#*=}; continue ;;
+                        --inputs=*) [ "$action" = run ] || exit 2; inputs=${arg#*=}; continue ;;
+                        --read|--read=*|--db|--db=*|--https|--https=*|--write|--write=*|--pg|--pg=*)
+                            [ "$action" = run ] || exit 2
+                            case $arg in
+                                *=*) grant=${arg#*=} ;;
+                                *) [ "$#" -gt "$grants" ] || exit 2
+                                   case $1 in -?*) exit 2 ;; esac
+                                   grant=$1; shift ;;
+                            esac
+                            case $grant in !*|@*|+*|\~*) exit 2 ;; esac
+                            case $arg in --db|--db=*) grant=!$grant ;; --https|--https=*) grant=@$grant ;; --write|--write=*) grant=+$grant ;; --pg|--pg=*) grant="~$grant" ;; esac
+                            set -- "$@" "$grant"
+                            grants=$((grants + 1))
+                            continue ;;
+                        --) options=no; continue ;;
+                        -?*) exit 2 ;;
+                    esac
+                fi
+                [ -z "$file" ] && [ -n "$arg" ] || exit 2
+                file=$arg
+            done
+            [ -n "$file" ] || exit 2
+            if [ "$have_probe_range" = yes ]; then
+                [ "$explain" = candidates ] && [ "$pairs" = yes ] || exit 2
+                separator=$(printf '\037')
+                case $probe_range in *"$separator"*) exit 2 ;; esac
+                explain=pair-generate:$probe_range$separator$probes
+            elif [ "$have_probes" = yes ] || [ "$pairs" = yes ]; then
+                [ "$explain" = candidates ] || exit 2
+                # shortcut: pair mode is limited to 64 checks before larger projects need a search budget option.
+                if [ "$pairs" = yes ]; then
+                    if [ "$have_probes" = yes ]; then explain=pair-probes:$probes; else explain=pairs; fi
+                else
+                    explain=probes:$probes
+                fi
+            fi
+            case $action in
+                edit)
+                    [ "$have_base" = yes ] && [ -n "$edit_mode" ] || exit 2
+                    case $edit_mode in --source) protocol=--replace-root ;; --edits) protocol=--replace-nodes ;; esac
+                    set -- "$protocol" "$candidate" "$base" "$change_examples" "$write" ;;
+                context|hole)
+                    [ "$have_function" = yes ] || exit 2
+                    if [ "$action" = hole ]; then
+                        [ -n "$node_option" ] || exit 2
+                        node_option="!${node_option#+}"
+                    elif [ "$have_selected" = yes ]; then
+                        [ "$example_index" = no ] || exit 2
+                        # A node ID is a module/line/column location and cannot contain a pipe.
+                        case $node_option in *'|'*) node_option=+ ;; esac
+                        node_option="=$node_option|$selected_example"
+                    elif [ "$example_index" = yes ]; then
+                        node_option="?$node_option"
+                    fi
+                    set -- "$call" "$node_option" ;;
+            esac
+            if [ "$action" = run ]; then set -- "$call" "$inputs" "$@"; fi
+            if [ "$action" = trace ]; then
+                [ "$have_example" = yes ] && [ -n "$step" ] || exit 2
+                case $step in *'|'*) exit 2 ;; esac
+                set -- "$call" "$step$field_option"
+            fi
+            if [ "$action" = test ] && [ "$explain" = no ] && [ -z "$diff" ]; then
+                prepare checker || exit 1
+                if "$tool_dir/checker" --test-suite "$file" "$root/native/catalog/release.tsv"; then exit 0; else result=$?; fi
+                # Unresolved paths and unverified pins use the existing CLI diagnostics.
+                [ "$result" = 75 ] || exit "$result"
+            fi
+            if project_command "$action" "$file" "$@"; then exit 0; else result=$?; fi
+            exit "$result"
+        ); then exit 0; else status=$?; fi
+        case $status in 2) usage "$1" ;; 3) unavailable ;; *) exit "$status" ;; esac
+        ;;
+    --version)
+        if [ "$#" = 1 ]; then catalog release.version; fi
+        ;;
+    lock)
+        if [ "$#" = 1 ] || { [ "$#" = 2 ] && [ "$2" = --json ]; }; then catalog release.lock; fi
+        ;;
+    describe)
+        if describe "$@"; then exit 0; else status=$?; fi
+        case $status in 2) usage describe ;; 3) unavailable ;; *) exit "$status" ;; esac
+        ;;
+    forms)
+        if [ "$#" != 1 ]; then
+            echo 'Usage: tide forms < checked-sources.tide' >&2
+            exit 2
+        fi
+        prepare forms
+        exec "$tool_dir/forms"
+        ;;
+    build)
+        if [ "${2-}" = --service ]; then
+            shift
+            if [ "$#" -ge 3 ] && [ "$#" -le 4 ]; then build_aot "$2" "$3" "${4:-main}" service; exit "$?"; fi
+            exit 2
+        fi
+        if [ "${2-}" = --aot ]; then
+            shift
+            if [ "$#" -ge 3 ] && [ "$#" -le 4 ]; then build_aot "$2" "$3" "${4:-main}"; exit "$?"; fi
+        fi
+        if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
+            echo 'Usage: tide build [--aot] SOURCE OUTPUT [ENTRY]' >&2
+            exit 2
+        fi
+        case $2 in /*) SOURCE=$2 ;; *) SOURCE=$PWD/$2 ;; esac
+        case $3 in /*) OUT=$3 ;; *) OUT=$PWD/$3 ;; esac
+        ENTRY=${4:-main}
+        if [ "$tool_dir" = "$root/bin" ]; then
+            exec sh "$root/native/write-image" "$tool_dir/tidec" "$SOURCE" "$OUT" "$ENTRY"
+        fi
+        export SOURCE OUT ENTRY
+        exec make -s --no-print-directory -C "$root" program
+        ;;
+    play) unavailable "$1" ;;
+    --help|-h)
+        if [ "$#" = 1 ]; then catalog help.tide help.tsv; fi
+        ;;
+esac
+usage

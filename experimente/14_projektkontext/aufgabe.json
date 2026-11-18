@@ -1,0 +1,619 @@
+{
+  "prompt": "A parcel intake summary is wrong. Given (ticket, units) notices (41,4), (52,7), (41,99), it reports 3 runs, 3 orders, 110 units. The customer expects 3 runs, 2 orders, 11 units. The first appearance of a ticket books its order and quantity. Later copies cannot change the booking. A run is a maximal group of consecutive notices for the same ticket. Each batch is independent. Ticket IDs and quantities are nonnegative integers.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. Return JSON edits with a relative filename, a nonempty exact substring unique in that file, and its replacement. The runner applies all edits and runs ./verify.",
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "edits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "old": {
+              "type": "string"
+            },
+            "replacement": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "file",
+            "old",
+            "replacement"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "additionalProperties": false
+  },
+  "sources": {
+    "tide/register.tide": "record Notice\nticket:i units:i\n\nrecord Entry\nnotice:{Notice} begins_run:b first_copy:b\n\nrecord History\nseen:*i previous:?i entries:*{Entry}\n\nseen_ticket tickets:*i ticket:i > b\nfold tickets false found row item or found eq ticket item\n\nrecord_notice history:{History} notice:{Notice} > {History}\nlet ticket get ticket notice\nlet fresh not seen_ticket (get seen history) ticket\nlet starts case (get previous history) true last not eq last ticket\nlet entry make Entry notice notice begins_run starts first_copy fresh\nmake History seen (if fresh (append (get seen history) ticket) (get seen history))\n  previous (some ticket) entries (append (get entries history) entry)\n\nregister notices:*{Notice} > *{Entry}\nlet initial make History seen (list i 0) previous (nil i) entries (list {Entry} 0)\nget entries (fold notices initial history row notice record_notice history notice)\n\nlast_notice notices:*{Notice} > ?{Notice}\nat notices (- (length notices) 1)\n",
+    "tide/activity.tide": "use register\n\norder_count entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total 1) total\n\nrun_count entries:*{Entry} > i\nfold entries 0 total row entry\n  + total (if get begins_run entry 1 0)\n\ntickets_in_order entries:*{Entry} > *i\nfold entries (list i 0) tickets row entry append tickets (get ticket (get notice entry))\n",
+    "tide/quantities.tide": "use register\n\nbooked_units entries:*{Entry} > i\nfold entries 0 total row entry\n  if (get begins_run entry) (+ total (get units (get notice entry))) total\n\nlargest_notice entries:*{Entry} > i\nfold entries 0 largest row entry\n  let units get units (get notice entry)\n  if > units largest units largest\n",
+    "tide/summary.tide": "use activity\n\nuse quantities\n\nrecord Summary\nruns:i orders:i units:i\n\nsummarize notices:*{Notice} > {Summary}\nlet entries register notices\nmake Summary runs (run_count entries) orders (order_count entries) units (booked_units entries)\n\nmain batches:**{Notice} > *{Summary}\nfold batches (list {Summary} 0) summaries row batch append summaries (summarize batch)\n",
+    "python/register.py": "from dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass Entry:\n    notice: dict[str, int]\n    begins_run: bool\n    first_copy: bool\n\n\ndef register(notices: list[dict[str, int]]) -> list[Entry]:\n    seen = set()\n    previous = None\n    entries = []\n    for notice in notices:\n        ticket = notice[\"ticket\"]\n        entries.append(Entry(notice, ticket != previous, ticket not in seen))\n        seen.add(ticket)\n        previous = ticket\n    return entries\n\n\ndef last_notice(notices):\n    return notices[-1] if notices else None\n",
+    "python/activity.py": "from register import Entry\n\n\ndef order_count(entries: list[Entry]) -> int:\n    return sum(1 for entry in entries if entry.begins_run)\n\n\ndef run_count(entries: list[Entry]) -> int:\n    return sum(entry.begins_run for entry in entries)\n\n\ndef tickets_in_order(entries: list[Entry]) -> list[int]:\n    return [entry.notice[\"ticket\"] for entry in entries]\n",
+    "python/quantities.py": "from register import Entry\n\n\ndef booked_units(entries: list[Entry]) -> int:\n    return sum(entry.notice[\"units\"] for entry in entries if entry.begins_run)\n\n\ndef largest_notice(entries: list[Entry]) -> int:\n    return max((entry.notice[\"units\"] for entry in entries), default=0)\n",
+    "python/summary.py": "from activity import order_count, run_count\nfrom quantities import booked_units\nfrom register import register\n\n\ndef summarize(notices):\n    entries = register(notices)\n    return {\"runs\": run_count(entries), \"orders\": order_count(entries), \"units\": booked_units(entries)}\n\n\ndef main(batches):\n    return [summarize(batch) for batch in batches]\n"
+  },
+  "cases": [
+    {
+      "input": [
+        {
+          "ticket": 41,
+          "units": 4
+        },
+        {
+          "ticket": 52,
+          "units": 7
+        },
+        {
+          "ticket": 41,
+          "units": 99
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 11
+      }
+    },
+    {
+      "input": [],
+      "expect": {
+        "runs": 0,
+        "orders": 0,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 0,
+          "units": 0
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 7,
+          "units": 5
+        },
+        {
+          "ticket": 7,
+          "units": 99
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 5
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 7,
+          "units": 0
+        },
+        {
+          "ticket": 7,
+          "units": 3
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 3,
+          "units": 4
+        },
+        {
+          "ticket": 4,
+          "units": 4
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 8
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 0,
+          "units": 2
+        },
+        {
+          "ticket": 3,
+          "units": 1
+        },
+        {
+          "ticket": 0,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 3
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 5,
+          "units": 3
+        },
+        {
+          "ticket": 6,
+          "units": 0
+        },
+        {
+          "ticket": 5,
+          "units": 0
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 3
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 1,
+          "units": 2
+        },
+        {
+          "ticket": 2,
+          "units": 2
+        },
+        {
+          "ticket": 3,
+          "units": 2
+        },
+        {
+          "ticket": 1,
+          "units": 2
+        },
+        {
+          "ticket": 2,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 5,
+        "orders": 3,
+        "units": 6
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 9,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 9,
+          "units": 0
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 8,
+          "units": 1
+        },
+        {
+          "ticket": 8,
+          "units": 2
+        },
+        {
+          "ticket": 5,
+          "units": 3
+        },
+        {
+          "ticket": 5,
+          "units": 1
+        },
+        {
+          "ticket": 8,
+          "units": 7
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 4
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        },
+        {
+          "ticket": 4,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        },
+        {
+          "ticket": 4,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        },
+        {
+          "ticket": 4,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        },
+        {
+          "ticket": 4,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 2
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        },
+        {
+          "ticket": 11,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 2
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 4,
+          "units": 7
+        },
+        {
+          "ticket": 11,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 3,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 4,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        },
+        {
+          "ticket": 11,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 2,
+        "orders": 2,
+        "units": 7
+      }
+    },
+    {
+      "input": [
+        {
+          "ticket": 11,
+          "units": 0
+        },
+        {
+          "ticket": 11,
+          "units": 7
+        },
+        {
+          "ticket": 11,
+          "units": 2
+        }
+      ],
+      "expect": {
+        "runs": 1,
+        "orders": 1,
+        "units": 0
+      }
+    }
+  ],
+  "preflight": {
+    "both_initial": {
+      "passed": 17,
+      "failed": 8,
+      "first_failure": {
+        "input": [
+          {
+            "ticket": 41,
+            "units": 4
+          },
+          {
+            "ticket": 52,
+            "units": 7
+          },
+          {
+            "ticket": 41,
+            "units": 99
+          }
+        ],
+        "expected": {
+          "runs": 3,
+          "orders": 2,
+          "units": 11
+        },
+        "actual": {
+          "runs": 3,
+          "orders": 3,
+          "units": 110
+        }
+      }
+    },
+    "only_order_count": {
+      "passed": 19,
+      "failed": 6,
+      "first_failure": {
+        "input": [
+          {
+            "ticket": 41,
+            "units": 4
+          },
+          {
+            "ticket": 52,
+            "units": 7
+          },
+          {
+            "ticket": 41,
+            "units": 99
+          }
+        ],
+        "expected": {
+          "runs": 3,
+          "orders": 2,
+          "units": 11
+        },
+        "actual": {
+          "runs": 3,
+          "orders": 2,
+          "units": 110
+        }
+      }
+    },
+    "only_booked_units": {
+      "passed": 17,
+      "failed": 8,
+      "first_failure": {
+        "input": [
+          {
+            "ticket": 41,
+            "units": 4
+          },
+          {
+            "ticket": 52,
+            "units": 7
+          },
+          {
+            "ticket": 41,
+            "units": 99
+          }
+        ],
+        "expected": {
+          "runs": 3,
+          "orders": 2,
+          "units": 11
+        },
+        "actual": {
+          "runs": 3,
+          "orders": 3,
+          "units": 11
+        }
+      }
+    }
+  },
+  "verify_command": "#!/usr/bin/env bash\nset -euo pipefail\ncases=$(dirname \"$(realpath \"$0\")\")/cases.json\nbatches=$(jq -c 'map(.input)' \"$cases\")\nif [[ -f summary.tide ]]; then\n    actual=$(/home/ativaro/Documents/tide/tide run summary.tide --inputs \"{\\\"batches\\\":$batches}\")\nelse\n    actual=$(python3 -B -c 'import sys,json; from summary import main; print(json.dumps(main(json.load(sys.stdin))))' <<< \"$batches\")\nfi\njq -cen --slurpfile cases \"$cases\" --argjson actual \"$actual\" '\n    $cases[0] as $cases |\n    if (($actual | type) != \"array\" or ($actual | length) != ($cases | length)) then error(\"wrong number of summaries\") else\n        [range($cases|length) as $i | select($actual[$i] != $cases[$i].expect) | {input:$cases[$i].input, expected:$cases[$i].expect, actual:$actual[$i]}] as $fail |\n        {passed:(($cases|length)-($fail|length)), failed:($fail|length), first_failure:($fail[0] // null)}\n    end' | { read -r result; echo \"$result\"; jq -e '.failed == 0' <<< \"$result\" >/dev/null; }\n",
+  "tide_input_serialization": "#!/usr/bin/env bash\nset -euo pipefail\nentry=$1\nobs=$2\ntide=/home/ativaro/Documents/tide/tide\ndir=$(dirname -- \"$entry\")\nchecked=$(\"$tide\" check \"$entry\")\n{ basename -- \"$entry\"; jq -r '.modules[]' <<< \"$checked\"; } |\nwhile IFS= read -r file; do\n  jq -n --arg file \"$file\" --rawfile source \"$dir/$file\" '{file:$file,source:$source}'\ndone |\njq -cs --arg observation \"$obs\" --argjson checked \"$checked\" '{root:\"main\", $observation, graph:($checked.definitions|to_entries|map({name:.key,calls:.value.calls})),units:.}'\n",
+  "measurement_script": "#!/usr/bin/env bash\nset -euo pipefail\ncontrol=$(dirname \"$(realpath \"$0\")\")\nroot=$(dirname \"$control\")\ntag=$1\nlang=${tag%-*}\nmode=${tag#*-}\nrepo=/home/ativaro/Documents/tide\nlog=\"$root/results/$tag\"\nmkdir -p \"$log\"\ncd \"$root/workspaces/$tag\"\ndate +%s%N > \"$log/start\"\ncat \"$control/task\" > \"$log/prompt\"\nif [[ $mode == packet ]]; then\n  if ./verify > \"$log/before\"; then exit 12; else [[ $? == 1 ]]; fi\n  obs=$(cat \"$log/before\")\n  if [[ $lang == tide ]]; then\n    args=$(\"$control/tide-args\" summary.tide \"$obs\")\n    \"$repo/tide\" run \"$repo/workbench/project_context.tide\" --inputs \"$args\" > \"$log/packet\"\n  else\n    for file in *.py; do jq -n --arg file \"$file\" --rawfile source \"$file\" '{file:$file,source:$source}'; done |\n      jq -cs --arg observation \"$obs\" '{observation:$observation,files:.}' > \"$log/packet\"\n  fi\n  echo >> \"$log/prompt\"\n  echo 'The verifier and source collection already ran. Use this automatically prepared context directly if sufficient.' >> \"$log/prompt\"\n  jq -r '.observation, (.files[] | \"\\n--- \"+.file+\" ---\\n\"+.source)' \"$log/packet\" >> \"$log/prompt\"\nfi\ndate +%s%N > \"$log/ready\"\ncodex exec --ignore-user-config --disable memories --disable hooks --disable plugins --enable skip_host_skill_discovery --ephemeral --skip-git-repo-check -s read-only -m gpt-6-astra -c 'model_reasoning_effort=\"xhigh\"' -c 'service_tier=\"priority\"' -C \"$PWD\" --output-schema \"$control/schema\" --output-last-message \"$log/answer\" --json - < \"$log/prompt\" > \"$log/events\" 2> \"$log/stderr\"\ndate +%s%N > \"$log/answered\"\n\"$control/apply\" \"$log/answer\" \"$lang\"\n./verify > \"$log/accepted\"\ndate +%s%N > \"$log/green\"\ncat \"$log/accepted\"\n",
+  "apply_edits_in_disposable_copy": "#!/usr/bin/env bash\nset -euo pipefail\nanswer=$1\nlang=$2\ncase \"$lang\" in tide) suffix=tide ;; python) suffix=py ;; *) exit 2 ;; esac\njq -e '.edits | type==\"array\" and length>0' \"$answer\" >/dev/null\nwhile IFS= read -r edit; do\n    file=$(jq -er '.file' <<< \"$edit\")\n    [[ $file =~ ^[a-z]+\\.$suffix$ && -f $file && ! -L $file ]]\n    candidate=$(mktemp)\n    jq -eRrsj --argjson edit \"$edit\" '\n      if ($edit.old|length)==0 then error(\"empty match\") else\n        split($edit.old) | if length==2 then join($edit.replacement) else error(\"old text must occur exactly once\") end\n      end' \"$file\" > \"$candidate\"\n    cat \"$candidate\" > \"$file\"\n    rm -- \"$candidate\"\ndone < <(jq -c '.edits[]' \"$answer\")\n"
+}

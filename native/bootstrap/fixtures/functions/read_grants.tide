@@ -1,0 +1,20 @@
+take input:r > t
+read input
+
+twice input:r > i
++ (text_len (take input)) (text_len (take input))
+
+both left:r right:r > i
++ (text_len (take left)) (text_len (take right))
+
+valid_or input:r > t
+catch E_UTF8 (take input) _ "invalid UTF-8"
+
+example reusable_snapshot twice
+{"inputs":{"input":"Ω猫"},"expect":4}
+
+example separate_grants both
+{"inputs":{"left":"Ω猫","right":"ok!"},"expect":5}
+
+example valid_unicode valid_or
+{"inputs":{"input":"Grüezi"},"expect":"Grüezi"}

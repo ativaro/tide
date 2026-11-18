@@ -1,0 +1,71 @@
+use samples
+
+record ReadBindings
+names:*t paths:*t
+
+run_arguments input:t fn:{Signature} grants:*t file:t > *{EvalValue}
+let loc get loc fn
+let data read_scalar_json input (json_origin file) false
+let databases typed_grants fn "d"
+let required fold (get types fn) (list t 0) names row typ
+  if (grant_kind typ) (append names (concat (grant_marker typ) (need (at (get params fn) (- row 1)) "grant_name" 0))) names
+if (and (eq (length required) 0) (eq (length grants) 0)) (scalar_inputs data "" fn file loc)
+let bindings fold grants (make ReadBindings names (list t 0) paths (list t 0)) bound row grant
+  let invalid diagnosis file loc "E_CAPABILITY" "Invalid or duplicate grant binding"
+  let cut need (text_find grant "=" 0) invalid 0
+  let name text_slice grant 0 cut
+  let path text_slice grant (+ 1 cut) (text_len grant)
+  if (or (text_eq path "") (case (entry_at (get names bound) name) false idx true)) fail invalid
+  make ReadBindings names (append (get names bound) name) paths (append (get paths bound) path)
+let supplied get names bindings
+let valid and (eq (length required) (length supplied))
+  (fold required true ok row name
+    and ok (case (entry_at supplied name) false idx (case (json_at data (member_path "" (if (white (text_slice name 0 1) "!@+~") (text_slice name 1 (text_len name)) name))) true token false)))
+if (and (not valid) (or (> (length (typed_grants fn "w")) 0) (> (length (typed_grants fn "p")) 0))) fail (extra_fields (diagnosis file loc "E_CAPABILITY" "Supply the declared --pg, --write, --db, --https and --read grants separately") (concat "\"required\":" (json_labels (sorted_labels required))))
+if (and (not valid) (> (length (typed_grants fn "n")) 0)) fail (extra_fields (diagnosis file loc "E_CAPABILITY" "Supply the declared --https, --db and --read grants separately") (concat "\"https_grants\":" (json_labels (typed_grants fn "n"))))
+if (and (not valid) (> (length databases) 0)) fail (extra_fields (diagnosis file loc "E_CAPABILITY" "Supply the declared --db and --read grants separately")
+  (cat3 "\"db_grants\":" (json_labels databases) (concat ",\"read_grants\":" (json_labels (grant_names fn)))))
+if (not valid) fail (extra_fields (diagnosis file loc "E_CAPABILITY" "Supply the declared read grants separately")
+  (concat "\"required\":" (json_labels (sorted_labels required))))
+let values_only fold (get params fn) (with types (with params fn (list t 0)) (list t 0)) args row key
+  let typ need (at (get types fn) (- row 1)) "param_type" 0
+  if (grant_kind typ) args
+  with types (with params args (append (get params args) key)) (append (get types args) typ)
+let values scalar_inputs data "" values_only file loc
+fold (get params fn) (list {EvalValue} 0) args row key
+  let typ need (at (get types fn) (- row 1)) "param_type" 0
+  case (entry_at supplied (concat (grant_marker typ) key))
+    (let index need (entry_at (get params values_only) key) "value_parameter" 0
+     append args (need (at values index) "value_argument" 0))
+    index
+  let path need (at (get paths bindings) index) "grant_path" 0
+  if (text_eq typ "n") (if (https_origin path) (append args (text_value path)) (fail (diagnosis file loc "E_CAPABILITY" "Expected an HTTPS origin without path or credentials")))
+  if (or (text_eq typ "p") (text_eq typ "w")) (append args (text_value path))
+  if (text_eq typ "d") (append args (text_value path))
+  let fd bootstrap_open_read path
+  if (eq fd -2) fail (diagnosis file loc "E_CAPABILITY" "A grant must name a regular file")
+  if (< fd 0) fail (diagnosis file loc "E_IO" "Could not open read grant")
+  append args (number_value fd)
+
+record ReadSnapshot
+handle:i bytes:i octets:t contents:?t
+
+take_snapshot grant:{EvalValue} limit:i binary:b > {ReadSnapshot}
+let handle get num grant
+let raw if (< handle 0)
+  (let body get text grant
+   let raw_text bootstrap_utf8_octets body
+   let bytes text_len raw_text
+   if (> bytes limit) (pair -2 "") (pair bytes raw_text))
+  (bootstrap_read_bytes handle limit)
+let decoded if (or binary (< (first raw) 0)) (nil t) (if (< handle 0) (some (get text grant)) (bootstrap_octets_utf8 (second raw)))
+make ReadSnapshot handle handle bytes (first raw) octets (second raw) contents decoded
+
+snapshot_data snapshot:{ReadSnapshot} binary:b > ?t
+if binary (some (get octets snapshot))
+case (get contents snapshot) (bootstrap_octets_utf8 (get octets snapshot)) prior (some prior)
+
+find_snapshot snapshots:*{ReadSnapshot} handle:i > ?{ReadSnapshot}
+fold snapshots (nil {ReadSnapshot}) found row snapshot
+if (eq (get handle snapshot) handle) (some snapshot) found
+

@@ -1,0 +1,13 @@
+main input:r > ?i
+fold lines read input nil i best row line
+let value need int line "invalid_integer" row
+some case best value previous if > value previous value previous
+
+example negatives main
+{"inputs":{"input":"-8\n-2\n-5\n"},"expect":{"some":-2}}
+
+example empty main
+{"inputs":{"input":""},"expect":{"none":true}}
+
+example invalid main
+{"inputs":{"input":"4\nx\n"},"expect_error":{"code":"E_DATA","reason":"invalid_integer","input_line":2}}

@@ -1,0 +1,43 @@
+record RequestData
+temperature:q measured:z
+
+record HttpReply
+status:i headers:%t body:y
+
+reply status:i body:y > {HttpReply}
+make HttpReply status status headers (dict_put (dict t) "Content-Type" "application/json") body body
+
+decode_sample body:y > ?{RequestData}
+catch E_UTF8 (catch E_DATA (some (json_decode {RequestData} body)) _ (nil {RequestData})) _ (nil {RequestData})
+
+main method:t path:t headers:%t body:y > {HttpReply}
+if (not (text_eq path "/measurements")) (reply 404 (utf8_bytes "{}"))
+if (not (text_eq method "POST")) (reply 405 (utf8_bytes "{}"))
+case (decode_sample body) (reply 422 (utf8_bytes "{}")) data (reply 200 (json_encode data))
+
+example unknown main
+{"inputs":{"method":"GET","path":"/missing","headers":{},"body":""},"expect":{"status":404,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}
+
+example invalid main
+{"inputs":{"method":"POST","path":"/measurements","headers":{},"body":"7b"},"expect":{"status":422,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}
+
+example invalid_utf8 main
+{"inputs":{"method":"POST","path":"/measurements","headers":{},"body":"ff"},"expect":{"status":422,"headers":{"Content-Type":"application/json"},"body":"7b7d"}}
+
+prepare pg:p > i
+pg_exec pg "CREATE TABLE IF NOT EXISTS measurements(id text PRIMARY KEY,temperature numeric NOT NULL,measured timestamptz NOT NULL)" (list ?t 0)
+
+persist method:t path:t headers:%t body:y pg:p > {HttpReply}
+if (not (text_eq path "/measurements")) (reply 404 (utf8_bytes "{}"))
+if (text_eq method "GET") (reply 200 (json_encode (pg_query {RequestData} pg "SELECT temperature,measured FROM measurements ORDER BY id" (list ?t 0))))
+if (not (text_eq method "POST")) (reply 405 (utf8_bytes "{}"))
+case (dict_get headers "x-measurement-id") (reply 400 (utf8_bytes "{}")) id
+case (decode_sample body) (reply 422 (utf8_bytes "{}")) data
+let params list ?t 2 (some id) (some (utf8_text (json_encode data)))
+let saved pg_exec pg "INSERT INTO measurements SELECT $1,($2::jsonb->>'temperature')::numeric,($2::jsonb->>'measured')::timestamptz ON CONFLICT(id) DO NOTHING" params
+reply (if (eq saved 1) 201 200) (utf8_bytes "{}")
+
+publish api:n id:t sample:{RequestData} > i
+let headers dict_put (dict_put (dict t) "Content-Type" "application/json") "X-Measurement-Id" id
+let response https_post {HttpReply} api "/measurements" headers 4000 131072 (json_encode sample)
+get status response

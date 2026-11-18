@@ -1,0 +1,905 @@
+[
+  {
+    "id": "W01",
+    "projekt": "Bestellimport",
+    "auftrag": "Zeilenwert in Cent als Menge mal Stückpreis. Nichtnegative Ganzzahlen bis 1 Mio.",
+    "signatur": "qty:i cents:i",
+    "public": [
+      {
+        "inputs": {
+          "qty": 2,
+          "cents": 125
+        },
+        "expect": 250
+      },
+      {
+        "inputs": {
+          "qty": 0,
+          "cents": 10
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "qty": 3,
+          "cents": 0
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "qty": 1,
+          "cents": 9999
+        },
+        "expect": 9999
+      },
+      {
+        "inputs": {
+          "qty": 7,
+          "cents": 13
+        },
+        "expect": 91
+      },
+      {
+        "inputs": {
+          "qty": 1000000,
+          "cents": 1000000
+        },
+        "expect": 1000000000000
+      },
+      {
+        "inputs": {
+          "qty": 12,
+          "cents": 12
+        },
+        "expect": 144
+      }
+    ]
+  },
+  {
+    "id": "W02",
+    "projekt": "Wareneingang",
+    "auftrag": "Gib die heute zuteilbare Menge als kleinere Zahl aus Anforderung und Bestand aus, beide nichtnegativ.",
+    "signatur": "requested:i stock:i",
+    "public": [
+      {
+        "inputs": {
+          "requested": 4,
+          "stock": 9
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "requested": 8,
+          "stock": 2
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "requested": 0,
+          "stock": 3
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "requested": 12,
+          "stock": 12
+        },
+        "expect": 12
+      },
+      {
+        "inputs": {
+          "requested": 8,
+          "stock": 0
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "requested": 1,
+          "stock": 100
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "requested": 105,
+          "stock": 19
+        },
+        "expect": 19
+      }
+    ]
+  },
+  {
+    "id": "W03",
+    "projekt": "Versand",
+    "auftrag": "Gib die Anzahl der UTF-8-Bytes des unveränderten Etiketts aus. Auch leere und kombinierte Unicode-Texte gelten.",
+    "signatur": "label:t",
+    "public": [
+      {
+        "inputs": {
+          "label": ""
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "label": "é"
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "label": "ABC"
+        },
+        "expect": 3
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "label": "🍵"
+        },
+        "expect": 4
+      },
+      {
+        "inputs": {
+          "label": "é"
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "label": "猫猫"
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "label": "a/b"
+        },
+        "expect": 3
+      }
+    ]
+  },
+  {
+    "id": "W04",
+    "projekt": "Bestellimport",
+    "auftrag": "Lies aus dem gültigen JSON-Objekt die ganzzahlige Menge qty; ignoriere unbekannte Felder. Eingabebereich umfasst JSON mit eindeutigen Schlüsseln und qty von 0 bis 1 Mio.",
+    "signatur": "payload:t",
+    "public": [
+      {
+        "inputs": {
+          "payload": "{\"qty\":3}"
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "payload": "{\"text\":\"qty\",\"qty\":0}"
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "payload": "{\"qty\":12,\"x\":1}"
+        },
+        "expect": 12
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "payload": " { \"qty\" : 11 } "
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "payload": "{\"m\":{\"qty\":99},\"qty\":2}"
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "payload": "{\"qty\":1000000}"
+        },
+        "expect": 1000000
+      },
+      {
+        "inputs": {
+          "payload": "{\"qty\":7,\"x\":\"猫\"}"
+        },
+        "expect": 7
+      }
+    ]
+  },
+  {
+    "id": "W05",
+    "projekt": "Wareneingang",
+    "auftrag": "Registriere die IDs in der übergebenen leeren SQLite-Datenbank mit gebundenen Parametern und eindeutiger Spalte receipt(id TEXT PRIMARY KEY). Gib die Zahl verschiedener gespeicherter IDs zurück. Jede Abnahme startet mit einer frischen Datenbank.",
+    "signatur": "db:d ids:*t",
+    "public": [
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": []
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "a",
+            "a"
+          ]
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "b",
+            "A"
+          ]
+        },
+        "expect": 2
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "'x",
+            "'x",
+            "猫"
+          ]
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "A",
+            "a",
+            "A"
+          ]
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "x",
+            "y",
+            "z"
+          ]
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "db": ":memory:",
+          "ids": [
+            "a/b",
+            "a/b"
+          ]
+        },
+        "expect": 1
+      }
+    ]
+  },
+  {
+    "id": "E01",
+    "projekt": "Bestellimport",
+    "auftrag": "Rabattfreigabe einschliesslich der Grenze: gib 1 ab dem Mindestwert, sonst 0. Bisher galt nur ein Betrag über der Grenze.",
+    "signatur": "amount:i threshold:i",
+    "public": [
+      {
+        "inputs": {
+          "amount": 2,
+          "threshold": 3
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "amount": 3,
+          "threshold": 3
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "amount": 4,
+          "threshold": 3
+        },
+        "expect": 1
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "amount": 0,
+          "threshold": 0
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "amount": 0,
+          "threshold": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "amount": 999,
+          "threshold": 300
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "amount": 10,
+          "threshold": 11
+        },
+        "expect": 0
+      }
+    ]
+  },
+  {
+    "id": "E02",
+    "projekt": "Versand",
+    "auftrag": "Der Versandpartner rechnet Etiketten von Zeichen auf UTF-8-Bytes um. ASCII bleibt unverändert.",
+    "signatur": "label:t",
+    "public": [
+      {
+        "inputs": {
+          "label": "A"
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "label": "猫"
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "label": ""
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "label": "🍵A"
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "label": "ab"
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "label": "é"
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "label": "ää"
+        },
+        "expect": 4
+      }
+    ]
+  },
+  {
+    "id": "E03",
+    "projekt": "Wareneingang",
+    "auftrag": "Erweitere die offene Menge (bestellt minus geliefert) auf Überlieferungen. Das Minimum der offenen Menge ist null.",
+    "signatur": "ordered:i delivered:i",
+    "public": [
+      {
+        "inputs": {
+          "ordered": 7,
+          "delivered": 2
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "ordered": 4,
+          "delivered": 6
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "ordered": 3,
+          "delivered": 3
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "ordered": 0,
+          "delivered": 9
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "ordered": 9,
+          "delivered": 0
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "ordered": 2,
+          "delivered": 8
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "ordered": 10,
+          "delivered": 6
+        },
+        "expect": 4
+      }
+    ]
+  },
+  {
+    "id": "E04",
+    "projekt": "Wareneingang",
+    "auftrag": "Summiere bei der Eingangszählung nur positive Buchungen. Negative Korrekturen wurden bisher ebenfalls summiert.",
+    "signatur": "movements:*i",
+    "public": [
+      {
+        "inputs": {
+          "movements": [
+            3,
+            -2
+          ]
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "movements": []
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "movements": [
+            2,
+            4
+          ]
+        },
+        "expect": 6
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "movements": [
+            -2,
+            -1
+          ]
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "movements": [
+            0,
+            7,
+            -8,
+            3
+          ]
+        },
+        "expect": 10
+      },
+      {
+        "inputs": {
+          "movements": [
+            5
+          ]
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "movements": [
+            0
+          ]
+        },
+        "expect": 0
+      }
+    ]
+  },
+  {
+    "id": "E05",
+    "projekt": "Versand",
+    "auftrag": "Tarifversion zwei übernimmt den Grundpreis plus genau die einmalige Grundgebühr. Bisher wurde die Gebühr pro Stück berechnet. Alle drei Eingaben sind nichtnegativ.",
+    "signatur": "base:i fee:i units:i",
+    "public": [
+      {
+        "inputs": {
+          "base": 8,
+          "fee": 3,
+          "units": 2
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "base": 0,
+          "fee": 5,
+          "units": 0
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "base": 3,
+          "fee": 0,
+          "units": 8
+        },
+        "expect": 3
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "base": 5,
+          "fee": 6,
+          "units": 1
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "base": 3,
+          "fee": 2,
+          "units": 5
+        },
+        "expect": 5
+      },
+      {
+        "inputs": {
+          "base": 12,
+          "fee": 3,
+          "units": 7
+        },
+        "expect": 15
+      },
+      {
+        "inputs": {
+          "base": 10,
+          "fee": 1,
+          "units": 0
+        },
+        "expect": 11
+      }
+    ]
+  },
+  {
+    "id": "R01",
+    "projekt": "Wareneingang",
+    "auftrag": "Repariere den vorzeichenbehafteten Liefersaldo geliefert minus bestellt. Einstieg und Zwischenfunktion müssen denselben Vertrag erfüllen.",
+    "signatur": "ordered:i delivered:i",
+    "public": [
+      {
+        "inputs": {
+          "ordered": 5,
+          "delivered": 8
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "ordered": 7,
+          "delivered": 1
+        },
+        "expect": -6
+      },
+      {
+        "inputs": {
+          "ordered": 0,
+          "delivered": 0
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "ordered": 1,
+          "delivered": 0
+        },
+        "expect": -1
+      },
+      {
+        "inputs": {
+          "ordered": 30,
+          "delivered": 90
+        },
+        "expect": 60
+      },
+      {
+        "inputs": {
+          "ordered": 4,
+          "delivered": 4
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "ordered": 18,
+          "delivered": 5
+        },
+        "expect": -13
+      }
+    ]
+  },
+  {
+    "id": "R02",
+    "projekt": "Versand",
+    "auftrag": "Repariere den Kontrollwert für ein Versandetikett: gebuchte minus stornierte Stückzahl plus UTF-8-Bytezahl des Etiketts. Prüfe auch die Zwischenfunktion direkt.",
+    "signatur": "label:t booked:i cancelled:i",
+    "public": [
+      {
+        "inputs": {
+          "label": "猫",
+          "booked": 4,
+          "cancelled": 1
+        },
+        "expect": 6
+      },
+      {
+        "inputs": {
+          "label": "A",
+          "booked": 2,
+          "cancelled": 5
+        },
+        "expect": -2
+      },
+      {
+        "inputs": {
+          "label": "",
+          "booked": 1,
+          "cancelled": 1
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "label": "🍵",
+          "booked": 3,
+          "cancelled": 0
+        },
+        "expect": 7
+      },
+      {
+        "inputs": {
+          "label": "é",
+          "booked": 2,
+          "cancelled": 3
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "label": "ab",
+          "booked": 10,
+          "cancelled": 1
+        },
+        "expect": 11
+      },
+      {
+        "inputs": {
+          "label": "Ω",
+          "booked": 0,
+          "cancelled": 6
+        },
+        "expect": -4
+      }
+    ]
+  },
+  {
+    "id": "R03",
+    "projekt": "Bestellimport",
+    "auftrag": "Repariere die Rechnungssumme aus Nettowert und einmaliger Gebühr. Beide Werte sind Centbeträge.",
+    "signatur": "net:i fee:i",
+    "public": [
+      {
+        "inputs": {
+          "net": 7,
+          "fee": 2
+        },
+        "expect": 9
+      },
+      {
+        "inputs": {
+          "net": 0,
+          "fee": 8
+        },
+        "expect": 8
+      },
+      {
+        "inputs": {
+          "net": 4,
+          "fee": 0
+        },
+        "expect": 4
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "net": 0,
+          "fee": 0
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "net": 1,
+          "fee": 1
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "net": 100000,
+          "fee": 28
+        },
+        "expect": 100028
+      },
+      {
+        "inputs": {
+          "net": 7,
+          "fee": 9
+        },
+        "expect": 16
+      }
+    ]
+  },
+  {
+    "id": "R04",
+    "projekt": "Versand",
+    "auftrag": "Gib die Anzahl loser Teile nach dem Füllen ganzer Kartons zurück. Menge ist nichtnegativ, Kartongrösse strikt positiv.",
+    "signatur": "units:i capacity:i",
+    "public": [
+      {
+        "inputs": {
+          "units": 10,
+          "capacity": 4
+        },
+        "expect": 2
+      },
+      {
+        "inputs": {
+          "units": 3,
+          "capacity": 7
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "units": 8,
+          "capacity": 4
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "units": 0,
+          "capacity": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "units": 1,
+          "capacity": 1
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "units": 33,
+          "capacity": 10
+        },
+        "expect": 3
+      },
+      {
+        "inputs": {
+          "units": 9,
+          "capacity": 2
+        },
+        "expect": 1
+      }
+    ]
+  },
+  {
+    "id": "R05",
+    "projekt": "Bestellimport",
+    "auftrag": "Markiere die ASCII-Statuskennung OK unabhängig von Gross-/Kleinschreibung mit 1, alle übrigen Kennungen mit 0.",
+    "signatur": "status:t",
+    "public": [
+      {
+        "inputs": {
+          "status": "OK"
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "status": "ok"
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "status": "no"
+        },
+        "expect": 0
+      }
+    ],
+    "abnahme": [
+      {
+        "inputs": {
+          "status": "Ok"
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "status": "oK"
+        },
+        "expect": 1
+      },
+      {
+        "inputs": {
+          "status": "okay"
+        },
+        "expect": 0
+      },
+      {
+        "inputs": {
+          "status": ""
+        },
+        "expect": 0
+      }
+    ]
+  }
+]

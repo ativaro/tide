@@ -1,0 +1,62 @@
+use reading_store
+
+record HttpReply
+status:i headers:%t body:y
+
+record ApiReading
+id:t sensor:t value:i note:?t
+
+record Page
+readings:*{ApiReading} next:?t
+
+page api:n path:t headers:%t > {Page}
+let reply https_get {HttpReply} api path headers 4000 131072
+if (or (< (get status reply) 200) (>= (get status reply) 300)) (fail "http_status")
+json_decode {Page} (get body reply)
+
+save_page db:d batch:{Page} source:t threshold:i > i
+fold (get readings batch) 0 count row item
+  let key dict_put (dict_put (dict t) "source" source) "id" (get id item)
+  let fresh sql_exec db "INSERT INTO api_ids(source,id) VALUES(:source,:id) ON CONFLICT(source,id) DO NOTHING" key
+  if (eq fresh 0) count
+  + count (insert_reading db (make StoredReading sensor (get sensor item) value (get value item) note (get note item) threshold threshold))
+
+store_pages db:d one:{Page} two:{Page} source:t limit:i > {Summary}
+transaction db
+let measurements schema db
+let ids sql_exec db "CREATE TABLE IF NOT EXISTS api_ids(source TEXT NOT NULL,id TEXT NOT NULL CHECK(length(id)>0),PRIMARY KEY(source,id))" (dict i)
+let saved save_page db one source limit
+let more save_page db two source limit
+summary db
+
+main api:n db:d headers:%t source:t limit:i > {Summary}
+let one page api "/measurements" headers
+let two case (get next one) (make Page readings (list {ApiReading} 0) next (nil t)) path (page api path headers)
+if (case (get next two) false path true) (fail "page_limit")
+store_pages db one two source limit
+
+check_import api:n db:d > *{Reading}
+let old import_seed db
+let attempted catch E_DATA (main api db (dict t) "test" 80) _ old
+by_sensor db "A"
+
+import_seed db:d > {Summary}
+let seed make Page readings (list {ApiReading} 1 (make ApiReading id "old" sensor "A" value 7 note (nil t))) next (nil t)
+store_pages db seed (make Page readings (list {ApiReading} 0) next (nil t)) "test" 80
+
+retry api:n db:d > *{Reading}
+let once main api db (dict t) "test" 80
+let twice main api db (dict t) "test" 80
+by_sensor db "A"
+
+example pages_and_retries retry
+{"inputs":{"api":{"/measurements":[200,"{\"readings\":[{\"id\":\"1\",\"sensor\":\"A\",\"value\":81}],\"next\":\"/second\"}"],"/second":[200,"{\"readings\":[{\"id\":\"1\",\"sensor\":\"A\",\"value\":81},{\"id\":\"2\",\"sensor\":\"A\",\"value\":92}],\"next\":null}"]},"db":":memory:"},"expect":[{"sensor":"A","value":81,"note":{"none":true}},{"sensor":"A","value":92,"note":{"none":true}}]}
+
+example http_error check_import
+{"inputs":{"api":{"/measurements":[200,"{\"readings\":[{\"id\":\"1\",\"sensor\":\"A\",\"value\":81}],\"next\":\"/second\"}"],"/second":[503,"busy"]},"db":":memory:"},"expect":[{"sensor":"A","value":7,"note":{"none":true}}]}
+
+example broken_json check_import
+{"inputs":{"api":{"/measurements":[200,"{\"readings\":[{\"id\":\"1\",\"sensor\":\"A\",\"value\":81}],\"next\":\"/second\"}"],"/second":[200,"{"]},"db":":memory:"},"expect":[{"sensor":"A","value":7,"note":{"none":true}}]}
+
+example late_constraint check_import
+{"inputs":{"api":{"/measurements":[200,"{\"readings\":[{\"id\":\"1\",\"sensor\":\"A\",\"value\":81}],\"next\":\"/second\"}"],"/second":[200,"{\"readings\":[{\"id\":\"2\",\"sensor\":\"\",\"value\":92}],\"next\":null}"]},"db":":memory:"},"expect":[{"sensor":"A","value":7,"note":{"none":true}}]}

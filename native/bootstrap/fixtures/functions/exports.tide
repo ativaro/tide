@@ -1,0 +1,22 @@
+record CounterRow
+n:i
+
+main db:d output:w > i
+let params dict_put (dict i) "last" 5000
+let total fold_rows {CounterRow} db "WITH RECURSIVE seq(n) AS (VALUES(1) UNION ALL SELECT n+1 FROM seq WHERE n<:last) SELECT n FROM seq" params 0 sum index item (+ sum (get n item))
+write_bytes output (json_encode total)
+
+empty db:d > i
+fold_rows {CounterRow} db "SELECT 1 AS n WHERE 0" (dict i) 17 total index row (+ total (get n row))
+
+bad db:d > i
+fold_rows {CounterRow} db "SELECT 1 AS n UNION ALL SELECT 'x' AS n" (dict i) 0 total index row (+ total (get n row))
+
+example export_5000 main
+{"inputs":{"db":":memory:","output":":memory:"},"expect":8}
+
+example empty_cursor empty
+{"inputs":{"db":":memory:"},"expect":17}
+
+example bad_second_row bad
+{"inputs":{"db":":memory:"},"expect_error":{"code":"E_DATA","reason":"sqlite_column","path":"/1/n"}}

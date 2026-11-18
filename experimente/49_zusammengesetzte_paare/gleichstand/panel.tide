@@ -1,0 +1,10 @@
+use award
+
+award incumbent:{Bid} challenger:{Bid} > &{Bid}i
+pair (winner incumbent challenger) (get price incumbent)
+
+example lower_price award
+{"inputs":{"incumbent":{"name":"B","price":12},"challenger":{"name":"A","price":8}},"expect":[{"name":"A","price":8},12]}
+
+example equal_price award
+{"inputs":{"incumbent":{"name":"B","price":12},"challenger":{"name":"A","price":12}},"expect":[{"name":"B","price":12},12]}

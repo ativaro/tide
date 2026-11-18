@@ -1,0 +1,1829 @@
+{
+  "environment": {
+    "CPU": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "cpu_affinity": "24",
+    "kernel": "7.3.4-1-cachyos",
+    "tide": "TIDE 0.6.1",
+    "cpython": "Python 3.14.10",
+    "compiler": "c++ (GCC) 16.2.1 20260810",
+    "clock": "Node performance.now in ms",
+    "node": "v24.18.0",
+    "network": "bwrap --unshare-net"
+  },
+  "model_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "build_ms": 18058.05599,
+  "project_revision": "70c2bb6a35aac0b4c6bbeaa06cbf653ff94c3299f343da3df877917c9ff99d3c",
+  "inputs_sha256": {
+    "experimente/66_native_pakete/versuchsplan.json": "0a2fdec8b9a748c7f635efad7d2f041d1909d57c5538beba20446da7c86a08ce",
+    "experimente/66_native_pakete/messdaten.tide": "835e0074cb52e1220f45c59be75b6245b11af03fa734383b256518786e7529d9",
+    "experimente/66_native_pakete/python/report.py": "8bdbd8692bc969494d54adae43171157c22fa7b45b96e3f04bf8ef736e9f963c",
+    "experimente/66_native_pakete/python/rowtext/__init__.py": "75dae84b6d3febb7347cceaf1b0a43867f6d3bfc1a43ced3c986a1760ebccfa9",
+    "experimente/66_native_pakete/python/measurements/__init__.py": "35dfe8a04b60da3b0a0fd81c1b3a709ceca97f463eaa51af3a4cca3bcdee26a7",
+    "apps/report_packages/report.tide": "73047279f0a88c9b3188f07ec6a015ad60daed889be35098095c4e4050b29bf9",
+    "apps/report_packages/vendor/rowtext/2.0.0/package.tide": "e31c770420d677674914f91e4bc625776caacaf2eaf7d5a4bcc82d3c5ad24c7c",
+    "apps/report_packages/vendor/measurements/1.3.0/package.tide": "d24f185521b6cdc74d89556f7b4df3796e14e6b58945b588c8baaf206a9fd3f3"
+  },
+  "checker_sha256": "5f96123621b1bd2560560344c540ecab9fb722504ed4d3610f0326a6fa8a2bc0",
+  "checks": {
+    "mixed_breaks": {
+      "TIDE AOT": {
+        "status": 0,
+        "stdout": "{\"above\":2,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 0.7511850000009872
+      },
+      "TIDE CLI": {
+        "status": 0,
+        "stdout": "{\"above\":2,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 6.018378999997367
+      },
+      "CPython": {
+        "status": 0,
+        "stdout": "{\"above\":2,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 10.95760799999698
+      }
+    },
+    "empty": {
+      "TIDE AOT": {
+        "status": 0,
+        "stdout": "{\"above\":0,\"peak\":{\"none\":true}}\n",
+        "stderr": "",
+        "elapsed_ms": 0.6154019999994489
+      },
+      "TIDE CLI": {
+        "status": 0,
+        "stdout": "{\"above\":0,\"peak\":{\"none\":true}}\n",
+        "stderr": "",
+        "elapsed_ms": 5.599281999999221
+      },
+      "CPython": {
+        "status": 0,
+        "stdout": "{\"above\":0,\"peak\":{\"none\":true}}\n",
+        "stderr": "",
+        "elapsed_ms": 10.723493999998027
+      }
+    },
+    "i64": {
+      "TIDE AOT": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":9223372036854775807}}\n",
+        "stderr": "",
+        "elapsed_ms": 0.5936719999990601
+      },
+      "TIDE CLI": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":9223372036854775807}}\n",
+        "stderr": "",
+        "elapsed_ms": 5.769844999998895
+      },
+      "CPython": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":9223372036854775807}}\n",
+        "stderr": "",
+        "elapsed_ms": 10.583200999997644
+      }
+    },
+    "leading_zeroes": {
+      "TIDE AOT": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 0.6920940000018163
+      },
+      "TIDE CLI": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 5.618540999999823
+      },
+      "CPython": {
+        "status": 0,
+        "stdout": "{\"above\":1,\"peak\":{\"some\":98}}\n",
+        "stderr": "",
+        "elapsed_ms": 10.510548999998719
+      }
+    },
+    "invalid_integer": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 0.6756329999989248
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 5.646841999998287
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_DATA\",\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 10.481297999998787
+      }
+    },
+    "integer_overflow": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":1}\n",
+        "elapsed_ms": 0.6709430000009888
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":1}\n",
+        "elapsed_ms": 5.735463999997592
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_DATA\",\"reason\":\"invalid_integer\",\"input_line\":1}\n",
+        "elapsed_ms": 10.484198000001925
+      }
+    },
+    "blank_row": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 0.7475940000003902
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/measurements/1.3.0/package.tide\",\"code\":\"E_DATA\",\"message\":\"A value is required\",\"line\":9,\"column\":1,\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 5.563250999999582
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_DATA\",\"reason\":\"invalid_integer\",\"input_line\":2}\n",
+        "elapsed_ms": 10.497099000000162
+      }
+    },
+    "bad_utf8": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_UTF8\",\"message\":\"Invalid UTF-8 input\",\"line\":9,\"column\":27}\n",
+        "elapsed_ms": 0.6594640000002983
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_UTF8\",\"message\":\"Invalid UTF-8 input\",\"line\":9,\"column\":27}\n",
+        "elapsed_ms": 5.70773299999928
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_UTF8\"}\n",
+        "elapsed_ms": 10.419307000000117
+      }
+    },
+    "too_many_bytes": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_LIMIT\",\"message\":\"Read byte budget exhausted\",\"line\":9,\"column\":27}\n",
+        "elapsed_ms": 0.6937340000004042
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_LIMIT\",\"message\":\"Read byte budget exhausted\",\"line\":9,\"column\":27}\n",
+        "elapsed_ms": 6.176753000003373
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_LIMIT\"}\n",
+        "elapsed_ms": 10.788484000000608
+      }
+    },
+    "too_many_rows": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/rowtext/2.0.0/package.tide\",\"code\":\"E_LIMIT\",\"message\":\"Line count limit\",\"line\":6,\"column\":1}\n",
+        "elapsed_ms": 0.7487350000010338
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"vendor/rowtext/2.0.0/package.tide\",\"code\":\"E_LIMIT\",\"message\":\"Line count limit\",\"line\":6,\"column\":1}\n",
+        "elapsed_ms": 5.747133999997459
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_LIMIT\"}\n",
+        "elapsed_ms": 10.596051000000443
+      }
+    },
+    "missing": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_IO\",\"message\":\"Could not open read grant\",\"line\":8,\"column\":1}\n",
+        "elapsed_ms": 0.6698230000001786
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_IO\",\"message\":\"Could not open read grant\",\"line\":8,\"column\":1}\n",
+        "elapsed_ms": 5.50300900000002
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_IO\"}\n",
+        "elapsed_ms": 10.349276000000827
+      }
+    },
+    "no_grant": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_CAPABILITY\",\"message\":\"Supply the declared read grants separately\",\"line\":8,\"column\":1,\"required\":[\"input\"]}\n",
+        "elapsed_ms": 0.6470630000003439
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_CAPABILITY\",\"message\":\"Supply the declared read grants separately\",\"line\":8,\"column\":1,\"required\":[\"input\"]}\n",
+        "elapsed_ms": 5.461598999998387
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_CAPABILITY\"}\n",
+        "elapsed_ms": 10.454609000000346
+      }
+    },
+    "directory": {
+      "TIDE AOT": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_CAPABILITY\",\"message\":\"A grant must name a regular file\",\"line\":8,\"column\":1}\n",
+        "elapsed_ms": 0.6498830000018643
+      },
+      "TIDE CLI": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"file\":\"apps/report_packages/report.tide\",\"code\":\"E_CAPABILITY\",\"message\":\"A grant must name a regular file\",\"line\":8,\"column\":1}\n",
+        "elapsed_ms": 5.5295400000031805
+      },
+      "CPython": {
+        "status": 1,
+        "stdout": "",
+        "stderr": "{\"code\":\"E_CAPABILITY\"}\n",
+        "elapsed_ms": 10.255183999997826
+      }
+    }
+  },
+  "results": [
+    {
+      "rows": 4,
+      "bytes": 13,
+      "expected": {
+        "above": 2,
+        "peak": {
+          "some": 98
+        }
+      },
+      "repetitions": [
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.339796000000206,
+            "TIDE AOT": 0.589481999999407,
+            "TIDE CLI": 5.666312999997899
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5538610000003246,
+            "TIDE CLI": 5.502840000001015,
+            "CPython": 10.81230499999947
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.682063000000198,
+            "CPython": 10.500968999996985,
+            "TIDE AOT": 0.5839520000008633
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.385966999998345,
+            "TIDE AOT": 0.5966020000014396,
+            "TIDE CLI": 5.64892300000065
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5669009999983246,
+            "TIDE CLI": 5.521038999999291,
+            "CPython": 10.626620999999432
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.75273400000151,
+            "CPython": 10.520580000000336,
+            "TIDE AOT": 0.6074119999975665
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.290044999997917,
+            "TIDE AOT": 0.567191999998613,
+            "TIDE CLI": 5.56123099999968
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5886720000016794,
+            "TIDE CLI": 5.4076270000005024,
+            "CPython": 10.729013000000123
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.572610999999597,
+            "CPython": 10.41784700000062,
+            "TIDE AOT": 0.5854120000003604
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.876036999998178,
+            "TIDE AOT": 0.6091620000006515,
+            "TIDE CLI": 5.671503000001394
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5566709999984596,
+            "TIDE CLI": 5.499798999997438,
+            "CPython": 10.61098199999833
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 6.304876000001968,
+            "CPython": 10.40680699999939,
+            "TIDE AOT": 0.6919630000011239
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.232683999998699,
+            "TIDE AOT": 0.5709109999988868,
+            "TIDE CLI": 5.568590999999287
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5767509999968752,
+            "TIDE CLI": 5.408378000000084,
+            "CPython": 10.716303000001062
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.682512999999744,
+            "CPython": 10.358946000000287,
+            "TIDE AOT": 0.6683139999986452
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.324906000001647,
+            "TIDE AOT": 0.5790110000016284,
+            "TIDE CLI": 5.69708399999945
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5655019999976503,
+            "TIDE CLI": 5.4516680000015185,
+            "CPython": 10.538010000000213
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.692304000000149,
+            "CPython": 10.517268999999942,
+            "TIDE AOT": 0.5946210000001884
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.360336000001553,
+            "TIDE AOT": 0.5686610000011569,
+            "TIDE CLI": 5.615561000002344
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5543809999981022,
+            "TIDE CLI": 5.370347000000038,
+            "CPython": 10.613220999999612
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.661173000000417,
+            "CPython": 10.589721000000281,
+            "TIDE AOT": 0.5868219999974826
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.39999799999714,
+            "TIDE AOT": 0.5714810000026773,
+            "TIDE CLI": 5.565980999999738
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5988219999999274,
+            "TIDE CLI": 5.460708999999042,
+            "CPython": 10.540240000002086
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.673202999998466,
+            "CPython": 10.476598999997805,
+            "TIDE AOT": 0.6093819999987318
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.414607000002434,
+            "TIDE AOT": 0.5822019999977783,
+            "TIDE CLI": 5.724723999999696
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5606509999997797,
+            "TIDE CLI": 5.46748899999875,
+            "CPython": 10.885816999998497
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 6.011019999998098,
+            "CPython": 10.68376200000057,
+            "TIDE AOT": 0.6196229999986826
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.477069000000483,
+            "TIDE AOT": 0.5851120000006631,
+            "TIDE CLI": 5.636611999998422
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.5600809999996272,
+            "TIDE CLI": 5.544619999996939,
+            "CPython": 10.653181999998196
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 5.780845000001136,
+            "CPython": 10.629650999999285,
+            "TIDE AOT": 0.6132929999985208
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.421787999999651,
+            "TIDE AOT": 0.5892920000005688,
+            "TIDE CLI": 5.797875000000204
+          }
+        }
+      ]
+    },
+    {
+      "rows": 512,
+      "bytes": 1664,
+      "expected": {
+        "above": 256,
+        "peak": {
+          "some": 98
+        }
+      },
+      "repetitions": [
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.7037039999995613,
+            "TIDE CLI": 14.989858000000822,
+            "CPython": 11.184363000000303
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.591429999996762,
+            "CPython": 11.059180000000197,
+            "TIDE AOT": 1.009540000002744
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.551369999997405,
+            "TIDE AOT": 0.6363930000006803,
+            "TIDE CLI": 14.626291000000492
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6193720000010217,
+            "TIDE CLI": 14.42834799999764,
+            "CPython": 10.858855999998923
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.462038000001485,
+            "CPython": 10.920517999998992,
+            "TIDE AOT": 0.6406430000024557
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.421438000001217,
+            "TIDE AOT": 0.6130120000016177,
+            "TIDE CLI": 14.563200000000506
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6015719999995781,
+            "TIDE CLI": 14.226462999999058,
+            "CPython": 10.99514900000213
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.517780000001949,
+            "CPython": 10.827604999998584,
+            "TIDE AOT": 0.6356130000021949
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.565299999998388,
+            "TIDE AOT": 0.5998220000001311,
+            "TIDE CLI": 14.645032000000356
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.615592000001925,
+            "TIDE CLI": 14.403267000001506,
+            "CPython": 11.030189999997674
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.620511999997689,
+            "CPython": 10.894686999999976,
+            "TIDE AOT": 0.6567429999995511
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.393306999998458,
+            "TIDE AOT": 0.6249529999986407,
+            "TIDE CLI": 14.607650999998441
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6131120000027295,
+            "TIDE CLI": 14.419387000001734,
+            "CPython": 10.830324999998993
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.526789999999892,
+            "CPython": 10.672962000000553,
+            "TIDE AOT": 0.6296729999994568
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.52324999999837,
+            "TIDE AOT": 0.6247820000025968,
+            "TIDE CLI": 14.580649999999878
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6169630000003963,
+            "TIDE CLI": 14.327274999999645,
+            "CPython": 10.93634799999927
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 15.007728999997198,
+            "CPython": 10.823386000000028,
+            "TIDE AOT": 0.6581530000003113
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.474749000000884,
+            "TIDE AOT": 0.6144220000023779,
+            "TIDE CLI": 14.54283999999825
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6014819999982137,
+            "TIDE CLI": 14.78959500000201,
+            "CPython": 11.884256999997888
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 15.08773999999903,
+            "CPython": 11.14223199999833,
+            "TIDE AOT": 0.7298250000021653
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.96784900000057,
+            "TIDE AOT": 0.701123999999254,
+            "TIDE CLI": 15.046330000001035
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.664003000001685,
+            "TIDE CLI": 14.762033000002702,
+            "CPython": 10.93721799999912
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.761023999999452,
+            "CPython": 10.847915999998804,
+            "TIDE AOT": 0.6522030000014638
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.581200999997236,
+            "TIDE AOT": 0.6454330000015034,
+            "TIDE CLI": 14.86566600000151
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6320430000014312,
+            "TIDE CLI": 14.440687000002072,
+            "CPython": 10.916057000002183
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.600850999999238,
+            "CPython": 10.723853999999847,
+            "TIDE AOT": 0.8329560000020138
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 10.358126999999513,
+            "TIDE AOT": 0.6851530000021739,
+            "TIDE CLI": 14.506227999998373
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.6099229999999807,
+            "TIDE CLI": 14.634840999999142,
+            "CPython": 10.813665999998193
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 14.72808299999815,
+            "CPython": 11.263815000002069,
+            "TIDE AOT": 0.7643649999990885
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.367667000002257,
+            "TIDE AOT": 0.7852359999997134,
+            "TIDE CLI": 15.278183999998873
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.7734359999994922,
+            "TIDE CLI": 14.87902600000234,
+            "CPython": 11.35914700000285
+          }
+        }
+      ]
+    },
+    {
+      "rows": 2048,
+      "bytes": 6656,
+      "expected": {
+        "above": 1024,
+        "peak": {
+          "some": 98
+        }
+      },
+      "repetitions": [
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 42.16813000000184,
+            "CPython": 11.635332000001654,
+            "TIDE AOT": 0.8944479999991017
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.27352400000018,
+            "TIDE AOT": 0.8277070000003732,
+            "TIDE CLI": 41.88368400000036
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8452970000034838,
+            "TIDE CLI": 41.6024780000007,
+            "CPython": 11.545160000001488
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.928234999999404,
+            "CPython": 11.395027000002301,
+            "TIDE AOT": 0.8685269999987213
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.117191000001185,
+            "TIDE AOT": 0.7719150000011723,
+            "TIDE CLI": 41.76260099999854
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8159269999996468,
+            "TIDE CLI": 41.34009299999889,
+            "CPython": 11.601461000002018
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.3023119999998,
+            "CPython": 11.305014999998093,
+            "TIDE AOT": 0.8465560000004189
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.194383000001835,
+            "TIDE AOT": 0.7753450000018347,
+            "TIDE CLI": 41.78533199999947
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8549970000021858,
+            "TIDE CLI": 41.52491699999882,
+            "CPython": 11.628520999998727
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.711819999996806,
+            "CPython": 11.77699500000017,
+            "TIDE AOT": 0.8937680000017281
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.054700000000594,
+            "TIDE AOT": 0.8163659999991069,
+            "TIDE CLI": 41.94495499999903
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8390760000002047,
+            "TIDE CLI": 41.719530999998824,
+            "CPython": 11.577080999999453
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.65603000000192,
+            "CPython": 11.715713000001415,
+            "TIDE AOT": 1.195874000000913
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.14491199999975,
+            "TIDE AOT": 0.7907059999997728,
+            "TIDE CLI": 41.729701000000205
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8829980000009527,
+            "TIDE CLI": 41.646929000002274,
+            "CPython": 11.522209999999177
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.94262499999968,
+            "CPython": 12.048320000001695,
+            "TIDE AOT": 0.9528489999975136
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.313945000001695,
+            "TIDE AOT": 0.8497470000002068,
+            "TIDE CLI": 42.11305899999934
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9940999999998894,
+            "TIDE CLI": 42.11142800000016,
+            "CPython": 11.769563999998354
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.912685000002966,
+            "CPython": 11.497728999998799,
+            "TIDE AOT": 0.8657069999972009
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.16127200000119,
+            "TIDE AOT": 0.7836259999967297,
+            "TIDE CLI": 41.54002700000274
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.835586000001058,
+            "TIDE CLI": 41.64691899999889,
+            "CPython": 11.503599000003305
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.54063799999858,
+            "CPython": 11.467137999999977,
+            "TIDE AOT": 0.8615669999999227
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.067230000000563,
+            "TIDE AOT": 0.8272469999974419,
+            "TIDE CLI": 41.606479000001855
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.835746000000654,
+            "TIDE CLI": 41.6084179999998,
+            "CPython": 11.439887999997154
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.7892720000018,
+            "CPython": 11.3004949999995,
+            "TIDE AOT": 0.8496970000014699
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.037410000000818,
+            "TIDE AOT": 0.8082759999997506,
+            "TIDE CLI": 41.83714300000065
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8695470000020578,
+            "TIDE CLI": 41.5022570000001,
+            "CPython": 11.643452000000252
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.81770299999698,
+            "CPython": 11.663722000001144,
+            "TIDE AOT": 0.8926669999964361
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.023748999999953,
+            "TIDE AOT": 0.7839659999990545,
+            "TIDE CLI": 41.740240999999514
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.8271670000031008,
+            "TIDE CLI": 41.77631199999814,
+            "CPython": 12.065230000000156
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 41.84048299999995,
+            "CPython": 11.520909999999276,
+            "TIDE AOT": 0.9552889999977197
+          }
+        }
+      ]
+    },
+    {
+      "rows": 3072,
+      "bytes": 9984,
+      "expected": {
+        "above": 1536,
+        "peak": {
+          "some": 98
+        }
+      },
+      "repetitions": [
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.24191399999836,
+            "TIDE AOT": 0.8410970000004454,
+            "TIDE CLI": 59.769899999999325
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.913088000001153,
+            "TIDE CLI": 59.5926670000008,
+            "CPython": 12.00948900000003
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.4530629999972,
+            "CPython": 11.739112999999634,
+            "TIDE AOT": 1.0832920000029844
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.38138699999763,
+            "TIDE AOT": 0.8515469999983907,
+            "TIDE CLI": 60.04785600000105
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9383390000002692,
+            "TIDE CLI": 59.588026999997965,
+            "CPython": 11.883427000000665
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.393802999999025,
+            "CPython": 11.816954999998416,
+            "TIDE AOT": 0.9262290000006033
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.472168000000238,
+            "TIDE AOT": 0.9416380000002391,
+            "TIDE CLI": 60.30242999999973
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 1.04218100000071,
+            "TIDE CLI": 60.474654000001465,
+            "CPython": 12.316044999999576
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.8501720000022,
+            "CPython": 12.175491999998485,
+            "TIDE AOT": 0.9674889999987499
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.611800999999105,
+            "TIDE AOT": 0.9247680000007676,
+            "TIDE CLI": 59.61255700000038
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9515989999999874,
+            "TIDE CLI": 59.451733999998396,
+            "CPython": 11.825216000001092
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.6950689999976,
+            "CPython": 12.107280999996874,
+            "TIDE AOT": 0.9633689999973285
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.418216999998549,
+            "TIDE AOT": 0.8642469999977038,
+            "TIDE CLI": 59.713190000002214
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9399290000001201,
+            "TIDE CLI": 59.4196030000021,
+            "CPython": 11.853785999999673
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.31952099999762,
+            "CPython": 11.629042000000481,
+            "TIDE AOT": 0.9270380000016303
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.364195999998628,
+            "TIDE AOT": 0.8696769999987737,
+            "TIDE CLI": 59.76400999999896
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9288390000001527,
+            "TIDE CLI": 59.638976999998704,
+            "CPython": 11.749034000000393
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.87202199999956,
+            "CPython": 11.972418999997899,
+            "TIDE AOT": 0.9319980000000214
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.266413999997894,
+            "TIDE AOT": 0.8462370000015653,
+            "TIDE CLI": 59.84298200000194
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9699500000024273,
+            "TIDE CLI": 59.432692999998835,
+            "CPython": 11.932618000002549
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.56230599999981,
+            "CPython": 11.721722999998747,
+            "TIDE AOT": 0.9401690000013332
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.322916000000987,
+            "TIDE AOT": 0.86215699999957,
+            "TIDE CLI": 59.88741300000038
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9115979999987758,
+            "TIDE CLI": 59.79892100000143,
+            "CPython": 12.093611000000237
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.64394700000048,
+            "CPython": 11.860936000000947,
+            "TIDE AOT": 0.9216879999985395
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.338114999998652,
+            "TIDE AOT": 0.8488059999981488,
+            "TIDE CLI": 60.385802999997395
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 1.052970999997342,
+            "TIDE CLI": 59.75100899999961,
+            "CPython": 12.065889999998035
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.62728799999968,
+            "CPython": 11.822925000000396,
+            "TIDE AOT": 0.9219979999979842
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.35451699999976,
+            "TIDE AOT": 0.8741970000010042,
+            "TIDE CLI": 59.127228000001196
+          }
+        },
+        {
+          "order": [
+            "TIDE AOT",
+            "TIDE CLI",
+            "CPython"
+          ],
+          "elapsed_ms": {
+            "TIDE AOT": 0.9425289999999222,
+            "TIDE CLI": 59.42213300000003,
+            "CPython": 11.995608999997785
+          }
+        },
+        {
+          "order": [
+            "TIDE CLI",
+            "CPython",
+            "TIDE AOT"
+          ],
+          "elapsed_ms": {
+            "TIDE CLI": 59.887313000002905,
+            "CPython": 11.929208000001381,
+            "TIDE AOT": 1.019681000001583
+          }
+        },
+        {
+          "order": [
+            "CPython",
+            "TIDE AOT",
+            "TIDE CLI"
+          ],
+          "elapsed_ms": {
+            "CPython": 11.402267000001302,
+            "TIDE AOT": 0.9371090000022377,
+            "TIDE CLI": 60.05418600000121
+          }
+        }
+      ]
+    }
+  ]
+}

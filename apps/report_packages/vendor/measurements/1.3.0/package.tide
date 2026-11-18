@@ -1,0 +1,12 @@
+package measurements 1.3.0
+
+export parse
+
+parse line:t row:i > i
+decode_measurement line row
+
+decode_measurement line:t row:i > i
+need int line "invalid_integer" row
+
+example signed parse
+{"inputs":{"line":"-027","row":1},"expect":-27}

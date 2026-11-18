@@ -1,0 +1,10 @@
+{
+  "prior": "../58_ausdrucksvorpruefung/messung.json",
+  "protocol": "../56_gepruefte_operatoren/versuchsplan.json",
+  "families": "Same five three-file projects, public examples, hidden cases and three seeds as experiment 58.",
+  "operator_and_expression_filter": "Re-enumerate in both languages with the same 32-edit budget and the same two expression forms from experiment 58. Confirm original shortlists agree with the previous measurement.",
+  "probe_pool": "Use six inputs from probe.tide in ascending order. The remainder task allows positive b. Capacity 1 is the smallest permissible capacity and is outside the previous hidden cases (which all have b >= 2). Search independently in both languages and pick the first input with distinct normal outputs.",
+  "independent_expected_result": "Evaluate expected_remainder from probe.tide only on the identified probe. The oracle computes unfilled units by subtracting units in complete crates. It receives neither candidate source nor any hidden outcome.",
+  "selection": "Add the independently confirmed probe as a new public example in a copy. Both languages repeat their complete existing public filter under the same budget. Pass the single remaining candidate to hidden acceptance. Abstain on empty or still ambiguous shortlists. No model calls are planned with an executable public oracle.",
+  "accounting": "Measure passes among 15 slots per language and actual model tokens. Reconfirm all previous hidden cases in separate copies. Report if the result requires the oracle and whether any model request was made."
+}

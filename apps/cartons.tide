@@ -1,0 +1,24 @@
+carton_balance opening:i pieces:*i > i
+fold pieces opening total row count
+  + total (+ (div count 6) (if (eq (mod count 6) 0) 0 (if (< count 0) -1 1)))
+
+main > i
+carton_balance 0 (list i 5 1 6 7 -7 0)
+
+example per_job carton_balance
+{"inputs":{"opening":0,"pieces":[1,1,6,7]},"expect":5}
+
+example reversed_shipment carton_balance
+{"inputs":{"opening":-3,"pieces":[13,-13,0,6,-1]},"expect":-3}
+
+example empty carton_balance
+{"inputs":{"opening":-7,"pieces":[]},"expect":-7}
+
+example minimum carton_balance
+{"inputs":{"opening":0,"pieces":[-9223372036854775808]},"expect":-1537228672809129302}
+
+example maximum carton_balance
+{"inputs":{"opening":0,"pieces":[9223372036854775807]},"expect":1537228672809129302}
+
+example running_overflow carton_balance
+{"inputs":{"opening":9223372036854775807,"pieces":[1,-1]},"expect_error":{"code":"E_OVERFLOW"}}

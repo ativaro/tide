@@ -1,0 +1,51 @@
+use project_context
+
+record RootQuery
+name:t file:t line:i column:i
+
+record GroupingPlan
+packet:{Packet} queries:*{RootQuery} unused:*t
+
+root_column line:t > i
+let n text_len line
+let first_char text_slice line 0 1
+if and (> n 0) (not (or (gap first_char) (text_eq first_char "("))) 1
+let limit if (< n 32) n 32
+fold (positions limit) 0 col pos unused
+  if (> col 0) col
+  let c text_slice line (- pos 1) pos
+  if (or (gap c) (text_eq c "(")) 0 pos
+
+unit_queries queries:*{RootQuery} unit:{Unit} wanted:*t > *{RootQuery}
+let rows lines (get source unit)
+fold rows queries result row line
+  if (< row 2) result
+  if not (case (at rows (- row 3)) true before (indent_only before)) result
+  let header need (at rows (- row 2)) "missing_header" row
+  if (function_header header "rule") result
+  case (ordinary_name header wanted) result name
+  append result (make RootQuery name name file (get file unit) line row column (root_column line))
+
+prepare_grouping root:t observation:t graph:*{Definition} units:*{Unit} signatures:*{ApiSignature} > {GroupingPlan}
+let wanted reachable graph root
+let packet source_packet wanted observation units
+let indexed fold units (list {RootQuery} 0) found row unit unit_queries found unit wanted
+let queries fold wanted (list {RootQuery} 0) ordered row name
+  fold indexed ordered result index query
+    if (text_eq name (get name query)) (append result query) result
+make GroupingPlan packet packet queries queries unused (unused_signatures signatures wanted)
+
+example unicode_indent root_column
+{"inputs":{"line":"\t(\u00a0+ 1 2)"},"expect":4}
+
+example text_literal root_column
+{"inputs":{"line":"\"(\""},"expect":1}
+
+example multiline_group root_column
+{"inputs":{"line":"(  \t"},"expect":0}
+
+example deep_indent root_column
+{"inputs":{"line":"                                + 1 2"},"expect":0}
+
+example imported_root prepare_grouping
+{"inputs":{"root":"top","observation":"wrong total","graph":[{"name":"top","calls":["inc","sensor"]},{"name":"inc","calls":[]},{"name":"sensor","calls":[]}],"units":[{"file":"entry.tide","source":"use lib\n\ntop x:i > i\ninc x\n"},{"file":"lib.tide","source":"inc x:i > i\r\n  ( + x 1)\r\n\r\nrule sensor x:i > i\r\nstate old:i=0\r\nelse -> old=set x\r\nout old\r\n"}],"signatures":[{"name":"sensor","kind":"rule","signature":"sensor x:i > i"},{"name":"alt","kind":"function","signature":"alt x:i > i"}]},"expect":{"packet":{"observation":"wrong total","files":[{"file":"entry.tide","source":"top x:i > i\ninc x\n"},{"file":"lib.tide","source":"inc x:i > i\r\n  ( + x 1)\r\n\nrule sensor x:i > i\r\nstate old:i=0\r\nelse -> old=set x\r\nout old\r\n"}]},"queries":[{"name":"top","file":"entry.tide","line":4,"column":1},{"name":"inc","file":"lib.tide","line":2,"column":5}],"unused":["alt x:i > i"]}}

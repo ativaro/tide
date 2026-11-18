@@ -1,0 +1,35 @@
+use lookup
+
+help_lines source:t entry:t > t
+let prefix concat entry "\t"
+let size text_len prefix
+let doc fold (lines source) "" body row line
+  if (text_eq (text_slice line 0 size) prefix)
+    (concat body (concat (text_slice line size (text_len line)) "\n")) body
+if (text_eq doc "") fail "missing_help_topic" doc
+
+main source:r entry:t > t
+let data read source
+if (text_eq (text_slice entry 0 5) "help.") (help_lines data entry)
+let result lookup data entry
+let name text_slice entry 3 (text_len entry)
+let allowed "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+-*<>="
+let size text_len name
+let marks fold (list i 9 256 128 64 32 16 8 4 2 1) "" acc row bit concat (concat acc acc) (if (eq (mod (div size bit) 2) 1) "x\n" "")
+let safe and (< size 512) (fold (lines marks) true ok pos unused
+  and ok (case (text_find allowed (text_slice name (- pos 1) pos) 0) false offset true))
+case result (fail (if safe (concat "{\"file\": null, \"code\": \"E_NAME\", \"message\": \"Unknown operation: " (concat name "\"}"))
+                    "{\"file\": null, \"code\": \"E_NAME\", \"message\": \"Unknown operation\"}")) value
+  concat value "\n"
+
+example symbol lookup
+{"inputs":{"source":"op.<\tless\nop.>\tmore\n","key":"op.>"},"expect":{"some":"more"}}
+
+example no_prefix_match lookup
+{"inputs":{"source":"op.concat\tvalue\n","key":"op.con"},"expect":{"none":true}}
+
+example duplicate_key lookup
+{"inputs":{"source":"op.a\tone\nop.a\ttwo\n","key":"op.a"},"expect_error":{"code":"E_DATA","reason":"duplicate_catalog_key"}}
+
+example help_preserves_spacing help_lines
+{"inputs":{"source":"help.test\tone\nhelp.run\tskip\nhelp.test\t\nhelp.test\t  two\n","entry":"help.test"},"expect":"one\n\n  two\n"}

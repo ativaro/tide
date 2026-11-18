@@ -1,0 +1,2292 @@
+{
+  "date": "2026-11-17",
+  "environment": "Linux x86-64. Native product run with no Python executable or runtime files in a separate mount namespace. Reference oracle and measurement harness executed outside.",
+  "project_cases": {
+    "fixtures": 73,
+    "comparisons": 219,
+    "oracle_equal": 213,
+    "explicit_unimplemented": 6,
+    "differences": [],
+    "entries": [
+      {
+        "id": "diamond",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "614b6149a08642c575e0b63c9bd6b7ae316277ebba868ee287780cf63d4f7282"
+      },
+      {
+        "id": "diamond",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "diamond",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "basic",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "4d17adc4bd4dfb97909f1333f104880ad1fb6ec3b4dea4cb0fed3e2128c36ee1"
+      },
+      {
+        "id": "basic",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "basic",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "empty_import",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "d19336b8674b3473ef3a7b8814506e82e6afa3c9f37fd6018f945206eec1e9ad"
+      },
+      {
+        "id": "empty_import",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "empty_import",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "root_alias",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "4921865aa10be470196b942b0c12a4ed6b6563be2e93dc38496a4038ade2ca23"
+      },
+      {
+        "id": "root_alias",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "root_alias",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "unicode",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "331a9e7f691afa4faa95d1771accd2e8479f9b94da6342d0191917d1bf6e0fe2"
+      },
+      {
+        "id": "unicode",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "unicode",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "sorting",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "511ac37127d907b9d4ba466d43cb087500febccfdd4fdff1e3002533046dd3a9"
+      },
+      {
+        "id": "sorting",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "sorting",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "more_than_4096_lines",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "d09d105906c313ff91670ade8a1e51c874b3f0702e241b84fcc22dc9bbcf6934"
+      },
+      {
+        "id": "more_than_4096_lines",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "more_than_4096_lines",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "long_import_column",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "09280fec1d78ca49fc0d08458e381b83aa56a4a42d68c911fca8213a06d8a819"
+      },
+      {
+        "id": "long_import_column",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "long_import_column",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "split_crlf",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "abe8763ac676d1dc3019653c1817fd83eab3eb033e52f34b78c571d94b4b797d"
+      },
+      {
+        "id": "split_crlf",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "split_crlf",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "split_error_line",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "split_error_line",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "split_error_line",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "large_field",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "93a9c69da8584fe13dd9698d84a8720a5a9d30c09560f3f80ab57e908367bbf2"
+      },
+      {
+        "id": "large_field",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "large_field",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "second_missing_module",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "second_missing_module",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "second_missing_module",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing_directory",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing_directory",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing_directory",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "linked",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "linked",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "linked",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "fifo",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "fifo",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "fifo",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "direct_cycle",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "direct_cycle",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "direct_cycle",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "indirect_cycle",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "two.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "indirect_cycle",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "two.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "indirect_cycle",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "two.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "cycle_before_malformed",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "one.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "cycle_before_malformed",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "one.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "cycle_before_malformed",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_CYCLE",
+        "native_code": "E_CYCLE",
+        "file": "one.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "missing_before_malformed",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing_before_malformed",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "missing_before_malformed",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_IO",
+        "native_code": "E_IO",
+        "file": "entry.tide"
+      },
+      {
+        "id": "malformed_before_missing",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "malformed_before_missing",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "malformed_before_missing",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname0",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname0",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname0",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname1",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname1",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname1",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname2",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname2",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname2",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname3",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname3",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname3",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname4",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname4",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname4",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname5",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname5",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname5",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname6",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname6",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname6",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname7",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname7",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname7",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname8",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname8",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname8",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "badname9",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname9",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "badname9",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 2
+      },
+      {
+        "id": "module_badname",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "a.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "module_badname",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "a.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "module_badname",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "a.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "quoted_attached",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "quoted_attached",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "quoted_attached",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "quoted_single",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "quoted_single",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "quoted_single",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "lexical_parenthesis",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "lexical_parenthesis",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "lexical_parenthesis",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "unrelated_file",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "4d17adc4bd4dfb97909f1333f104880ad1fb6ec3b4dea4cb0fed3e2128c36ee1"
+      },
+      {
+        "id": "unrelated_file",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "unrelated_file",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "pinned_before_read",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "pinned_before_read",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "pinned_before_read",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "attached",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "attached",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "attached",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "consecutive",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "consecutive",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "consecutive",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_MODULE",
+        "native_code": "E_MODULE",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "field_use",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "field_use",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "field_use",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "duplicate_types",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "a.tide",
+        "line": 2,
+        "column": 9
+      },
+      {
+        "id": "duplicate_types",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "a.tide",
+        "line": 2,
+        "column": 9
+      },
+      {
+        "id": "duplicate_types",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "a.tide",
+        "line": 2,
+        "column": 9
+      },
+      {
+        "id": "unknown",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "unknown",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "unknown",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "a.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "type_cycle",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "type_cycle",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "type_cycle",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "entry.tide",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "id": "child_utf",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_UTF8",
+        "native_code": "E_UTF8",
+        "file": "entry.tide"
+      },
+      {
+        "id": "child_utf",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_UTF8",
+        "native_code": "E_UTF8",
+        "file": "entry.tide"
+      },
+      {
+        "id": "child_utf",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_UTF8",
+        "native_code": "E_UTF8",
+        "file": "entry.tide"
+      },
+      {
+        "id": "child_size",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide"
+      },
+      {
+        "id": "child_size",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide"
+      },
+      {
+        "id": "child_size",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide"
+      },
+      {
+        "id": "intermediate_size",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "nested.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "intermediate_size",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "nested.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "intermediate_size",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "nested.tide",
+        "line": 2,
+        "column": 2
+      },
+      {
+        "id": "bytes0",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "aff1393cb59a939a5768c15284686c7cbc3e916f274bb2e24323e8457f0cb194"
+      },
+      {
+        "id": "bytes0",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "bytes0",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "bytes1",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "dcf16c8c612ff6272d4f6f81370c23186b1f07b2315ca1f6055c820e83c1dbd5"
+      },
+      {
+        "id": "bytes1",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "bytes1",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "bytes2",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "bytes2",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "bytes2",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth1",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "0d395105702559c1d349ffd6959efa2fc71dc814b3e814df0da580aa78c48ec5"
+      },
+      {
+        "id": "depth1",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth1",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth4",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "61ee3fc3a0ad331b64fe67746101f215088f2c6cd79efcd975873ee887e85237"
+      },
+      {
+        "id": "depth4",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth4",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth15",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "73c48d192b0fe68215089f03cbae371f1d0acb1775a813dcf8732bf82af1a6cb"
+      },
+      {
+        "id": "depth15",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth15",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth30",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "5ff4b867e0f03ffaae999e9d55ba359067eca2cbf78a6f601e50015756fe25ca"
+      },
+      {
+        "id": "depth30",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth30",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth31",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "de99e2868343305604c77078d6e6ae937b3f72217606c4f6d880b85d56edf1dd"
+      },
+      {
+        "id": "depth31",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth31",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "depth32",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth32",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth32",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth33",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth33",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "depth33",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "Mod31.tide",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "id": "width4",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "643a76f56ad69e06331ee8c6d3534a04ba3c91408131ef320a542b017eeaefd9"
+      },
+      {
+        "id": "width4",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width4",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width24",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "e1e5ea4b4d6b75307c20a016edf2e6242fc0da47e5dc57205a7ceef5f89e36a8"
+      },
+      {
+        "id": "width24",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width24",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width63",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "1ac34b7dfa3f25e16e8d3e88be4615d01d1f8812286afd29ae0e8359de119f06"
+      },
+      {
+        "id": "width63",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width63",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width64",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "029b2131d5a6d4c7b572a34dcb00b533519f336a861343a6bd00dac76aac9a04"
+      },
+      {
+        "id": "width64",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width64",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "width65",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 129,
+        "column": 1
+      },
+      {
+        "id": "width65",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 129,
+        "column": 1
+      },
+      {
+        "id": "width65",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_LIMIT",
+        "native_code": "E_LIMIT",
+        "file": "entry.tide",
+        "line": 129,
+        "column": 1
+      },
+      {
+        "id": "record_depth15",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "f143cba6fe860f18c9e54e0f40d7406dff2ca044e58e2d6972e02dfef59b1276"
+      },
+      {
+        "id": "record_depth15",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "record_depth15",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "record_depth16",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "88770b7d84005ee754e0d39f2a35e0c707b20c3474bcc6d9bf8a00831076ea03"
+      },
+      {
+        "id": "record_depth16",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "record_depth16",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "record_depth17",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "parts.tide",
+        "line": 46,
+        "column": 1
+      },
+      {
+        "id": "record_depth17",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "parts.tide",
+        "line": 46,
+        "column": 1
+      },
+      {
+        "id": "record_depth17",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_TYPE",
+        "native_code": "E_TYPE",
+        "file": "parts.tide",
+        "line": 46,
+        "column": 1
+      },
+      {
+        "id": "tagorder0",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder0",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder0",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder1",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "tagorder1",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "tagorder1",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "id": "tagorder2",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 3
+      },
+      {
+        "id": "tagorder2",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 3
+      },
+      {
+        "id": "tagorder2",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 3
+      },
+      {
+        "id": "tagorder3",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder3",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder3",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 5
+      },
+      {
+        "id": "tagorder4",
+        "cmd": "check",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok",
+        "revision": "87ad7b8e2b784e3748ef1c679368c7ef8536623ad1c1bb355910737b4e36217a"
+      },
+      {
+        "id": "tagorder4",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "tagorder4",
+        "cmd": "test",
+        "ref": 0,
+        "native": 0,
+        "code": "ok",
+        "native_code": "ok"
+      },
+      {
+        "id": "tagorder5",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 25
+      },
+      {
+        "id": "tagorder5",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 25
+      },
+      {
+        "id": "tagorder5",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_NAME",
+        "file": "chosen.tide",
+        "line": 2,
+        "column": 25
+      },
+      {
+        "id": "foreign_lock",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "foreign_lock",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "foreign_lock",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_VERSION",
+        "native_code": "E_VERSION",
+        "file": "entry.tide"
+      },
+      {
+        "id": "runnable",
+        "cmd": "check",
+        "ref": 0,
+        "native": 1,
+        "code": "ok",
+        "native_code": "E_BACKEND",
+        "revision": "bbd4397382bfac4052d4c92c6feabf17fca7072b56e2c3b87d01d05cafced56a"
+      },
+      {
+        "id": "runnable",
+        "cmd": "fmt",
+        "ref": 0,
+        "native": 1,
+        "code": "ok",
+        "native_code": "E_BACKEND"
+      },
+      {
+        "id": "runnable",
+        "cmd": "test",
+        "ref": 0,
+        "native": 1,
+        "code": "ok",
+        "native_code": "E_BACKEND"
+      },
+      {
+        "id": "body_error",
+        "cmd": "check",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_BACKEND",
+        "file": "entry.tide",
+        "line": 4,
+        "column": 1
+      },
+      {
+        "id": "body_error",
+        "cmd": "fmt",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_BACKEND",
+        "file": "entry.tide",
+        "line": 4,
+        "column": 1
+      },
+      {
+        "id": "body_error",
+        "cmd": "test",
+        "ref": 1,
+        "native": 1,
+        "code": "E_NAME",
+        "native_code": "E_BACKEND",
+        "file": "entry.tide",
+        "line": 4,
+        "column": 1
+      }
+    ]
+  },
+  "independent_manifests": 9,
+  "source_projects": [
+    "apps/balance.tide",
+    "apps/cartons.tide",
+    "apps/first_peak.tide",
+    "apps/heat.tide",
+    "apps/heating.tide",
+    "apps/invaders_checks.tide",
+    "apps/invaders_game.tide",
+    "apps/light.tide",
+    "apps/maximum.tide",
+    "apps/nano.tide",
+    "apps/nano_checks.tide",
+    "apps/pump.tide",
+    "apps/readings.tide",
+    "apps/report.tide",
+    "apps/space_invaders.tide",
+    "lib/ordering.tide",
+    "lib/ordering_checks.tide",
+    "native/argv_i64.tide",
+    "native/bootstrap/checks.tide",
+    "native/bootstrap/fixtures/modules/closing.tide",
+    "native/bootstrap/fixtures/modules/opening.tide",
+    "native/bootstrap/fixtures/modules/reading.tide",
+    "native/bootstrap/fixtures/modules/report.tide",
+    "native/bootstrap/forms.tide",
+    "native/bootstrap/project.tide",
+    "native/bootstrap/schema.tide",
+    "native/bootstrap/schema_cases.tide",
+    "native/bootstrap/seed.tide",
+    "native/catalog/query.tide",
+    "native/elf64.tide",
+    "native/fold_i64.tide",
+    "native/rule_scan.tide",
+    "native/scalar.tide",
+    "native/scan_image.tide",
+    "native/source.tide",
+    "workbench/function_body.tide",
+    "workbench/function_fragment.tide",
+    "workbench/grouped_view.tide",
+    "workbench/grouping.tide",
+    "workbench/project_context.tide",
+    "workbench/source_layout.tide",
+    "workbench/source_repair.tide"
+  ],
+  "shared_leaf_changed_during_check": {
+    "checks": 64,
+    "seen": [
+      31,
+      33
+    ],
+    "writes": 456,
+    "revisions": [
+      "614b6149a08642c575e0b63c9bd6b7ae316277ebba868ee287780cf63d4f7282",
+      "8ad08590b6d5d77cb0f3aa0bd7764b98a44984d00fef2f033aa72dad31bc75f5"
+    ]
+  },
+  "single_file": {
+    "check": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    },
+    "fmt": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 96
+    },
+    "test": {
+      "valid": 96,
+      "rejected": 74,
+      "idempotence": 0
+    }
+  },
+  "form_groups": 38,
+  "form_count": 1097,
+  "form_failures": [],
+  "bootstrap_examples": 25,
+  "legacy_integration_tests": 35,
+  "ubsan": "true",
+  "clean_build": [
+    "true",
+    "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"ca406049fbeb5ae9f72d95104018fd447bb671100ccededc3831419ec8830ab1\",\"modules\":[],\"records\":{\"Log\":{\"records\":\"*{Entry}\",\"initial\":\"?&i{Flag}\"},\"Entry\":{\"key\":\"t\",\"hits\":\"*i\"}},\"variants\":{\"Flag\":[\"Active\",\"warn\",\"z1\"]},\"definitions\":{},\"examples\":0}",
+    "{\"file\":\"/samples/bad.tide\",\"code\":\"E_TYPE\",\"message\":\"Cyclic or deeply nested record\",\"line\":1,\"column\":1}",
+    "{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\", \"operation\": \"fold\", \"syntax\": \"fold *A B accumulator row element body:B\", \"returns\": \"B\", \"example\": \"fold list i 2 3 4 0 acc row x + acc x\", \"requires\": \"\", \"effect\": \"pure\", \"may_fail\": [], \"arity\": 6, \"semantics\": \"Left fold in input order. Bind the accumulator, one-based row and element. Empty list returns start.\"}",
+    "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"bdf928b22f04dc3129d332c7635ba17a12ca870d281bc89c9f5e9ed286b93b83\",\"modules\":[\"opening.tide\",\"reading.tide\",\"closing.tide\"],\"imports\":[{\"file\":\"native/bootstrap/fixtures/modules/report.tide\",\"module\":\"opening.tide\",\"line\":1,\"column\":1},{\"file\":\"native/bootstrap/fixtures/modules/report.tide\",\"module\":\"closing.tide\",\"line\":3,\"column\":1},{\"file\":\"opening.tide\",\"module\":\"reading.tide\",\"line\":1,\"column\":1},{\"file\":\"closing.tide\",\"module\":\"reading.tide\",\"line\":1,\"column\":1}]}",
+    "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"bdf928b22f04dc3129d332c7635ba17a12ca870d281bc89c9f5e9ed286b93b83\",\"modules\":[\"opening.tide\",\"reading.tide\",\"closing.tide\"],\"records\":{\"Report\":{\"start\":\"{Opening}\",\"finish\":\"{Closing}\"},\"Opening\":{\"value\":\"{Reading}\"},\"Reading\":{\"value\":\"i\"},\"Closing\":{\"value\":\"{Reading}\"}},\"variants\":{},\"definitions\":{},\"examples\":0}",
+    "use opening",
+    "",
+    "use closing",
+    "",
+    "record Report",
+    "start:{Opening} finish:{Closing}",
+    "{\"passed\":0}",
+    "{\"tool\":\"TIDE 0.5.0\",\"version\":{\"language\": \"0.5\", \"tool\": \"0.5.0\", \"catalog_sha256\": \"3abb6225516b4cdab19983d1bc94b166e8a00741b58476670a40330b9ae0dbab\"},\"revision\":\"3aaac23a3713e0ae8a522c697bb0bf98fe98cbe547c795f20b7aa3dc8ab4d7b6\",\"modules\":[\"invaders_game.tide\"],\"imports\":[{\"file\":\"apps/space_invaders.tide\",\"module\":\"invaders_game.tide\",\"line\":1,\"column\":1}]}",
+    "balance-main: OK",
+    "balance-balance: OK",
+    "heating-main: OK",
+    "heating-degree_hours: OK",
+    "cartons-main: OK",
+    "cartons-carton_balance: OK",
+    "heat-main: OK",
+    "heat-simulate: OK",
+    "pump-main: OK",
+    "pump-simulate: OK",
+    "light-main: OK",
+    "light-simulate: OK",
+    "97"
+  ],
+  "app_image_sha256": {
+    "balance-main": "cdc5a3f33cc9bd46a07d760bc81a42818f209fb5df29f7f801289cb0225e4ef2",
+    "balance-balance": "76f3622f0c23257d3fea205b9edce9b17d92ce891534505feccd0cdd19f3c11a",
+    "heating-main": "af64ce9bd1f97ca0694c2b4c2b05c02d0502ecb0e9663d7160647d50cb6a8319",
+    "heating-degree_hours": "0458d9a324a9dfd40165604734409b4595def92eb187d8379970cd349b5c2b1c",
+    "cartons-main": "58a2e228480f601fafb3b0769db8e3539455f111ffe6be6b04efa11e0c18c032",
+    "cartons-carton_balance": "2bc2c80ba31ca8eeedf934eac49628006926fd362939f84fc58d7db792c5b362",
+    "heat-main": "b422ab6e0ce04aca22c51b97b43fba488f9407ef0722fc8b46420f80cb19d456",
+    "heat-simulate": "cebe4a57fbac5a701a87adcc5aa784561ea9459408aaeae97eace91a7bf39bfa",
+    "pump-main": "cd6bb713a33f27aac69eefd230e2ea421cb6dec12a2ab71c8717b969501b89c9",
+    "pump-simulate": "6bcd46a906700ccbce0f9bce492cff0d74e8a55a211bb654696c54cedcd8de0f",
+    "light-main": "03a713a2ed3ef09ebfb70dcf90efbfa66884025137a03fb33b4fe77fe040828f",
+    "light-simulate": "6acd26c019763d8e52298942324a4a5e3e57ad9ea3f8dd597fa261ead0582e10"
+  },
+  "package_upgrade": {
+    "clean_upgrade": true,
+    "known_interpreter_and_caches_removed": true,
+    "unknown_files_preserved": true,
+    "external_symlink_targets_untouched": true,
+    "compat_reinstallation_works": true
+  },
+  "modules_cli": {
+    "unicode_missing_path": "E_IO",
+    "unicode_actual_path": "/cases/märz-🗂/absent.tide",
+    "errno": 2,
+    "bad_options": 4,
+    "json_before_after_equal": true,
+    "malformed_lock": "E_BACKEND"
+  }
+}

@@ -1,0 +1,70 @@
+use sqlite
+
+pg_issue file:t site:{Site} code:t reason:t > {ScalarResult}
+scalar_failure file site code "PostgreSQL request failed" reason
+
+pg_field cursor:{NativeHandle} column:i kind:t > ?{EvalValue}
+let size bootstrap_pg_size cursor column
+let optional text_eq (text_slice kind 0 1) "?"
+if (< size 0) (if optional (some (number_value 0)) (nil {EvalValue}))
+if (> size 262146) (nil {EvalValue})
+let typ if optional (text_slice kind 1 (text_len kind)) kind
+let oid bootstrap_pg_oid cursor column
+let raw bootstrap_pg_value cursor column
+let value if (and (text_eq typ "t") (or (eq oid 25) (or (eq oid 1043) (eq oid 1042)))) (some (text_value raw))
+  if (and (text_eq typ "i") (or (eq oid 20) (or (eq oid 21) (eq oid 23)))) (case (int raw) (nil {EvalValue}) n (some (number_value n)))
+  if (and (text_eq typ "b") (eq oid 16)) (some (number_value (if (text_eq raw "t") 1 0)))
+  if (and (text_eq typ "q") (eq oid 1700)) (case (fixed_units raw) (nil {EvalValue}) n (some (number_value n)))
+  if (and (text_eq typ "y") (and (eq oid 17) (text_eq (text_slice raw 0 2) "\\x"))) (hex_octets (text_slice raw 2 (text_len raw)))
+  if (and (text_eq typ "z") (and (eq oid 1184) (text_eq (text_slice raw (- (text_len raw) 3) (text_len raw)) "+00")))
+    (let stamp cat3 (text_slice raw 0 10) "T" (concat (text_slice raw 11 (- (text_len raw) 3)) "Z")
+     case (stamp_seconds stamp) (nil {EvalValue}) epoch (some (with num (text_value stamp) epoch)))
+  (nil {EvalValue})
+case value (nil {EvalValue}) v (some (with present v optional))
+
+pg_result_step prior:{SqlRows} cursor:{NativeHandle} decl:?{SchemaType} kind:t file:t site:{Site} limit:i > {SqlRows}
+let status bootstrap_pg_step cursor
+let issue pg_issue file site "E_DATA" "pg_statement"
+if (not (or (eq status 1) (or (eq status 2) (eq status 9))))
+  (let state bootstrap_pg_error cursor
+   with done (with result prior (with detail issue (extra_fields (get detail issue) (concat "\"sqlstate\":" (json_string state))))) true)
+case decl
+  (if (eq status 9) prior (with done (with result prior (scalar_ok (case (int (bootstrap_pg_count cursor)) 0 n n))) true)) row_decl
+let fields get fields row_decl
+let columns bootstrap_pg_cols cursor
+if (not (eq columns (length fields))) (with done (with result prior (pg_issue file site "E_DATA" "pg_columns")) true)
+let names fold fields (list t 0) acc row unused append acc (bootstrap_pg_name cursor (- row 1))
+let slots map i fields key (case (entry_at names key) -1 n n)
+if (fold slots false missing row n or missing (< n 0)) (with done (with result prior (pg_issue file site "E_DATA" "pg_columns")) true)
+if (eq status 2) (with done prior true)
+let index get count prior
+if (eq index 4096) (with done (with result prior (pg_issue file site "E_LIMIT" "pg_row_limit")) true)
+let built fold slots (value_ok (number_value 16)) acc row slot
+  if (not (text_eq (get code acc) "")) acc
+  let key need (at fields (- row 1)) "pg_field" 0
+  let typ need (at (get types row_decl) (- row 1)) "pg_type" 0
+  case (pg_field cursor slot typ)
+    (let err pg_issue file site "E_DATA" "pg_column"
+     with detail err (extra_fields (get detail err) (input_issue (pointer_child (concat "/" (decimal index)) key) typ "PostgreSQL value"))) item
+  value_ok (add_member (get value acc) key typ item (field_bytes item typ))
+if (not (text_eq (get code built) "")) (with done (with result prior built) true)
+let rows get value (get result prior)
+let item get value built
+let bytes get num item
+if (> (+ (get num rows) (+ bytes 8)) limit) (with done (with result prior (pg_issue file site "E_LIMIT" "pg_allocation_limit")) true)
+make SqlRows result (value_ok (add_member rows "" kind item bytes)) count (+ index 1) done false
+
+pg_action args:*{EvalValue} typ:t schemas:{Declarations} file:t site:{Site} limit:i > {DataAction}
+let db need (get handle (need (at args 0) "pg_grant" 0)) "pg_connection" 0
+let sql get text (need (at args 1) "pg_text" 0)
+let p need (at args 2) "pg_params" 0
+let values map t (get members p) offset (get text (member_from_offset p offset))
+let nulls map i (get members p) offset (if (get present (member_from_offset p offset)) 0 1)
+let invalid fold values (case (text_find sql (bootstrap_character 0) 0) false pos true) bad row value or bad (case (text_find value (bootstrap_character 0) 0) false pos true)
+let kind text_slice typ 1 (text_len typ)
+let result if invalid (pg_issue file site "E_DATA" "pg_nul")
+  (case (bootstrap_pg_send db sql values nulls) (pg_issue file site "E_IO" "pg_send") cursor
+   let decl named_schema schemas kind
+   let start make SqlRows result (value_ok (number_value 8)) count 0 done false
+   get result (bootstrap_while start rows (not (get done rows)) (pg_result_step rows cursor decl kind file site limit)))
+make DataAction result result work 0 bytes (if (or (text_eq typ "i") (not (text_eq (get code result) ""))) 0 (get num (get value result)))

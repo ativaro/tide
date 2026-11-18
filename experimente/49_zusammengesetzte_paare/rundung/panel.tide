@@ -1,0 +1,13 @@
+use quantize
+
+record Reading
+station:t degrees:i
+
+rounded sample:{Reading} > &{Reading}i
+pair sample (nearest (get degrees sample))
+
+example below_half rounded
+{"inputs":{"sample":{"station":"Nord","degrees":24}},"expect":[{"station":"Nord","degrees":24},2]}
+
+example negative_half rounded
+{"inputs":{"sample":{"station":"Nord","degrees":-25}},"expect":[{"station":"Nord","degrees":-25},-2]}

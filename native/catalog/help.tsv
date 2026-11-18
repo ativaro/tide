@@ -1,0 +1,146 @@
+help.tide	usage: tide COMMAND [OPTIONS]
+help.tide	
+help.tide	Typed Instructions, Deterministic Execution
+help.tide	
+help.tide	  build    build a native Linux x86-64 program
+help.tide	  forms    read checked sources on stdin and group all function bodies
+help.tide	  modules  resolve source imports and print their positions and project revision
+help.tide	  run      run a function
+help.tide	  test     execute project examples
+help.tide	  check    check types, imports, and effects
+help.tide	  play     open an interactive terminal application (native implementation pending)
+help.tide	  context  inspect a function and its callers
+help.tide	  hole     inspect the type and bindings of a proposed edit
+help.tide	  trace    inspect one event in an example
+help.tide	  edit     check or apply a revision-bound source change
+help.tide	  fmt      format source
+help.tide	  describe inspect the language or an operation
+help.tide	  lock     print the release identity
+help.tide	
+help.tide	Options: -h, --help, --version
+help.tide	Use tide COMMAND --help for the arguments.
+help.check	usage: tide check [-h] [--json] file
+help.check	
+help.check	positional arguments:
+help.check	  file
+help.check	
+help.check	options:
+help.check	  -h, --help  show this help message and exit
+help.check	  --json      JSON output (default)
+help.test	usage: tide test [-h] [--json] [--diff] [--explain[=executed|nodes|candidates]] [--probes JSONL] [--pairs] [--probe-range JSON] file
+help.test	
+help.test	positional arguments:
+help.test	  file
+help.test	
+help.test	options:
+help.test	  -h, --help  show this help message and exit
+help.test	  --json      JSON output (default)
+help.test	  --diff      show the first differing result field, index, length, tag or long-text codepoint
+help.test	  --explain   include the input and reachable definitions for the first failed example
+help.test	  --explain=executed   show observed branches and definitions entered for that input
+help.test	  --explain=nodes      also show editable operator nodes with types and alternatives
+help.test	  --explain=candidates   show only operator or small expression edits passing all current examples
+help.test	  --probes JSONL         find a distinguishing input for green candidates (up to 32 JSON object lines)
+help.test	  --pairs                try up to 64 pairs across files if no single edit passes
+help.test	                         generate probes from the target's requires contract when available
+help.test	  --probe-range JSON     generate probes for green pairs using inclusive [min,max] per integer parameter
+help.run	usage: tide run [-h] [--json] [--call FUNCTION] [--inputs JSON]
+help.run	                [--read NAME=PATH] [--db NAME=PATH] [--https NAME=ORIGIN] [--write NAME=PATH] [--pg NAME=DSN]
+help.run	                file
+help.run	
+help.run	positional arguments:
+help.run	  file
+help.run	
+help.run	options:
+help.run	  -h, --help        show this help message and exit
+help.run	  --json            JSON output (default)
+help.run	  --call FUNCTION
+help.run	  --inputs JSON
+help.run	  --write NAME=PATH    grant atomic replacement of one regular file
+help.run	  --pg NAME=DSN        grant a PostgreSQL connection
+help.run	  --https NAME=ORIGIN  grant HTTPS access to one origin
+help.run	  --db NAME=PATH      grant read/write access to one SQLite database
+help.run	  --read NAME=PATH    grant read access to a regular UTF-8 file
+help.play	usage: tide play [-h] [--document PATH] file
+help.play	
+help.play	positional arguments:
+help.play	  file
+help.play	
+help.play	options:
+help.play	  -h, --help       show this help message and exit
+help.play	  --document PATH  open one UTF-8 document for interactive editing
+help.context	usage: tide context [-h] [--json] --function FUNCTION [--node NODE]
+help.context	                    [--example-index | --example NAME] file
+help.context	
+help.context	positional arguments:
+help.context	  file
+help.context	
+help.context	options:
+help.context	  -h, --help           show this help message and exit
+help.context	  --json               JSON output (default)
+help.context	  --function FUNCTION
+help.context	  --node NODE          revision-local line:column
+help.context	  --example-index      list affected example names, targets and fingerprints
+help.context	  --example NAME       include one affected example in full
+help.hole	usage: tide hole [-h] [--json] --function FUNCTION --node NODE file
+help.hole	
+help.hole	positional arguments:
+help.hole	  file
+help.hole	
+help.hole	options:
+help.hole	  -h, --help           show this help message and exit
+help.hole	  --json               JSON output (default)
+help.hole	  --function FUNCTION
+help.hole	  --node NODE          revision-local line:column
+help.trace	usage: tide trace [-h] [--json] --example EXAMPLE --step STEP
+help.trace	                  [--fields FIELDS]
+help.trace	                  file
+help.trace	
+help.trace	positional arguments:
+help.trace	  file
+help.trace	
+help.trace	options:
+help.trace	  -h, --help         show this help message and exit
+help.trace	  --json             JSON output (default)
+help.trace	  --example EXAMPLE
+help.trace	  --step STEP
+help.trace	  --fields FIELDS    comma-separated state fields
+help.edit	usage: tide edit [-h] [--json] --base BASE (--edits EDITS | --source SOURCE)
+help.edit	                 [--write] [--change-examples]
+help.edit	                 file
+help.edit	
+help.edit	positional arguments:
+help.edit	  file
+help.edit	
+help.edit	options:
+help.edit	  -h, --help         show this help message and exit
+help.edit	  --json             JSON output (default)
+help.edit	  --base BASE
+help.edit	  --edits EDITS      JSON array of node/op or node/replace edits (multi-file preview)
+help.edit	  --source SOURCE    complete candidate file for coordinated changes
+help.edit	  --write
+help.edit	  --change-examples
+help.fmt	usage: tide fmt [-h] file
+help.fmt	
+help.fmt	positional arguments:
+help.fmt	  file
+help.fmt	
+help.fmt	options:
+help.fmt	  -h, --help  show this help message and exit
+help.describe	usage: tide describe [-h] [--json] [--project PROJECT] [operation]
+help.describe	
+help.describe	positional arguments:
+help.describe	  operation
+help.describe	
+help.describe	options:
+help.describe	  -h, --help         show this help message and exit
+help.describe	  --json             JSON output (default)
+help.describe	  --project PROJECT  verify the lock next to this source file
+help.lock	usage: tide lock [-h] [--json]
+help.lock	
+help.lock	options:
+help.lock	  -h, --help  show this help message and exit
+help.lock	  --json      JSON output (default)
+help.build	usage: tide build [--aot|--service] SOURCE OUTPUT [ENTRY]
+help.forms	usage: tide forms < checked-sources.tide
+help.modules	usage: tide modules FILE [--json]

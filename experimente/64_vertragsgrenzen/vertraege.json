@@ -1,0 +1,7 @@
+{
+  "versandetiketten": {"a":{"ge":0,"gt":0,"lt":97},"b":{"gt":0,"le":96}},
+  "nettogewicht": {"a":{"gt":-5,"ge":-9,"le":88},"b":{"gt":0,"lt":101}},
+  "taktfenster": {"a":{"ge":0,"lt":97},"b":{"ge":1,"lt":97}},
+  "lackbedarf": {"a":{"ge":1,"lt":51},"b":{"gt":0,"le":80}},
+  "restladung": {"a":{"gt":-1,"le":96},"b":{"gt":0,"lt":97}}
+}

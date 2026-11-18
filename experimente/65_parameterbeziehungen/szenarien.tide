@@ -1,0 +1,61 @@
+use vertrag
+
+record ShippingInput
+a:i b:i c:i
+
+record ShippingCheck
+inputs:{ShippingInput} expect:i
+
+scenario_family task:t > t
+if (text_eq task "gleichlauf") "taktfenster" task
+
+public_scenario task:t > *{Check}
+let base public_cases (scenario_family task)
+if (text_eq task "taktfenster") (append base (check task (input 48 48))) base
+
+hidden_scenario task:t > *{Check}
+let family scenario_family task
+if (text_eq task "lackbedarf")
+  (fold (list i 12 0 1 2 3 4 5 6 7 8 9 10 11) (list {Check} 0) rows row group
+   fold (list i 6 111 112 113 114 115 116) rows acc col base
+     let n + base (* 6 group)
+     append acc (check family (input n n)))
+fold (list i 12 20 21 22 23 24 25 26 27 28 29 30 31) (list {Check} 0) rows row b
+  fold (list i 6 1 2 3 4 5 6) rows acc col offset
+    let a if (text_eq task "restladung") (+ b (+ offset 1)) (- b offset)
+    append acc (check family (input a b))
+
+pool_scenario task:t > *{Input}
+if (text_eq task "lackbedarf") (list {Input} 2 (input 1 2) (input 2 1))
+if (text_eq task "restladung")
+  (map {Input} (list i 32 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56) b (input (+ b 1) b))
+map {Input} (list i 16 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56) b
+  input (if (text_eq task "nettogewicht") b (+ b 1)) b
+
+probe_expected task:t a:i b:i > i
+expected (scenario_family task) a b
+
+shipping_input value:{Input} > {ShippingInput}
+make ShippingInput a (get a value) b (get b value) c (get a value)
+
+shipping_check value:{Check} > {ShippingCheck}
+make ShippingCheck inputs (shipping_input (get inputs value)) expect (get expect value)
+
+shipping_public > *{ShippingCheck}
+map {ShippingCheck} (public_cases "versandetiketten") row (shipping_check row)
+
+shipping_hidden > *{ShippingCheck}
+map {ShippingCheck} (hidden_scenario "versandetiketten") row (shipping_check row)
+
+shipping_pool > *{ShippingInput}
+map {ShippingInput} (pool_scenario "versandetiketten") value (shipping_input value)
+
+shipping_expected a:i b:i c:i > i
+if (not (eq a c)) fail "shipping contract: a must equal c"
+expected "versandetiketten" a b
+
+example label_probe shipping_expected
+{"inputs":{"a":5,"b":6,"c":5},"expect":40}
+
+example strict_boundary probe_expected
+{"inputs":{"task":"taktfenster","a":48,"b":48},"expect":-99}

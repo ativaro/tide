@@ -1,0 +1,53 @@
+record Sample
+temperature:q measured:z note:?t
+
+main payload:t > q
+let data json_decode {Sample} (utf8_bytes payload)
+let encoded json_encode data
+let again json_decode {Sample} encoded
+get temperature again
+
+encode value:{Sample} > y
+json_encode value
+
+epoch value:z > i
+unix_seconds value
+
+scaled value:q > i
+q_units value
+
+round value:i > q
+q_from_units value
+
+example decimal_and_offset main
+{"inputs":{"payload":"{\"temperature\":2.175e1,\"measured\":\"2024-02-29T01:02:03+01:00\"}"},"expect":21.75}
+
+example offset epoch
+{"inputs":{"value":"1970-01-01T01:00:00+01:00"},"expect":0}
+
+example before_epoch epoch
+{"inputs":{"value":"1969-12-31T23:59:59.123Z"},"expect":-1}
+
+example minimum round
+{"inputs":{"value":-9223372036854775808},"expect":-9223372036854.775808}
+
+example exponent scaled
+{"inputs":{"value":2.175e1},"expect":21750000}
+
+example invalid_date main
+{"inputs":{"payload":"{\"temperature\":21.75,\"measured\":\"2025-02-29T12:00:00Z\"}"},"expect_error":{"code":"E_DATA","path":"/measured"}}
+
+example too_precise main
+{"inputs":{"payload":"{\"temperature\":0.0000001,\"measured\":\"2024-02-29T12:00:00Z\"}"},"expect_error":{"code":"E_DATA","path":"/temperature"}}
+
+example wire encode
+{"inputs":{"value":{"temperature":21.75,"measured":"2024-02-29T01:02:03+01:00","note":{"none":true}}},"expect":"7b2274656d7065726174757265223a32312e37352c226d65617375726564223a22323032342d30322d32395430313a30323a30332b30313a3030222c226e6f7465223a6e756c6c7d"}
+
+stored db:d value:{Sample} > *{Sample}
+transaction db
+let table sql_exec db "CREATE TABLE obs(temperature INTEGER,measured TEXT,note TEXT)" (dict i)
+let saved sql_exec db "INSERT INTO obs VALUES(:temperature,:measured,:note)" value
+sql_query {Sample} db "SELECT temperature,measured,note FROM obs" (dict i)
+
+example sqlite_values stored
+{"inputs":{"db":":memory:","value":{"temperature":-0.5,"measured":"1970-01-01T01:30:02+01:30","note":{"some":"ok"}}},"expect":[{"temperature":-0.5,"measured":"1970-01-01T01:30:02+01:30","note":{"some":"ok"}}]}

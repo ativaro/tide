@@ -1,0 +1,185 @@
+use rules
+
+record RecordField
+name:t kind:t num:i items:*i texts:*t text:t present:b bytes:i children:*i span:i
+
+record ValueTape
+pages:**{RecordField} tail:*{RecordField}
+
+record EvalValue
+num:i items:*i texts:*t text:t present:b members:*i tape:{ValueTape} offset:i span:i handle:?{NativeHandle}
+
+empty_tape > {ValueTape}
+make ValueTape pages (list *{RecordField} 0) tail (list {RecordField} 0)
+
+number_value n:i > {EvalValue}
+make EvalValue num n items (list i 0) texts (list t 0) text "" present false members (list i 0) tape empty_tape offset 0 span 0 handle (nil {NativeHandle})
+
+tape_length tape:{ValueTape} > i
++ (* 128 (length (get pages tape))) (length (get tail tape))
+
+tape_at tape:{ValueTape} idx:i > {RecordField}
+let page case (at (get pages tape) (div idx 128)) (get tail tape) stored stored
+need (at page (mod idx 128)) "value_cell" 0
+
+tape_push tape:{ValueTape} cell:{RecordField} > {ValueTape}
+let tail get tail tape
+if (eq (length tail) 128) (make ValueTape pages (append (get pages tape) tail) tail (list {RecordField} 1 cell))
+with tail tape (append tail cell)
+
+replace_cell tape:{ValueTape} index:i cell:{RecordField} > {ValueTape}
+let page div index 128
+let pages get pages tape
+let old case (at pages page) (get tail tape) stored stored
+let changed fold old (list {RecordField} 0) acc row prior append acc (if (eq (- row 1) (mod index 128)) cell prior)
+if (eq page (length pages)) (with tail tape changed)
+with pages tape (fold pages (list *{RecordField} 0) acc row group append acc (if (eq (- row 1) page) changed group))
+
+tape_copy target:{ValueTape} value:{EvalValue} > {ValueTape}
+let n get span value
+if (eq n 0) target
+if (eq n 1) (tape_push target (tape_at (get tape value) (get offset value)))
+let tape get tape value
+if (and (eq (get offset value) 0) (and (eq (length (get pages tape)) 0) (eq n (length (get tail tape)))))
+  (fold (get tail tape) target acc row cell tape_push acc cell)
+fold (indices (chunk_count n)) target prior group unused
+  let base * (- group 1) 2048
+  let left - n base
+  fold (indices (if (> left 2048) 2048 left)) prior acc row skip
+    tape_push acc (tape_at (get tape value) (+ (get offset value) (+ base (- row 1))))
+
+member_cell value:{EvalValue} slot:i > {RecordField}
+tape_at (get tape value) (+ (get offset value) (need (at (get members value) slot) "member_slot" 0))
+
+member_value value:{EvalValue} slot:i > {EvalValue}
+member_from_offset value (need (at (get members value) slot) "member_slot" 0)
+
+member_from_offset value:{EvalValue} relative:i > {EvalValue}
+let index + (get offset value) relative
+unpack_cell (get tape value) index (tape_at (get tape value) index)
+
+unpack_cell tape:{ValueTape} index:i cell:{RecordField} > {EvalValue}
+make EvalValue num (get num cell) items (get items cell) texts (get texts cell) text (get text cell) present (get present cell)
+  members (get children cell) tape (if (eq (get span cell) 0) empty_tape tape) offset (+ 1 index) span (get span cell) handle (nil {NativeHandle})
+
+sequence_size seq:{EvalValue} > i
++ (length (get members seq)) (+ (length (get items seq)) (length (get texts seq)))
+
+add_member parent:{EvalValue} key:t kind:t value:{EvalValue} bytes:i > {EvalValue}
+let tape if (and (eq (get offset parent) 0) (eq (get span parent) (tape_length (get tape parent)))) (get tape parent) (tape_copy empty_tape parent)
+let cell packed_member key kind value bytes
+let stored tape_copy (tape_push tape cell) value
+let index get span parent
+make EvalValue num (+ (get num parent) (+ bytes (if (text_eq key "") 8 0))) items (list i 0) texts (list t 0) text "" present false
+  members (append (get members parent) index) tape stored offset 0 span (tape_length stored) handle (nil {NativeHandle})
+
+packed_member key:t kind:t value:{EvalValue} bytes:i > {RecordField}
+make RecordField name key kind kind num (get num value) items (get items value) texts (get texts value) text (get text value)
+  present (get present value) bytes bytes children (get members value) span (get span value)
+
+text_value value:t > {EvalValue}
+with text (number_value 0) value
+
+list_value items:*i > {EvalValue}
+with items (number_value 0) items
+
+text_list_value items:*t > {EvalValue}
+with texts (number_value 0) items
+
+pair_value left:{EvalValue} right:{EvalValue} kind:t > {EvalValue}
+if (> (text_len kind) 3)
+  (let a pair_component kind 0
+   let b text_slice kind (+ 1 (text_len a)) (text_len kind)
+   let partial add_member (number_value 8) "" a left (field_bytes left a)
+   add_member partial "" b right (field_bytes right b))
+if (text_eq (text_slice kind 2 3) "t") (with texts left (list t 1 (get text right)))
+with items left (list i 1 (get num right))
+
+pair_member value:{EvalValue} left:b kind:t > {EvalValue}
+if (> (length (get members value)) 0) (member_value value (if left 0 1))
+if (text_eq kind "t") (text_value (if left (get text value) (need (at (get texts value) 0) "right_text" 0)))
+number_value (if left (get num value) (need (at (get items value) 0) "right_number" 0))
+
+pair_bytes value:{EvalValue} > i
+if (> (length (get members value)) 0) (get num value)
++ 40 (* 4 (+ (text_len (get text value)) (case (at (get texts value) 0) 0 right (text_len right))))
+
+pair_cost left:{EvalValue} right:{EvalValue} kind:t > i
+if (eq (text_len kind) 3) (+ 40 (* 4 (+ (text_len (get text left)) (text_len (get text right)))))
+let a pair_component kind 0
+let b text_slice kind (+ 1 (text_len a)) (text_len kind)
++ 24 (+ (field_bytes left a) (field_bytes right b))
+
+option_bytes value:{EvalValue} typ:t > i
+if (text_eq (text_slice typ 0 2) "?{") (+ 16 (named_bytes value))
+if (text_eq (text_slice typ 0 2) "?%") (+ 16 (get num value))
+if (text_eq typ "?y") (+ 24 (text_len (get text value)))
+if (text_eq typ "?t") (+ 24 (* 4 (text_len (get text value))))
+if (text_eq (text_slice typ 0 2) "?&") (+ 16 (pair_bytes value)) 24
+
+string_list_bytes texts:*t > i
+fold texts 8 cost row value + cost (+ 16 (* 4 (text_len value)))
+
+line_count_ok source:t > b
+let n text_len source
+if (not (> n 4096)) true
+let end fold (indices 4096) 0 pos row unused
+  if (not (< pos n)) pos
+  case (text_find source "\n" pos) n found (+ found 1)
+eq end n
+
+field_bytes value:{EvalValue} kind:t > i
+if (and (text_eq (text_slice kind 0 1) "*") (not (atom_type (text_slice kind 1 (text_len kind))))) (get num value)
+if (dict_kind kind) (get num value)
+if (text_eq kind "y") (+ 8 (text_len (get text value)))
+if (named_kind kind) (named_bytes value)
+if (text_eq (text_slice kind 0 1) "?") (if (get present value) (option_bytes value kind) 24)
+if (text_eq (text_slice kind 0 1) "&") (pair_bytes value)
+if (text_eq kind "*t") (string_list_bytes (get texts value))
+if (text_eq (text_slice kind 0 1) "*") (+ 8 (* 16 (length (get items value))))
+if (or (text_eq kind "z") (text_eq kind "t")) (+ 8 (* 4 (text_len (get text value)))) 8
+
+named_bytes value:{EvalValue} > i
+if (text_eq (get text value) "") (get num value) (+ 8 (* 4 (text_len (get text value))))
+
+decode_number token:t kind:t > ?{EvalValue}
+if (text_eq kind "i") (case (int token) (nil {EvalValue}) n (some (number_value n)))
+if (not (text_eq kind "b")) (nil {EvalValue})
+if (text_eq token "true") (some (number_value 1))
+if (text_eq token "false") (some (number_value 0)) (nil {EvalValue})
+
+
+octet_hex raw:t > t
+let digits "0123456789abcdef"
+fold (indices (chunk_count (text_len raw))) "" result block unused
+  let base * (- block 1) 2048
+  let left - (text_len raw) base
+  let part fold (indices (if (> left 2048) 2048 left)) "" acc row skip
+    let n bootstrap_code_at raw (+ base (- row 1))
+    let hi div n 16
+    let lo mod n 16
+    cat3 acc (text_slice digits hi (+ hi 1)) (text_slice digits lo (+ lo 1))
+  concat result part
+
+hex_octets text:t > ?{EvalValue}
+let n text_len text
+if (or (> n 262144) (eq (mod n 2) 1)) (nil {EvalValue})
+let count div n 2
+let raw fold (indices (chunk_count count)) (some "") before block unused
+  case before (nil t) prefix
+  let base * (- block 1) 2048
+  let left - count base
+  let part fold (indices (if (> left 2048) 2048 left)) (some "") held row skip
+    case held (nil t) acc
+    let pos * 2 (+ base (- row 1))
+    let hi hex_digit (bootstrap_code_at text pos)
+    let lo hex_digit (bootstrap_code_at text (+ pos 1))
+    if (or (< hi 0) (< lo 0)) (nil t) (some (concat acc (bootstrap_character (+ (* 16 hi) lo))))
+  case part (nil t) chunk (some (concat prefix chunk))
+case raw (nil {EvalValue}) value (some (text_value value))
+
+dictionary_value keys:*t values:*{EvalValue} typ:t > {EvalValue}
+fold (label_order keys) (number_value 16) acc row slot
+  let key need (at keys slot) "dictionary_key" 0
+  let value need (at values slot) "dictionary_value" 0
+  add_member acc key typ value (+ (+ 16 (* 4 (text_len key))) (field_bytes value typ))

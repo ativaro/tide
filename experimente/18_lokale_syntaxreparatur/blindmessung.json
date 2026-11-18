@@ -1,0 +1,1229 @@
+{
+  "blindplan_sha256": "f1bba60127d24bca801ac85ad92d4b75e5a2c7f5605d7e3bc1bfba898a8fd588",
+  "trials": [
+    {
+      "arm": "tide-plain",
+      "repetition": 1,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:09.437008800Z",
+      "start": 2436.404487389,
+      "ready": 2437.135578361,
+      "end": 2447.345677433,
+      "seconds": 10.941190043999995,
+      "prepare_seconds": 0.7310909719999472,
+      "gross": 19927,
+      "less_cache": 2007,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (not (> (get serial incoming) (get serial prior)))))))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get current state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "journal",
+                "body": "(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19517,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 410,
+              "reasoning_output_tokens": 219
+            }
+          ],
+          "sessions": [
+            "01a1e680-ea5e-7d80-a380-244dd7a5cd11"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2447.242186527,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "repetition": 1,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:20.396207781Z",
+      "start": 2447.350668477,
+      "ready": 2447.385653978,
+      "end": 2454.865890320,
+      "seconds": 7.515221842999836,
+      "prepare_seconds": 0.03498550099993736,
+      "gross": 19743,
+      "less_cache": 1823,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.py ---\nfrom typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n\n\n--- sequence.py ---\nfrom event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) <= (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])\n\n\n--- streak.py ---\nfrom sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 1 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n\n\n--- summary.py ---\nfrom streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, longest, _ = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+              },
+              {
+                "name": "journal",
+                "body": "state_value = (None, 0, 0, 0)\nfor item in events:\n    state_value = advance(state_value, item)\n_, breaks, _, longest = state_value\nreturn {\"breaks\": breaks, \"longest\": longest}"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19417,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 326,
+              "reasoning_output_tokens": 195
+            }
+          ],
+          "sessions": [
+            "01a1e681-1081-7e83-9ef2-429eab686f6a"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2454.820471766,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "repetition": 2,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:27.916791916Z",
+      "start": 2454.871714001,
+      "ready": 2454.907600013,
+      "end": 2461.207628139,
+      "seconds": 6.335914138000135,
+      "prepare_seconds": 0.03588601199999175,
+      "gross": 19667,
+      "less_cache": 1747,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.py ---\nfrom typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n\n\n--- sequence.py ---\nfrom event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) <= (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])\n\n\n--- streak.py ---\nfrom sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 1 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n\n\n--- summary.py ---\nfrom streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, longest, _ = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+              },
+              {
+                "name": "journal",
+                "body": "state_value = (None, 0, 0, 0)\nfor item in events:\n    state_value = advance(state_value, item)\n_, breaks, _, longest = state_value\nreturn {\"breaks\": breaks, \"longest\": longest}"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19417,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 250,
+              "reasoning_output_tokens": 119
+            }
+          ],
+          "sessions": [
+            "01a1e681-2f0f-7b72-9bd8-c6c1bbae4ea4"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2461.160815943,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "repetition": 2,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:34.258679408Z",
+      "start": 2461.213285567,
+      "ready": 2461.784189655,
+      "end": 2470.040766065,
+      "seconds": 8.827480497999659,
+      "prepare_seconds": 0.5709040879996792,
+      "gross": 19861,
+      "less_cache": 1941,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (not (> (get serial incoming) (get serial prior)))))))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get current state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "journal",
+                "body": "(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19517,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 344,
+              "reasoning_output_tokens": 190
+            }
+          ],
+          "sessions": [
+            "01a1e681-49ec-7b61-81fd-66d07909d103"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2469.935918642,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "repetition": 3,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:43.092000788Z",
+      "start": 2470.047046466,
+      "ready": 2470.083195164,
+      "end": 2485.593240258,
+      "seconds": 15.54619379199994,
+      "prepare_seconds": 0.03614869799957887,
+      "gross": 19714,
+      "less_cache": 1794,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.py ---\nfrom typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n\n\n--- sequence.py ---\nfrom event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) <= (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])\n\n\n--- streak.py ---\nfrom sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 1 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n\n\n--- summary.py ---\nfrom streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, longest, _ = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+              },
+              {
+                "name": "journal",
+                "body": "state_value = (None, 0, 0, 0)\nfor item in events:\n    state_value = advance(state_value, item)\n_, breaks, _, longest = state_value\nreturn {\"breaks\": breaks, \"longest\": longest}"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19417,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 297,
+              "reasoning_output_tokens": 166
+            }
+          ],
+          "sessions": [
+            "01a1e681-6a06-7180-adb3-44e6582e963f"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2485.548380321,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "repetition": 3,
+      "status": "passed",
+      "utc": "2026-11-16T22:36:58.643900461Z",
+      "start": 2485.598669414,
+      "ready": 2486.171733949,
+      "end": 2495.903033880,
+      "seconds": 10.304364465999697,
+      "prepare_seconds": 0.5730645349999577,
+      "gross": 19932,
+      "less_cache": 2012,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (not (> (get serial incoming) (get serial prior)))))))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get current state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "journal",
+                "body": "(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19517,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 415,
+              "reasoning_output_tokens": 261
+            }
+          ],
+          "sessions": [
+            "01a1e681-a805-72a0-a061-a5e2d50d908a"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2495.797679503,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "repetition": 4,
+      "status": "passed",
+      "utc": "2026-11-16T22:37:08.954079431Z",
+      "start": 2495.908840394,
+      "ready": 2496.493242922,
+      "end": 2506.685728781,
+      "seconds": 10.776888386999872,
+      "prepare_seconds": 0.5844025279998277,
+      "gross": 19973,
+      "less_cache": 645,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Function bodies show the compiler's grouping. Return each changed function's name and complete single-line TIDE body. Signatures: (if test yes no), (fold items seed accumulator row item step). Each argument is one expression.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.tide ---\nrecord Event\nminute:i priority:i serial:i\n\n\n--- sequence.tide ---\nearlier incoming:{Event} prior:{Event} > b\n(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (not (> (get serial incoming) (get serial prior)))))))\n\n\n--- streak.tide ---\nrecord Progress\nprior:?{Event} breaks:i current:i longest:i\n\nadvance state_value:{Progress} incoming:{Event} > {Progress}\n(let backward (case (get prior state_value) false previous (earlier incoming previous)) (let count (if backward 1 (+ (get current state_value) 1)) (let peak (get longest state_value) (make Progress prior (some incoming) breaks (+ (get breaks state_value) (if backward 1 0)) current count longest (if (> count peak) count peak)))))\n\n\n--- summary.tide ---\nrecord Report\nbreaks:i longest:i\n\njournal events:*{Event} > {Report}\n(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get current state_value))))\n\nmain batches:**{Event} > *{Report}\n(fold batches (list {Report} 0) reports row batch (append reports (journal batch)))\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "(or (< (get minute incoming) (get minute prior)) (and (eq (get minute incoming) (get minute prior)) (or (> (get priority incoming) (get priority prior)) (and (eq (get priority incoming) (get priority prior)) (< (get serial incoming) (get serial prior))))))"
+              },
+              {
+                "name": "journal",
+                "body": "(let empty (make Progress prior (nil {Event}) breaks 0 current 0 longest 0) (let state_value (fold events empty totals row item (advance totals item)) (make Report breaks (get breaks state_value) longest (get longest state_value))))"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19517,
+              "cached_input_tokens": 19328,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 456,
+              "reasoning_output_tokens": 302
+            }
+          ],
+          "sessions": [
+            "01a1e681-d230-7291-81a8-fd588280cc6c"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2506.584603431,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "repetition": 4,
+      "status": "passed",
+      "utc": "2026-11-16T22:37:19.737093370Z",
+      "start": 2506.691758952,
+      "ready": 2506.728682256,
+      "end": 2514.709541612,
+      "seconds": 8.017782660000194,
+      "prepare_seconds": 0.03692330400008359,
+      "gross": 19776,
+      "less_cache": 1856,
+      "attempts": [
+        {
+          "prompt": "An event journal sometimes reports the wrong number of reversals and the wrong longest interval. Legal order is increasing minute, then decreasing priority, then increasing serial. Identical events may repeat. Count adjacent reversals and the largest number of consecutive events in legal order anywhere in the batch. A reversal starts the next interval at the incoming event. Empty journals return zeros and batches are independent.\n\nFind and repair the regression. You may inspect any current project source and run ./verify. Stay in the current project, preserve the public interface, and change only production code. The runner applies the submitted edits together and runs ./verify. The verifier and source collection already ran. Use the prepared context directly if sufficient.\nThe reachable sources are included. Return each changed function's name and complete Python body as text, without the def line. Indentation relative to the first body statement is preserved.\n\n{\"passed\":18,\"failed\":24,\"first_failure\":{\"input\":[{\"minute\":1,\"priority\":0,\"serial\":0},{\"minute\":1,\"priority\":0,\"serial\":0}],\"expected\":{\"breaks\":0,\"longest\":2},\"actual\":{\"breaks\":1,\"longest\":1}}}\n\n--- event.py ---\nfrom typing import TypedDict\n\n\nclass Event(TypedDict):\n    minute: int\n    priority: int\n    serial: int\n\n\n--- sequence.py ---\nfrom event import Event\n\n\ndef earlier(incoming: Event, prior: Event) -> bool:\n    return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) <= (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])\n\n\n--- streak.py ---\nfrom sequence import earlier\n\n\ndef advance(state_value, incoming):\n    prior, breaks, current, longest = state_value\n    backward = prior is not None and earlier(incoming, prior)\n    count = 1 if backward else current + 1\n    return incoming, breaks + int(backward), count, max(count, longest)\n\n\n--- summary.py ---\nfrom streak import advance\n\n\ndef journal(events):\n    state_value = (None, 0, 0, 0)\n    for item in events:\n        state_value = advance(state_value, item)\n    _, breaks, longest, _ = state_value\n    return {\"breaks\": breaks, \"longest\": longest}\n\n\ndef main(batches):\n    return [journal(batch) for batch in batches]\n\n",
+          "answer": {
+            "edits": [
+              {
+                "name": "earlier",
+                "body": "return (incoming[\"minute\"], -incoming[\"priority\"], incoming[\"serial\"]) < (prior[\"minute\"], -prior[\"priority\"], prior[\"serial\"])"
+              },
+              {
+                "name": "journal",
+                "body": "state_value = (None, 0, 0, 0)\nfor item in events:\n    state_value = advance(state_value, item)\n_, breaks, _, longest = state_value\nreturn {\"breaks\": breaks, \"longest\": longest}"
+              }
+            ]
+          },
+          "reported_usage": [
+            {
+              "input_tokens": 19417,
+              "cached_input_tokens": 17920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 359,
+              "reasoning_output_tokens": 228
+            }
+          ],
+          "sessions": [
+            "01a1e681-f853-7f63-ab9e-a8fb639b7716"
+          ],
+          "commands": [],
+          "acceptance": "{\"passed\":42,\"failed\":0,\"first_failure\":null}\n",
+          "diagnostic": "",
+          "first_issue": null,
+          "local_proposal": null,
+          "answered": 2514.662759036,
+          "process_exit": 0
+        }
+      ],
+      "before": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      },
+      "public": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      },
+      "holdout": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ],
+  "preflight": [
+    {
+      "arm": "tide-plain",
+      "suite": "control",
+      "stage": "red",
+      "result": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "control",
+      "stage": "sequence",
+      "result": {
+        "passed": 22,
+        "failed": 20,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 3
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "control",
+      "stage": "summary",
+      "result": {
+        "passed": 37,
+        "failed": 5,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "control",
+      "stage": "green",
+      "result": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "holdout",
+      "stage": "red",
+      "result": {
+        "passed": 17,
+        "failed": 25,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "holdout",
+      "stage": "sequence",
+      "result": {
+        "passed": 20,
+        "failed": 22,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "holdout",
+      "stage": "summary",
+      "result": {
+        "passed": 38,
+        "failed": 4,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 3
+          },
+          "actual": {
+            "breaks": 3,
+            "longest": 2
+          }
+        }
+      }
+    },
+    {
+      "arm": "tide-plain",
+      "suite": "holdout",
+      "stage": "green",
+      "result": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "control",
+      "stage": "red",
+      "result": {
+        "passed": 18,
+        "failed": 24,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "control",
+      "stage": "sequence",
+      "result": {
+        "passed": 22,
+        "failed": 20,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": -2
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -2
+            },
+            {
+              "minute": 1,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": -2,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 3
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "control",
+      "stage": "summary",
+      "result": {
+        "passed": 37,
+        "failed": 5,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": 0
+            }
+          ],
+          "expected": {
+            "breaks": 0,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 1,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "control",
+      "stage": "green",
+      "result": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "holdout",
+      "stage": "red",
+      "result": {
+        "passed": 17,
+        "failed": 25,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "holdout",
+      "stage": "sequence",
+      "result": {
+        "passed": 20,
+        "failed": 22,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 2,
+              "priority": -2,
+              "serial": 0
+            },
+            {
+              "minute": 3,
+              "priority": 0,
+              "serial": 1
+            },
+            {
+              "minute": 0,
+              "priority": 0,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 1
+            },
+            {
+              "minute": 1,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 2
+          },
+          "actual": {
+            "breaks": 2,
+            "longest": 1
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "holdout",
+      "stage": "summary",
+      "result": {
+        "passed": 38,
+        "failed": 4,
+        "first_failure": {
+          "input": [
+            {
+              "minute": 0,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 3,
+              "priority": -1,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": -1,
+              "serial": -2
+            },
+            {
+              "minute": 2,
+              "priority": 1,
+              "serial": 0
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            },
+            {
+              "minute": 2,
+              "priority": 0,
+              "serial": -1
+            }
+          ],
+          "expected": {
+            "breaks": 2,
+            "longest": 3
+          },
+          "actual": {
+            "breaks": 3,
+            "longest": 2
+          }
+        }
+      }
+    },
+    {
+      "arm": "python-native",
+      "suite": "holdout",
+      "stage": "green",
+      "result": {
+        "passed": 42,
+        "failed": 0,
+        "first_failure": null
+      }
+    }
+  ]
+}

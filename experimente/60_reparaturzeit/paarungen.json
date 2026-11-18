@@ -1,0 +1,54 @@
+{
+  "entry": {
+    "tide": "use route\n\nmain a:i b:i > i\nroute a b\n",
+    "python": "from route import route\n\ndef main(a: int, b: int) -> int:\n    return route(a, b)\n"
+  },
+  "route": {
+    "tide": "use rulebook\n\nroute a:i b:i > i\ncompute a b\n",
+    "python": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    return compute(a, b)\n"
+  },
+  "families": {
+    "kisten": {
+      "contract": "Total of two shipments.",
+      "tide": "- a b",
+      "python": "a - b"
+    },
+    "guthaben": {
+      "contract": "Credit remaining after a charge, including negative balances.",
+      "tide": "+ a b",
+      "python": "a + b"
+    },
+    "ladegrenze": {
+      "contract": "Permit code 7 at or below capacity, code 3 above capacity.",
+      "tide": "if (< a b) 7 3",
+      "python": "7 if a < b else 3"
+    },
+    "etiketten": {
+      "contract": "Each package receives b standard labels and two reserve labels.",
+      "tide": "+ (* a b) 2",
+      "python": "a * b + 2"
+    },
+    "foerderband": {
+      "contract": "Total units from a batches of b units.",
+      "tide": "- a b",
+      "python": "a - b"
+    },
+    "trommeln": {
+      "contract": "Units left after filling as many drums of size b as possible.",
+      "tide": "* a b",
+      "python": "a * b"
+    },
+    "farbrollen": {
+      "contract": "Flag 11 when the remaining stock reaches or exceeds target, otherwise 0.",
+      "tide": "if (> a b) 11 0",
+      "python": "11 if a > b else 0"
+    },
+    "doppelzaehler": {
+      "contract": "Restore both counters to their previous values, then weight the first by 10.",
+      "tide": "* (+ a 1) 10",
+      "python": "(a + 1) * 10",
+      "tide_route": "use rulebook\n\nroute a:i b:i > i\n+ (compute a b) (+ b 1)\n",
+      "python_route": "from rulebook import compute\n\ndef route(a: int, b: int) -> int:\n    return compute(a, b) + (b + 1)\n"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+use project_model
+
+record ScalarResult
+value:{EvalValue} code:t detail:t reason:t line:?i trace:t
+
+scalar_ok n:i > {ScalarResult}
+value_ok (number_value n)
+
+value_ok value:{EvalValue} > {ScalarResult}
+make ScalarResult value value code "" detail "" reason "" line (nil i) trace ""
+
+scalar_failure file:t site:{Site} code:t message:t reason:t > {ScalarResult}
+let msg diagnosis file site code message
+make ScalarResult value (number_value 0) code code detail (if (text_eq reason "") msg (extra_fields msg (concat "\"reason\":" (json_string reason)))) reason reason line (nil i) trace ""
+
+data_rejected file:t site:{Site} reason:t > {ScalarResult}
+let error scalar_failure file site "E_DATA" "Data rejected" ""
+with reason (with detail error (extra_fields (get detail error) (concat "\"reason\":" (json_string reason)))) reason
+
+need_failure file:t site:{Site} reason:t line:i > {ScalarResult}
+let result scalar_failure file site "E_DATA" "A value is required" ""
+let detail extra_fields (get detail result) (cat3 "\"reason\":" (json_string reason) (concat ",\"input_line\":" (signed_text line)))
+with line (with reason (with detail result detail) reason) (some line)
+
+caught_value error:{ScalarResult} > {EvalValue}
+let line get line error
+with present (with text (with texts (number_value (case line 0 n n)) (list t 2 (get code error) (get reason error))) (get detail error)) (case line false n true)
+
+diagnostic_result value:{EvalValue} > {ScalarResult}
+make ScalarResult value (number_value 0) code (need (at (get texts value) 0) "caught_code" 0)
+  detail (get text value) reason (need (at (get texts value) 1) "caught_reason" 0)
+  line (if (get present value) (some (get num value)) (nil i)) trace ""
+
+diagnostic_has_reason value:{EvalValue} reason:t > b
+let error diagnostic_result value
+and (text_eq reason (get reason error)) (case (text_find (get detail error) ",\"reason\":" 0) false pos true)
+
+multiply_outside a:i b:i > b
+if (eq a 0) false
+if (> a 0) (or (< b (div -9223372036854775808 a)) (> b (div 9223372036854775807 a)))
+if (eq a -1) (eq b -9223372036854775808)
+or (< b (div 9223372036854775807 a)) (> b (div -9223372036854775808 a))
+
+scalar_operator site:{Site} file:t values:*{EvalValue} > {ScalarResult}
+let op get word site
+let a get num (need (at values 0) "operand" 0)
+if (text_eq op "not") (scalar_ok (if (eq a 0) 1 0))
+let second_value need (at values 1) "operand" 0
+let b get num second_value
+if (or (text_eq op "and") (or (text_eq op "or") (or (text_eq op "if") (text_eq op "let")))) (value_ok second_value)
+numeric_operator site file a b
+
+numeric_operator site:{Site} file:t a:i b:i > {ScalarResult}
+let op get word site
+if (text_eq op "eq") (scalar_ok (if (eq a b) 1 0))
+if (text_eq op "<") (scalar_ok (if (< a b) 1 0))
+if (text_eq op ">") (scalar_ok (if (> a b) 1 0))
+if (text_eq op "<=") (scalar_ok (if (> a b) 0 1))
+if (text_eq op ">=") (scalar_ok (if (< a b) 0 1))
+let overflow if (text_eq op "+") (or (and (> b 0) (> a (- 9223372036854775807 b))) (and (< b 0) (< a (- -9223372036854775808 b))))
+  (if (text_eq op "-") (or (and (< b 0) (> a (+ 9223372036854775807 b))) (and (> b 0) (< a (+ -9223372036854775808 b))))
+   (if (text_eq op "*") (multiply_outside a b) (and (text_eq op "div") (and (eq a -9223372036854775808) (eq b -1)))))
+if overflow (scalar_failure file site "E_OVERFLOW" "i64 overflow" "")
+if (text_eq op "+") (scalar_ok (+ a b))
+if (text_eq op "-") (scalar_ok (- a b))
+if (text_eq op "*") (scalar_ok (* a b))
+if (eq b 0) (scalar_failure file site "E_DATA" "Division by zero" "division_by_zero")
+if (text_eq op "div") (scalar_ok (div a b))
+if (text_eq op "mod") (scalar_ok (mod a b)) (fail "unknown_scalar_operation")
+
+stream_quota > i
+134217728
+
+stream_remaining budget:i offset:i shared:i > i
+if (or (< budget 0) (> budget stream_quota)) -1
+let left - budget offset
+if (< left shared) left shared
+
+stream_credit balance:i bytes:i rate:i ceiling:i > i
+let sum + balance (* bytes rate)
+if (> sum ceiling) ceiling sum
+
+stream_failure status:i file:t site:{Site} row:i > {ScalarResult}
+let code if (eq status -1) "E_IO" (if (eq status -3) "E_UTF8" "E_LIMIT")
+let message if (eq status -1) "Granted read failed"
+  if (eq status -3) "Invalid UTF-8 input"
+  if (eq status -4) "Stream line byte limit"
+  if (eq status -5) "Invalid stream byte budget" "Stream byte budget exhausted"
+let result scalar_failure file site code message ""
+with line (with detail result (extra_fields (get detail result) (concat "\"input_line\":" (decimal row)))) (some row)

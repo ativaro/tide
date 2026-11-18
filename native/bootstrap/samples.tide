@@ -1,0 +1,431 @@
+use input_issue
+
+read_argument data:{ScalarJson} path:t token:t kind:t schemas:{Declarations} > {InputRead}
+case (named_schema schemas kind) (read_member data path token kind schemas) decl
+if (get tagged decl) (read_member data path token kind schemas)
+let keys get fields decl
+if (not (and (text_eq token "{") (eq (json_count data path) (length keys)))) (input_read (nil {EvalValue}))
+fold keys (input_read (some (number_value 16))) result row key
+  case (get value result) result previous
+  let field member_path path key
+  let typ need (at (get types decl) (- row 1)) "field_type" 0
+  case (json_at data field) (with field (input_read (nil {EvalValue})) key) item
+  let part read_member data field item typ schemas
+  case (get value part) (with field part key) v
+  input_read (some (add_member previous key typ v (field_bytes v typ)))
+
+read_member data:{ScalarJson} path:t token:t kind:t schemas:{Declarations} > {InputRead}
+let nested and (> (text_len kind) 1) (white (text_slice kind 0 1) "*?")
+let extended or (measurement_type kind) (and nested (or (measurement_type (text_slice kind 1 (text_len kind))) (white (text_slice kind 1 2) "*?")))
+if (or extended (or (text_eq kind "y") (or (dict_kind kind) (or (text_eq kind "?y") (or (text_eq (text_slice kind 0 2) "?%") (or (text_eq kind "*y") (text_eq (text_slice kind 0 2) "*%")))))))
+  (let source if (text_eq token "{") (object_at data path) token
+   read_events (indexed_json source 0 (text_len source) internal_json) kind schemas)
+let prefix text_slice kind 0 2
+let optional_pair and (text_eq prefix "?&") (> (text_len kind) 4)
+if (or optional_pair (or (text_eq prefix "*&") (and (text_eq (text_slice kind 0 1) "&") (> (text_len kind) 3))))
+  (if (and optional_pair (not (text_eq token "{"))) (input_read (nil {EvalValue}))
+   if (and (not optional_pair) (not (text_eq (text_slice token 0 1) "["))) (input_read (nil {EvalValue}))
+   let cached case (array_at data path) empty_events seq (get events seq)
+   if (> (length (get tail cached)) 0) (read_events cached kind schemas)
+   let source if optional_pair (object_at data path) token
+   read_events (indexed_json source 0 (text_len source) internal_json) kind schemas)
+if (not (named_kind (named_element kind))) (input_read (decode_value data path token kind))
+if (text_eq (text_slice kind 0 1) "*")
+  (case (array_at data path) (input_read (nil {EvalValue})) seq
+   let events get events seq
+   if (> (length (get tail events)) 0) (read_events events kind schemas)
+   if (text_eq (get typ seq) "") (input_read (some (number_value 8)))
+   let typ named_element kind
+   let decl need (named_schema schemas typ) "list_schema" 0
+   if (not (and (get tagged decl) (text_eq (get typ seq) "t"))) (input_read (nil {EvalValue}))
+   let values fold (get texts seq) (some (number_value 8)) acc row label
+     case acc (nil {EvalValue}) prior
+     case (tagged_value decl label) (nil {EvalValue}) v (some (add_member prior "" typ v (field_bytes v typ)))
+   input_read values)
+if (variant_kind schemas kind)
+  (input_read (case (decode_payload data path token "t") (nil {EvalValue}) label (tagged_value (need (named_schema schemas kind) "variant_schema" 0) (get text label))))
+if (not (text_eq token "{")) (input_read (nil {EvalValue}))
+let source object_at data path
+read_events (indexed_json source 0 (text_len source) internal_json) kind schemas
+
+decode_value data:{ScalarJson} path:t token:t kind:t > ?{EvalValue}
+if (text_eq (text_slice kind 0 1) "*")
+  (if (not (text_eq (text_slice token 0 1) "[")) (nil {EvalValue})
+   fold (get lists data) (nil {EvalValue}) found row seq
+     if (and (text_eq (get path seq) path) (or (text_eq (get typ seq) "") (text_eq (get typ seq) (text_slice kind 1 2))))
+       (some (if (text_eq kind "*t") (text_list_value (get texts seq)) (list_value (get items seq)))) found)
+if (option_type kind)
+  (if (not (and (text_eq token "{") (eq (json_count data path) 1))) (nil {EvalValue})
+   case (json_at data (member_path path "some"))
+     (case (json_at data (member_path path "none")) (nil {EvalValue}) flag (if (text_eq flag "true") (some (number_value 0)) (nil {EvalValue}))) inner
+   case (decode_payload data (member_path path "some") inner (text_slice kind 1 (text_len kind))) (nil {EvalValue}) value (some (with present value true)))
+decode_payload data path token kind
+
+decode_payload data:{ScalarJson} path:t token:t kind:t > ?{EvalValue}
+if (pair_type kind) (decode_pair token kind)
+if (text_eq kind "t")
+  (fold (get strings data) (nil {EvalValue}) found row field
+   if (text_eq (first field) path) (some (text_value (second field))) found)
+decode_number token kind
+
+pair_atom token:t kind:t > ?{EvalValue}
+if (not (text_eq kind "t")) (decode_number token kind)
+if (not (text_eq (text_slice token 0 1) "\"")) (nil {EvalValue})
+let item string_token token
+if (and (text_eq (get kind item) "string") (eq (get end item) (text_len token))) (some (text_value (get value item))) (nil {EvalValue})
+
+decode_pair token:t kind:t > ?{EvalValue}
+let end - (text_len token) 1
+if (not (and (text_eq (text_slice token 0 1) "[") (text_eq (text_slice token end (+ end 1)) "]"))) (nil {EvalValue})
+let split if (text_eq (text_slice token 1 2) "\"") (get end (decode_json_string token 1 internal_json))
+  (case (text_find token "," 1) end found found)
+if (not (text_eq (text_slice token split (+ split 1)) ",")) (nil {EvalValue})
+case (pair_atom (text_slice token 1 split) (text_slice kind 1 2)) (nil {EvalValue}) left
+case (pair_atom (text_slice token (+ split 1) end) (text_slice kind 2 3)) (nil {EvalValue}) right
+some (pair_value left right kind)
+
+wire_number value:i kind:t > t
+if (text_eq kind "b") (if (eq value 0) "false" "true") (signed_text value)
+
+atom_wire value:{EvalValue} kind:t > t
+if (text_eq kind "t") (json_string (get text value)) (wire_number (get num value) kind)
+
+payload_wire value:{EvalValue} kind:t > t
+if (not (pair_type kind)) (atom_wire value kind)
+let left text_slice kind 1 2
+let right text_slice kind 2 3
+cat3 "[" (atom_wire value left) (cat3 "," (atom_wire (pair_member value false right) right) "]")
+
+record WireValueFrame
+value:{EvalValue} kind:t index:i
+
+record WireValueState
+frames:*{WireValueFrame} output:t
+
+structured_value v:{EvalValue} typ:t > b
+let inner if (text_eq (text_slice typ 0 1) "?") (text_slice typ 1 (text_len typ)) typ
+if (and (not (text_eq inner typ)) (not (get present v))) false
+or (dict_kind inner) (or (> (length (get members v)) 0) (or (text_eq (text_slice inner 0 2) "*{") (text_eq (text_slice inner 0 2) "*&")))
+
+wire_open typ:t > t
+if (or (named_kind typ) (dict_kind typ)) "{"
+if (text_eq (text_slice typ 0 1) "?") (concat "{\"some\":" (wire_open (text_slice typ 1 (text_len typ)))) "["
+
+wire_close typ:t > t
+if (or (named_kind typ) (dict_kind typ)) "}"
+if (text_eq (text_slice typ 0 1) "?") (concat (wire_close (text_slice typ 1 (text_len typ))) "}") "]"
+
+wire_value_step state:{WireValueState} > {WireValueState}
+let frames get frames state
+case (at frames (- (length frames) 1)) state frame
+let value get value frame
+let index get index frame
+let parents fold frames (list {WireValueFrame} 0) acc row f if (eq row (length frames)) acc (append acc f)
+let kind get kind frame
+if (eq index (length (get members value)))
+  (let ending wire_close kind
+   make WireValueState frames parents output (concat (get output state) ending))
+let cell member_cell value index
+let child member_value value index
+let typ get kind cell
+let key get name cell
+let heading concat (if (eq index 0) "" ",") (if (and (text_eq key "") (not (or (dict_kind kind) (text_eq (text_slice kind 0 2) "?%")))) "" (concat (json_string key) ":"))
+let resumed append parents (with index frame (+ index 1))
+let group structured_value child typ
+let path if group (append resumed (make WireValueFrame value child kind typ index 0)) resumed
+make WireValueState frames path output (cat3 (get output state) heading (if group (wire_open typ) (field_wire child typ)))
+
+scalar_wire value:{EvalValue} kind:t > t
+if (not (structured_value value kind)) (field_wire value kind)
+let initial make WireValueState frames (list {WireValueFrame} 1 (make WireValueFrame value value kind kind index 0)) output ""
+let limit + 1 (* 2 (get span value))
+let result fold (indices (chunk_count limit)) (pair (wire_open kind) initial) prior block unused
+  let left - limit (* (- block 1) 2048)
+  let groups div (+ (if (> left 2048) 2048 left) 63) 64
+  fold (indices groups) prior before group skip
+    if (eq (length (get frames (second before))) 0) before
+    let n - left (* (- group 1) 64)
+    let part fold (indices (if (> n 64) 64 n)) (with output (second before) "") acc row unused_row wire_value_step acc
+    pair (concat (first before) (get output part)) part
+first result
+
+field_wire value:{EvalValue} kind:t > t
+if (text_eq kind "q") (fixed_text (get num value))
+if (text_eq kind "z") (json_string (get text value))
+if (text_eq kind "y") (json_string (octet_hex (get text value)))
+if (text_eq (text_slice kind 0 1) "?") (if (get present value) (cat3 "{\"some\":" (field_wire value (text_slice kind 1 (text_len kind))) "}") "{\"none\":true}")
+if (named_kind kind) (json_string (get text value))
+if (option_payload kind) (payload_wire value kind)
+let element text_slice kind 1 2
+let items get items value
+let strings get texts value
+let size if (text_eq element "t") (length strings) (length items)
+let text fold (indices (div (+ size 127) 128)) "" prefix part unused
+  let start * (- part 1) 128
+  let left - size start
+  let chunk fold (indices (if (< left 128) left 128)) "" acc pos skip
+    let i + start (- pos 1)
+    json_item acc (if (text_eq element "t") (json_string (need (at strings i) "text_item" 0)) (wire_number (need (at items i) "list_value" 0) element))
+  json_item prefix chunk
+cat3 "[" text "]"
+
+wire_token token:t > {JsonValueToken}
+let first_char text_slice token 0 1
+let op if (or (text_eq token "{") (text_eq first_char "[")) first_char
+  (if (text_eq first_char "\"") (get kind (string_token token)) "scalar")
+make JsonValueToken op op key "" value token
+
+member_issue result:{InputRead} data:{ScalarJson} path:t token:t kind:t schemas:{Declarations} pointer:t base:t > t
+let wire wire_token token
+let op get op wire
+if (not (and (or (text_eq op "{") (text_eq op "[")) (input_container op kind (named_schema schemas kind))))
+  (let typ if (and (text_eq op "string") (variant_kind schemas kind)) "unknown variant tag" (input_wire_type wire)
+   extra_fields base (input_issue pointer kind typ))
+let cached case (array_at data path) empty_events seq (get events seq)
+let bad_row get bad_row result
+if (and (> bad_row -1) (> (length (get tail cached)) 0))
+  (let here cat3 pointer "/" (decimal bad_row)
+   if (eq bad_row 4096) (extra_fields base (input_issue here "at most 4096 items" "extra item"))
+   input_event_issue cached (get bad_event result) here (named_element kind) schemas base)
+if (> (length (get tail cached)) 0) (input_event_issue cached 0 pointer kind schemas base)
+let source if (text_eq token "{") (object_at data path) token
+input_event_issue (indexed_json source 0 (text_len source) internal_json) 0 pointer kind schemas base
+
+argument_issue result:{InputRead} data:{ScalarJson} path:t token:t kind:t schemas:{Declarations} pointer:t base:t > t
+let field get field result
+if (text_eq field "")
+  (let record_type named_schema schemas kind
+   if (and (text_eq token "{") (case record_type false decl not (get tagged decl)))
+     (let decl need record_type "input_schema" 0
+      field_set_issue data path (get fields decl) (get types decl) pointer kind base)
+   member_issue result data path token kind schemas pointer base)
+let decl need (named_schema schemas kind) "input_schema" 0
+let typ need (at (get types decl) (need (entry_at (get fields decl) field) "input_field" 0)) "field_type" 0
+let child member_path path field
+let here cat3 pointer "/" field
+case (json_at data child) (extra_fields base (input_issue here typ "missing")) raw
+member_issue result data child raw typ schemas here base
+
+field_set_issue data:{ScalarJson} path:t keys:*t types:*t pointer:t kind:t base:t > t
+let missing fold keys -1 index row key
+  if (or (> index -1) (case (json_at data (member_path path key)) false token true)) index (- row 1)
+if (> missing -1)
+  (extra_fields base (input_issue (cat3 pointer "/" (need (at keys missing) "field" 0)) (need (at types missing) "field_type" 0) "missing"))
+let extra fold (member_keys data path) "" name row key
+  if (or (not (text_eq name "")) (case (entry_at keys key) false known true)) name key
+if (> (text_len extra) 128) (extra_fields base (input_issue pointer kind "undeclared field"))
+let actual if (text_eq kind "parameters") "extra parameter" (input_wire_type (wire_token (need (json_at data (member_path path extra)) "extra_field" 0)))
+extra_fields base (input_issue (cat3 pointer "/" extra) "absent" actual)
+
+scalar_inputs data:{ScalarJson} path:t fn:{Signature} file:t loc:{Site} > *{EvalValue}
+let params get params fn
+let valid and (eq (json_count data path) (length params))
+  (fold params true ok row key and ok (case (json_at data (member_path path key)) false token true))
+if (not valid)
+  (let base extra_fields (diagnosis file loc "E_INPUT" "Expected exactly the declared parameters") (concat "\"expected\":" (json_labels params))
+   fail (field_set_issue data path params (get types fn) (if (text_eq path "") "" "/inputs") "parameters" base))
+fold params (list {EvalValue} 0) acc row key
+  let param_path member_path path key
+  let token need (json_at data param_path) "parameter" 0
+  let typ need (at (get types fn) (- row 1)) "param_type" 0
+  if (text_eq typ "n")
+    (let mock read_argument data param_path token "%&it" (get schemas fn)
+     append acc (need (get value mock) (diagnosis file loc "E_INPUT" "HTTPS examples require a path map of [status,body] pairs") 0))
+  if (text_eq typ "p") fail (diagnosis file loc "E_CAPABILITY" "Use a host PostgreSQL grant for database integration tests")
+  if (text_eq typ "w") (if (text_eq token "\":memory:\"") (append acc (with present (number_value 0) true)) (fail (diagnosis file loc "E_CAPABILITY" "Write examples require :memory:")))
+  if (text_eq typ "d")
+    (if (text_eq token "\":memory:\"") (append acc (text_value ":memory:")) (fail (diagnosis file loc "E_CAPABILITY" "Database examples require :memory:")))
+  let result if (text_eq typ "r") (read_argument data param_path token "t" (get schemas fn)) (read_argument data param_path token typ (get schemas fn))
+  case (get value result)
+    (let base extra_fields (diagnosis file loc "E_INPUT" (concat "Invalid argument " key)) (concat "\"expected\":" (json_string typ))
+     fail (argument_issue result data param_path token typ (get schemas fn) (concat (if (text_eq path "") "/" "/inputs/") key) base)) value
+  append acc (if (text_eq typ "r") (with num value (- 0 row)) value)
+
+record ParameterOrder
+lower:i upper:i strict:b
+
+record InputDomain
+bounds:*&ii orders:*{ParameterOrder}
+
+empty_input_domain > {InputDomain}
+make InputDomain bounds (list &ii 0) orders (list {ParameterOrder} 0)
+
+record SampleArgs
+target:i args:*{EvalValue} expected:{EvalValue} error_wire:t error_code:t reason:t line:?i domain:{InputDomain}
+
+intersect_interval current:&ii low:i high:i > &ii
+pair (if (> low (first current)) low (first current)) (if (< high (second current)) high (second current))
+
+require_interval current:&ii relation:t value:i error:t > &ii
+if (text_eq relation "eq") (intersect_interval current value value)
+if (or (text_eq relation "ge") (text_eq relation "gt"))
+  (let strict text_eq relation "gt"
+   if (and strict (eq value 9223372036854775807)) fail error
+   intersect_interval current (+ value (if strict 1 0)) 9223372036854775807)
+if (or (text_eq relation "le") (text_eq relation "lt"))
+  (let strict text_eq relation "lt"
+   if (and strict (eq value -9223372036854775808)) fail error
+   intersect_interval current -9223372036854775808 (- value (if strict 1 0)))
+fail error
+
+order_holds lower:i upper:i strict:b > b
+if strict (< lower upper) (<= lower upper)
+
+parameter_interval bounds:*&ii index:i > &ii
+need (at bounds index) "parameter_interval" 0
+
+tighten_order bounds:*&ii order:{ParameterOrder} error:t > *&ii
+let left get lower order
+let right get upper order
+let lo first (parameter_interval bounds left)
+let hi second (parameter_interval bounds right)
+let step if (get strict order) 1 0
+if (not (order_holds lo hi (get strict order))) fail error
+let right_min + lo step
+let left_max - hi step
+if (and (<= right_min (first (parameter_interval bounds right))) (>= left_max (second (parameter_interval bounds left)))) bounds
+fold bounds (list &ii 0) updated row interval
+  let index - row 1
+  let lo if (eq index right) right_min -9223372036854775808
+  let hi if (eq index left) left_max 9223372036854775807
+  let narrowed intersect_interval interval lo hi
+  if (> (first narrowed) (second narrowed)) fail error
+  append updated narrowed
+
+tighten_domain domain:{InputDomain} error:t > {InputDomain}
+let orders get orders domain
+if (eq (length orders) 0) domain
+let bounds get bounds domain
+let settled fold (indices (length bounds)) bounds acc row unused
+  fold orders acc current col order tighten_order current order error
+let stable fold orders true ok row order
+  let left parameter_interval settled (get lower order)
+  let right parameter_interval settled (get upper order)
+  let strict get strict order
+  and ok (and (order_holds (first left) (first right) strict) (order_holds (second left) (second right) strict))
+if (not stable) fail error
+with bounds domain settled
+
+require_order orders:*{ParameterOrder} left:i right:i relation:t error:t > *{ParameterOrder}
+if (text_eq relation "eq") (append (append orders (make ParameterOrder lower left upper right strict false)) (make ParameterOrder lower right upper left strict false))
+if (or (text_eq relation "le") (text_eq relation "lt")) (append orders (make ParameterOrder lower left upper right strict (text_eq relation "lt")))
+if (or (text_eq relation "ge") (text_eq relation "gt")) (append orders (make ParameterOrder lower right upper left strict (text_eq relation "gt")))
+fail error
+
+sample_domain data:{ScalarJson} fn:{Signature} loc:{Site} file:t declaration:t > {InputDomain}
+let names get params fn
+let n length names
+let error diagnosis file loc "E_INPUT" "Expected requires with integer comparisons for each of 1..8 parameters"
+if (or (rule_signature fn) (or (not (text_eq declaration "{")) (or (or (eq n 0) (> n 8)) (not (eq (json_count data ".requires") n))))) fail error
+let domain fold names empty_input_domain acc row name
+  let path member_path ".requires" name
+  let shape need (json_at data path) error 0
+  let kind need (at (get types fn) (- row 1)) error 0
+  if (not (and (text_eq shape "{") (text_eq kind "i"))) fail error
+  let full pair -9223372036854775808 9223372036854775807
+  let parsed fold (member_keys data path) (pair full (get orders acc)) current pos relation
+    let token need (json_at data (member_path path relation)) error 0
+    if (text_eq (text_slice token 0 1) "\"")
+      (let other need (entry_at names (get value (string_token token))) error 0
+       pair (first current) (require_order (second current) (- row 1) other relation error))
+    pair (require_interval (first current) relation (need (int token) error 0) error) (second current)
+  let interval first parsed
+  if (> (first interval) (second interval)) fail error
+  make InputDomain bounds (append (get bounds acc) interval) orders (second parsed)
+tighten_domain domain (diagnosis file loc "E_INPUT" "Contradictory requires comparisons")
+
+target_domain samples:*{SampleArgs} target:i > {InputDomain}
+fold samples empty_input_domain found row sample
+  let domain get domain sample
+  if (and (eq (get target sample) target) (> (length (get bounds domain)) 0)) domain found
+
+sample_args ex:{FunctionExample} program:{CheckedFunctions} > {SampleArgs}
+let file get file ex
+let loc get loc ex
+let data get data ex
+let name get target ex
+let index need (entry_at (get names program) name) (diagnosis file loc "E_NAME" (concat "Unknown example target: " name)) 0
+let fn need (at (get signatures program) index) "function" 0
+let err json_at data ".expect_error"
+let expected json_at data ".expect"
+let is_error case err false token true
+let is_rule rule_signature fn
+let input_path if is_rule ".events" ".inputs"
+let result_type if is_rule (concat "*" (get result fn)) (get result fn)
+let requires json_at data ".requires"
+let keys case requires 2 declaration 3
+if (not (and (eq (json_count data "") keys) (and (case (json_at data input_path) false token true)
+  (or is_error (case expected false token true))))) fail (diagnosis file loc "E_EXAMPLE" "Invalid example keys")
+let domain case requires empty_input_domain declaration (sample_domain data fn loc file declaration)
+if (and (not is_rule) (not (text_eq (need (json_at data ".inputs") "inputs" 0) "{")))
+  (let base extra_fields (diagnosis file loc "E_INPUT" "Expected exactly the declared parameters") (concat "\"expected\":" (json_labels (get params fn)))
+   let token need (json_at data ".inputs") "inputs" 0
+   fail (extra_fields base (input_issue "/inputs" "object" (input_wire_type (wire_token token)))))
+let args if is_rule
+  (let kind concat "*" (need (at (get types fn) 0) "event_type" 0)
+   let token need (json_at data ".events") "events" 0
+   let result read_member data ".events" token kind (get schemas fn)
+   list {EvalValue} 1 (case (get value result)
+     (fail (member_issue result data ".events" token kind (get schemas fn) "/events" (diagnosis file loc "E_INPUT" "Invalid events"))) value value))
+  (scalar_inputs data ".inputs" fn file loc)
+if (not is_error)
+  (let token need expected "expect" 0
+   let result read_argument data ".expect" token result_type (get schemas fn)
+   let want case (get value result)
+     (fail (argument_issue result data ".expect" token result_type (get schemas fn) "/expect" (diagnosis file loc "E_EXAMPLE" "Invalid expected value"))) value value
+   if (and is_rule (not (eq (length (get items want)) (length (get items (need (at args 0) "events" 0)))))) fail (diagnosis file loc "E_EXAMPLE" "One output per event required")
+   make SampleArgs target index args args expected want error_wire "" error_code "" reason "" line (nil i) domain domain)
+let code_token need (json_at data ".expect_error.code") (diagnosis file loc "E_EXAMPLE" "Invalid expected error") 0
+let code if (text_eq (text_slice code_token 0 1) "\"") (json_named code_token) ""
+let reason json_at data ".expect_error.reason"
+let input_line_token json_at data ".expect_error.input_line"
+let path_token json_at data ".expect_error.path"
+let count + (case path_token 0 text 1) (+ (case reason 1 text 2) (case input_line_token 0 text 1))
+let invalid diagnosis file loc "E_EXAMPLE" "Invalid expected error"
+if (case path_token false token not (text_eq (text_slice token 0 1) "\"")) fail invalid
+let known or (> (error_bit code) 0) (or (text_eq code "E_TRANSACTION") (or (text_eq code "E_CAPABILITY") (text_eq code "E_LIMIT")))
+if (or (not (eq (json_count data ".expect_error") count)) (not known)) fail invalid
+let position case input_line_token (nil i) token (some (need (int token) invalid 0))
+let detail case reason "" text (if (text_eq (text_slice text 0 1) "\"") (get value (string_token text)) (fail invalid))
+let want cat3 "{\"code\":" code_token
+  (cat3 (case reason "" text (concat ",\"reason\":" text)) (case input_line_token "" text (concat ",\"input_line\":" text)) (case path_token "}" text (cat3 ",\"path\":" text "}")))
+make SampleArgs target index args args expected (number_value 0) error_wire want error_code code reason detail line position domain domain
+
+member_keys data:{ScalarJson} path:t > *t
+let keys fold (get paths data) (list t 0) acc pos field
+  let cut need (text_rfind field "." (text_len field)) "json_path" 0
+  if (text_eq (text_slice field 0 cut) path) (append acc (path_key (text_slice field (+ cut 1) (text_len field)) true)) acc
+sorted_labels keys
+
+record ContractFrame
+path:t keys:*t index:i
+
+record ContractWriter
+stack:*{ContractFrame} output:t
+
+contract_object data:{ScalarJson} > t
+object_at data ""
+
+object_at data:{ScalarJson} root_path:t > t
+let nested if (text_eq root_path "") (fold (get lists data) (list t 0) acc row item
+  if (> (length (get tail (get events item))) 0) (append acc (get path item)) acc) (list t 0)
+let root make ContractFrame path root_path keys (member_keys data root_path) index 0
+let start make ContractWriter stack (list {ContractFrame} 1 root) output "{"
+let limit + 1 (* 2 (length (get paths data)))
+let writer fold (indices (div (+ limit 63) 64)) start held block ignored
+  let left - limit (* (- block 1) 64)
+  fold (indices (if (> left 64) 64 left)) held acc tick unused
+    let stack get stack acc
+    case (at stack (- (length stack) 1)) acc frame
+    let parents fold stack (list {ContractFrame} 0) prior row item if (eq row (length stack)) prior (append prior item)
+    let index get index frame
+    case (at (get keys frame) index)
+      (make ContractWriter stack parents output (concat (get output acc) "}")) key
+    let path member_path (get path frame) key
+    let raw need (json_at data path) "contract_member" 0
+    let value case (entry_at nested path) raw found (canonical_array (get events (need (array_at data path) "contract_array" 0)))
+    let resumed append parents (with index frame (+ index 1))
+    let frames if (text_eq value "{") (append resumed (make ContractFrame path path keys (member_keys data path) index 0)) resumed
+    let field cat3 (if (eq index 0) "" ",") (json_string key) (concat ":" value)
+    make ContractWriter stack frames output (concat (get output acc) field)
+get output writer

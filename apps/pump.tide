@@ -1,0 +1,18 @@
+rule pump level:i > b
+state on:b=false
+when < level 20 -> on=set true
+when > level 80 -> on=set false
+else -> on=keep
+out on
+
+simulate levels:*i > *b
+scan pump levels
+
+main > *b
+simulate list i 6 20 19 20 80 81 80
+
+example boundaries pump
+{"events":[20,19,20,80,81,80],"expect":[false,true,true,true,false,false]}
+
+example second_cycle pump
+{"events":[19,85,15,50],"expect":[true,false,true,true]}
