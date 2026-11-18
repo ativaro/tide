@@ -1,0 +1,27 @@
+use single
+
+use batch
+
+example library_inside in_band
+{"inputs":{"sample":0,"low":-4,"high":3},"expect":true}
+
+example library_outside in_band
+{"inputs":{"sample":4,"low":-4,"high":3},"expect":false}
+
+example single_inside accepted
+{"inputs":{"sample":2,"low":1,"high":5},"expect":true}
+
+example single_low accepted
+{"inputs":{"sample":-4,"low":-4,"high":3},"expect":true}
+
+example single_outside accepted
+{"inputs":{"sample":8,"low":1,"high":5},"expect":false}
+
+example batch_edges accepted_count
+{"inputs":{"samples":[-5,-4,3,4],"low":-4,"high":3},"expect":2}
+
+example batch_repeats accepted_count
+{"inputs":{"samples":[2,1,2,3,2],"low":2,"high":2},"expect":3}
+
+example batch_empty accepted_count
+{"inputs":{"samples":[],"low":1,"high":5},"expect":0}

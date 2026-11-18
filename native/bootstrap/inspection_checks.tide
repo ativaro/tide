@@ -53,9 +53,12 @@ let beta concat "package beta 1.0.0" body
 let graph project_supply (project_supply root alpha "" (text_len alpha)) beta "" (text_len beta)
 let prefix "{\"caller\":\"choose\",\"file\":\"entry.tide\",\"line\":6,\"column\":"
 let targets list &tt 3 (pair "alpha.parse" (cat3 prefix "4}," (concat prefix "20}"))) (pair "beta.parse" (concat prefix "33}")) (pair "main" "")
+let files list t 3 "vendor/alpha/1.0.0/package.tide" "vendor/beta/1.0.0/package.tide" "entry.tide"
 fold targets true ok pos item
   let output project_finish graph ":entry.tide" (first item) "call-sites"
-  let expected cat3 "\"definition\":" (json_string (first item)) (cat3 ",\"call_sites\":[" (second item) "]")
+  let path need (at files (- pos 1)) "expected_file" 0
+  let declaration cat3 "],\"declaration\":{\"file\":" (json_string path) (if (eq pos 3) ",\"line\":8,\"column\":1}" ",\"line\":5,\"column\":1}")
+  let expected cat3 "\"definition\":" (json_string (first item)) (cat3 ",\"call_sites\":[" (second item) declaration)
   and ok (text_eq expected (text_slice output 0 (need (text_find output "\n" 0) "call_site_snapshot" 0)))
 
 block_hash_checks > b

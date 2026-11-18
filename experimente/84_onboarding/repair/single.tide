@@ -1,0 +1,4 @@
+use band
+
+accepted sample:i low:i high:i > b
+in_band low high sample

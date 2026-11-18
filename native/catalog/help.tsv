@@ -83,7 +83,7 @@ help.context	options:
 help.context	  -h, --help           show this help message and exit
 help.context	  --json               JSON output (default)
 help.context	  --function FUNCTION
-help.context	  --call-sites         list each resolved call with caller, file, line and column
+help.context	  --call-sites         locate the declaration and each direct call by file, line and column
 help.context	  --node NODE          revision-local line:column
 help.context	  --example-index      list affected example names, targets and fingerprints
 help.context	  --example NAME       include one affected example in full

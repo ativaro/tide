@@ -1,0 +1,10 @@
+use json_readings
+
+example units notes
+{"inputs":{"payload":"{\"limits\":{},\"readings\":[{\"sensor\":\"A\",\"value\":3,\"unit\":\"°C\"},{\"sensor\":\"B\",\"value\":4,\"unit\":\"kPa\"}]}"},"expect":{"readings":[{"sensor":"A","value":3,"note":{"none":true},"unit":{"some":"°C"}},{"sensor":"B","value":4,"note":{"none":true},"unit":{"some":"kPa"}}],"limits":{}}}
+
+example old_and_null notes
+{"inputs":{"payload":"{\"limits\":{},\"readings\":[{\"sensor\":\"A\",\"value\":3},{\"sensor\":\"B\",\"value\":4,\"unit\":null}]}"},"expect":{"readings":[{"sensor":"A","value":3,"note":{"none":true},"unit":{"none":true}},{"sensor":"B","value":4,"note":{"none":true},"unit":{"none":true}}],"limits":{}}}
+
+example wrong_unit notes
+{"inputs":{"payload":"{\"limits\":{},\"readings\":[{\"sensor\":\"A\",\"value\":3},{\"sensor\":\"B\",\"value\":4,\"unit\":99}]}"},"expect_error":{"code":"E_DATA","path":"/readings/1/unit"}}

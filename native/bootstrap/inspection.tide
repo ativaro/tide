@@ -43,8 +43,13 @@ fold (get trees program) reached found row tree
   let name need (at (get names program) (- row 1)) "caller_name" 0
   if calls (append found name) found
 
+inspection_position file:t site:{Site} > t
+cat3 "\"file\":" (json_string file)
+  (cat3 ",\"line\":" (decimal (get line site)) (concat ",\"column\":" (decimal (get column site))))
+
 inspect_call_sites program:{CheckedFunctions} index:i > t
-let name need (at (get names program) index) "callee_name" 0
+let callee need (at (get signatures program) index) "callee_signature" 0
+let name get name callee
 let sites fold (get trees program) "" prior row tree
   if (and (not (eq (- row 1) index)) (case (entry_at (get calls tree) name) true hit false)) prior
   let fn need (at (get signatures program) (- row 1)) "caller_signature" 0
@@ -52,10 +57,10 @@ let sites fold (get trees program) "" prior row tree
   fold (append (get pages nodes) (get tail nodes)) prior acc page_index page
     fold page acc found pos node
       if (not (eq (get target node) index)) found
-      let site get site node
-      let caller cat3 "{\"caller\":" (json_string (get name fn)) (concat ",\"file\":" (json_string (get file fn)))
-      json_item found (cat3 caller (concat ",\"line\":" (decimal (get line site))) (cat3 ",\"column\":" (decimal (get column site)) "}"))
-cat3 "\"definition\":" (json_string name) (cat3 ",\"call_sites\":[" sites "]")
+      let caller cat3 "{\"caller\":" (json_string (get name fn)) ","
+      json_item found (cat3 caller (inspection_position (get file fn) (get site node)) "}")
+let declaration inspection_position (get file callee) (get loc callee)
+cat3 "\"definition\":" (json_string name) (cat3 ",\"call_sites\":[" sites (cat3 "],\"declaration\":{" declaration "}"))
 
 inspect_impact compiled:{CompiledProject} name:t file:t summary:b selected:?t > t
 let program get program compiled

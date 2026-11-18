@@ -1,0 +1,5 @@
+use band
+
+accepted_count samples:*i low:i high:i > i
+fold samples 0 count row sample
++ count (if (in_band low high sample) 1 0)

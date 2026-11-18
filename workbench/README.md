@@ -1,5 +1,7 @@
 # Change a TIDE function body
 
+To find the function in your editor, run `tide context FILE --function NAME --call-sites` in the entry file's directory. Open `declaration.file` at the reported line and column. The `call_sites` array gives the same coordinates for each direct caller. [Worked example](../GETTING_STARTED.md#navigate-a-multi-file-failure)
+
 `function_body.tide` prepares an order for exactly one function of the entry file. The model receives the order, signature, and current body. It responds with a TIDE expression on a single line. The caller can provide examples, an observed error message, or required signatures in field `task`. For a new function, the desired signature and a body like `fail "offen"` suffice as a starting point.
 
 The following recipes also document the earlier total scope of the toolbench. For natively supported projects, `forms`, `check`, `context`, `hole`, `edit --edits`, and `edit --source` are available. Complete candidate files can be directly checked and adopted. Detection of function heads runs natively with `./tide run workbench/source_layout.tide --call function_header --inputs '{"line":"  balance opening:i > i","name":"balance"}'`. This call yields `true`. For the complete toolbench recipes, file read permissions and record parameters are still missing. [Executable example with balance](../README.md#check-and-accept-a-change)

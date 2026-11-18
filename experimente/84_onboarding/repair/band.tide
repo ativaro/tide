@@ -1,0 +1,2 @@
+in_band sample:i low:i high:i > b
+and (>= sample low) (<= sample high)

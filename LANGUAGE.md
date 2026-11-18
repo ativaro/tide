@@ -58,6 +58,20 @@ The importer supplies a visible record or variant by name. For example, `use jso
 
 All imports of a given package in one project must agree on the version and concrete type. A missing, unexpected or conflicting argument produces `E_PACKAGE`. An unknown type produces `E_TYPE`. Check a parameterized package through a consumer that supplies its type. The module graph records the spelling at the import in `type_argument`.
 
+### Libraries used by the importers
+
+In the order and measurement applications, `use jsoninput@2.0.0[Document]` supplies the application's own record type. Choose the entry point according to how the input reaches your program.
+
+| Public call | Argument types | Result | When to use it |
+|---|---|---|---|
+| `jsoninput.decode bytes` | `bytes:y` | `{Document}` | Decode UTF-8 bytes already in memory. Use `utf8_bytes` for a text value. |
+| `jsoninput.snapshot input` | `input:r` | `{Document}` | Decode the granted input snapshot. Bind the grant with `--read input=PATH`. |
+| `jsoninput.load input budget` | `input:r budget:{jsoninput.ReadBudget}` | `{Document}` | Set an explicit file limit with `(make jsoninput.ReadBudget max_bytes 4096)`. An oversized file raises `E_LIMIT`. |
+| `rowtext.parse text` | `text:t` | `*t` | Split report text into lines with `rowtext@2.0.0`. |
+| `measurements.parse line row` | `line:t row:i` | `i` | Parse one integer with `measurements@1.3.0`. A failure carries the supplied row number. |
+
+The JSON decoder reads the field types from the record, including optional fields, and reports an invalid value at its JSON pointer. Open the package entry to see its exports. To inspect a built-in operation such as `json_decode`, use `tide describe json_decode --project FILE`. [JSON library source](packages/jsoninput/2.0.0/package.tide) · [JSON data and errors](#bytes-dictionaries-and-typed-json-import) · [Report using both parse functions](apps/report_packages/report.tide)
+
 ### Comparing Keys with Different Priorities
 
 The library module [ordering.tide](lib/ordering.tide) can be copied alongside your own modules and included with `use ordering`. `prefer_min candidate current on_equal` decides in favor of the smaller i64 value. `prefer_max` decides in favor of the larger. In case of equality, both return `on_equal`. This allows combining ascending and descending criteria across the entire i64 range.
@@ -254,7 +268,7 @@ Since 0.6, `map` is reserved. For migrating from 0.5, first rename your own defi
 
 `context` provides revision-bound node identifiers. At the entry, they have the form `Zeile:Spalte`; in modules, `Datei:Zeile:Spalte`. A selection shows compact and fully parenthesized forms. `hole` creates a virtual change draft at a selected node. `__hole__` is rejected as an unresolved name until a valid expression is used.
 
-Before changing a package pin, run `tide context FILE --function PACKAGE.FUNCTION --call-sites` against the working version. The response contains the project revision and one `call_sites` entry for each direct call in the checked project. Each entry gives the caller definition, source file and one-based line and column of the call. A module filename is relative to the project entry directory. Calls to other packages with the same function name are resolved independently. Query each application entry you ship. Use `--example-index` in a separate query to see transitive callers and affected examples.
+Before changing a package pin, run `tide context FILE --function PACKAGE.FUNCTION --call-sites` against the working version. The response includes the project revision, the selected definition's `declaration` location and one `call_sites` entry per direct call. Each location gives a file and one-based line and column. Each call also names its caller. Imported paths are relative to the project entry directory. The entry itself uses the path passed on the command line. Calls to other packages with the same function name are resolved independently. Query each application entry you ship. Use `--example-index` in a separate query to see transitive callers and affected examples.
 
 Normally, `context` contains all examples whose target directly or indirectly uses the selected definition. With `--example-index`, each example entry contains only `name`, `target`, and `contract_sha256`. With `--example NAME`, the answer contains the full entry for this name. A missing or irrelevant name for the definition yields `E_EXAMPLE`. The options are mutually exclusive and can each be combined with `--node ID`. The additional field `examples_view` reads `index` at the index and `selected` at the single selection. For the same project revision, fingerprints match across all views.
 
