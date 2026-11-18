@@ -1,13 +1,15 @@
 # TIDE
 
-TIDE ist eine eigenständige Programmiersprache. Ihre Spezifikation legt Syntax, Typen, Auswertungs- und Fehlerregeln fest. Die native Ausführung soll die Programme direkt nach diesen Regeln ausführen.
+TIDE is a standalone programming language. Its specification defines its syntax, types, evaluation and error handling. Native execution must follow those rules directly.
 
-Für Anwendungen, Bibliotheken, Spracherweiterungen und neue ausführbare Tests ist TIDE die einzige Implementierungssprache. Fehlt einer Anwendung eine Fähigkeit, bauen wir sie als wiederverwendbaren Teil von TIDE und verwenden sie anschließend in der Anwendung. Ein neuer oder erweiterter Host, Adapter oder Hilfsprozess in Python oder einer anderen Sprache ist kein zulässiger Ersatz.
+Write all project documentation in English. This includes specifications, repository guides, plans, experiment reports, and project-authored GitHub descriptions, issues, pull requests and releases. Keep commands, identifiers, recorded measurements and hash-verified study inputs reproducible.
 
-Python soll aus der gesamten TIDE-Werkzeugkette verschwinden, einschließlich Bootstrap, Build, Ausführung, Tests und interaktiven Hosts. CPython bleibt als externe Vergleichssprache für die ausdrücklich angeforderten Messungen zulässig. Die Ablösung eines bestehenden Befehls wird in einer Umgebung ohne Python mit denselben Eingaben und erwarteten Ergebnissen geprüft.
+Implement applications, libraries, language extensions and new executable tests in TIDE. When an application needs a capability, add it to TIDE as a reusable feature and use it from the application. A host, adapter or helper process written in another language cannot substitute for a language feature.
 
-Für Sprachentscheidungen zählen auch die Kosten des programmierenden Modells. Laufzeit, Tokens bis zur korrekten Lösung und Zeit bis zur erfolgreichen Reparatur haben eigene 100×-Ziele und eigene Vergleichsmessungen. [Messregeln](tasks/plan.md)
+Remove Python from the entire TIDE toolchain, including bootstrap, build, execution, testing and interactive hosts. CPython may serve as an external baseline for explicitly requested comparisons. Verify each replacement command with the same inputs and expected results in an environment without Python.
+
+Evaluate language changes against three separate 100× goals: program runtime, model tokens to a correct solution, and time to a successful repair. Measure each independently. [Measurement rules](tasks/plan.md)
 
 ## graphify
 
-Bei der Eingabe `/graphify` zuerst den installierten Skill unter `~/.Codex/skills/graphify/SKILL.md` oder seine Anweisungen verwenden.
+When the user enters `/graphify`, first use the installed skill at `~/.Codex/skills/graphify/SKILL.md` or follow its instructions.

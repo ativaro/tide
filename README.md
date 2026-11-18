@@ -1,10 +1,10 @@
 # TIDE 0.6.5
 
-**Typed Instructions, Deterministic Execution** ist eine eigenständige, statisch typisierte Programmiersprache. Die Sprachreferenz definiert ihre Auswertung und Fehler. Ein Sprachmodell kann den Operationskatalog abfragen, Aufrufer untersuchen, einen Teilausdruck ersetzen und fachliche Beispiele ausführen.
+**TIDE (Typed Instructions, Deterministic Execution)** is a standalone, statically typed programming language. A coding agent can query the operation catalog, inspect callers, replace a subexpression and run examples against the [language specification](LANGUAGE.md).
 
-Die ersten drei Stufen der Roadmap sind am Bestellimport dokumentiert. Der lokale Vergleich umfasst 15 offene Aufgaben zum Schreiben, Erweitern und Reparieren. Weitere 15 Aufgaben sind für die unabhängige Schlussmessung versiegelt. [20-Stufen-Plan](tasks/plan.md#20-stufen-von-der-machbarkeitsstudie-zur-führenden-sprache) · [Ausgangsmessung gegen CPython](experimente/72_bestellimport_basis/bericht.md)
+The order-import study compares TIDE and CPython on 15 open tasks covering writing, extending and repairing programs. Another 15 tasks are sealed for the final evaluation. [20-stage roadmap](tasks/plan.md#20-stages-from-feasibility-study-to-leading-language) · [Open tasks](experimente/72_bestellimport_basis/public-tasks.md) · [Baseline results](experimente/72_bestellimport_basis/report.md)
 
-Der Starter im Checkout und das installierte Paket für Linux x86-64 verwenden dieselben nativen Werkzeuge. Build, Tests, Installation und Ausführung kommen ohne Python aus. Der in TIDE geschriebene Compiler erzeugt eigenständige ELF-Programme für Saldo, Heizgradstunden, Kartonsaldo, Hitzealarm, Pumpe und Licht. `check`, `fmt` und `test` verarbeiten auch verteilte Typdeklarationen mit Records und Varianten nativ. Funktionen über Ganzzahlen, Wahrheitswerten und Unicode-Texten lassen sich mit benannten JSON-Eingaben aufrufen. Er verarbeitet außerdem Records, Varianten, Paare sowie Listen und Optionen dieser Werte. Der native Prüfer führt auch ihre Beispiele aus. Version, CLI-Hilfe, Katalog, gewöhnliche Projekt-Lockdateien und die Stapelabfrage für geklammerte Funktionsrümpfe laufen ebenfalls nativ. [Nativer Build und unterstützter Sprachumfang](native/README.md)
+The checkout launcher and installed Linux x86-64 package use the same native tools to build, test, install and run TIDE without Python. The TIDE compiler emits standalone ELF programs for examples such as heating degree hours and pump control. The native checker handles modules, records, variants, pairs, lists and options and runs their examples. The CLI also serves help and catalog queries, checks lockfiles, and inspects parenthesized function bodies in batches. [Native compiler and supported features](native/README.md)
 
 ```sh
 ./tide build apps/light.tide /tmp/tide-light simulate
@@ -12,21 +12,21 @@ Der Starter im Checkout und das installierte Paket für Linux x86-64 verwenden d
 # [true,true,false]
 ```
 
-Der [JSON-Messbericht](apps/report_packages/json_report.tide) importiert Messwerte mit optionalen Notizen und einem Wörterbuch für sensorabhängige Grenzwerte. Der Importer läuft mit `tide run` und als eigenständiges AOT-Programm.
+The [JSON Measurement Report](apps/report_packages/json_report.tide) imports measurement values with optional notes and a dictionary for sensor-dependent thresholds. The importer runs with `tide run` and as a standalone AOT program.
 
-Der [API-Importer](apps/report_packages/api_report.tide) lädt zwei Seiten über HTTPS und speichert sie gemeinsam in SQLite. Eine wiederholte Messwert-ID bleibt pro Quelle eindeutig. Der [Messdienst](apps/report_packages/measurement_service.tide) nimmt Dezimalmesswerte mit Zeitstempel an und liest sie aus PostgreSQL zurück.
+The [API Importer](apps/report_packages/api_report.tide) loads two pages via HTTPS and stores them together in SQLite. A repeated measurement value-ID remains uniquely identifiable per source. The [Measurement Service](apps/report_packages/measurement_service.tide) accepts decimal measurement values with timestamps and reads them back from PostgreSQL.
 
 ```sh
-# Die Datenbank und die Rolle müssen bereits bestehen.
+# The database and the role must already exist.
 dsn='dbname=messbericht'
 ./tide run apps/report_packages/measurement_service.tide --call prepare --pg "pg=$dsn"
 ./tide build --service apps/report_packages/measurement_service.tide /tmp/messdienst persist
 /tmp/messdienst --listen 127.0.0.1:8080 --workers 4 --pg "pg=$dsn"
 ```
 
-`make test` prüft den Import gegen einen lokalen TLS-Server. `make check-postgres` prüft als gewöhnlicher Benutzer den Dienst, HTTPS-POST und den Abbruch einer laufenden Datenbankabfrage. Das Ziel startet seinen eigenen PostgreSQL-Cluster und benötigt PostgreSQL-Serverwerkzeuge, curl, OpenSSL und socat. Beim nativen Build werden die Entwicklungsheader von libcurl und libpq benötigt, für den Dienst zusätzlich libmicrohttpd. [Sprachreferenz](LANGUAGE.md#externe-apis-und-dienste)
+`make test` checks the import against a local TLS server. `make check-postgres` checks the service as a regular user, HTTPS-POST, and the termination of a running database query. The target starts its own PostgreSQL cluster and requires PostgreSQL server tools, curl, OpenSSL, and socat. For the native build, the development headers of libcurl and libpq are required, and additionally libmicrohttpd for the service. [Language Reference](LANGUAGE.md#external-apis-and-services)
 
-Der [SQLite-Messbericht](apps/report_packages/sqlite_report.tide) speichert jeden JSON-Import in einer Transaktion. Er berechnet den Bericht über alle gespeicherten Messwerte. `by_sensor` liest die Werte eines Sensors in Einfügereihenfolge. Beide Befehle arbeiten mit derselben Datenbank.
+The [SQLite Measurement Report](apps/report_packages/sqlite_report.tide) stores each JSON import in a transaction. It calculates the report over all stored measurements. `by_sensor` reads the values of a sensor in insertion order. Both commands work with the same database.
 
 ```sh
 printf '%s\n' '{"readings":[{"sensor":"A","value":7}],"limits":{}}' > messungen.json
@@ -34,20 +34,20 @@ printf '%s\n' '{"readings":[{"sensor":"A","value":7}],"limits":{}}' > messungen.
 ./tide run apps/report_packages/sqlite_report.tide --call by_sensor --db db=messungen.db --inputs '{"sensor":"A"}'
 ```
 
-`make check-sqlite` prüft Commit und Rollback über Prozessgrenzen mit `run` und eigenständigen AOT-Programmen. [SQLite-Sprachregeln](LANGUAGE.md#sqlite)
+`make check-sqlite` checks commit and rollback across process boundaries with `run` and independent AOT programs. [SQLite Language Rules](LANGUAGE.md#sqlite)
 
-Der [Streaming-Messbericht](apps/report_packages/stream_report.tide) verarbeitet UTF-8-Dateien mit explizitem Bytebudget. So verarbeitet die vorab übersetzte Fassung eine Messdatei bis 100 MiB.
+The [Streaming Measurement Report](apps/report_packages/stream_report.tide) processes UTF-8 files with an explicit byte budget. Thus, the ahead-of-time compiled version processes a measurement file up to 100 MiB.
 
 ```sh
 ./tide build --aot apps/report_packages/stream_report.tide /tmp/tide-stream-report
 /tmp/tide-stream-report --read input=messwerte.txt --inputs '{"bytes":104857600,"limit":80}'
 ```
 
-[Sprachregeln für den Leser](LANGUAGE.md#zeilenweise-lesen) · [Durchsatz und Spitzenspeicher im Vergleich mit CPython](experimente/67_zeilenstrom/bericht.md)
+[Language Rules for the Reader](LANGUAGE.md#read-line-by-line) · [Throughput and Peak Memory Compared with CPython](experimente/67_zeilenstrom/report.md)
 
-## In einer Minute ausprobieren
+## Quick start
 
-Mit `map` schreibst du den Ausdruck für ein einzelnes Element. TIDE baut die Ergebnisliste in Eingabereihenfolge auf. Dieser Aufruf addiert 10 zu jeder Zahl und gibt `[12,9,12]` aus. [Ausführbare Beispiele](native/bootstrap/fixtures/functions/maps.tide)
+With `map` you write the expression for a single element. TIDE builds the result list in input order. This call adds 10 to each number and outputs `[12,9,12]`. [Executable Examples](native/bootstrap/fixtures/functions/maps.tide)
 
 ```sh
 ./tide run native/bootstrap/fixtures/functions/maps.tide --call offset --inputs '{"xs":[2,-1,2],"shift":10}'
@@ -60,32 +60,32 @@ printf 'variant Signal\nrot gruen\n\nrecord Messung\nwert:i farbe:{Signal}\n' > 
 ./tide fmt "$demo/messung.tide"
 ```
 
-Die erste Ausgabe enthält die Typen und die Revision der gelesenen Datei. Mit `./tide modules apps/space_invaders.tide` erhältst du die Projektversion, die importierten Dateien und die Position jeder `use`-Zeile. Das funktioniert auch, während du einen Funktionsrumpf bearbeitest. [Mehrdateienbeispiel](native/bootstrap/fixtures/modules/report.tide)
+The first output contains the types and the revision of the read file. With `./tide modules apps/space_invaders.tide` you get the project version, the imported files, and the position of each `use` line. This also works while you are editing a function body. [Multi-file Example](native/bootstrap/fixtures/modules/report.tide)
 
-Mit `./tide test native/bootstrap/fixtures/functions/variants.tide` kannst du zehn Variantenbeispiele im nativen Paket prüfen. Sie verwenden benannte Fälle für die Auswahl bei Gleichstand und für die Rundung. Wenn in einem Projekt ein neuer Fall hinzukommt, nennt `check` die betroffenen `match`-Stellen samt Datei und Zeile. [Werkzeugmessung](experimente/44_native_varianten/bericht.md)
+With `./tide test native/bootstrap/fixtures/functions/variants.tide` you can check ten variant examples in the native package. They use named cases for tie-breaking and for rounding. If a new case is added to a project, `check` names the affected `match` locations along with file and line. [Tool Measurement](experimente/44_native_varianten/report.md)
 
-Die Bibliothek für Rangfolgen kannst du direkt im Standardpaket ausführen. Der erste Befehl prüft acht Beispiele. Der zweite ergibt `true`, weil bei Gleichstand der vorgegebene Wert `on_equal` entscheidet.
+You can run the ranking library directly in the standard package. The first command checks eight examples. The second yields `true`, because in case of a tie the specified value `on_equal` decides.
 
 ```sh
 ./tide test lib/ordering.tide
 ./tide run lib/ordering.tide --call prefer_min --inputs '{"candidate":7,"current":7,"on_equal":true}'
 ```
 
-Das Saldoprogramm verarbeitet eine Liste von Buchungen im Standardpaket. Der erste Aufruf ergibt `97`. Der zweite prüft drei Beispiele einschließlich eines Überlaufs.
+The balance program processes a list of transactions in the standard package. The first call yields `97`. The second checks three examples including an overflow.
 
 ```sh
 ./tide run apps/balance.tide --call balance --inputs '{"opening":100,"entries":[-20,15,-8,10]}'
 ./tide test apps/balance.tide
 ```
 
-Die Höchstwertsuche gibt den Messwert und die erste zugehörige Zeilennummer als Paar zurück. Bei einer leeren Liste liefert sie `{"none":true}`.
+The maximum search returns the measurement value and the first associated line number as a pair. For an empty list, it yields `{"none":true}`.
 
 ```sh
 ./tide run apps/peak_lines.tide --call peak_lines --inputs '{"rows":["-8","-2","-2"]}'
 # {"some":[-2,2]}
 ```
 
-Der Messbericht gibt einen Record mit benannten Feldern zurück. Bei einem Limit von 80 zählen nur 81 und 98 als Überschreitungen. Bei einer leeren Liste ist `above` gleich `0` und `peak` die leere Option. [Messbericht](apps/summary.tide)
+The measurement report returns a record with named fields. With a limit of 80, only 81 and 98 count as exceedances. For an empty list, `above` equals `0` and `peak` is the empty option. [Measurement Report](apps/summary.tide)
 
 ```sh
 ./tide run apps/summary.tide --call summarize --inputs '{"rows":["80","81","98"],"limit":80}'
@@ -93,27 +93,27 @@ Der Messbericht gibt einen Record mit benannten Feldern zurück. Bei einem Limit
 ./tide test apps/summary_checks.tide
 ```
 
-Die Regeln für Licht, Pumpe und Hitzealarm laufen ebenfalls im Standardpaket. Bei der Lichtregel zeigt die Spur für das zweite Ereignis das erste Ausbleiben einer Bewegung. `missed` steigt von null auf eins, das Licht bleibt an.
+The rules for light, pump, and heat alarm also run in the standard package. For the light rule, the trace for the second event shows the first absence of movement. `missed` rises from zero to one, the light stays on.
 
 ```sh
 ./tide run apps/light.tide --call simulate --inputs '{"events":[true,false,false]}'
 ./tide trace apps/light.tide --example restart --step 2 --fields on,missed
 ```
 
-Der erste Aufruf ergibt `[true,true,false]`. Die Spur gibt den gewählten Zweig, den vorherigen und neuen Wert jedes ausgewählten Feldes sowie den Ausgabewert an. [Regelprüfung und Messung](experimente/31_native_regeln_und_spuren/bericht.md)
+The first call yields `[true,true,false]`. The trace provides the selected branch, the previous and new value of each selected field, and the output value. [Rule check and measurement](experimente/31_native_regeln_und_spuren/report.md)
 
-Der native Auswerter unterstützt auch `catch`. Ein Aufrufer kann mit `has_reason` einen bekannten Fehler behandeln, mit `input_line` die fehlerhafte Datenzeile lesen und mit `raise` die ursprüngliche Diagnose weitergeben. `tide check` zeigt unter `may_fail`, welche Fehler nach dem Handler aus einer Funktion gelangen können.
+The native evaluator also supports `catch`. A caller can handle a known error with `has_reason`, read the erroneous data line with `input_line`, and pass on the original diagnosis with `raise`. `tide check` shows under `may_fail` which errors can emerge from a function after the handler.
 
 ```sh
 ./tide run apps/reading_check.tide --call first_invalid --inputs '{"rows":["12","x","3"]}'
 # {"some":2}
 ```
 
-Die Zeilennummer stammt aus dem importierten Zahlenparser. Bei vollständig gültigen Eingaben liefert das Programm `{"none":true}`. [Zeilenprüfung](apps/reading_check.tide) · [Zahlenparser](apps/readings.tide)
+The line number originates from the imported number parser. For fully valid inputs, the program yields `{"none":true}`. [Line check](apps/reading_check.tide) · [Number parser](apps/readings.tide)
 
-## Nano, Space Invaders und Datei-Eingaben
+## Nano, Space Invaders, and file inputs
 
-Nanos Editorlogik lässt sich ohne Terminal ausführen. Der erste Befehl prüft zehn Beispiele. Der zweite fügt ein Zeichen ein und fordert das Speichern an. Die Rückgabe enthält den geänderten Puffer und die Aktion `"store"`. Die Eingabe `stored` oder `io_error` liefert die Rückmeldung eines Speicherversuchs. [Nano-Prüfungen und Werkzeugmessung](experimente/49_zusammengesetzte_paare/bericht.md)
+Nano's editor logic can be executed without a terminal. The first command checks ten examples. The second inserts a character and prompts for saving. The return value contains the modified buffer and the action `"store"`. The input `stored` or `io_error` yields the feedback of a save attempt. [Nano checks and tool measurement](experimente/49_zusammengesetzte_paare/report.md)
 
 ```sh
 ./tide test apps/nano_checks.tide
@@ -121,14 +121,14 @@ Nanos Editorlogik lässt sich ohne Terminal ausführen. Der erste Befehl prüft 
   --inputs '{"body":"","events":[{"key":"character","value":"Ω"},{"key":"control","value":"o"}]}'
 ```
 
-Nanos Cursormodul lässt sich auch einzeln aufrufen. Das Beispiel liefert `1`, weil das Katzenzeichen einen Unicode-Codepunkt belegt und unmittelbar danach CRLF beginnt. [Prüfung des Cursormoduls ohne Python](experimente/36_native_texte/bericht.md)
+Nano's cursor module can also be called individually. The example yields `1` because the cat symbol occupies a Unicode code point and immediately afterwards CRLF begins. [Cursor module check without Python](experimente/36_native_texte/report.md)
 
 ```sh
 ./tide run apps/cursor.tide --call line_limit --inputs '{"body":"🐈\r\nΩ","pos":0}'
 ./tide test apps/cursor.tide
 ```
 
-Space Invaders lässt sich im nativen Paket taktweise ausführen. `main` liefert die Startwelt mit 21 Gegnern und drei Schilden. `tick` verarbeitet einen Tastensatz, `draw` liefert die Zeichen samt Bildschirmpositionen und Farben als JSON. Die elf Beispiele prüfen unter anderem Bewegung, Treffer, Pause und Fortsetzung. [Spielprüfungen und Werkzeugmessung](experimente/45_native_sammlungen/bericht.md)
+Space Invaders can be executed step-by-step in the native package. `main` yields the start world with 21 enemies and three shields. `tick` processes a key sequence, `draw` yields the characters along with screen positions and colors as JSON. The eleven examples check, among others, movement, hits, pause, and continuation. [Game checks and tool measurement](experimente/45_native_sammlungen/report.md)
 
 ```sh
 ./tide test apps/invaders_checks.tide
@@ -136,97 +136,97 @@ world=$(./tide run apps/space_invaders.tide)
 ./tide run apps/space_invaders.tide --call draw --inputs "{\"world\":$world}"
 ```
 
-Für interaktives Spielen mit `tide play` fehlen noch die nativen Tastatur- und Bildschirmoperationen. Das Öffnen und Speichern echter Dokumente in Nano benötigt noch den nativen Dateizugriff. [Editorprüfungen](apps/nano_checks.tide)
+For interactive play with `tide play`, native keyboard and screen operations are still missing. Opening and saving real documents in Nano still requires native file access. [Editor checks](apps/nano_checks.tide)
 
-Der Messbericht kann eine freigegebene UTF-8-Datei direkt lesen. `--read` bindet das deklarierte Leserecht, `--inputs` enthält den Grenzwert.
+The measurement report can directly read a granted UTF-8 file. `--read` binds the declared read right, `--inputs` contains the threshold value.
 
 ```sh
 ./tide run apps/report.tide --read input=werte.txt --inputs '{"limit":80}'
 ```
 
-Der Messbericht lässt sich vorab als eigenständiges Programm übersetzen. Der Build prüft die importierten Module. Die ausführbare Datei braucht beim Start nur die benannte Eingabedatei und den Grenzwert.
+The measurement report can be compiled ahead-of-time as a standalone program. The build checks the imported modules. The executable file needs only the named input file and the threshold value at startup.
 
 ```sh
 ./tide build --aot apps/report.tide /tmp/tide-report
 /tmp/tide-report --read input=werte.txt --inputs '{"limit":80}'
 ```
 
-Die Paketfassung des Messberichts verwendet `rowtext.parse` aus `rowtext@2.0.0` und `measurements.parse` aus `measurements@1.3.0`. Der Importgraph nennt Pfade und Versionen beider Abhängigkeiten.
+The measurement report package version uses `rowtext.parse` from `rowtext@2.0.0` and `measurements.parse` from `measurements@1.3.0`. The import graph lists paths and versions of both dependencies.
 
 ```sh
 ./tide modules apps/report_packages/report.tide --json
 ./tide test apps/report_packages/report.tide
 ```
 
-[Versionierte Pakete](LANGUAGE.md#versionierte-pakete) · [Vergleich mit CPython](experimente/66_native_pakete/bericht.md)
+[Versioned packages](LANGUAGE.md#versioned-packages) · [Comparison with CPython](experimente/66_native_pakete/report.md)
 
-## Programme
+## Programs
 
-| Anwendung | Eingabe und Verhalten |
+| Application | Input and Behavior |
 |---|---|
-| [TIDE nano](apps/nano.tide) | Editorlogik mit Cursor, Zeilenzwischenablage, Speicheranforderung und Bestätigung beim Beenden. |
-| [Space Invaders](apps/space_invaders.tide) | Interaktives Terminalspiel mit Formation, Schilden und Gegenfeuer. |
-| [Messbericht](apps/report.tide) | Freigegebene Messdatei und Grenzwert ergeben die Anzahl der Überschreitungen und den optionalen Höchstwert. |
-| [Erste Fundstelle](apps/first_peak.tide) | Höchste Zahl und erste Zeilennummer bei Gleichstand. |
-| [Maximum](apps/maximum.tide) | Höchste Zahl, auch bei ausschließlich negativen Werten. |
-| [Licht](apps/light.tide) | Bewegung schaltet ein, zwei aufeinanderfolgende Ruhemeldungen schalten aus. |
-| [Pumpe](apps/pump.tide) | Start unter 20, Stopp über 80, Zustand bei Gleichheit erhalten. |
-| [Temperaturalarm](apps/heat.tide) | Meldet pro Ereignis, ob die letzten drei Temperaturen alle über 80 lagen. |
-| [Buchungssaldo](apps/balance.tide) | Faltet eine Buchungsliste über einen Anfangssaldo und erkennt i64-Überlauf. |
+| [TIDE nano](apps/nano.tide) | Editor logic with cursor, line buffer, save request, and confirmation on exit. |
+| [Space Invaders](apps/space_invaders.tide) | Interactive terminal game with formation, shields, and counterfire. |
+| [Measurement report](apps/report.tide) | Granted measurement file and threshold value yield the number of exceedances and the optional maximum value. |
+| [First occurrence](apps/first_peak.tide) | Highest number and first line number in case of a tie. |
+| [Maximum](apps/maximum.tide) | Highest number, even with exclusively negative values. |
+| [Light](apps/light.tide) | Motion turns on, two consecutive idle messages turn off. |
+| [Pump](apps/pump.tide) | Start under 20, stop over 80, state preserved on equality. |
+| [Temperature Alarm](apps/heat.tide) | Reports per event whether the last three temperatures were all above 80. |
+| [Booking Balance](apps/balance.tide) | Folds a booking list over an initial balance and detects i64 overflow. |
 
-## Programmieren mit einem Modell
+## Programming with a Model
 
-Bei unbekanntem Fehlerort stellt TIDE vom öffentlichen Einstieg aus die erreichbaren Funktions- und Regelrümpfe mit ihren Dateinamen, den Typdeklarationen und dem beobachteten Fehler zusammen. Das Modell kann mehrere Änderungen auf einmal zurückgeben. [Reparatur über Modulgrenzen](workbench/README.md#fehler-über-mehrere-dateien-finden)
+For an unknown error location, TIDE retrieves reachable function and rule bodies from the public entry point, including their filenames, type declarations, and the observed error. The model may return multiple changes at once. [Repair across module boundaries](workbench/README.md#find-errors-across-multiple-files)
 
-Für verschachtelte Ausdrücke gibt es eine Ansicht mit der vom Compiler ermittelten Klammerung. Änderungen an mehreren Funktionen lassen sich über ihre Namen als gemeinsame Kandidatenkopie prüfen. [Gruppierte Funktionsrümpfe reparieren](workbench/README.md#gruppierte-funktionsrümpfe-reparieren)
+For nested expressions, there is a view showing the compiler-determined bracketing. Changes to multiple functions can be checked as common candidate copies via their names. [Repair grouped function bodies](workbench/README.md#repair-grouped-function-bodies)
 
-Für kleine Änderungen kann eine Modellantwort je Funktion den betroffenen Textausschnitt und seinen Ersatz angeben. Die Werkbank sucht im gruppierten Rumpf und prüft, dass die Stelle eindeutig ist. [Ausschnitt ersetzen](workbench/README.md#einen-ausschnitt-im-funktionsrumpf-ersetzen)
+For small changes, a model answer per function can specify the affected text excerpt and its replacement. The workbench searches the grouped body and verifies that the location is unique. [Replace excerpt](workbench/README.md#replace-an-excerpt-in-the-function-body)
 
-Für Rangfolgen über mehrere Ganzzahlschlüssel stellt das TIDE-Modul `ordering` die Funktionen `prefer_min` und `prefer_max` bereit. Eine vorbereitete Reparaturansicht kann zusätzlich die Signaturen eingebundener, bisher unbenutzter Funktionen anzeigen. [Priorisierte Vergleiche](LANGUAGE.md#schlüssel-mit-unterschiedlicher-priorität-vergleichen) · [Verfügbare Funktionen im Reparaturkontext](workbench/README.md#weitere-verfügbare-funktionen-anzeigen)
+For rankings over multiple integer keys, the TIDE module `ordering` provides the functions `prefer_min` and `prefer_max`. A prepared repair view can additionally display the signatures of integrated, previously unused functions. [Prioritized comparisons](LANGUAGE.md#comparing-keys-with-different-priorities) · [Available functions in the repair context](workbench/README.md#show-further-available-functions)
 
-Für eine einzelne Funktion kann TIDE den Arbeitsauftrag aus der Quelldatei ausschneiden. Das Modell liefert den neuen Funktionsrumpf in einer Antwort. TIDE prüft ihn gegen Typen, Beispiele und die gespeicherte Revision. [Aufruf und Beispiel](workbench/README.md)
+For a single function, TIDE can cut out the task from the source file. The model delivers the new function body in a response. TIDE checks it against types, examples, and the stored revision. [Call and example](workbench/README.md)
 
-1. `tide describe` liefert Typnotation, Programmstruktur und verfügbare Operationen. Mit `tide describe OP` lässt sich eine einzelne Operation nachschlagen.
-2. `tide check DATEI` prüft das ganze Programm einschließlich importierter Module und gibt Revision, Signaturen, Aufrufe, Außenwirkungen und mögliche abfangbare Fehler aus.
-3. `tide context DATEI --function NAME` zeigt die direkten und mittelbaren Aufrufer, betroffene Beispiele und die Knoten der Funktion. `--node ID` beschränkt die Ansicht auf eine Stelle und zeigt deren lokale Bindungen und Klammerung.
-4. `tide hole DATEI --function NAME --node ID` liefert für eine geplante Ersetzung den benötigten Typ, die verfügbaren Werte und einen Editentwurf. Das Modell setzt einen vollständigen Ausdruck ein.
-5. `tide edit DATEI --base REV --edits JSON` prüft Änderungen an Knoten der Einstiegsdatei und importierter Module gemeinsam. Mit `--source KANDIDAT` kannst du die vollständige Einstiegsdatei vorlegen. `--write` übernimmt die geprüfte Fassung einer einzelnen Datei atomar.
-6. `tide trace DATEI --example NAME --step N` macht den Zweig und die Feldänderungen beim angegebenen Ereignis sichtbar. `tide fmt DATEI` gibt formatierten Quelltext aus.
+1. `tide describe` provides type notation, program structure, and available operations. With `tide describe OP`, a single operation can be looked up.
+2. `tide check DATEI` checks the entire program, including imported modules, and outputs revision, signatures, calls, side effects, and possible catchable errors.
+3. `tide context DATEI --function NAME` shows direct and indirect callers, affected examples, and the nodes of the function. `--node ID` restricts the view to a location and shows its local bindings and bracketing.
+4. `tide hole DATEI --function NAME --node ID` provides the required type, available values, and an edit draft for a planned replacement. The model inserts a complete expression.
+5. `tide edit DATEI --base REV --edits JSON` checks changes to nodes of the entry file and imported modules jointly. With `--source KANDIDAT`, you can provide the complete entry file. `--write` atomically takes over the checked version of a single file.
+6. `tide trace DATEI --example NAME --step N` makes the branch and field changes visible for the specified event. `tide fmt DATEI` outputs formatted source code.
 
-Mit `./tide test DATEI --explain` erhält ein Agent beim ersten fehlgeschlagenen Beispiel auch dessen Eingabe und die von seinem Einstieg erreichbaren Definitionen. Bei Funktionen enthält der Befund den geklammerten Rumpf und dessen Knotenkennung. Damit kann der Agent einen korrigierten Rumpf unmittelbar mit `edit --edits` gegen dieselbe Revision prüfen. [Beispiel und Blindvergleich mit Python](experimente/38_fehlerkontext/bericht.md)
+With `./tide test DATEI --explain`, an agent also receives the input and the definitions reachable from its entry point upon the first failed example. For functions, the finding includes the parenthesized function body and its node identifier. This allows the agent to immediately verify a corrected body against the same revision using `edit --edits`. [Example and blind comparison with Python](experimente/38_fehlerkontext/report.md)
 
-Bei vielen möglichen Aufrufpfaden zeigt `./tide test DATEI --explain=executed`, welche Definitionen und Zweige das fehlerhafte Beispiel tatsächlich ausgeführt hat. Im Tarifbeispiel erreicht ein Paket von genau 500 Gramm den teuren Tarif. Der Befund enthält dafür drei der zehn erreichbaren Funktionen. Bei der Rundungsaufgabe läuft hingegen der ganze Aufrufpfad, und die zusätzlichen Zweigangaben vergrößern den Befund. [Eingaben und Messwerte](experimente/42_ausgefuehrte_zweige/bericht.md)
+For many possible call paths, `./tide test DATEI --explain=executed` shows which definitions and branches the faulty example actually executed. In the tariff example, a package of exactly 500 grams reaches the expensive tariff. The finding includes three of the ten reachable functions for this. In contrast, for the rounding task, the entire call path runs, and the additional branch information enlarges the finding. [Inputs and measurements](experimente/42_ausgefuehrte_zweige/report.md)
 
-`./tide test DATEI --diff --explain=nodes` ergänzt den Befund um bearbeitbare Operatorstellen mit Typen und formverträglichen Alternativen. Die Knotenkennungen und die Revision gehen direkt an `tide edit --edits`. [Knoten reparieren](workbench/README.md#einen-knoten-reparieren)
+`./tide test DATEI --diff --explain=nodes` augments the finding with editable operator positions, including types and form-compatible alternatives. The node identifiers and revision are passed directly to `tide edit --edits`. [Edit nodes](workbench/README.md#repair-a-node)
 
-### Eine Änderung vorbereiten
+### Prepare a change
 
-Bei langen Ergebnissen liefert `--diff` den Pfad und die zwei abweichenden Werte. Im folgenden Versuch enthält die letzte von 384 Buchungen den Saldo 26. Das Beispiel erwartet an `/rows/383/balance` den Wert 27. Der zweite Befehl liefert zusätzlich die ausgeführten Funktionen samt Knotenkennungen. Beide Aufrufe enden beim absichtlich eingebauten Fehler mit Status 1. [Messwerte und Vergleich mit CPython](experimente/46_ergebnisvergleich/bericht.md)
+For long results, `--diff` provides the path and the two differing values. In the subsequent attempt, the last booking from 384 contains the balance 26. The example expects the value 27 at `/rows/383/balance`. The second command additionally provides the executed functions along with their node identifiers. Both calls end with status 1 when encountering the intentionally inserted error. [Measurements and comparison with CPython](experimente/46_ergebnisvergleich/report.md)
 
 ```sh
 ./tide test experimente/46_ergebnisvergleich/ledger/panel.tide --diff
 ./tide test experimente/46_ergebnisvergleich/ledger/panel.tide --diff --explain=executed
 ```
 
-Beim Journal mit 384 Buchungen verkürzte der optimierte Record-Leser die Zeit bis zum ausgeführten Fehlerbefund von 22,54 auf 17,75 ms. Der vorbereitete CPython-Vergleich benötigte 18,66 ms. Bei zwei kleinen Mehrdateifehlern zu Gleichstand und Rundung lieferte bereits die statische Ansicht alle beteiligten Funktionen. [Werkzeugzeiten, Tokens und Abnahmefälle](experimente/47_record_eingaben/bericht.md)
+With 384 bookings in the journal, the optimized record reader reduced the time to the executed error finding from 22.54 to 17.75 ms. The prepared CPython comparison required 18.66 ms. For two small multi-file errors regarding equality and rounding, the static view already provided all involved functions. [Tool times, tokens, and acceptance cases](experimente/47_record_eingaben/report.md)
 
-Im Saldo-Beispiel prüft dieser Aufruf den Typ und die lokalen Bindungen am Anfang des Funktionsrumpfs. Die Knotennummern stammen aus der gerade gelesenen Revision.
+In the balance example, this call checks the type and local bindings at the beginning of the function body. The node numbers come from the currently read revision.
 
 ```sh
 ./tide context apps/balance.tide --function balance
 ./tide hole apps/balance.tide --function balance --node 2:1
 ```
 
-Bei großen Beispieleingaben kann das Modell zuerst die Namen und Fingerabdrücke der betroffenen Verträge lesen. Anschließend lässt es sich einen Vertrag mit Eingabe und Erwartung anzeigen. Beide Aufrufe nennen die Projekt-Revision. Eine zwischenzeitliche Änderung ist damit erkennbar. [Ausgabegröße der Kontextansichten](experimente/33_beispielkontext/bericht.md) · [Abfragezeit bei Unicode-Verträgen](experimente/37_vertragsfingerabdruecke/bericht.md)
+For large example inputs, the model can first read the names and fingerprints of the affected contracts. Subsequently, it can display a contract with input and expectation. Both calls specify the project revision. An intervening change is thus detectable. [Output size of context views](experimente/33_beispielkontext/report.md) · [Query time for Unicode contracts](experimente/37_vertragsfingerabdruecke/report.md)
 
 ```sh
 ./tide context apps/balance.tide --function balance --example-index
 ./tide context apps/balance.tide --function balance --example movements --node 2:1
 ```
 
-### Eine Änderung prüfen und übernehmen
+### Check and accept a change
 
-Das folgende Beispiel arbeitet auf einer Kopie. Es vertauscht die Operanden der Addition und behält die drei bestätigten Saldo-Beispiele. Der erste `edit` zeigt die neue Revision, die Zahl bestandener Beispiele und die vorgeschlagene Quelle. Der zweite übernimmt sie mit derselben Basisrevision.
+The following example operates on a copy. It swaps the operands of the addition and retains the three confirmed balance examples. The first `edit` shows the new revision, the number of passed examples, and the proposed source. The second accepts it with the same base revision.
 
 ```sh
 demo=$(mktemp -d)
@@ -237,22 +237,22 @@ patch='[{"node":"2:38","replace":"+ entry total"}]'
 ./tide edit "$demo/saldo.tide" --base "$base" --edits "$patch" --write
 ```
 
-Eine veraltete Revision ergibt `E_REVISION`. Änderungen oder Löschungen existierender Beispiele zeigt TIDE mit `E_CONTRACT` an. Wenn die geänderte Erwartung fachlich gewollt ist, erlaubt `--change-examples` die anschließende Prüfung. Neue Beispiele werden sofort mitgeprüft. Ein Änderungsauftrag kann bis zu 256 Stellen derselben Revision enthalten. Für einen Operator genügt zum Beispiel `{"node":"2:38","op":"+"}` als Eintrag. [Dateiübergreifende Suche und Vorschau](workbench/README.md#zwei-dateien-gemeinsam-prüfen)
+An outdated revision yields `E_REVISION`. Changes or deletions of existing examples are shown by TIDE with `E_CONTRACT`. If the changed expectation is technically intended, `--change-examples` allows the subsequent check. New examples are immediately checked. A change order can contain up to 256 positions of the same revision. For an operator, for example, `{"node":"2:38","op":"+"}` suffices as an entry. [Cross-file search and preview](workbench/README.md#check-two-files-together)
 
-## Installation und Prüfung
+## Installation and verification
 
-`make native` baut den nativen Compiler. `make test` (auch `make check-native`) prüft den Selbstbau und führt TIDE-Tests für den Compiler, die Editorlogik und das Spiel aus. Der öffentliche Starter lässt sich unter Linux x86-64 mit Make installieren.
+`make native` builds the native compiler. `make test` (also `make check-native`) checks the self-build and runs TIDE-tests for the compiler, the editor logic, and the game. The public starter can be installed under Linux x86-64 with Make.
 
-Mit `make check-no-python` kannst du die Unabhängigkeit auf Linux x86-64 mit Docker und BuildKit prüfen. Der Lauf baut TIDE in Debian ohne Python aus den Quellen, führt die native Testsuite aus und vergleicht eine aktualisierte Altinstallation mit einer Neuinstallation. Er prüft die statische Bindung aller sechs Werkzeuge und führt das Saldoprogramm über den Checkout und das installierte Paket aus. Das separate Laufzeitabbild prüft auch Versionsbindung, Katalog, Module, Formatierung, Ausführung und Zustandsspur. Ein absichtlich falsches Minus im Saldoprogramm löst einen Fehlerbefund aus. Nach der Reparatur durch den nativen Editor müssen die Quelldatei wieder dem Original entsprechen und alle drei Beispiele bestehen. Build, Tests und Ausführung laufen nach dem Beschaffen der Systempakete ohne Netzwerkzugriff. [Buildrezept](native/bootstrap/no-python.Dockerfile)
+With `make check-no-python` you can check independence on Linux x86-64 with Docker and BuildKit. The run builds TIDE in Debian without Python from sources, runs the native test suite, and compares an updated old installation with a new installation. It checks the static binding of all six tools and runs the balance program via the checkout and the installed package. The separate runtime image also checks version binding, catalog, modules, formatting, execution, and state trace. An intentionally incorrect minus in the balance program triggers an error finding. After repair by the native editor, the source file must again match the original and all three examples must pass. Build, tests, and execution run after acquiring system packages without network access. [Build recipe](native/bootstrap/no-python.Dockerfile)
 
 ```sh
 make install PREFIX="$HOME/.local"
 ```
 
-Der installierte Befehl `tide build` verwendet den mitgelieferten Compiler. Auf dem Zielsystem benötigt er eine POSIX-Shell, Unix-Dateiwerkzeuge und `xxd`. Make und der C++20-Compiler werden beim Paketbau verwendet. Zum Erstellen eines Pakets unterstützt die Installation `DESTDIR`.
+The installed command `tide build` uses the bundled compiler. On the target system it requires a POSIX-shell, Unix file tools, and `xxd`. Make and the C++20-compiler are used during package build. To create a package, the installation supports `DESTDIR`.
 
-`make install` und `make install-native` liefern in ein frisches Präfix ausschließlich native Werkzeuge und ihre Daten. Ein unportierter Aufruf meldet dort `E_BACKEND`. Beim Wechsel von der Kompatibilitätsinstallation entfernt das Installationsziel den bisherigen Starter, die elf ausgelieferten Python-Module und deren Bytecode aus dem Paketverzeichnis. Eigene zusätzliche Module bleiben erhalten.
+`make install` and `make install-native` deliver exclusively native tools and their data into a fresh prefix. An unported call reports `E_BACKEND` there. When switching from the compatibility installation, the installation target removes the previous starter, the eleven delivered Python modules, and their bytecode from the package directory. Own additional modules remain preserved.
 
-Der [geprüfte Neuaufbau ohne Python](experimente/35_native_knotenaenderungen/bericht.md) umfasst Selbstbau, Tests, Paketwechsel und Quelländerungen. Die [Inspektionsprüfung](experimente/32_native_inspektion/bericht.md) dokumentiert zusätzlich die Ausgaben von `context` und `hole`. Der frühere Interpreter, seine Integrationsprüfungen und die damaligen interaktiven Hosts sind als [historische Vergleichsbasis](experimente/referenzsystem/README.md) archiviert.
+The [checked new setup without Python](experimente/35_native_knotenaenderungen/report.md) includes self-build, tests, package change, and source changes. The [inspection check](experimente/32_native_inspektion/report.md) additionally documents the outputs of `context` and `hole`. The former interpreter, its integration checks, and the then interactive hosts are archived as [historical comparison base](experimente/referenzsystem/README.md).
 
-Die [Sprachreferenz](LANGUAGE.md) beschreibt Syntax, Typen, Rechte, Budgets und Fehler. Die [Entwurfsgeschichte](SPEC.md) und die [Selbstversuche](experimente/erkenntnisse.md) dokumentieren die bisherigen Designentscheidungen. Die ursprünglichen prüfsummengebundenen Schreibversuche sind [archiviert](experimente/versuche_vor_umbenennung.tar.gz).
+The [language reference](LANGUAGE.md) describes syntax, types, rights, budgets, and errors. The [design history](SPEC.md) and the [self-experiments](experimente/findings.md) document the previous design decisions. The original checksum-bound write attempts are [archived](experimente/versuche_vor_umbenennung.tar.gz).

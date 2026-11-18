@@ -1,52 +1,52 @@
-# Einen TIDE-Funktionsrumpf ändern
+# Change a TIDE function body
 
-`function_body.tide` bereitet einen Auftrag für genau eine Funktion der Einstiegsdatei auf. Das Modell bekommt Auftrag, Signatur und bisherigen Rumpf. Es antwortet mit einem TIDE-Ausdruck auf einer Zeile. Der Aufrufer kann Beispiele, eine beobachtete Fehlermeldung oder benötigte Signaturen im Feld `task` mitgeben. Für eine neue Funktion genügen als Ausgangspunkt die gewünschte Signatur und ein Rumpf wie `fail "offen"`.
+`function_body.tide` prepares an order for exactly one function of the entry file. The model receives the order, signature, and current body. It responds with a TIDE expression on a single line. The caller can provide examples, an observed error message, or required signatures in field `task`. For a new function, the desired signature and a body like `fail "offen"` suffice as a starting point.
 
-Die folgenden Rezepte dokumentieren auch den früheren Gesamtumfang der Werkbank. Für nativ unterstützte Projekte sind `forms`, `check`, `context`, `hole`, `edit --edits` und `edit --source` verfügbar. Vollständige Kandidatendateien lassen sich direkt prüfen und übernehmen. Die Erkennung von Funktionsköpfen läuft nativ mit `./tide run workbench/source_layout.tide --call function_header --inputs '{"line":"  balance opening:i > i","name":"balance"}'`. Dieser Aufruf ergibt `true`. Für die vollständigen Werkbankrezepte fehlen noch Dateileserechte und Record-Parameter. [Ausführbares Beispiel mit Saldo](../README.md#eine-änderung-prüfen-und-übernehmen)
+The following recipes also document the earlier total scope of the toolbench. For natively supported projects, `forms`, `check`, `context`, `hole`, `edit --edits`, and `edit --source` are available. Complete candidate files can be directly checked and adopted. Detection of function heads runs natively with `./tide run workbench/source_layout.tide --call function_header --inputs '{"line":"  balance opening:i > i","name":"balance"}'`. This call yields `true`. For the complete toolbench recipes, file read permissions and record parameters are still missing. [Executable example with balance](../README.md#check-and-accept-a-change)
 
-## Einen Knoten reparieren
+## Repair a node
 
-`./tide test DATEI --diff --explain=nodes` meldet beim ersten fehlgeschlagenen Beispiel die Abweichung und den ausgeführten Pfad. `repair.nodes` enthält bis zu 32 Operatorstellen und ersetzbare Ausdrücke in den betretenen Funktionen. Jeder Eintrag nennt Knotenkennung, Ausdruck, Typ und Operatoralternativen. Das optionale Feld `replacements` enthält einzeilige Ausdrucksersetzungen. Bei unvollständiger Ausführungsspur verwendet TIDE die statisch erreichbaren Definitionen. Der Befund kennzeichnet diesen Fall in `repair.execution`.
+`./tide test DATEI --diff --explain=nodes` reports the deviation and the executed path on the first failed example. `repair.nodes` contains up to 32 operator locations and replaceable expressions in the entered functions. Each entry lists node ID, expression, type, and operator alternatives. The optional field `replacements` contains single-line expression replacements. For incomplete execution traces, TIDE uses statically reachable definitions. The finding marks this case in `repair.execution`.
 
-Übernimm die Revision aus `repair.revision` und die Knotenkennung aus dem Befund. Ein Wechsel hat die Form `[{"node":"hilfsmodul.tide:2:1","op":"<"}]`. Für einen ganzen Ausdruck am selben Knoten verwende `replace` mit einem einzeiligen TIDE-Ausdruck.
+Take the revision from `repair.revision` and the node ID from the finding. A switch has the form `[{"node":"hilfsmodul.tide:2:1","op":"<"}]`. For a whole expression at the same node, use `replace` with a single-line TIDE expression.
 
 ```sh
 ./tide edit "$project" --base "$revision" --edits "$patch"
 ```
 
-TIDE prüft Revision, Quelldatei, Typen und Beispiele. Ergänze `--write`, um eine bestandene Änderung zu übernehmen. Bei einem Fehlschlag bleibt die Quelle unverändert. Die Diagnose kann als Rückmeldung für den nächsten Vorschlag dienen. [Lokaler Vergleich](../experimente/55_knotenreparatur/bericht.md)
+TIDE checks revision, source file, types, and examples. Add `--write` to accept a successful change. On failure, the source remains unchanged. The diagnosis can serve as feedback for the next proposal. [Local comparison](../experimente/55_knotenreparatur/report.md)
 
-`./tide test DATEI --diff --explain=candidates` probiert bis zu 32 Änderungen im Speicher. Zuerst prüft es formverträgliche Operatorwechsel. Danach probiert es bei `a*b+c` oder `c+a*b` die Ausdrucksersetzungen `a*(b+c)` und `(a+c)*b`. Alle drei Operanden müssen einfache Ganzzahlliterale oder Bindungen sein. Die Ersetzung wird vollständig typgeprüft.
+`./tide test DATEI --diff --explain=candidates` tries up to 32 changes in memory. First, it checks form-compatible operator switches. Then, it tries expression replacements `a*(b+c)` and `(a+c)*b` at `a*b+c` or `c+a*b`. All three operands must be simple integer literals or bindings. The replacement is fully type-checked.
 
-Besteht noch keine Einzeländerung, verwendet TIDE das verbleibende Budget für drei weitere Korrekturen. In Aufrufen benutzerdefinierter Funktionen kann es zwei gleich typisierte Argumente tauschen, auch über ein dazwischenliegendes Argument hinweg. Aus `text_len s` kann `byte_len (utf8_bytes s)` werden. Aus `text_find s trenner 0` kann eine Suche mit `text_rfind` bis zum Ende des Texts werden. Bei berechnetem Text wertet der Ersatz den Ausdruck nur einmal aus. Mit `--pairs` können diese Korrekturen auch zu dateiübergreifenden Paaren gehören. Ein Argumenttausch im Aufrufer kann den Fehler in der aufgerufenen Funktion ausgleichen. Ein Beispiel für einen direkten Aufruf dieser Funktion unterscheidet beide Reparaturorte. [Messung mit direkter Modulprüfung](../experimente/70_strukturelle_reparatur/bericht.md)
+If no single change remains, TIDE uses the remaining budget for three further corrections. In calls to custom functions, it can swap two arguments of the same type, even across an intermediate argument. From `text_len s`, `byte_len (utf8_bytes s)` can become. From `text_find s trenner 0`, a search with `text_rfind` to the end of the text can become. For computed text, the replacement evaluates the expression only once. With `--pairs`, these corrections can also belong to cross-file pairs. An argument swap in the caller can compensate for the error in the called function. An example of a direct call to this function distinguishes both repair locations. [Measurement with direct module check](../experimente/70_strukturelle_reparatur/report.md)
 
-`repair.candidates` enthält ausschliesslich Änderungen, die alle vorhandenen Beispiele bestehen. Die Einträge enthalten `op` oder `replace` und sind bereits im Format für `edit --edits`. `repair.candidate_checks` nennt die Zahl berücksichtigter Änderungen und kennzeichnet eine begrenzte Suche. Die Quelldateien bleiben während der Suche unverändert.
+`repair.candidates` contains exclusively changes that pass all existing examples. The entries contain `op` or `replace` and are already in the format for `edit --edits`. `repair.candidate_checks` states the number of considered changes and marks a limited search. The source files remain unchanged during the search.
 
-Für die Agentenübergabe genügen Vertrag, beobachtete Abweichung und `repair.candidates`. Bei einem einzigen Kandidaten kann der Aufrufer ihn direkt für die unabhängige Abnahme vorlegen. Eine leere Liste bedeutet, dass die begrenzte Suche keine bestandene Änderung gefunden hat. Über `--explain=nodes` lässt sich ein eigener Ausdrucksersatz vorbereiten. [Vergleich mit gleicher Vorprüfung für Python-AST](../experimente/58_ausdrucksvorpruefung/bericht.md)
+For agent handover, contract, observed deviation, and `repair.candidates` suffice. With a single candidate, the caller can submit it directly for independent acceptance. An empty list means that the limited search found no successful change. Via `--explain=nodes`, a custom expression replacement can be prepared. [Comparison with same precheck for Python-AST](../experimente/58_ausdrucksvorpruefung/report.md)
 
-### Den Reparaturort mit einem Modulbeispiel prüfen
+### Check the repair location with a module example]
 
-Gib der Zwischenfunktion einen eigenen öffentlichen Vertrag. In der Schnittliste leitet `main` die Argumente unverändert an `samples` weiter. Beide Funktionen müssen für einen Schritt bei Rate 4 genau vier Abtastpunkte liefern. Neben dem Einstiegsbeispiel in `panel.tide` steht deshalb in `route.tide` ein direktes Beispiel.
+Give the intermediate function its own public contract. In the interface list, `main` forwards the arguments unchanged to `samples`. Both functions must provide exactly four sampling points for one step at rate 4. Therefore, besides the introductory example in `panel.tide`, a direct example appears in `route.tide`.
 
 ```tide
 example one_step samples
 {"inputs":{"begin":3,"finish":4,"rate":4},"expect":4}
 ```
 
-Beim gewohnten Aufruf `./tide test panel.tide --diff --explain=candidates --pairs` gilt das Beispiel für jede Einzeländerung und jedes dateiübergreifende Paar. Ein Tausch nur in `main` lässt `samples` hier weiterhin −4 liefern und fällt vor der Auswahl aus. Leitet der Einstieg Werte umgerechnet weiter, verwende am Zwischenmodul eigene Eingaben und Sollwerte aus dessen Vertrag. [Reparierte Schnittliste](../experimente/71_modulvorpruefung/repariert/cut/route.tide) · [Vergleich mit Python-AST](../experimente/71_modulvorpruefung/bericht.md)
+For the usual call `./tide test panel.tide --diff --explain=candidates --pairs`, the example applies to each individual edit and each cross-file pair. A swap only in `main` yields `samples` here as still −4 and fails before selection. If the entry forwards values converted, use own inputs and target values from the intermediate module's contract at the intermediate module. [Repaired interface list](../experimente/71_modulvorpruefung/repariert/cut/route.tide) · [Comparison with Python-AST](../experimente/71_modulvorpruefung/report.md)
 
-Bei mehreren grünen Kandidaten nimmt `--probes` einen Eingabepool entgegen. Gib pro Zeile ein JSON-Objekt mit den Argumenten des fehlgeschlagenen Beispiels an. Wähle die Eingaben aus dem fachlich gültigen Bereich. Die Suche unterstützt Funktionen ohne Leserechte. Sie prüft höchstens 32 Eingaben und 128 Kandidatenauswertungen.
+For multiple green candidates, `--probes` accepts an input pool. Provide per line a JSON object with the arguments of the failed example. Select inputs from the technically valid range. The search supports functions without read access. It checks at most 32 inputs and 128 candidate evaluations.
 
 ```sh
 pool=$(printf '%s\n' '{"a":0,"b":1}' '{"a":1,"b":1}')
 ./tide test "$project" --diff --explain=candidates --probes "$pool"
 ```
 
-`repair.counterexample` enthält die erste Eingabe, bei der alle Kandidaten einen Wert liefern und diese Werte voneinander abweichen. `outcomes` verknüpft jeden Wert mit seinem Edit. Die Suche setzt keinen Sollwert und schreibt keine Dateien. Bestätige das Ergebnis durch den Vertrag, ein unabhängiges Orakel oder eine fachliche Entscheidung. Ergänze danach in einer Projektkopie ein neues öffentliches Beispiel für `repair.target` und wiederhole die Vorprüfung. Die Kandidaten des neuen Befunds gehören zu seiner neuen Revision. [Vergleich mit bestätigtem Gegenbeispiel](../experimente/59_oeffentliches_gegenbeispiel/bericht.md)
+`repair.counterexample` contains the first input where all candidates provide a value and these values differ from each other. `outcomes` links each value with its edit. The search sets no target value and writes no files. Confirm the result via the contract, an independent oracle, or a technical decision. Subsequently, add a new public example for `repair.target` in a project copy and repeat the precheck. The candidates of the new finding belong to its new revision. [Comparison with confirmed counterexample](../experimente/59_oeffentliches_gegenbeispiel/report.md)
 
-### Zwei Dateien gemeinsam prüfen
+### Check two files together
 
-`--pairs` ergänzt `test --explain=candidates`. Wenn die vollständige Einzelprüfung keinen grünen Kandidaten findet, prüft TIDE bis zu 64 Paare aus zwei verschiedenen Dateien. `repair.pair_checks` nennt die Zahl geprüfter Paare und meldet mit `truncated` eine abgeschnittene Suche. Jedes Element von `repair.pair_candidates` ist ein Array der beiden zusammen bestandenen Änderungen. Mit `--probes` kann TIDE auch grüne Paare vergleichen. Dann enthält `outcomes[].edit` jeweils beide Änderungen.
+`--pairs` complements `test --explain=candidates`. If the complete single check finds no green candidate, TIDE checks up to 64 pairs from two different files. `repair.pair_checks` states the number of checked pairs and reports with `truncated` a truncated search. Each element of `repair.pair_candidates` is an array of the two jointly successful edits. With `--probes`, TIDE can also compare green pairs. Then `outcomes[].edit` contains both edits in each case.
 
 ```sh
 ./tide test "$project" --diff --explain=candidates --pairs 2> "$diagnose" || test "$?" = 1
@@ -55,11 +55,11 @@ patch=$(jq -ec '.repair | select(.pair_checks.truncated == false and (.pair_cand
 ./tide edit "$project" --base "$revision" --edits "$patch"
 ```
 
-Der Editor prüft die Änderungen zusammen gegen dieselbe Projekt-Revision und alle Beispiele. Die Vorschau liefert die geprüften Texte als `files` mit je `file` und `source`. Übernimm alle ausgegebenen Dateien in dieselbe Arbeitskopie und führe dort die Abnahme aus. `--write` unterstützt den atomaren Austausch einer einzelnen Datei. [Messung am Doppelzähler](../experimente/61_dateiuebergreifende_paare/bericht.md)
+The editor checks the edits jointly against the same project revision and all examples. The preview provides the checked texts as `files` with each `file` and `source`. Take over all output files into the same working copy and perform the acceptance test there. `--write` supports the atomic swap of a single file. [Measurement at the double counter](../experimente/61_dateiuebergreifende_paare/report.md)
 
-### Eingaben für grüne Paare erzeugen
+### Generate inputs for green pairs
 
-TIDE leitet die Spannen und Parameterbeziehungen für grüne Paare aus `requires` im Beispielvertrag des Ziels ab. Hier gilt für beide Parameter das inklusive Intervall 1 bis 3 und zusätzlich `a <= b`.
+TIDE derives the spans and parameter relationships for green pairs from `requires` in the target's example contract. Here, the inclusive interval 1 to 3 applies to both parameters, plus additionally `a <= b`.
 
 ```tide
 example square main
@@ -70,13 +70,13 @@ example square main
 ./tide test "$project" --diff --explain=candidates --pairs --probes "$pool"
 ```
 
-Der feste Pool ist optional. TIDE überspringt daraus Eingaben ausserhalb des Vertrags. Wenn die Suche im Pool keine Paare trennt, probiert TIDE Mittelpunkte, Randwerte, Nachbarn des fehlgeschlagenen Beispiels und gemischte Eckpunkte. Für zusammenhängende Parameter kann es mehrere Werte eines Suchpunkts gemeinsam anpassen, bis alle Bedingungen erfüllt sind. Die feste und die erzeugte Suche haben jeweils ein Budget von 32 Eingaben und 128 Kandidatenauswertungen. Die Erzeugung überspringt öffentliche Beispiele des Ziels und bereits geprüfte Eingaben. `repair.probe_range` zeigt die abgeleiteten Grenzen je Parameter. `repair.generated_probes_checked` zählt die erzeugten und geprüften Eingaben, und `repair.counterexample_source` meldet `"fixed"`, `"generated"` oder `null`.
+The fixed pool is optional. TIDE skips inputs outside the contract. If the pool search does not separate pairs, TIDE tries midpoints, boundary values, neighbors of the failed example, and mixed corner points. For connected parameters, it can jointly adjust multiple values of a search point until all conditions are met. Both the fixed and generated searches have a budget of 32 inputs and 128 candidate evaluations. Generation skips public examples of the target and already checked inputs. `repair.probe_range` shows the derived bounds per parameter. `repair.generated_probes_checked` counts the generated and checked inputs, and `repair.counterexample_source` reports `"fixed"`, `"generated"`, or `null`.
 
-`--probe-range '{"a":[1,3],"b":[1,3]}'` liefert die Spannen für Projekte ohne `requires` oder grenzt die Erzeugung auf den Schnitt mit dem Vertrag ein. Bestätige den Sollwert des Gegenbeispiels unabhängig und wiederhole die Vorprüfung. [Vergleich mit Python-AST](../experimente/65_parameterbeziehungen/bericht.md)
+`--probe-range '{"a":[1,3],"b":[1,3]}'` provides spans for projects without `requires` or restricts generation to the intersection with the contract. Confirm the counterexample's target value independently and repeat the precheck. [Comparison with Python-AST](../experimente/65_parameterbeziehungen/report.md)
 
-### Auftrag vorbereiten
+### Prepare order
 
-Im Projektverzeichnis mit Bash und `jq`:
+In the project directory with Bash and `jq`:
 
 ```sh
 set -euo pipefail
@@ -92,13 +92,13 @@ rev=$(./tide check "$base" | jq -er .revision)
 cat "$work/auftrag.txt"
 ```
 
-Die Kopie liegt neben der Einstiegsdatei, damit TIDE dieselben Importe und dieselbe Lockdatei findet. Die Revision gehört zu dieser Kopie. Die Antwort des Modells kommt als reiner Ausdruck in `$work/antwort.txt`. Zum lokalen Ausprobieren kann man sie vorgeben:
+The copy lies next to the entry file so that TIDE finds the same imports and the same lock file. The revision belongs to this copy. The model's answer comes as a pure expression in `$work/antwort.txt`. For local testing, you can specify it as:
 
 ```sh
 printf '%s\n' 'fold entries opening total row entry + total entry' > "$work/antwort.txt"
 ```
 
-### Antwort prüfen und übernehmen
+### Check and accept answer
 
 ```sh
 ./tide run workbench/function_body.tide --call candidate \
@@ -107,17 +107,17 @@ printf '%s\n' 'fold entries opening total row entry + total entry' > "$work/antw
 ./tide edit "$file" --base "$rev" --source "$work/kandidat.tide" --write
 ```
 
-`candidate` ersetzt ausschließlich den alten Rumpf. Signatur, Nachbardeklarationen, Beispiele und umgebende Zeilenenden stammen aus der gespeicherten Fassung. `jq -j` gibt den Text mit seinem ursprünglichen Dateiende aus. Die Funktionsauswahl unterstützt LF und CRLF. Das Werkzeug prüft den Namen und weist mehrzeilige Antworten zurück. Die Typprüfung, alle Projektbeispiele und die Prüfung der Basisrevision laufen vor dem atomaren Schreiben durch `tide edit`. Bei einem Fehler bleibt die Zieldatei erhalten. Für eine weitere Modellantwort stehen die Diagnose und derselbe Auftrag zur Verfügung.
+`candidate` replaces only the old function body. Signature, neighbor declarations, examples, and surrounding line endings come from the stored version. `jq -j` outputs the text with its original file ending. The function selection supports LF and CRLF. The tool checks the name and returns multiline answers. Type checking, all project examples, and the base revision check run before atomic writing by `tide edit`. In case of an error, the target file remains intact. For another model answer, the diagnosis and the same order are available.
 
-`./tide test workbench/function_body.tide` führt die Werkzeugbeispiele aus. Der [Saldoversuch](../experimente/12_funktionsrumpf/bericht.md) enthält zwei tatsächlich vom Modell gelieferte Antworten mit den Ergebnissen der Abnahme.
+`./tide test workbench/function_body.tide` runs the tool examples. The [Balance test](../experimente/12_funktionsrumpf/report.md) contains two answers actually provided by the model with the results of the acceptance test.
 
-## Fehler über mehrere Dateien finden
+## Find errors across multiple files
 
-Im nativen Paket liefert `tide test DATEI --explain` den Reparaturkontext zum ersten fehlgeschlagenen Beispiel. Das Feld `repair` enthält Einstiegsdatei, Revision, Ziel, Eingabe und erreichbare Definitionen. Eine Knotenkennung wie `adjustment.tide:2:1` lässt sich im nächsten Aufruf für `edit --edits` verwenden. Für eine Regel stehen der originale Deklarationstext, die Datei und die erste Zeilennummer zur Verfügung. [Messung am fehlerhaften Import](../experimente/38_fehlerkontext/bericht.md)
+The native package provides `tide test DATEI --explain` with the repair context for the first failed example. The field `repair` contains entry file, revision, target, input, and reachable definitions. A node identifier like `adjustment.tide:2:1` can be used for `edit --edits` in the next call. For a rule, the original declaration text, the file, and the first line number are available. [Measurement on faulty import](../experimente/38_fehlerkontext/report.md)
 
-`project_context.tide` nimmt die Aufrufbeziehungen aus `tide check`, die Quelldateien derselben Projektkopie, den öffentlichen Einstieg und eine beobachtete Abweichung entgegen. Ab diesem Einstieg folgt es allen direkten und indirekten Aufrufen, einschließlich Regeln in `scan`. Es liefert jeden erreichbaren Rumpf einmal mit seinem ursprünglichen Dateinamen. Records und Varianten bleiben sichtbar. Beispiele und unerreichbare Funktionsrümpfe entfallen. Die Auswahl ist statisch und berücksichtigt auch Zweige, die der einzelne Fehlerfall nicht durchläuft.
+`project_context.tide` accepts the call relationships from `tide check`, the source files of the same project copy, the public entry point, and an observed deviation. From this entry point, it follows all direct and indirect calls, including rules in `scan`. It delivers every reachable function body once with its original filename. Records and variants remain visible. Examples and unreachable function bodies are omitted. The selection is static and also considers branches that the individual error case does not traverse.
 
-Im folgenden Bash-Beispiel liefert `jq` die Eingabedaten an TIDE. Die Funktionsauswahl geschieht in TIDE. Vom Projektverzeichnis aus ausführen und `entry`, `root` und `observation` an den eigenen Fall anpassen. `root` bezeichnet den von außen aufgerufenen Einstieg, etwa `main` für ein Datenprogramm oder `step` für eine Tastatureingabe.
+In the following Bash example, `jq` passes the input data to TIDE. The function selection occurs in TIDE. Execute from the project directory and adapt `entry`, `root`, and `observation` to your own case. `root` denotes the entry point called from outside, such as `main` for a data program or `step` for a keyboard input.
 
 ```sh
 set -euo pipefail
@@ -138,13 +138,13 @@ args=$(
   jq -r '.observation, (.files[] | "\n--- "+.file+" ---\n"+.source)'
 ```
 
-Quelldateien und Compilerbefund sollen aus demselben unveränderten Stand stammen. Fehlende oder doppelte erreichbare Definitionen führen zu einem Fehler. Für einen Typ- oder Syntaxfehler, der schon `tide check` abbricht, steht dessen Compilerdiagnose direkt zur Verfügung. Bei Projekten oberhalb des JSON- oder Arbeitsbudgets meldet die CLI das erreichte Limit. Die erzeugte Ansicht ist ein Leseergebnis. Reparaturen über mehrere Dateien lassen sich in einer Arbeitskopie gemeinsam anwenden und dort mit der ursprünglichen Abnahme prüfen.
+Source files and compiler findings must originate from the same unchanged state. Missing or duplicate reachable definitions lead to an error. For a type or syntax error that causes `tide check` to abort early, its compiler diagnosis is directly available. For projects above the JSON or work budget limit, the CLI reports the reached limit. The generated view is a read result. Repairs across multiple files can be applied jointly in a working copy and verified there against the original acceptance test.
 
-## Gruppierte Funktionsrümpfe reparieren
+## Repair grouped function bodies
 
-Die gruppierte Ansicht zeigt jeden Aufruf mit seinen Argumenten in Klammern. Der native Parser rekonstruiert sie aus dem zuvor geprüften Quelltext und dessen Deklarationen. Beispielsweise lässt sich an `(fold xs 0 s row x (+ s (fee x)))` ablesen, dass `fee` für jedes Element läuft. Das Modell darf alle sichtbaren gewöhnlichen Funktionen über ihren projektweit eindeutigen Namen ändern. Jede Änderung nennt nur `name` und den vollständigen einzeiligen `body`. Regeln bleiben als Kontext sichtbar.
+The grouped view shows each call with its arguments in parentheses. The native parser reconstructs them from the previously checked source code and its declarations. For example, one can read at `(fold xs 0 s row x (+ s (fee x)))` that `fee` runs for each element. The model may change all visible ordinary functions via their project-wide unique name. Each change cites only `name` and the complete single-line `body`. Rules remain visible as context.
 
-Die folgenden Befehle binden die Arbeitskopie an die geprüfte Revision. Aus dem Plan liest `tide forms` alle erreichbaren Quellen in einem Prozess und liefert pro gewöhnlicher Funktion Name, Tabulator und vollständig geklammerten Rumpf. Die Dateizuordnung und Reihenfolge kommen aus demselben Plan. Der native Parser verarbeitet geprüfte UTF-8-Quellschnappschüsse bis 128 KiB mit LF oder CRLF. Er zählt Unicode-Codepunkte und erhält die Schreibweise von Textliteralen. Bei überschrittenen Parsergrenzen (etwa Zeilen mit mehr als 4.096 Codepunkten) oder einer inkonsistenten Zuordnung verwendet der Ablauf die bisherige Compilerabfrage pro Funktion. Die Typprüfung übernimmt weiterhin `tide check`.
+The following commands bind the working copy to the checked revision. From the plan, `tide forms` reads all reachable sources in a single process and delivers per ordinary function name, tabulator, and fully parenthesized function body. The file assignment and order come from the same plan. The native parser processes checked UTF-8 source snapshots up to 128 KiB with LF or CRLF. It counts Unicode code points and obtains the spelling of text literals. If parser limits are exceeded (e.g., lines with more than 4,096 code points) or an inconsistent assignment occurs, the workflow uses the previous compiler query per function. Type checking continues to be handled by `tide check`.
 
 ```sh
 set -euo pipefail
@@ -193,9 +193,9 @@ view=$(jq -c --slurpfile forms "$work/forms.json" '.+{forms:$forms[0]}' "$work/p
 jq -r '.instruction,.observation,(.files[] | "\n--- "+.file+" ---\n"+.source)' "$work/grouped.json"
 ```
 
-`compiler_view` trägt die vom Compiler gelieferten Rümpfe pro Datei in einem Durchgang ein. Den bisherigen Aufruf `repair_view` können bestehende Werkzeuge weiter nutzen.
+`compiler_view` imports the function bodies provided by the compiler per file in a single pass. The previous call `repair_view` can be further utilized by existing tools.
 
-Die Modellantwort kommt als Objekt `{"edits":[{"name":"…","body":"…"}]}` nach `$work/antwort.json`. Die Funktion `candidate_files` setzt sie auf den vollständigen Originaltexten zusammen. Sie verweigert unter anderem doppelte Ziele, unbekannte Namen, mehrzeilige Antworten und mehrdeutige Dateizuordnungen. Erst wenn alle Ersetzungen möglich sind, liefert sie das Array der Dateikandidaten.
+The model response arrives as an object `{"edits":[{"name":"…","body":"…"}]}` after `$work/antwort.json`. The function `candidate_files` assembles it into the complete original texts. It rejects, among other things, duplicate goals, unknown names, multi-line answers, and ambiguous file assignments. Only when all replacements are possible does it deliver the array of file candidates.
 
 ```sh
 set -euo pipefail
@@ -229,21 +229,21 @@ if ! check_candidate 2>"$work/diagnose.json"; then
 fi
 ```
 
-Bei `E_SYNTAX` mit `Missing operand` unmittelbar nach dem letzten Token eines eingereichten Rumpfs kann `closing_retry` genau ein `)` an der Diagnosespalte vorschlagen. Dateiname, Funktionskopf, Rumpftext und Position gehören zur selben Kandidatenkopie. Die Spalte zählt Unicode-Codepunkte ab eins. Der normale Erfolgsweg kommt ohne diesen Aufruf aus. Der lokale Versuch läuft einmal. Ein tatsächlich fehlendes Argument bleibt ein Compilerfehler. [Messung am Journallauf](../experimente/18_lokale_syntaxreparatur/bericht.md)
+At `E_SYNTAX` with `Missing operand` immediately after the last token of a submitted body, `closing_retry` can suggest exactly one `)` in the diagnosis column. Filename, function header, body text, and position belong to the same candidate copy. The column counts Unicode code points starting from one. The normal success path proceeds without this call. The local attempt runs once. A genuinely missing argument remains a compiler error. [Measurement on journal run](../experimente/18_lokale_syntaxreparatur/report.md)
 
-Für eine externe Abnahmesuite muss der Aufrufer zusätzlich diese Suite über der Kandidatenkopie ausführen. Die Rückgabe des Werkzeugs bestätigt die Textänderungen. Typkorrektheit und fachliches Verhalten prüft der Aufrufer mit dem Compiler und seinen Tests. Das Beispiel schreibt ausschließlich in das neue Arbeitsverzeichnis.
+For an external acceptance suite, the caller must additionally execute this suite over the candidate copy. The tool's return confirms the text changes. Type correctness and domain behavior are checked by the caller with the compiler and its tests. The example writes exclusively to the new working directory.
 
-### Einen Ausschnitt im Funktionsrumpf ersetzen
+### Replace an excerpt in the function body
 
-Bei einer kleinen Korrektur kann das Modell einen eindeutigen Textausschnitt aus der gruppierten Ansicht nennen. In dieser Betriebsart bekommt es dieselben Quellen und den Auftrag, pro geänderter Funktion `name`, `before` und `after` zurückzugeben. Lautet der gedruckte Rumpf von `sheets` etwa `(div (+ n capacity) capacity)`, genügt diese Antwort:
+For a small correction, the model can name a unique text excerpt from the grouped view. In this operating mode, it receives the same sources and the instruction to return `name`, `before`, and `after` per changed function. If the printed body of `sheets` is approximately `(div (+ n capacity) capacity)`, this answer suffices:
 
 ```json
 {"edits":[{"name":"sheets","before":"(+ n capacity)","after":"(+ n (- capacity 1))"}]}
 ```
 
-Der Suchbereich ist genau der gedruckte Rumpf der benannten Funktion. Ein fehlender oder mehrfach vorkommender Ausschnitt ergibt eine Diagnose. Ein leeres `before` ersetzt den ganzen Rumpf. Ein Satz kann Funktionen aus mehreren Dateien ändern. Alle Ausschnitte beziehen sich auf dieselbe geprüfte Quellkopie.
+The search scope is exactly the printed body of the named function. A missing or multiple-occurring excerpt yields a diagnosis. An empty `before` replaces the entire body. A sentence can change functions from multiple files. All excerpts refer to the same inspected source copy.
 
-Wenn Verzeichnis, erreichbare Quellen und fehlgeschlagener Test für diese Quellkopie bereits geprüft wurden, erzeugt `fragment_view` die passende Modellanweisung. Sie nennt die schon erledigten Prüfschritte und lässt weitere Inspektionen bei einer konkreten Informationslücke zu. `view` ist die oben aus Paket und Compilerantworten zusammengesetzte Eingabe.
+If directory, reachable sources, and failed test for this source copy have already been checked, `fragment_view` generates the appropriate model instruction. It names the already completed check steps and allows further inspections in case of a specific information gap. `view` is the input composed above from package and compiler responses.
 
 ```sh
 ./tide run workbench/grouped_view.tide --call fragment_view --inputs "$view" |
@@ -256,21 +256,21 @@ payload=$(jq -nc --argjson input "$args" --slurpfile forms "$work/forms.json" \
 ./tide run workbench/function_fragment.tide --call fragment_files --inputs "$payload" > "$work/files.json"
 ```
 
-Die Dateikandidaten werden wie oben in eine Arbeitskopie geschrieben und mit Compiler und Abnahmetests geprüft. Eine einzelne Ersetzung darf auch mehrere Zeichen innerhalb eines Tokens betreffen.
+The file candidates are written to a working copy as above and checked with the compiler and acceptance tests. A single replacement may also affect multiple characters within a token.
 
-### Weitere verfügbare Funktionen anzeigen
+### Show further available functions
 
-Eine Reparatur kann erstmals eine bereits eingebundene Bibliotheksfunktion aufrufen. Der optionale Aufruf `unused_signatures` ergänzt die Signaturen der gewöhnlichen Funktionen, die in der Ansicht ab dem gewählten Einstieg fehlen. Die Liste stammt aus derselben geprüften Projektfassung. Sie enthält auch verfügbare Funktionen aus dem Einstiegsmodul.
+A repair can initially call an already included library function. The optional call `unused_signatures` supplements the signatures of the ordinary functions missing in the view from the selected entry point. The list comes from the same checked project version. It also includes available functions from the entry module.
 
 ```sh
 jq -r '.unused[]' "$work/plan.json"
 ```
 
-### Ausschnitte mit den Klammern des Autors bearbeiten
+### Edit excerpts with the author's brackets
 
-`source_repair` verwendet die geprüfte Projektkopie und die Liste der erreichbaren Funktionen aus `prepare_grouping`. Die Ansicht behält alle ursprünglichen Klammern. In gewöhnlichen Funktionsrümpfen ersetzt sie jeden Zeilenumbruch durch ein Leerzeichen. Einrückung und Leerzeichen in Textliteralen bleiben erhalten. Regeln und Typdeklarationen bleiben als Kontext sichtbar.
+`source_repair` uses the verified project copy and the list of reachable functions from `prepare_grouping`. The view retains all original brackets. In ordinary function hulls, it replaces each line break with a space. Indentation and spaces in text literals are retained. Rules and type declarations remain visible as context.
 
-Nach dem Erzeugen von `$work/plan.json` genügen diese Befehle für Ansicht und Bearbeitungsformen. Sie ersetzen die einzelnen `tide context`-Aufrufe des gruppierten Ablaufs.
+After generating `$work/plan.json`, these commands suffice for view and edit forms. They replace the individual `tide context` calls of the grouped workflow.
 
 ```sh
 payload=$(jq -c '.packet+{queries}' "$work/plan.json")
@@ -279,4 +279,4 @@ jq '.forms' "$work/source-repair.json" > "$work/forms.json"
 jq -r '.view | .instruction,.observation,(.files[] | "\n--- "+.file+" ---\n"+.source)' "$work/source-repair.json"
 ```
 
-Die Antwort wird mit `fragment_files`, den zurückgegebenen Formen und den vollständigen Quelldateien derselben Revision angewandt. Typprüfung und Beispiele laufen auf der Kandidatenkopie. Der Vergleich mit der vollständig geklammerten Ansicht steht im [Blindversuch mit Jury und Lieferabrechnung](../experimente/25_blinde_quellreparatur/bericht.md).
+The response is applied with `fragment_files`, the returned forms, and the complete source files of the same revision. Type checking and examples run on the candidate copy. The comparison with the fully parenthesized view is in the [blind test with jury and delivery invoice](../experimente/25_blinde_quellreparatur/report.md)].

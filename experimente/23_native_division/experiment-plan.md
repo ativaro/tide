@@ -1,0 +1,8 @@
+# Native integer division and remainder
+
+The reference defines the semantics for all i64 operands. The code generator shall preserve them for dynamic and embedded inputs. Division by zero yields `E_DATA` with reason `division_by_zero`. The quotient of the smallest i64 and −1 runs through; the remainder of the same operands is representable and amounts to zero. Errors in an operand and conditional evaluation shall retain their original order.
+
+1. Check two generic functions for quotient and remainder with varying arguments against the TIDE reference. Both signs, zero, exact and inexact divisibility, and both i64 limits are mandatory cases. Additionally, check at least 100 deterministically selected operand pairs.
+2. Check nested expressions over the closed and the parametrized entry. The sources and independent target values are provided in TIDE. Error code, reason, output channel, and exit status count.
+3. Execute a signed carton balance with six pieces per carton as a TIDE application. Per booking, a started carton counts in its direction of movement. Earlier bookings and their cancellations ⟦Stornierung⟧ offset each other at the same amount. Compare the two native entries with the reference on standard and extreme values.
+4. For the new application with varying inputs, measure process times and the build as in experiment 21. The CPython comparison may represent rounding with a Python-idiomatic, mathematically equivalent calculation. The external decimal binding and the checked running balance apply in both languages. Re-check the old binary hashes and differential checks from experiment 21.

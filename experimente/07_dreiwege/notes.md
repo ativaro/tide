@@ -1,0 +1,7 @@
+# Notes before reviewer feedback
+
+After round 1. For shipping, I could write priorities in C directly as a chain. With the coupon, the form "condition, entire output pair, next case" was easy to form in A. With the handler in A, I had to explicitly track that the last post belongs to the outer addition. With the two cap calls in A, I grouped the arguments of both channels by hand based on the signature. The quota start in B was simply a 5. Hash of the first twelve JSONL lines including the final newline: 0a941ab2e3e40025bcacfb0cbfac6e698dcc7af7f9268a073302081b97f9b473.
+
+After round 2. A prefix of individual classification codes could be built in the order of requirements. With the coupon in C, the result pair came first and only then its condition. For coordinates, I could write every shift in C immediately next to its field. With the handler in B, I could see the boundary before post. With the missing operand in A, the 0 could complete the addition. Which position was meant was clarified by the task. Hash after 24 lines: fc75959cda6f34b1b6e37df448d42184ed24b12c8e2f0414c5f2797deda661e9.
+
+After round 3, before each evaluation. C shows the end of the handler as clearly with catch(...) + post as B does. In B, (cap left 0) and (cap right 2) immediately show two separate calls. Sorting and equality could be expressed in all three forms. With equality, the question of which pair the equality case selects was the same in every notation. No timing of individual submissions.

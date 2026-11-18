@@ -1,0 +1,3 @@
+# Supplementary local comparison measurement
+
+After comparing the two TIDE methods, the Journal and deployment assignment are compared against the earlier Python method. Six serial pairs per project, alternating language start. Per run, the monotone clock starts before the public failed test and ends after writing the complete prepared model prompt. Fresh output folders, unchanged erroneous programs, and the same public tests as in the respective blind trial. For TIDE, the new revision-checked context preparation is included. Python uses the complete source files according to the earlier trial. Each finished prompt file must match its stored prompt of its language byte-for-byte. The byte-equality check lies outside the time measurement.

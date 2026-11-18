@@ -10,7 +10,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 STUDY = runpy.run_path(str(HERE / '05_aufgaben.py'))
-FIRST = HERE / '05_erstloesungen.md'
+FIRST = HERE / 'frozen/05-first-submissions.de.txt'
 DIGEST = '405946ef32a376768df7356efdfa453957b81bf470bc328d46d7c367d1d3d067'
 
 

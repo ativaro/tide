@@ -1,8 +1,0 @@
-# Native Ganzzahldivision und Rest
-
-Die Referenz legt die Semantik für alle i64-Operanden fest. Der Codegenerator soll sie bei dynamischen und eingebetteten Eingaben erhalten. Eine Division durch null ergibt `E_DATA` mit Grund `division_by_zero`. Der Quotient aus dem kleinsten i64 und −1 läuft über, der Rest derselben Operanden ist darstellbar und beträgt null. Fehler in einem Operanden und die bedingte Auswertung sollen ihre ursprüngliche Reihenfolge behalten.
-
-1. Zwei generische Funktionen für Quotient und Rest mit wechselnden Argumenten gegen die TIDE-Referenz prüfen. Beide Vorzeichen, null, exakte und ungenaue Teilbarkeit sowie beide i64-Grenzen sind Pflichtfälle. Zusätzlich mindestens 100 deterministisch gewählte Operandenpaare prüfen.
-2. Verschachtelte Ausdrücke über den geschlossenen und den parametrisierten Einstieg prüfen. Die Quellen und unabhängigen Sollwerte werden in TIDE bereitgestellt. Fehlercode, Grund, Ausgabekanal und Exitstatus zählen.
-3. Einen vorzeichenbehafteten Kartonsaldo mit sechs Stück pro Karton als TIDE-Anwendung ausführen. Pro Buchung zählt ein angefangener Karton in seiner Bewegungsrichtung. Frühere Buchungen und deren Stornos heben sich bei gleichem Betrag auf. Auf Standard- und Extremwerten die beiden nativen Einstiege mit der Referenz vergleichen.
-4. Für die neue Anwendung mit wechselnden Eingaben die Prozesszeiten und den Build wie in Versuch 21 messen. Der CPython-Vergleich darf die Rundung mit einer für Python idiomatischen, mathematisch gleichwertigen Rechnung darstellen. Die externe Dezimalbindung und der geprüfte laufende Saldo gelten in beiden Sprachen. Die alten Binärhashes und Differentialprüfungen aus Versuch 21 erneut kontrollieren.

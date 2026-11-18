@@ -1,8 +1,8 @@
-# Tokenmessung zur Modellschreibweise
+# Token measurement for model notation
 
-Gemessen am 16. November 2026 mit tiktoken 0.14.0. Gezählt wurde jeweils der vollständige gezeigte Quelltext ohne abschließenden Zeilenumbruch, Markdown oder Chat-Hülle. Beide Kodierungen stammen aus derselben Tokenizer-Familie. Es gab keinen Modellaufruf. [tiktoken](https://github.com/openai/tiktoken)
+Measured as of 16 November 2026 with tiktoken 0.14.0. Counted was the complete displayed source code without trailing newline, Markdown, or chat wrapper. Both encodings come from the same tokenizer family. There was no model call. [tiktoken](https://github.com/openai/tiktoken)
 
-| Funktion | Kodierung | Entwurf 0.1 | 0.1 minifiziert | Entwurf 0.2 |
+| Function | Encoding | Draft 0.1 | 0.1 minified | Draft 0.2 |
 |---|---|---:|---:|---:|
 | twice | `o200k_base` | 16 | 14 | 10 |
 | twice | `cl100k_base` | 16 | 14 | 10 |
@@ -11,24 +11,24 @@ Gemessen am 16. November 2026 mit tiktoken 0.14.0. Gezählt wurde jeweils der vo
 | maximum | `o200k_base` | 105 | 75 | 39 |
 | maximum | `cl100k_base` | 105 | 74 | 39 |
 
-Für das Messwertprogramm sinkt die Quelltextmenge von 105 auf 39 Tokens (63 %). Gegen die minifizierte Fassung des früheren Entwurfs beträgt die Einsparung 47 bis 48 %. Eine zusätzliche Kontrolle verwendet dieselben kurzen Namen und neuen Operationen wie 0.2 in einer minifizierten geklammerten Darstellung. Sie belegt 44 Tokens in beiden Kodierungen. Gegen diese Kontrollform spart das neue Format fünf Tokens (11 %). Der größere Teil des Gesamtgewinns liegt also in der Darstellung des Programms mit weniger expliziten Schritten und kürzeren Namen. Der Einfluss einzelner Operationen wurde hierbei nicht isoliert.
+For the measurement program, the source code volume drops from 105 to 39 tokens (63 %). Against the minified version of the earlier draft, the savings amount to 47 to 48 %. An additional control uses the same short names and new operations as 0.2 in a minified parenthesized representation. It occupies 44 tokens in both encodings. Against this control form, the new format saves five tokens (11 %). Thus, the larger part of the total gain lies in representing the program with fewer explicit steps and shorter names. The influence of individual operations was not isolated here.
 
-Für die Auswahl der Sprache sind Referenz, Eingangskontext, Änderungen, Reparaturen, Erfolg und Zeit ebenfalls zu messen. Die drei kurzen, von Hand geschriebenen Beispiele zeigen die Größe einer bestimmten Darstellung. Statistische Aussagen über Modellleistung oder Laufzeit brauchen eigene Versuche.
+For language selection, reference, input context, changes, repairs, success, and time are also to be measured. The three short, handwritten examples show the size of a specific representation. Statistical statements about model performance or runtime require their own experiments.
 
-## Kosten aussagekräftiger Namen
+## Costs of more meaningful names
 
-In einer zweiten Messung haben wir ausschließlich die fünf lokalen Namen ausgetauscht. Aus `b k x n p` wurden an denselben Stellen `best row line value previous`. Die aktuellen Programme stehen im [Sprachentwurf](../SPEC.md). Beide Kodierungen ergaben dieselben Werte.
+In a second measurement, we exclusively swapped the five local names. From `b k x n p`, `best row line value previous` were substituted at the same locations. The current programs are in the [Language Draft](../SPEC.md). Both encodings yielded the same values.
 
-| Vollständiges Programm | Kurze Namen | Aussagekräftige Namen |
+| Full Program | Short Names | Meaningful Names |
 |---|---:|---:|
 | Maximum | 39 Tokens | 39 Tokens |
-| Maximum mit erster Fundstelle | 46 Tokens | 46 Tokens |
+| Maximum with first occurrence | 46 Tokens | 46 Tokens |
 
-Für diese beiden Programme können wir die Bedeutung der Werte direkt ausdrücken, ohne zusätzliche Tokens zu verbrauchen. Ob ein Modell damit weniger fachliche Fehler macht, ist offen.
+For these two programs, we can directly express the meaning of the values without consuming additional tokens. Whether a model makes fewer domain-specific errors with this is open.
 
-## Zählung wiederholen
+## Repeat counting
 
-Für jede unten gezeigte Zeichenfolge gilt folgender Zählweg. Die minifizierten Fassungen sind vollständig angegeben, damit Leerzeichen und Token-Grenzen reproduzierbar bleiben.
+For each string shown below, the following counting path applies. The minified versions are fully specified so that whitespace and token boundaries remain reproducible.
 
 ```python
 import tiktoken
@@ -39,19 +39,19 @@ for name in ("o200k_base", "cl100k_base"):
 
 ## twice
 
-Entwurf 0.1
+Draft 0.1
 
 ```lisp
 (fn twice ((x I64)) I64 (return (add x x)))
 ```
 
-Minifizierter Entwurf 0.1
+Minified Draft 0.1
 
 ```lisp
 (fn twice((x I64))I64(return(add x x)))
 ```
 
-Entwurf 0.2
+Draft 0.2
 
 ```tide
 twice x:i > i
@@ -60,19 +60,19 @@ twice x:i > i
 
 ## higher
 
-Entwurf 0.1
+Draft 0.1
 
 ```lisp
 (fn higher ((a I64) (b I64)) I64 (return (if (gt a b) a b)))
 ```
 
-Minifizierter Entwurf 0.1
+Minified Draft 0.1
 
 ```lisp
 (fn higher((a I64)(b I64))I64(return(if(gt a b)a b)))
 ```
 
-Entwurf 0.2
+Draft 0.2
 
 ```tide
 higher a:i b:i > i
@@ -81,7 +81,7 @@ if > a b a b
 
 ## maximum
 
-Entwurf 0.1
+Draft 0.1
 
 ```lisp
 (fn main ((input ReadText)) (Option I64)
@@ -98,13 +98,13 @@ Entwurf 0.1
   (return best))
 ```
 
-Minifizierter Entwurf 0.1
+Minified Draft 0.1
 
 ```lisp
 (fn main((input ReadText))(Option I64)(var best(none I64))(for(nr line)(lines(read_text input))(let n(match(to_i64 line)(none(fail "invalid_integer" nr))((some value)value)))(set best(some(match best(none n)((some old)(if(gt n old)n old))))))(return best))
 ```
 
-Entwurf 0.2
+Draft 0.2
 
 ```tide
 main input:r > ?i
@@ -113,9 +113,9 @@ let n need int x "invalid_integer" k
 some case b n p if > n p n p
 ```
 
-## Kontrolle mit denselben Operationen wie 0.2
+## Control with the same operations as 0.2
 
-Minifizierte Klammerform des Messwertprogramms.
+Minified bracket form of the measurement report program.
 
 ```lisp
 (main((input r))(? i)(fold(lines(read input))(nil i)b k x(let n(need(int x)"invalid_integer" k)(some(case b n p(if(> n p)n p))))))
