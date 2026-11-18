@@ -1,0 +1,10 @@
+use import
+
+record OtherDocument
+supplier:t events:*{Event}
+
+count_events doc:{OtherDocument} > i
+length (get events doc)
+
+wrong_call input:r > i
+count_events (jsoninput.load input (some 4194304))

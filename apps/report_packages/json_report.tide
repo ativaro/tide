@@ -1,7 +1,7 @@
 use json_readings
 
 main input:r limit:i > {Summary}
-let document parse (read_bytes input)
+let document jsoninput.load input (nil i)
 fold (get readings document) (make Summary above 0 peak (nil i)) result row reading
 let value get value reading
 let threshold case (dict_get (get limits document) (get sensor reading)) limit local_limit local_limit

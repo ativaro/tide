@@ -98,6 +98,8 @@ fold (type_names typ) true ok row name
   case (entry_at (get names schemas) name) (fail (diagnosis file site "E_TYPE" (concat "Unknown named type: " name))) found ok
 
 scoped_type_name name:t scope:{SymbolScope} schemas:{Declarations} file:t site:{Site} > t
+let parameter get parameter scope
+if (and (not (text_eq parameter "")) (or (text_eq name parameter) (text_eq name (namespace_name (get space scope) parameter)))) (get argument scope)
 let visible scope_index (get types scope) (get names schemas) name (get space scope)
 let index need visible (diagnosis file site "E_TYPE" (concat "Unknown named type: " name)) 0
 need (at (get names schemas) index) "type_name" 0

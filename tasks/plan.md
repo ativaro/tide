@@ -68,6 +68,8 @@ Stage 4 now covers the complete import, a restart after an order-only release, r
 
 Stage 5 reproduced the eight-event native speedup on the original workstation. Across the additional batch sizes, the median winner switched between 256 and 384 events. The public alpha awaits a repeat on independent hardware. [Replication and release decision](../experimente/74_alpha_review/report.md)
 
+Stage 6 uses one pinned JSON input package for the order importer and measurement report. Each consumer binds its own document schema. The checker identifies a mismatched result at the caller's operand in all four CLI paths. [Shared package and acceptance results](../experimente/75_shared_types/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

@@ -1,0 +1,9 @@
+package wrapper 1.0.0 Item
+
+use jsoninput@1.0.0[Item]
+
+export decode_pair
+
+decode_pair bytes:y > &{Item}{Item}
+let item jsoninput.decode bytes
+pair item item

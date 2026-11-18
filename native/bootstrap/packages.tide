@@ -1,16 +1,16 @@
 use samples
 
 record PackagePin
-name:t version:t
+name:t version:t parameter:t
 
 empty_package_pin > {PackagePin}
-make PackagePin name "" version ""
+make PackagePin name "" version "" parameter ""
 
 record SourceUnit
 name:t file:t source:t wire:t imports:*{Site} pin:{PackagePin}
 
 record ModuleRequest
-path:t pin:{PackagePin} versioned:b
+path:t pin:{PackagePin} versioned:b argument:t
 
 version_part part:t > b
 let n text_len part
@@ -32,12 +32,13 @@ case (at (schema_blocks source true) 0) (nil {PackagePin}) block
 let head get head block
 let site need (at head 0) "package_header" 0
 if (not (text_eq (get word site) "package")) (nil {PackagePin})
-let error diagnosis file site "E_PACKAGE" "Expected a standalone package NAME MAJOR.MINOR.PATCH declaration"
-if (or (not (eq (length head) 3)) (> (length (get tail (get body block))) 0)) fail error
+let error diagnosis file site "E_PACKAGE" "Expected package NAME MAJOR.MINOR.PATCH with an optional type parameter"
+if (or (or (< (length head) 3) (> (length head) 4)) (> (length (get tail (get body block))) 0)) fail error
 let name get word (need (at head 1) error 0)
 let version get word (need (at head 2) error 0)
 if (not (and (package_name_valid name) (exact_version version))) fail error
-some (make PackagePin name name version version)
+let parameter case (at head 3) "" item (checked_name (get word item) (list t 0) item file)
+some (make PackagePin name name version version parameter parameter)
 
 module_request unit:{SourceUnit} loc:{Site} > {ModuleRequest}
 let label get word loc
@@ -45,11 +46,18 @@ case (text_find label "@" 0)
   (if (not (valid_id label)) fail (diagnosis (get file unit) loc "E_MODULE" "Expected sibling module name")
    let parent get name unit
    let directory case (text_rfind parent "/" (text_len parent)) "" cut (text_slice parent 0 (+ cut 1))
-   make ModuleRequest path (cat3 directory label ".tide") pin (get pin unit) versioned false)
+   make ModuleRequest path (cat3 directory label ".tide") pin (get pin unit) versioned false argument "")
   cut
   let name text_slice label 0 cut
-  let version text_slice label (+ cut 1) (text_len label)
+  let end text_len label
+  let open_at case (text_find label "[" (+ cut 1)) end pos pos
+  let version text_slice label (+ cut 1) open_at
   if (not (and (package_name_valid name) (exact_version version))) fail (diagnosis (get file unit) loc "E_PACKAGE" "Expected NAME@MAJOR.MINOR.PATCH")
+  let argument if (eq open_at end) ""
+    (let arg text_slice label (+ open_at 1) (- end 1)
+     if (not (and (text_eq (text_slice label (- end 1) end) "]") (and (<= (text_len arg) 126) (qualified_id arg))))
+       fail (diagnosis (get file unit) loc "E_PACKAGE" "Expected a named type in brackets")
+     arg)
   let path cat3 "vendor/" name (cat3 "/" version "/package.tide")
-  make ModuleRequest path path pin (make PackagePin name name version version) versioned true
+  make ModuleRequest path path pin (make PackagePin name name version version parameter "") versioned true argument argument
 

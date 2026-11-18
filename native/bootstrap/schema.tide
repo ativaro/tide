@@ -207,10 +207,10 @@ if (case (entry_at used qualified) false pos true) fail (diagnosis file loc "E_N
 qualified
 
 record SymbolScope
-space:t calls:*t types:*t
+space:t calls:*t types:*t parameter:t argument:t
 
 empty_symbol_scope > {SymbolScope}
-make SymbolScope space "" calls (list t 0) types (list t 0)
+make SymbolScope space "" calls (list t 0) types (list t 0) parameter "" argument ""
 
 scope_index aliases:*t canonical:*t spelling:t space:t > ?i
 if (eq (length aliases) 0) (entry_at canonical spelling)

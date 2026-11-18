@@ -26,6 +26,23 @@ twice 7
 
 Packages and their exact versions appear in `tide modules --json`. `tide check`, `run`, `test`, and `build --aot` use the same package resolution. Inspection and edit preview also work on package sources. Direct writing to an embedded package file occurs from its own project.
 
+### A package with a type parameter
+
+A package can declare one named type parameter in its header. Its functions and record fields can refer to that parameter in type positions.
+
+```tide
+package jsoninput 1.0.0 Payload
+
+export decode
+
+decode bytes:y > {Payload}
+json_decode {Payload} bytes
+```
+
+The importer supplies a visible record or variant by name. For example, `use jsoninput@1.0.0[Document]` gives `jsoninput.decode` the result type `{Document}` in that project. A dependency can also receive a qualified exported type or the importing package's own parameter. The checker resolves the concrete type before it checks function bodies. Calls use the usual nominal type rules and operand locations.
+
+All imports of a given package in one project must agree on the version and concrete type. A missing, unexpected or conflicting argument produces `E_PACKAGE`. An unknown type produces `E_TYPE`. Check a parameterized package through a consumer that supplies its type. The module graph records the spelling at the import in `type_argument`.
+
 ### Comparing Keys with Different Priorities
 
 The library module [ordering.tide](lib/ordering.tide) can be copied alongside your own modules and included with `use ordering`. `prefer_min candidate current on_equal` decides in favor of the smaller i64 value. `prefer_max` decides in favor of the larger. In case of equality, both return `on_equal`. This allows combining ascending and descending criteria across the entire i64 range.

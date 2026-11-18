@@ -1,0 +1,18 @@
+use wrapper@1.0.0[Reading]
+
+use jsoninput@1.0.0[Reading]
+
+record Reading
+value:i
+
+main input:r limit:?i > {Reading}
+jsoninput.load input limit
+
+example exact_byte_limit main
+{"inputs":{"input":"{\"value\":0}","limit":{"some":11}},"expect":{"value":0}}
+
+example one_byte_over main
+{"inputs":{"input":"{\"value\":0}","limit":{"some":10}},"expect_error":{"code":"E_LIMIT"}}
+
+example forwarded wrapper.decode_pair
+{"inputs":{"bytes":"7b2276616c7565223a317d"},"expect":[{"value":1},{"value":1}]}

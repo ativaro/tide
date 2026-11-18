@@ -110,10 +110,11 @@ install-native: native catalog forms checker inspector editor aot-runtime
 	fi
 
 .PHONY: test check-native check-sqlite
-test: check-native check-sqlite check-https check-language-io
+test: check-native check-sqlite check-https check-language-io check-package-types
 
 include native/bootstrap/https-check.mk
 include native/bootstrap/service-check.mk
+include native/bootstrap/package-types-check.mk
 
 check-sqlite: checker catalog aot-runtime
 	@./tide test apps/orders/checks.tide

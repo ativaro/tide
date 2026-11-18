@@ -1,3 +1,5 @@
+use jsoninput@1.0.0[Document]
+
 record Reading
 sensor:t value:i note:?t
 
@@ -8,7 +10,7 @@ record Summary
 above:i peak:?i
 
 parse payload:y > {Document}
-json_decode {Document} payload
+jsoninput.decode payload
 
 notes payload:t > {Document}
 parse (utf8_bytes payload)

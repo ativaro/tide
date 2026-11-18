@@ -108,7 +108,7 @@ let valid_header case header (not (get versioned request)) declared
 if (not valid_header)
   fail (diagnosis (get file from) (get pending project) "E_PACKAGE" (if (get versioned request)
     (cat3 "Expected package header for " (get name pin) (concat "@" (get version pin))) "Package headers belong in the package entry"))
-let unit make SourceUnit name name file name source body wire wire imports (import_sites body) pin pin
+let unit make SourceUnit name name file name source body wire wire imports (import_sites body) pin (case header pin declared declared)
 let frame make ImportFrame unit (length (get units project)) first_row 1
 request_sibling (make ProjectFiles units (append (get units project) unit) names (append (get names project) name)
   path (append (get path project) frame) next_name "" pending (get pending project) total total)
@@ -177,13 +177,42 @@ map t names name
 project_scope space:t links:*&tt book:{SourceDeclarations} exported:*t > {SymbolScope}
 let imports fold links (list t 0) acc row link if (text_eq (first link) space) (append acc (second link)) acc
 make SymbolScope space space calls (package_aliases (get names book) space imports exported)
-  types (package_aliases (get names (get types book)) space imports exported)
+  types (package_aliases (get names (get types book)) space imports exported) parameter "" argument ""
 
 select_scope scopes:*{ProjectScope} space:t > {SymbolScope}
 fold scopes empty_symbol_scope found row item
   if (text_eq space (get space item)) (get symbols item) found
 
+bind_package_arguments scopes:*{ProjectScope} units:*{SourceUnit} types:{Declarations} > *{ProjectScope}
+let paths map t units unit (get name unit)
+let spaces map t scopes item (get space item)
+fold units scopes prior row unit
+  let owner select_scope prior (get name (get pin unit))
+  fold (get imports unit) prior bound pos loc
+    let request module_request unit loc
+    if (not (get versioned request)) bound
+    let target need (at units (need (entry_at paths (get path request)) "package_path" 0)) "package_unit" 0
+    let pin get pin target
+    let parameter get parameter pin
+    let argument get argument request
+    let file get file unit
+    if (text_eq parameter "")
+      (if (text_eq argument "") bound (fail (diagnosis file loc "E_PACKAGE" "Package takes no type argument")))
+    if (text_eq argument "") fail (diagnosis file loc "E_PACKAGE" (concat "Missing type argument for " (get name pin)))
+    if (case (entry_at (get names types) (namespace_name (get name pin) parameter)) false found true)
+      fail (diagnosis (get file target) (make Site word parameter line 1 column 1) "E_TYPE" "Package type parameter conflicts with a declared type")
+    let actual scoped_type_name argument owner types file loc
+    let index need (entry_at spaces (get name pin)) "package_scope" 0
+    let item need (at bound index) "package_scope" 0
+    let symbols get symbols item
+    if (not (text_eq (get argument symbols) ""))
+      (if (text_eq (get argument symbols) actual) bound (fail (diagnosis file loc "E_PACKAGE" "Conflicting package type arguments")))
+    map {ProjectScope} bound current (if (text_eq (get space current) (get space item))
+      (with symbols item (with argument (with parameter symbols parameter) actual)) current)
+
 bind_project_symbols book:{SourceDeclarations} units:*{SourceUnit} > {SourceDeclarations}
+let root need (at units 0) "root_unit" 0
+if (not (text_eq (get parameter (get pin root)) "")) fail (root_diagnostic (get file root) "E_PACKAGE" "Check this package through an import with a type argument")
 let spaces fold units (list t 0) acc row unit
   let name get name (get pin unit)
   if (case (entry_at acc name) false found true) acc (append acc name)
@@ -198,8 +227,9 @@ let exported fold (get exports book) (list t 0) acc row item
     fail (diagnosis (get file item) (get loc item) "E_EXPORT" (concat "Unknown or duplicate export: " name))
   append acc name
 let links package_links units
-let scopes map {ProjectScope} spaces space
+let base_scopes map {ProjectScope} spaces space
   make ProjectScope space space symbols (project_scope space links book exported)
+let scopes bind_package_arguments base_scopes units types
 let schemas with entries types
   (map {SchemaType} (get entries types) decl
    let scope select_scope scopes (namespace_of (get name decl))
@@ -216,7 +246,6 @@ let examples map {FunctionExample} (get examples book) ex
   let index need (scope_index (get calls scope) names (get target ex) (get space scope))
     (diagnosis (get file ex) (get loc ex) "E_NAME" (concat "Unknown example target: " (get target ex))) 0
   with target ex (need (at names index) "example_target" 0)
-let root need (at units 0) "root_unit" 0
 with entry_scope (with examples (with functions (with types book schemas) functions) examples) (select_scope scopes (get name (get pin root)))
 
 project_declarations project:{ProjectFiles} entry_blocks:*{SchemaBlock} > {SourceDeclarations}
@@ -243,7 +272,8 @@ let edges fold units "" result pos unit
   fold (get imports unit) result acc row loc
     let request module_request unit loc
     let pin get pin request
-    let version if (get versioned request) (cat3 ",\"package\":" (json_string (get name pin)) (concat ",\"version\":" (json_string (get version pin)))) ""
+    let arg get argument request
+    let version if (get versioned request) (cat3 ",\"package\":" (json_string (get name pin)) (cat3 ",\"version\":" (json_string (get version pin)) (if (text_eq arg "") "" (concat ",\"type_argument\":" (json_string arg))))) ""
     let edge cat3 "{\"file\":" (json_string (get file unit))
       (cat3 ",\"module\":" (json_string (get path request))
        (cat3 ",\"line\":" (decimal (get line loc)) (cat3 ",\"column\":" (decimal (get column loc)) (concat version "}"))))
