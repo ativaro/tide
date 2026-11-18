@@ -13,14 +13,24 @@ def observed($name): any($events[]; .event==$name);
     group_by(.pid) | map(map(.ticks)|max) | add / $run[0].clock_ticks_per_second) as $cpu |
 ([range(1; $s|length) as $i | $s[$i].ms - $s[$i-1].ms] | max // 0) as $gap |
 ([$events[] | select(.event=="completed")][0]) as $end |
+($cutoff[0] // null) as $audit |
+if $audit!=null and (
+    $status[0].state!="failed" or $audit.last_slot!=$s[-1].slot or
+    ($s|map(.slot))!=[range(0; $audit.last_slot+1)] or $gap>90000 or
+    ($probes|map(.id)|unique)!=([range(0;$audit.last_slot+1) | "pulse-\(.)"]|sort) or
+    ($probes|group_by(.id)|any(.[];map(.status)!=["201","200"])) or
+    $audit.expected!=$audit.last_slot+3 or $audit.events!=$audit.expected or $audit.positions!=$audit.expected or
+    $audit.units!=$audit.expected*3 or $audit.value_cents!=$audit.units*125 or $audit.key_or_value_mismatches!=0
+) then error("Cutoff audit disagrees with recorded evidence") else . end |
 {
-    state:$status[0].state, started_utc:$run[0].started_utc,
-    last_sample_utc:$s[-1].utc, finished_utc:($end.utc // null),
+    state:(if $audit!=null then "stopped_at_user_request" else $status[0].state end),
+    recorder_state:$status[0].state, started_utc:$run[0].started_utc,
+    last_sample_utc:$s[-1].utc, finished_utc:($end.utc // $audit.requested_stop_utc), cutoff_audit:$audit,
     elapsed_seconds:(($end.elapsed_ms // $s[-1].ms)/1000), samples:($s|length),
     max_sample_gap_seconds:($gap/1000),
     probe_creates:([$probes[]|select(.status=="201")]|length),
     probe_replays:([$probes[]|select(.status=="200")]|length),
-    probe_p95_ms:($probes|map(.ms)|sort|.[((length*0.95|ceil)-1)]),
+    probe_p95_ms:($probes|map(.ms)|sort|.[((length*0.95|ceil)-1)]|if .!=null then (.*1000|round)/1000 else . end),
     webhook:{
         observed_processes:(([$s[].pid]+[$retiring[].pid])|unique|length),
         total_observed_cpu_seconds:$cpu, first_rss_kib:$s[0].rss,last_rss_kib:$s[-1].rss,
@@ -37,7 +47,7 @@ def observed($name): any($events[]; .event==$name);
     confirmed_upgrade:observed("candidate_confirmed"),
     database_outage:([$events[]|select(.event=="database_offline")|.detail][0]),
     database_recovery:([$events[]|select(.event=="database_recovered")|.detail][0]),
-    final_database_check:$end.detail,
+    final_database_check:($end.detail // $audit),
     verified_24_hours:(
         $status[0].state=="complete" and $end.elapsed_ms>=86400000 and $s[-1].ms>=86400000 and
         ($s | map(.slot))==[range(0;1441)] and $gap<=90000 and

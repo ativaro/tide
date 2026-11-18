@@ -10,6 +10,7 @@ tmp=$(mktemp -d "$out/.report-XXXXXXXX")
 trap 'rmdir "$tmp" 2>/dev/null || :' EXIT
 jq -n --rawfile samples samples.csv --rawfile requests requests.csv --slurpfile run run.json \
     --slurpfile status status.json --slurpfile events events.jsonl \
+    --slurpfile cutoff <(if [[ -f cutoff-audit.json ]]; then cat cutoff-audit.json; fi) \
     --slurpfile retiring <(if [[ -f retiring.jsonl ]]; then cat retiring.jsonl; fi) \
     -f "$here/summary.jq" >"$tmp/summary.json"
 jq -e '.samples>=1 and (.state!="complete" or .verified_24_hours)' "$tmp/summary.json" >/dev/null
@@ -17,7 +18,8 @@ jq -r '
     def mib: (. / 1024 * 100 | round) / 100;
     "# Stage 17 · Order webhook operation and recovery",
     "",
-    (if .verified_24_hours then "**The 24-hour technical qualification passed.**"
+    (if .state=="stopped_at_user_request" then "**The recovery checks and the closing database audit passed.** The requested observation ended early at " + .finished_utc + "."
+     elif .verified_24_hours then "**The 24-hour technical qualification passed.**"
      elif .state=="failed" then "**The run stopped before it qualified.** The following values cover the recorded interval."
      else "**The 24-hour qualification is open.** The following values cover the recorded interval." end),
     "",
@@ -43,7 +45,9 @@ jq -r '
         "An immediate PostgreSQL stop made the webhook return HTTP \(.database_outage.ready_status) with \(.database_outage.reply.error). The failed delivery left no ledger entry. The restarted cluster accepted the same event once and recognized its replay. Stop through verified recovery took \(.database_recovery.stop_to_verified_recovery_ms) ms."
      else "The database restart check has not yet been recorded." end),
     "",
-    (if .verified_24_hours then
+    (if .state=="stopped_at_user_request" then
+        "After the recorder and webhook stopped, a read-only audit checked the persisted database against all expected order IDs and business fields. It found \(.cutoff_audit.events) events and \(.cutoff_audit.positions) positions, including the original witness and the delivery retried after the outage. These represent \(.cutoff_audit.units) units worth \(.cutoff_audit.value_cents) cents. The audit found \(.cutoff_audit.key_or_value_mismatches) mismatches. The recorder logs any early stop as failed against its original 24-hour threshold."
+     elif .verified_24_hours then
         "The final SQL check matched every expected event and position and verified all stored business fields. The ledger contained 1,443 events and 1,443 positions, with 4,329 units worth 541,125 cents."
      else "The final ledger audit is pending." end),
     "",
@@ -64,7 +68,7 @@ fi
 if [[ -f schema-failure.json ]] && jq -e '.error=="schema_unavailable"' schema-failure.json >/dev/null; then
     printf '\nA separate readiness check temporarily renamed the positions table. The endpoint returned HTTP 503 with `schema_unavailable` until the table was restored, then returned HTTP 200.\n' >>"$tmp/report.md"
 fi
-if jq -e '.verified_24_hours' "$tmp/summary.json" >/dev/null; then
+if jq -e '.verified_24_hours or .state=="stopped_at_user_request"' "$tmp/summary.json" >/dev/null; then
     printf '\n[Machine-readable results](summary.json) · [Raw measurements and event logs](evidence.tar.gz)\n' >>"$tmp/report.md"
 fi
 mv -fT "$tmp/summary.json" "$out/summary.json"

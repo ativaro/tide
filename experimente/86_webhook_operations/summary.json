@@ -1,0 +1,63 @@
+{
+  "state": "stopped_at_user_request",
+  "recorder_state": "failed",
+  "started_utc": "2026-11-18T21:11:05Z",
+  "last_sample_utc": "2026-11-18T23:40:05Z",
+  "finished_utc": "2026-11-18T23:40:51Z",
+  "cutoff_audit": {
+    "last_slot": 149,
+    "expected": 152,
+    "events": 152,
+    "positions": 152,
+    "units": 456,
+    "value_cents": 57000,
+    "key_or_value_mismatches": 0,
+    "requested_stop_utc": "2026-11-18T23:40:51Z"
+  },
+  "elapsed_seconds": 8940.06,
+  "samples": 150,
+  "max_sample_gap_seconds": 60.83,
+  "probe_creates": 150,
+  "probe_replays": 150,
+  "probe_p95_ms": 11.172,
+  "webhook": {
+    "observed_processes": 5,
+    "total_observed_cpu_seconds": 2.6,
+    "first_rss_kib": 12560,
+    "last_rss_kib": 4928,
+    "peak_sampled_rss_kib": 12576,
+    "max_observed_hwm_kib": 12576,
+    "max_sampled_fds": 5,
+    "max_sampled_threads": 6
+  },
+  "postgres": {
+    "peak_sampled_pss_kib": 28060,
+    "first_database_bytes": 7935679,
+    "final_database_bytes": 8009407,
+    "max_sampled_app_sessions": 0
+  },
+  "interrupted_upgrade": true,
+  "recovered_previous": true,
+  "confirmed_upgrade": true,
+  "database_outage": {
+    "ready_status": 503,
+    "reply": {
+      "error": "dependency_unavailable"
+    },
+    "postgres_accepting": false
+  },
+  "database_recovery": {
+    "stop_to_verified_recovery_ms": 1390
+  },
+  "final_database_check": {
+    "last_slot": 149,
+    "expected": 152,
+    "events": 152,
+    "positions": 152,
+    "units": 456,
+    "value_cents": 57000,
+    "key_or_value_mismatches": 0,
+    "requested_stop_utc": "2026-11-18T23:40:51Z"
+  },
+  "verified_24_hours": false
+}

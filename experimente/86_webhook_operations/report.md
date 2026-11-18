@@ -1,19 +1,19 @@
 # Stage 17 · Order webhook operation and recovery
 
-**The 24-hour qualification is open.** The following values cover the recorded interval.
+**The recovery checks and the closing database audit passed.** The requested observation ended early at 2026-11-18T23:40:51Z.
 
-The run began at 2026-11-18T21:11:05Z. The last resource sample was taken at 2026-11-18T21:16:05Z. The recorder observed 300.06 seconds and 6 samples. The largest interval between samples was 60.83 seconds.
+The run began at 2026-11-18T21:11:05Z. The last resource sample was taken at 2026-11-18T23:40:05Z. The recorder observed 8940.06 seconds and 150 samples. The largest interval between samples was 60.83 seconds.
 
 | Measurement | Observed value |
 |---|---:|
-| Scheduled new orders / idempotent replays | 6 / 6 |
-| P95 response time for scheduled deliveries and replays | 293.845 ms |
-| Webhook RSS at first / latest sample | 12.27 / 8.41 MiB |
+| Scheduled new orders / idempotent replays | 150 / 150 |
+| P95 response time for scheduled deliveries and replays | 11.172 ms |
+| Webhook RSS at first / latest sample | 12.27 / 4.81 MiB |
 | Highest recorded webhook RSS high-water mark | 12.28 MiB |
-| Observed webhook CPU across process lifetimes | 0.13 CPU seconds |
+| Observed webhook CPU across process lifetimes | 2.6 CPU seconds |
 | Maximum sampled webhook file descriptors / threads | 5 / 6 |
 | Maximum sampled PostgreSQL proportional memory | 27.4 MiB |
-| Database size at first / latest sample | 7935679 / 7935679 bytes |
+| Database size at first / latest sample | 7935679 / 8009407 bytes |
 
 ## Recovery
 
@@ -21,7 +21,7 @@ The updater was killed with SIGKILL after the candidate served a real replay and
 
 An immediate PostgreSQL stop made the webhook return HTTP 503 with dependency_unavailable. The failed delivery left no ledger entry. The restarted cluster accepted the same event once and recognized its replay. Stop through verified recovery took 1390 ms.
 
-The final ledger audit is pending.
+After the recorder and webhook stopped, a read-only audit checked the persisted database against all expected order IDs and business fields. It found 152 events and 152 positions, including the original witness and the delivery retried after the outage. These represent 456 units worth 57000 cents. The audit found 0 mismatches. The recorder logs any early stop as failed against its original 24-hour threshold.
 
 ## Measurement scope
 
@@ -44,3 +44,5 @@ The workstation ran TIDE 0.6.12 and PostgreSQL 18.6 on Linux 7.3.4-1-cachyos x86
 The local `make test check-postgres` regression suite passed.
 
 A separate readiness check temporarily renamed the positions table. The endpoint returned HTTP 503 with `schema_unavailable` until the table was restored, then returned HTTP 200.
+
+[Machine-readable results](summary.json) · [Raw measurements and event logs](evidence.tar.gz)
