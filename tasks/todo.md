@@ -18,7 +18,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 12. Verify one PostgreSQL booking after concurrent delivery, timeout and restart. [Order webhook results](../experimente/81_order_webhook/report.md)
 - [x] 13. Bound the webhook queue, verify database release on cancellation and measure throughput and P95 under load. [Load and cancellation results](../experimente/82_webhook_load/report.md)
 - [x] 14. Install verified packages offline, reproduce both application binaries and roll back the library upgrade. [Offline package results](../experimente/83_offline_packages/report.md)
-- [ ] 15. Test entry and editor with new users
+- [ ] 15. Test installation, a field change and a multi-file repair with three previously uninvolved developers. The clean-checkout rehearsal passed. The study has recorded 0 of 3 participant sessions. [Stage 15 report and study materials](../experimente/84_onboarding/report.md)
 - [ ] 16. Accept the second platform
 - [ ] 17. Test operations, upgrades, and recovery
 - [ ] 18. Accompany two independent pilot projects
