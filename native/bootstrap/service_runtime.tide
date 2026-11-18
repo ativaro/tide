@@ -1,13 +1,17 @@
 use https
 
 record ServiceOptions
-address:t port:i workers:i grants:*t pending:t
+address:t port:i workers:i queue:i grants:*t pending:t
 
 service_option opts:{ServiceOptions} key:t value:t > {ServiceOptions}
 if (text_eq key "--workers")
   (let n need (int value) "Expected a worker count" 0
    if (or (< n 1) (> n 32)) fail "Expected 1 to 32 workers"
    with workers opts n)
+if (text_eq key "--queue")
+  (let n need (int value) "Expected a queue size" 0
+   if (or (< n 0) (> n 96)) fail "Expected 0 to 96 queued requests"
+   with queue opts n)
 if (text_eq key "--listen")
   (let cut need (text_find value ":" 0) "Expected IPv4:port" 0
    let port need (int (text_slice value (+ cut 1) (text_len value))) "Expected IPv4:port" 0
@@ -17,16 +21,20 @@ let mark if (text_eq key "--pg") "~" (if (text_eq key "--db") "!" (if (text_eq k
 with grants opts (append (get grants opts) (concat mark value))
 
 service_options args:*t > {ServiceOptions}
-let initial make ServiceOptions address "" port -1 workers 4 grants (list t 0) pending ""
+let initial make ServiceOptions address "" port -1 workers 4 queue 16 grants (list t 0) pending ""
 let parsed fold args initial opts row arg
   let waiting get pending opts
   if (not (text_eq waiting "")) (service_option (with pending opts "") waiting arg)
   let cut case (text_find arg "=" 0) (text_len arg) n n
   let key text_slice arg 0 cut
-  if (not (white (cat3 "|" key "|") "|--listen|--workers|--db|--https|--pg|--write|")) fail "Unknown service option"
+  if (not (white (cat3 "|" key "|") "|--listen|--workers|--queue|--db|--https|--pg|--write|")) fail "Unknown service option"
   if (eq cut (text_len arg)) (with pending opts key) (service_option opts key (text_slice arg (+ cut 1) (text_len arg)))
 if (or (text_eq (get address parsed) "") (not (text_eq (get pending parsed) ""))) fail "Supply --listen IPv4:port"
 parsed
+
+service_admission workers:i capacity:i active:i waiting:i > t
+if (and (< active workers) (eq waiting 0)) "run"
+if (< waiting capacity) "wait" "full"
 
 service_reply result:{EvalValue} > &i&*tt
 let status get num (member_value result 0)

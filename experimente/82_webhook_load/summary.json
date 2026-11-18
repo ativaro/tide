@@ -1,0 +1,98 @@
+[
+  {
+    "arm": "stage12",
+    "clients": 1,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 565.5684643205304,
+    "bookings_per_s": 565.5684643205304,
+    "p95_ms": 2.483,
+    "booked_p95_ms": 2.483,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage12",
+    "clients": 4,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 1960.5383998771574,
+    "bookings_per_s": 1960.5383998771574,
+    "p95_ms": 3.0730000000000004,
+    "booked_p95_ms": 3.0730000000000004,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage12",
+    "clients": 12,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 2244.9333464354277,
+    "bookings_per_s": 2244.9333464354277,
+    "p95_ms": 6.355,
+    "booked_p95_ms": 6.355,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage12",
+    "clients": 32,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 2186.5792578191827,
+    "bookings_per_s": 2186.5792578191827,
+    "p95_ms": 18.316,
+    "booked_p95_ms": 18.316,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage13",
+    "clients": 1,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 557.901343724823,
+    "bookings_per_s": 557.901343724823,
+    "p95_ms": 2.4459999999999997,
+    "booked_p95_ms": 2.4459999999999997,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage13",
+    "clients": 4,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 2030.8721724331851,
+    "bookings_per_s": 2030.8721724331851,
+    "p95_ms": 2.536,
+    "booked_p95_ms": 2.536,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage13",
+    "clients": 12,
+    "sent": 4096,
+    "booked": 4096,
+    "rejected": 0,
+    "responses_per_s": 2222.2993757495947,
+    "bookings_per_s": 2222.2993757495947,
+    "p95_ms": 6.325,
+    "booked_p95_ms": 6.325,
+    "rejected_p95_ms": null
+  },
+  {
+    "arm": "stage13",
+    "clients": 32,
+    "sent": 4096,
+    "booked": 331,
+    "rejected": 3765,
+    "responses_per_s": 23176.070679863584,
+    "bookings_per_s": 1872.8709460534292,
+    "p95_ms": 5.361999999999999,
+    "booked_p95_ms": 6.71,
+    "rejected_p95_ms": 0.619
+  }
+]

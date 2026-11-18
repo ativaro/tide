@@ -46,7 +46,7 @@ Nano and the terminal game remain demonstrators for editor logic and game state.
 |---:|---|---|
 | 11 | **Improve runtime where real programs lose time.** Profile word processing, typed JSON decoding, and database access in the full workflow. | For the largest share, pre- and post-measurements exist for small and large data volumes. Throughput, startup time, peak memory, and error semantics are jointly reported. |
 | 12 | **Deliver a fault-tolerant API service.** Build an order webhook with PostgreSQL, transactions, and repeatable delivery. | Duplicate message, timeout, and restart after successful commit each result in exactly one correct business case. Stored data are independently verified. |
-| 13 | **Master concurrency and cancellation under load.** Extend the existing HTTP workers with the load limiting and cancellation propagation required by the service. | A load test documents throughput and 95. Response time percentile. Aborted requests free connections, and the number of pending tasks remains within the defined budget. |
+| 13 | **Master concurrency and cancellation under load.** Extend the HTTP workers with the load limiting and cancellation propagation required by the service. | A load test reports throughput and 95th-percentile response latency. Aborted requests release database connections, and the number of waiting requests stays within the configured limit. |
 | 14 | **Distribute packages independently and build reproducibly.** Build a verifiable package installation on top of the existing exact pins. | Two independent projects reference the same library. A clean machine builds from fixed content offline, a changed package is detected, and an upgrade can be rolled back. |
 | 15 | **Make the language usable without project knowledge.** Align the onboarding path, library reference, and editor navigation with the most common questions from early applications. | Three previously uninvolved developers install TIDE, add a field, and fix a multi-file error using the guide. Time, follow-up questions, and cancellations are recorded. |
 
@@ -81,6 +81,8 @@ Stage 10 checked all 75 catalog operations across development execution, named e
 Stage 11 reduced the typed JSON phase of a 1,000-event import from 20.52 to 16.82 ms. The complete native import took 39.09 ms against CPython at 19.93 ms. At eight events the native TIDE process took 5.19 ms against 16.79 ms. [Profile, peak memory and execution modes](../experimente/80_import_performance/report.md)
 
 Stage 12 verified one committed PostgreSQL order line after eight concurrent deliveries, a SQL timeout followed by a retry, a lost HTTP receipt and a webhook restart after commit. An independent database connection checked the ledger, quantities and value. [Order webhook and fault-test evidence](../experimente/81_order_webhook/report.md)
+
+Stage 13 served 12 parallel clients at 2,222 committed bookings/s with P95 of 6.33 ms. Across 32,768 attempts on both versions, the Stage 13 queue peaked at eight and all its overload rejections matched the database records. The blocked PostgreSQL connection disappeared 43 ms after a client abort, compared with 4,996 ms in Stage 12. [Load, rejection and cancellation results](../experimente/82_webhook_load/report.md)
 
 ## Three 100× goals
 

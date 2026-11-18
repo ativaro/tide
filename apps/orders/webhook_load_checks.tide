@@ -1,0 +1,19 @@
+use webhook_checks
+
+orders ids:*t > *t
+map t ids id
+  let event make Event id id kind "order" order id line "1" qty 3 sku (some "Pièce猫") unit_cents (some 125)
+  wire "load" (list {Event} 1 event)
+
+stored accepted:*t events:*t positions:*t invalid:i > b
+let encoded utf8_text (json_encode accepted)
+and (eq invalid 0) (and (text_eq encoded (utf8_text (json_encode events))) (text_eq encoded (utf8_text (json_encode positions))))
+
+within_budget workers:i capacity:i peak_active:i peak_queued:i > b
+and (and (> peak_active 0) (<= peak_active workers)) (and (>= peak_queued 0) (<= peak_queued capacity))
+
+example missing_position stored
+{"inputs":{"accepted":["A"],"events":["A"],"positions":[],"invalid":0},"expect":false}
+
+example excess_queue within_budget
+{"inputs":{"workers":4,"capacity":2,"peak_active":4,"peak_queued":3},"expect":false}

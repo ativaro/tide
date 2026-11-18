@@ -1,0 +1,4 @@
+{"case":"client_abort_blocked_insert","arm":"stage12","backend_pid":1853701,"release_ms":4996,"connections_while_lock_held":0,"bookings_before_retry":0,"bookings_after_retry":1,"stats":null}
+{"case":"client_abort_blocked_insert","arm":"stage13","backend_pid":1858451,"release_ms":43,"connections_while_lock_held":0,"bookings_before_retry":0,"bookings_after_retry":1,"stats":{"peak_active":1,"peak_queued":0,"rejected":1,"queued_aborts":0,"active_aborts":1}}
+{"case":"abort_queued_and_active","release_ms":7,"connections_at_saturation":1,"connections_after_aborts":0,"bookings_before_retry":0,"healthy_followup":201,"stats":{"peak_active":1,"peak_queued":1,"rejected":1,"queued_aborts":1,"active_aborts":1}}
+{"case":"shutdown_with_queue","release_ms":34,"connections_after_shutdown":0,"bookings":0,"stats":{"peak_active":1,"peak_queued":1,"rejected":1,"queued_aborts":1,"active_aborts":1}}

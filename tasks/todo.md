@@ -16,7 +16,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [x] 10. Align the semantics of development, tests, and AOT. [Coverage matrix and results](../experimente/79_execution_parity/report.md)
 - [x] 11. Profile the order importer and reduce typed JSON decoding time on large batches. [Timings, memory and error checks](../experimente/80_import_performance/report.md)
 - [x] 12. Verify one PostgreSQL booking after concurrent delivery, timeout and restart. [Order webhook results](../experimente/81_order_webhook/report.md)
-- [ ] 13. Prove load limiting and termination
+- [x] 13. Bound the webhook queue, verify database release on cancellation and measure throughput and P95 under load. [Load and cancellation results](../experimente/82_webhook_load/report.md)
 - [ ] 14. Distribute packages independently and reproducibly
 - [ ] 15. Test entry and editor with new users
 - [ ] 16. Accept the second platform

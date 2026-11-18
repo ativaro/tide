@@ -1,8 +1,20 @@
 https_abi > t
-let rows list t 54
+let rows list t 66
   "#ifdef TIDE_SERVICE"
   "#include <atomic>"
-  "std::atomic_bool tide_stop{false};inline bool tide_service_cancelled(){return tide_stop.load(std::memory_order_relaxed);}"
+  "#include <chrono>"
+  "#include <poll.h>"
+  "std::atomic_bool tide_stop{false};"
+  "struct ServicePeer{int fd=-1;bool gone=false;std::chrono::steady_clock::time_point next{};};"
+  "thread_local ServicePeer tide_peer;"
+  "inline bool service_peer_closed(int fd){pollfd p{fd,POLLRDHUP,0};return poll(&p,1,0)>0 && (p.revents&(POLLRDHUP|POLLHUP|POLLERR|POLLNVAL));}"
+  "inline bool tide_service_cancelled(){"
+  "    if(tide_stop.load(std::memory_order_relaxed)||tide_peer.gone)return true;"
+  "    if(tide_peer.fd<0)return false;auto now=std::chrono::steady_clock::now();if(now<tide_peer.next)return false;"
+  "    tide_peer.next=now+std::chrono::milliseconds(20);"
+  "    tide_peer.gone=service_peer_closed(tide_peer.fd);"
+  "    return tide_peer.gone;"
+  "}"
   "#else"
   "inline bool tide_service_cancelled(){return false;}"
   "#endif"
