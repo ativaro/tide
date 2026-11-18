@@ -251,6 +251,14 @@ Multi-file writes use a private recovery journal in `.tide-edit-transaction-v1`.
 
 `fmt` writes a checked, normalized version of the entry file to stdout.
 
+### Incremental test sessions
+
+Start a local session with `tide test FILE --incremental`. Send `test` on stdin after each save and read one JSON object from stdout. The first request runs the entire suite. Later requests may reuse the last successful check. Send `full` for a clean check in the same process. Closing stdin ends the session.
+
+A successful reply includes `passed` (all passing examples), `checked_functions` (function and rule bodies checked on this request), and `executed_examples` (examples actually executed). Each failed request returns the ordinary test diagnostic as one JSON object. The session remains available for the next save. An unrecognized request exits with status 2.
+
+The session reads the current tool pin and the reachable source files on each request. It checks declarations, contracts and the global call graph each time. Changed modules invalidate their bodies. A changed function interface also invalidates previously checked callers, and examples run again when their file or any reachable function changes. A change to the ordered function names or the record and variant layouts triggers a full check. Cached results live in this process and are discarded at exit.
+
 ## Interactive Terminal Programs
 
 `tide play DATEI` connects a TIDE program with an interactive POSIX terminal. The host starts with `main > T`; `size > &ii` provides width and height in character cells. With a suitable window size, it calls `tick world:T keys:{Keys} > T` twelve times per second and then `draw world:T > *{Glyph}`. Each call receives a fresh work budget. The four functions and their calls must be free of side effects.

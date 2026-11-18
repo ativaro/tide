@@ -1,0 +1,95 @@
+use project
+
+record SuiteState
+project:{ProjectFiles} compiled:{CompiledProject} checked:i executed:i
+
+same_labels left:*t right:*t > b
+and (eq (length left) (length right)) (fold left true ok row item
+  and ok (text_eq item (need (at right (- row 1)) "label_index" 0)))
+
+same_layout left:{Declarations} right:{Declarations} > b
+and (same_labels (get names left) (get names right)) (fold (get entries left) true ok row item
+  let other need (at (get entries right) (- row 1)) "type_index" 0
+  and ok (and (if (get tagged item) (get tagged other) (not (get tagged other)))
+    (and (same_labels (get fields item) (get fields other)) (same_labels (get types item) (get types other)))))
+
+same_scope left:{SymbolScope} right:{SymbolScope} > b
+and (text_eq (get space left) (get space right)) (and (text_eq (get argument left) (get argument right))
+  (and (text_eq (get parameter left) (get parameter right))
+    (and (same_labels (get calls left) (get calls right)) (same_labels (get types left) (get types right)))))
+
+same_interface fn:{Signature} prior:{Signature} > b
+and (if (rule_signature fn) (rule_signature prior) (not (rule_signature prior))) (and (text_eq (get result fn) (get result prior))
+  (and (same_labels (get types fn) (get types prior)) (same_labels (get params fn) (get params prior))))
+
+changed_unit_files project:{ProjectFiles} prior:{ProjectFiles} > *t
+fold (get units project) (list t 0) files row unit
+  let same case (entry_at (get names prior) (get name unit)) false index
+    let old need (at (get units prior) index) "prior_unit" 0
+    and (text_eq (get file unit) (get file old)) (text_eq (get source unit) (get source old))
+  if same files (append files (get file unit))
+
+intersects_names left:*t right:*t > b
+fold left false hit row name or hit (case (entry_at right name) false found true)
+
+record SuiteTrees
+trees:*{FunctionTree} changed:*t
+
+update_trees table:{SourceDeclarations} old:{CheckedFunctions} files:*t > {SuiteTrees}
+let fns get functions table
+let names get names table
+let interfaces fold fns (list t 0) dirty row fn
+  let prior need (at (get signatures old) (- row 1)) "prior_signature" 0
+  if (same_interface fn prior) dirty (append dirty (get name fn))
+fold fns (make SuiteTrees trees (list {FunctionTree} 0) changed (list t 0)) acc row fn
+  let idx - row 1
+  let prior need (at (get signatures old) idx) "prior_signature" 0
+  let tree need (at (get trees old) idx) "prior_tree" 0
+  let rebuild or (case (entry_at files (get file fn)) false found true)
+    (or (not (text_eq (get file fn) (get file prior))) (or (not (same_scope (get scope fn) (get scope prior)))
+      (intersects_names (append (get calls tree) (get name fn)) interfaces)))
+  if (not rebuild) (with trees acc (append (get trees acc) tree))
+  make SuiteTrees trees (append (get trees acc) (check_function_tree fn fns names)) changed (append (get changed acc) (get name fn))
+
+full_suite_state project:{ProjectFiles} compiled:{CompiledProject} file:t > {SuiteState}
+make SuiteState project project compiled compiled checked (length (get names (get program compiled))) executed (passed_examples compiled file)
+
+suite_step project:{ProjectFiles} file:t previous:?{SuiteState} > {SuiteState}
+let root need (at (get units project) 0) "suite_root" 0
+let blocks schema_blocks (get source root) true
+case previous (full_suite_state project (compile_project project blocks) file) prior
+let old get compiled prior
+let before get declarations old
+let table project_declarations project blocks
+let names get names table
+if (not (and (same_labels names (get names before)) (same_layout (get types table) (get types before))))
+  (full_suite_state project (finish_compilation project table (check_functions (get functions table) names)) file)
+let files changed_unit_files project (get project prior)
+let updated update_trees table (get program old) files
+let program check_function_graph (get functions table) names (get trees updated)
+let compiled finish_compilation project table program
+let dirty get changed updated
+let targets fold (get samples compiled) (list t 0) acc row sample
+  let name need (at names (get target sample)) "sample_target" 0
+  if (case (entry_at acc name) false found true) acc (append acc name)
+let affected fold targets (list t 0) acc row name
+  if (and (> (length dirty) 0) (intersects_names (reachable_definitions program name) dirty)) (append acc name) acc
+let executed fold (get examples table) 0 count row ex
+  let prior_example at (get examples before) (- row 1)
+  let unchanged case prior_example false item
+    and (text_eq (get name ex) (get name item)) (and (text_eq (get file ex) (get file item)) (text_eq (get target ex) (get target item)))
+  if (and unchanged (and (case (entry_at files (get file ex)) true found false)
+    (case (entry_at affected (get target ex)) true found false))) count
+  let mismatch example_mismatch ex (need (at (get samples compiled) (- row 1)) "sample" 0) program file
+  if (text_eq mismatch "") (+ count 1) (fail mismatch)
+make SuiteState project project compiled compiled checked (length dirty) executed executed
+
+suite_reply state:{SuiteState} > t
+let passed length (get samples (get compiled state))
+cat3 "{\"passed\":" (decimal passed) (cat3 ",\"checked_functions\":" (decimal (get checked state))
+  (cat3 ",\"executed_examples\":" (decimal (get executed state)) "}\n"))
+
+suite_pin_error contents:t release:t file:t path:t > t
+if (text_eq (pin_status contents release) "ok") ""
+cat3 "{\"file\":" (json_string file) (cat3 ",\"code\":\"E_VERSION\",\"message\":\"Project pins a different TIDE tool or catalog\",\"expected\":" (get compact (scalar_json contents))
+  (cat3 ",\"actual\":" release (cat3 ",\"lock\":" (json_string path) "}")))

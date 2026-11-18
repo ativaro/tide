@@ -1,11 +1,16 @@
 use functions
 
 check_functions fns:*{Signature} names:*t > {CheckedFunctions}
-let trees fold fns (list {FunctionTree} 0) acc row fn
-  let valid fold (get params fn) true ok pos key and ok (text_eq key (checked_name key (call_bindings fn names) (get loc fn) (get file fn)))
-  if (not valid) fail "function_binding"
-  let tree if (rule_signature fn) (rule_tree fn fns names) (typed_body fn fns names empty_tree)
-  append acc (with calls tree (sorted_labels (get calls tree)))
+let trees map {FunctionTree} fns fn (check_function_tree fn fns names)
+check_function_graph fns names trees
+
+check_function_tree fn:{Signature} fns:*{Signature} names:*t > {FunctionTree}
+let valid fold (get params fn) true ok pos key and ok (text_eq key (checked_name key (call_bindings fn names) (get loc fn) (get file fn)))
+if (not valid) fail "function_binding"
+let tree if (rule_signature fn) (rule_tree fn fns names) (typed_body fn fns names empty_tree)
+with calls tree (sorted_labels (get calls tree))
+
+check_function_graph fns:*{Signature} names:*t trees:*{FunctionTree} > {CheckedFunctions}
 let budget fold trees 0 n row tree + n (+ 2 (length (get calls tree)))
 let blank make CallWalk root 0 path (list {CallFrame} 0) done (list t 0) summaries (list {FunctionSummary} 0)
 let walk fold (indices (div (+ budget 511) 512)) blank before chunk unused
@@ -131,3 +136,12 @@ let branches get branches (get plan checked)
 if (case (at branches (- (length branches) 1)) true branch (not (< (get guard branch) 0)))
   fail (diagnosis (get file fn) (get loc fn) "E_SYNTAX" "Missing final else")
 rule_expr scoped fns names checked (site_span last_line 1 (site_count last_line)) (get result fn)
+
+reachable_definitions program:{CheckedFunctions} start:t > *t
+let names get names program
+fold names (list t 1 start) reached pos unused
+  case (at reached (- pos 1)) reached parent
+  let idx need (entry_at names parent) "reachable_definition" 0
+  let tree need (at (get trees program) idx) "reachable_tree" 0
+  fold (get calls tree) reached seen row callee
+    case (entry_at seen callee) (append seen callee) already seen

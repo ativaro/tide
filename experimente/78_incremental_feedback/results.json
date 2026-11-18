@@ -1,0 +1,707 @@
+{
+  "tool": "TIDE 0.6.10",
+  "revision": "5fe8d46a523bcacd36dcaab4962a1d321764f4b3f913300c7fe1724b049e86d8",
+  "kernel": "7.3.4-1-cachyos",
+  "arch": "x64",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "affinity": "24",
+  "modules": 10,
+  "functions": 47,
+  "examples": 33,
+  "warmup_blocks": 6,
+  "measured_blocks": 36,
+  "scenarios": {
+    "leaf": {
+      "checked_functions": 4,
+      "executed_examples": 5,
+      "red_diagnostics": {
+        "a_to_b": {
+          "file": "cursor.tide",
+          "code": "E_EXAMPLE",
+          "message": "Wrong output",
+          "line": 16,
+          "column": 1,
+          "example": "cross_crlf",
+          "expected": 2,
+          "actual": 3
+        },
+        "b_to_a": {
+          "file": "cursor.tide",
+          "code": "E_EXAMPLE",
+          "message": "Wrong output",
+          "line": 16,
+          "column": 1,
+          "example": "cross_crlf",
+          "expected": 2,
+          "actual": 3
+        }
+      },
+      "summary": {
+        "incremental": {
+          "median_ms": 5.114415,
+          "p95_ms": 5.620995
+        },
+        "full_session": {
+          "median_ms": 28.173604500000003,
+          "p95_ms": 30.08882
+        },
+        "fresh": {
+          "median_ms": 32.41722849999999,
+          "p95_ms": 35.337719
+        }
+      },
+      "samples_ms": [
+        {
+          "incremental": 5.003963,
+          "full_session": 28.657923,
+          "fresh": 32.491035
+        },
+        {
+          "full_session": 28.376429,
+          "fresh": 30.356285,
+          "incremental": 5.172886
+        },
+        {
+          "fresh": 31.962876,
+          "incremental": 4.966893,
+          "full_session": 27.792998
+        },
+        {
+          "fresh": 31.805472,
+          "full_session": 29.161293,
+          "incremental": 5.086754
+        },
+        {
+          "incremental": 5.409621,
+          "fresh": 32.907413,
+          "full_session": 28.366898
+        },
+        {
+          "full_session": 29.366157,
+          "incremental": 5.069285,
+          "fresh": 35.337719
+        },
+        {
+          "incremental": 4.972613,
+          "full_session": 27.148535,
+          "fresh": 32.697779
+        },
+        {
+          "full_session": 28.058523,
+          "fresh": 32.884182,
+          "incremental": 5.522633
+        },
+        {
+          "fresh": 29.829986,
+          "incremental": 5.290138,
+          "full_session": 28.049082
+        },
+        {
+          "fresh": 33.113987,
+          "full_session": 27.518632,
+          "incremental": 5.117585
+        },
+        {
+          "incremental": 5.133666,
+          "fresh": 31.318313,
+          "full_session": 28.221226
+        },
+        {
+          "full_session": 27.546994,
+          "incremental": 5.033134,
+          "fresh": 34.761448
+        },
+        {
+          "incremental": 5.438341,
+          "full_session": 27.814989,
+          "fresh": 30.123111
+        },
+        {
+          "full_session": 28.300038,
+          "fresh": 31.244102,
+          "incremental": 4.870451
+        },
+        {
+          "fresh": 30.354075,
+          "incremental": 5.40207,
+          "full_session": 28.623303
+        },
+        {
+          "fresh": 32.759971,
+          "full_session": 27.070554,
+          "incremental": 4.831711
+        },
+        {
+          "incremental": 4.905701,
+          "fresh": 30.491158,
+          "full_session": 27.721196
+        },
+        {
+          "full_session": 28.588142,
+          "incremental": 4.926971,
+          "fresh": 32.076048
+        },
+        {
+          "incremental": 4.908032,
+          "full_session": 28.287117,
+          "fresh": 32.850853
+        },
+        {
+          "full_session": 28.44976,
+          "fresh": 32.344832,
+          "incremental": 5.552373
+        },
+        {
+          "fresh": 34.545193,
+          "incremental": 5.090515,
+          "full_session": 27.677996
+        },
+        {
+          "fresh": 33.005935,
+          "full_session": 27.672225,
+          "incremental": 4.997713
+        },
+        {
+          "incremental": 5.111245,
+          "fresh": 32.306142,
+          "full_session": 27.264698
+        },
+        {
+          "full_session": 27.89995,
+          "incremental": 5.178516,
+          "fresh": 32.180759
+        },
+        {
+          "incremental": 5.081295,
+          "full_session": 28.192665,
+          "fresh": 31.778612
+        },
+        {
+          "full_session": 27.515692,
+          "fresh": 33.679338,
+          "incremental": 5.160156
+        },
+        {
+          "fresh": 32.489625,
+          "incremental": 5.466892,
+          "full_session": 30.08882
+        },
+        {
+          "fresh": 35.633654,
+          "full_session": 28.154544,
+          "incremental": 5.173967
+        },
+        {
+          "incremental": 5.033734,
+          "fresh": 30.385507,
+          "full_session": 26.910771
+        },
+        {
+          "full_session": 29.709183,
+          "incremental": 5.620995,
+          "fresh": 34.229878
+        },
+        {
+          "incremental": 5.248027,
+          "full_session": 28.956749,
+          "fresh": 33.873501
+        },
+        {
+          "full_session": 26.783129,
+          "fresh": 33.351401,
+          "incremental": 5.704396
+        },
+        {
+          "fresh": 31.498546,
+          "incremental": 4.945422,
+          "full_session": 27.39038
+        },
+        {
+          "fresh": 31.781681,
+          "full_session": 30.342765,
+          "incremental": 5.448781
+        },
+        {
+          "incremental": 5.124856,
+          "fresh": 32.042507,
+          "full_session": 29.321856
+        },
+        {
+          "full_session": 28.336908,
+          "incremental": 4.950302,
+          "fresh": 33.670328
+        }
+      ]
+    },
+    "interface": {
+      "checked_functions": 6,
+      "executed_examples": 11,
+      "red_diagnostics": {
+        "a_to_b": {
+          "file": "import.tide",
+          "code": "E_TYPE",
+          "message": "Unexpected operand type",
+          "line": 6,
+          "column": 22,
+          "operation": "identifier",
+          "argument": 1,
+          "expected": "i",
+          "actual": "t"
+        },
+        "b_to_a": {
+          "file": "import.tide",
+          "code": "E_TYPE",
+          "message": "Unexpected operand type",
+          "line": 6,
+          "column": 21,
+          "operation": "identifier",
+          "argument": 1,
+          "expected": "t",
+          "actual": "i"
+        }
+      },
+      "summary": {
+        "incremental": {
+          "median_ms": 22.287315,
+          "p95_ms": 24.388335
+        },
+        "full_session": {
+          "median_ms": 31.9362705,
+          "p95_ms": 35.365779
+        },
+        "fresh": {
+          "median_ms": 37.0682905,
+          "p95_ms": 48.33066
+        }
+      },
+      "samples_ms": [
+        {
+          "incremental": 21.366108,
+          "full_session": 32.73261,
+          "fresh": 36.112663
+        },
+        {
+          "full_session": 34.774288,
+          "fresh": 48.766719,
+          "incremental": 25.181069
+        },
+        {
+          "fresh": 45.778713,
+          "incremental": 22.188163,
+          "full_session": 31.852843
+        },
+        {
+          "fresh": 35.41597,
+          "full_session": 31.403525,
+          "incremental": 20.003743
+        },
+        {
+          "incremental": 20.542232,
+          "fresh": 34.777488,
+          "full_session": 30.972687
+        },
+        {
+          "full_session": 32.263411,
+          "incremental": 22.386467,
+          "fresh": 35.162725
+        },
+        {
+          "incremental": 22.151613,
+          "full_session": 33.689068,
+          "fresh": 38.10321
+        },
+        {
+          "full_session": 31.471036,
+          "fresh": 38.331914,
+          "incremental": 21.825267
+        },
+        {
+          "fresh": 40.840091,
+          "incremental": 22.757234,
+          "full_session": 32.359373
+        },
+        {
+          "fresh": 41.611656,
+          "full_session": 34.673276,
+          "incremental": 24.388335
+        },
+        {
+          "incremental": 22.469358,
+          "fresh": 33.413283,
+          "full_session": 31.551348
+        },
+        {
+          "full_session": 30.557659,
+          "incremental": 20.820307,
+          "fresh": 37.367046
+        },
+        {
+          "incremental": 21.651463,
+          "full_session": 35.048603,
+          "fresh": 40.720119
+        },
+        {
+          "full_session": 31.905955,
+          "fresh": 34.609834,
+          "incremental": 22.55761
+        },
+        {
+          "fresh": 48.33066,
+          "incremental": 23.423216,
+          "full_session": 32.153039
+        },
+        {
+          "fresh": 34.681416,
+          "full_session": 31.617379,
+          "incremental": 21.375938
+        },
+        {
+          "incremental": 20.95021,
+          "fresh": 36.769535,
+          "full_session": 30.414737
+        },
+        {
+          "full_session": 31.66033,
+          "incremental": 21.749145,
+          "fresh": 34.153546
+        },
+        {
+          "incremental": 21.419549,
+          "full_session": 31.066809,
+          "fresh": 35.109794
+        },
+        {
+          "full_session": 31.11286,
+          "fresh": 43.606723,
+          "incremental": 22.664522
+        },
+        {
+          "fresh": 37.805324,
+          "incremental": 24.282702,
+          "full_session": 35.365779
+        },
+        {
+          "fresh": 37.644961,
+          "full_session": 30.951337,
+          "incremental": 22.933297
+        },
+        {
+          "incremental": 21.156644,
+          "fresh": 35.479622,
+          "full_session": 32.963734
+        },
+        {
+          "full_session": 30.840984,
+          "incremental": 23.468817,
+          "fresh": 41.699576
+        },
+        {
+          "incremental": 23.120651,
+          "full_session": 34.807318,
+          "fresh": 44.525389
+        },
+        {
+          "full_session": 31.335494,
+          "fresh": 34.705847,
+          "incremental": 21.503721
+        },
+        {
+          "fresh": 35.620954,
+          "incremental": 22.870476,
+          "full_session": 31.210751
+        },
+        {
+          "fresh": 34.88482,
+          "full_session": 32.545436,
+          "incremental": 22.497619
+        },
+        {
+          "incremental": 22.153452,
+          "fresh": 35.540292,
+          "full_session": 32.876292
+        },
+        {
+          "full_session": 36.541431,
+          "incremental": 24.028388,
+          "fresh": 43.146244
+        },
+        {
+          "incremental": 23.471628,
+          "full_session": 33.807389,
+          "fresh": 37.476208
+        },
+        {
+          "full_session": 31.966586,
+          "fresh": 34.653926,
+          "incremental": 23.453366
+        },
+        {
+          "fresh": 38.377614,
+          "incremental": 21.086373,
+          "full_session": 31.901524
+        },
+        {
+          "fresh": 35.819957,
+          "full_session": 33.515764,
+          "incremental": 23.938956
+        },
+        {
+          "incremental": 21.768046,
+          "fresh": 35.186305,
+          "full_session": 32.477645
+        },
+        {
+          "full_session": 31.729431,
+          "incremental": 21.787976,
+          "fresh": 39.971915
+        }
+      ]
+    },
+    "package": {
+      "checked_functions": 2,
+      "executed_examples": 7,
+      "red_diagnostics": {
+        "a_to_b": {
+          "file": "stream_report.tide",
+          "code": "E_EXAMPLE",
+          "message": "Example raised an unexpected error",
+          "line": 22,
+          "column": 1,
+          "example": "invalid",
+          "expected": {
+            "code": "E_DATA",
+            "reason": "invalid_integer",
+            "input_line": 2
+          },
+          "actual": {
+            "file": "vendor/measurements/1.3.0/package.tide",
+            "code": "E_DATA",
+            "message": "A value is required",
+            "line": 9,
+            "column": 1,
+            "reason": "invalid_integer",
+            "input_line": 3
+          }
+        },
+        "b_to_a": {
+          "file": "stream_report.tide",
+          "code": "E_EXAMPLE",
+          "message": "Example raised an unexpected error",
+          "line": 22,
+          "column": 1,
+          "example": "invalid",
+          "expected": {
+            "code": "E_DATA",
+            "reason": "invalid_integer",
+            "input_line": 2
+          },
+          "actual": {
+            "file": "vendor/measurements/1.3.0/package.tide",
+            "code": "E_DATA",
+            "message": "A value is required",
+            "line": 9,
+            "column": 1,
+            "reason": "invalid_integer",
+            "input_line": 3
+          }
+        }
+      },
+      "summary": {
+        "incremental": {
+          "median_ms": 5.1681360000000005,
+          "p95_ms": 6.065503
+        },
+        "full_session": {
+          "median_ms": 28.8108915,
+          "p95_ms": 34.700826
+        },
+        "fresh": {
+          "median_ms": 33.602511500000006,
+          "p95_ms": 42.014102
+        }
+      },
+      "samples_ms": [
+        {
+          "incremental": 5.402921,
+          "full_session": 31.574628,
+          "fresh": 42.014102
+        },
+        {
+          "full_session": 33.26655,
+          "fresh": 39.844772,
+          "incremental": 5.486282
+        },
+        {
+          "fresh": 33.373172,
+          "incremental": 6.065503,
+          "full_session": 32.74323
+        },
+        {
+          "fresh": 33.538934,
+          "full_session": 31.607069,
+          "incremental": 5.162146
+        },
+        {
+          "incremental": 5.174126,
+          "fresh": 33.632077,
+          "full_session": 31.781692
+        },
+        {
+          "full_session": 31.729821,
+          "incremental": 5.184996,
+          "fresh": 33.81985
+        },
+        {
+          "incremental": 5.141865,
+          "full_session": 32.154539,
+          "fresh": 37.941777
+        },
+        {
+          "full_session": 36.53122,
+          "fresh": 47.26591,
+          "incremental": 5.676335
+        },
+        {
+          "fresh": 29.739124,
+          "incremental": 4.913672,
+          "full_session": 27.094895
+        },
+        {
+          "fresh": 30.454267,
+          "full_session": 27.719536,
+          "incremental": 5.022303
+        },
+        {
+          "incremental": 5.015274,
+          "fresh": 33.430733,
+          "full_session": 27.858639
+        },
+        {
+          "full_session": 26.709898,
+          "incremental": 4.84165,
+          "fresh": 33.956322
+        },
+        {
+          "incremental": 5.180887,
+          "full_session": 27.687596,
+          "fresh": 30.654561
+        },
+        {
+          "full_session": 27.689976,
+          "fresh": 33.364762,
+          "incremental": 5.118256
+        },
+        {
+          "fresh": 31.855624,
+          "incremental": 4.850761,
+          "full_session": 26.933181
+        },
+        {
+          "fresh": 38.706051,
+          "full_session": 28.663354,
+          "incremental": 4.891661
+        },
+        {
+          "incremental": 4.893651,
+          "fresh": 31.566078,
+          "full_session": 27.90791
+        },
+        {
+          "full_session": 28.749765,
+          "incremental": 5.188657,
+          "fresh": 30.419586
+        },
+        {
+          "incremental": 4.967773,
+          "full_session": 27.576184,
+          "fresh": 33.572946
+        },
+        {
+          "full_session": 27.720796,
+          "fresh": 32.571987,
+          "incremental": 4.981213
+        },
+        {
+          "fresh": 37.668652,
+          "incremental": 5.456402,
+          "full_session": 30.217373
+        },
+        {
+          "fresh": 30.921896,
+          "full_session": 28.872018,
+          "incremental": 5.238777
+        },
+        {
+          "incremental": 5.056635,
+          "fresh": 29.915667,
+          "full_session": 27.219827
+        },
+        {
+          "full_session": 27.517923,
+          "incremental": 4.920372,
+          "fresh": 36.797176
+        },
+        {
+          "incremental": 5.003943,
+          "full_session": 27.374209,
+          "fresh": 31.990606
+        },
+        {
+          "full_session": 28.050263,
+          "fresh": 35.324758,
+          "incremental": 5.280099
+        },
+        {
+          "fresh": 29.688263,
+          "incremental": 5.088414,
+          "full_session": 28.653595
+        },
+        {
+          "fresh": 30.967917,
+          "full_session": 28.920469,
+          "incremental": 5.078704
+        },
+        {
+          "incremental": 5.319629,
+          "fresh": 34.778348,
+          "full_session": 29.266455
+        },
+        {
+          "full_session": 28.293707,
+          "incremental": 4.992113,
+          "fresh": 33.234389
+        },
+        {
+          "incremental": 6.061332,
+          "full_session": 34.700826,
+          "fresh": 36.433088
+        },
+        {
+          "full_session": 32.489905,
+          "fresh": 35.559673,
+          "incremental": 5.860819
+        },
+        {
+          "fresh": 34.066835,
+          "incremental": 6.162195,
+          "full_session": 32.581288
+        },
+        {
+          "fresh": 39.657079,
+          "full_session": 33.106077,
+          "incremental": 5.417621
+        },
+        {
+          "incremental": 5.635024,
+          "fresh": 34.89638,
+          "full_session": 31.996906
+        },
+        {
+          "full_session": 30.674001,
+          "incremental": 5.650745,
+          "fresh": 34.077685
+        }
+      ]
+    }
+  }
+}

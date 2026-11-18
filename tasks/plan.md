@@ -74,6 +74,8 @@ Stage 7 migrated three application call sites to `jsoninput@2.0.0`. Its bounded 
 
 Stage 8 committed a library, its caller and the test helper as one project revision. The fault replay verified stale bases, failed writes, reader and writer contention, and recovery after killing both the editor and a recovering checker. All 19 checks passed on Btrfs and tmpfs. [Atomic edits and recovery results](../experimente/77_atomic_edits/report.md)
 
+Stage 9 matched the full checker on leaf, interface and package edits in a 33-example project. Compared with a full check in the same running process, median time to green improved by 5.51×, 1.43× and 5.57× respectively. [Median, P95 and diagnostic parity](../experimente/78_incremental_feedback/report.md)
+
 ## Three 100× goals
 
 A factor of 100 means that for the same passed task, the value is at most one-hundredth of the respective Python comparison value. The three factors remain research goals and are reported separately. The publication decision follows the criterion described above. Repair time remains an additional measurement metric.

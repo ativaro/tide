@@ -6,15 +6,6 @@ use sha256
 
 use probe_domain
 
-reachable_definitions program:{CheckedFunctions} start:t > *t
-let names get names program
-fold names (list t 1 start) reached pos unused
-  case (at reached (- pos 1)) reached parent
-  let idx need (entry_at names parent) "reachable_definition" 0
-  let tree need (at (get trees program) idx) "reachable_tree" 0
-  fold (get calls tree) reached seen row callee
-    case (entry_at seen callee) (append seen callee) already seen
-
 repair_definition project:{ProjectFiles} program:{CheckedFunctions} idx:i file:t > t
 let fn need (at (get signatures program) idx) "repair_definition" 0
 let owner get file fn

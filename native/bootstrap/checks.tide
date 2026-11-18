@@ -1,8 +1,10 @@
-use project
+use incremental
 
 use function_cases
 
 all_bootstrap_checks > b
+if (not suite_layout_checks) fail "incremental_layout"
+if (not suite_reuse_checks) fail "incremental_suite"
 if (not test_release_checks) fail "test_release_preflight"
 if (not map_boundaries) fail "map_work_memory_and_order"
 if (not projected_map_boundaries) fail "map_projected_budget"
@@ -314,3 +316,34 @@ if (not (and (text_eq (get typ mixed) "invalid") (eq (length (get items mixed)) 
 let nums read_flat_array (cat3 "[ " prefix " ,\t-0\r\n]")
 and (text_eq (get compact nums) (json_item prefix "0"))
   (and (eq (get count nums) 65) (eq (need (at (get items nums) 64) "last" 0) 0))
+
+suite_fixture leaf:t source:t > {ProjectFiles}
+let start project_begin source "" (text_len source) "suite.tide" "?suite.tide"
+project_supply start leaf "" (text_len leaf)
+
+suite_reuse_checks > b
+let root "use fee\n\ncharge qty:i > i\nrate qty\n\nindependent > i\n3\n\nexample order charge\n{\"inputs\":{\"qty\":2},\"expect\":4}\n\nexample other independent\n{\"inputs\":{},\"expect\":3}"
+let original suite_fixture "rate qty:i > i\n* qty 2" root
+let initial suite_step original "suite.tide" (nil {SuiteState})
+let changed suite_fixture "rate qty:i > i\n+ qty qty" root
+let next suite_step changed "suite.tide" (some initial)
+let again suite_step changed "suite.tide" (some next)
+let broken suite_fixture "rate qty:b > i\nif qty 1 0" root
+let body_error suite_fixture "rate qty:i > i\n+ qty 1" root
+let stale_type bootstrap_recover (< (get checked (suite_step broken "suite.tide" (some initial))) 0) true
+let stale_value bootstrap_recover (< (get checked (suite_step body_error "suite.tide" (some initial))) 0) true
+and (and stale_type stale_value) (and (and (eq (get checked initial) 3) (eq (get executed initial) 2))
+  (and (and (eq (get checked next) 1) (eq (get executed next) 1))
+       (and (eq (get checked again) 0) (eq (get executed again) 0))))
+
+suite_layout_checks > b
+let source "use fee\n\ncharge qty:i > i\nget value (rate qty)\n\nexample order charge\n{\"inputs\":{\"qty\":2},\"expect\":2}"
+let leaf "record Amount\nvalue:i\n\nrate qty:i > {Amount}\nmake Amount value qty"
+let prior suite_step (suite_fixture leaf source) "suite.tide" (nil {SuiteState})
+let schema suite_fixture "record Amount\nvalue:t\n\nrate qty:i > {Amount}\nmake Amount value \"two\"" source
+let bad_contract suite_fixture leaf (concat source "\n\nexample wrong charge\n{\"inputs\":{\"qty\":2},\"expect\":3}")
+let reordered suite_fixture leaf (concat source "\n\nnew_fn qty:i > i\nqty")
+let full suite_step reordered "suite.tide" (some prior)
+and (and (eq (get checked full) 3) (eq (get executed full) 1))
+  (and (bootstrap_recover (< (get checked (suite_step schema "suite.tide" (some prior))) 0) true)
+       (bootstrap_recover (< (get executed (suite_step bad_contract "suite.tide" (some prior))) 0) true))

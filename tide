@@ -190,13 +190,14 @@ case ${1-} in
             shift
             file= options=yes explain=no diff= call=main inputs='{}' step= field_option= have_example=no have_function=no node_option= example_index=no selected_example= have_selected=no
             base= have_base=no edit_mode= candidate= write=no change_examples=no call_sites=no
-            grants=0 have_probes=no probes= pairs=no have_probe_range=no probe_range=
+            incremental=no grants=0 have_probes=no probes= pairs=no have_probe_range=no probe_range=
             while [ "$#" -gt "$grants" ]; do
                 arg=$1
                 shift
                 if [ "$options" = yes ]; then
                     if [ "$action" = edit ] && [ "$arg" = --write ]; then write=yes; continue; fi
                     case $arg in
+                        --incremental) [ "$action" = test ] && [ "$incremental" = no ] || exit 2; incremental=yes; continue ;;
                         --explain) [ "$action" = test ] || exit 2; explain=explain; continue ;;
                         --explain=executed) [ "$action" = test ] || exit 2; explain=executed; continue ;;
                         --explain=nodes) [ "$action" = test ] || exit 2; explain=nodes; continue ;;
@@ -345,6 +346,11 @@ case ${1-} in
                 [ "$have_example" = yes ] && [ -n "$step" ] || exit 2
                 case $step in *'|'*) exit 2 ;; esac
                 set -- "$call" "$step$field_option"
+            fi
+            if [ "$incremental" = yes ]; then
+                [ "$explain" = no ] && [ -z "$diff" ] || exit 2
+                prepare checker || exit 1
+                exec "$tool_dir/checker" --test-session "$file" "$root/native/catalog/release.tsv"
             fi
             if [ "$action" = test ] && [ "$explain" = no ] && [ -z "$diff" ]; then
                 prepare checker || exit 1

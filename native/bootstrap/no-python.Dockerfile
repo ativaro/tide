@@ -49,6 +49,8 @@ RUN --network=none --mount=from=build,source=/src/apps,target=/apps,ro \
     tide describe '<=' --project /fixtures/inclusive.tide | grep -Fq '"operation":"<="'; \
     tide describe '>=' --project /fixtures/inclusive.tide | grep -Fq '"operation":">="'; \
     test "$(tide test /fixtures/inclusive.tide)" = '{"passed":8}'; \
+    printf 'test\ntest\nfull\n' | tide test /fixtures/inclusive.tide --incremental > /tmp/session; \
+    test "$(wc -l < /tmp/session)" = 3; grep -Fqx '{"passed":8,"checked_functions":0,"executed_examples":0}' /tmp/session; \
     test "$(/tmp/inclusive-aot --inputs '{"a":-9223372036854775808,"b":9223372036854775807}')" = -1; \
     test "$(/tmp/inclusive-aot --inputs '{"a":9223372036854775807,"b":9223372036854775807}')" = 0; \
     tide build /fixtures/inclusive.tide /tmp/inclusive-fold bounded; \

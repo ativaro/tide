@@ -27,7 +27,7 @@ help.check
 help.check	options:
 help.check	  -h, --help  show this help message and exit
 help.check	  --json      JSON output (default)
-help.test	usage: tide test [-h] [--json] [--diff] [--explain[=executed|nodes|candidates]] [--probes JSONL] [--pairs] [--probe-range JSON] file
+help.test	usage: tide test [-h] [--json] [--incremental | --diff] [--explain[=executed|nodes|candidates]] [--probes JSONL] [--pairs] [--probe-range JSON] file
 help.test	
 help.test	positional arguments:
 help.test	  file
@@ -35,6 +35,7 @@ help.test
 help.test	options:
 help.test	  -h, --help  show this help message and exit
 help.test	  --json      JSON output (default)
+help.test	  --incremental         read test or full requests from stdin, one JSON reply per line
 help.test	  --diff      show the first differing result field, index, length, tag or long-text codepoint
 help.test	  --explain   include the input and reachable definitions for the first failed example
 help.test	  --explain=executed   show observed branches and definitions entered for that input

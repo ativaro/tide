@@ -301,7 +301,9 @@ need (scope_index (get calls scope) (get names book) call (get space scope))
 
 compile_project project:{ProjectFiles} blocks:*{SchemaBlock} > {CompiledProject}
 let table project_declarations project blocks
-let program check_functions (get functions table) (get names table)
+finish_compilation project table (check_functions (get functions table) (get names table))
+
+finish_compilation project:{ProjectFiles} table:{SourceDeclarations} program:{CheckedFunctions} > {CompiledProject}
 let trees get trees program
 let missing fold trees "" acc row tree if (text_eq (get missing tree) "") acc (json_item acc (get missing tree))
 if (not (text_eq missing ""))
