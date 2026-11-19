@@ -1,6 +1,6 @@
-# Your first TIDE change
+# Getting started with TIDE
 
-Start in the root of a TIDE checkout on Linux x86-64 or Linux ARM64. The build uses GNU Make, a C compiler, a C++20 compiler with static runtime libraries, XZ, and GNU coreutils. The sources and bootstrap seed are in the checkout. Use the same shell for the following commands.
+This guide takes you from a first function to a typed JSON importer and a call across two modules. Start in the root of a TIDE checkout on Linux x86-64 or Linux ARM64. Building from source requires GNU Make, C and C++20 compilers with static runtime libraries, XZ, GNU coreutils and the libcurl, libpq and libmicrohttpd development headers. Use the same shell throughout so the installed CLI stays on your path.
 
 ## Install and run one example
 
@@ -18,6 +18,77 @@ tide run apps/balance.tide --call balance --inputs '{"opening":100,"entries":[-2
 ```
 
 The executable should be under your new prefix. For this checkout the version is `TIDE 0.6.12`, all three examples pass, and the balance is `97`. In a later shell, add the same prefix's `bin` directory to your path.
+
+## Write a function and its examples
+
+Suppose a warehouse needs to know how many units of an order it cannot fill. In an empty directory, save the following as `shortfall.tide`.
+
+```tide
+shortfall stock:i requested:i > i
+if (> requested stock) (- requested stock) 0
+
+example partial_order shortfall
+{"inputs":{"stock":7,"requested":10},"expect":3}
+
+example exact_stock shortfall
+{"inputs":{"stock":10,"requested":10},"expect":0}
+```
+
+The first line names two signed integers and declares an integer result after `>`. The next line is the whole function body. In `(> requested stock)`, the same symbol is a comparison in operator position. `if` evaluates the condition and picks one branch. When the order exceeds stock, the subtraction gives the missing quantity. Otherwise the result is zero.
+
+From the directory containing your file, call the function with your own inputs and then check both examples.
+
+```sh
+tide run shortfall.tide --call shortfall --inputs '{"stock":4,"requested":9}'
+# 5
+tide test shortfall.tide
+# {"passed":2}
+```
+
+To see a diagnostic, reverse the operands of the subtraction and run `tide test shortfall.tide --diff`. The partial order now produces `-3` where the example expects `3`. Restore the subtraction and run the examples again.
+
+## Read an order from JSON
+
+Save this second file as `orders.tide` beside `shortfall.tide`. It applies your existing calculation to every item in an order.
+
+```tide
+use shortfall
+
+record Line
+stock:i requested:i
+
+record Order
+items:*{Line}
+
+missing order:{Order} > *i
+map i (get items order) item (shortfall (get stock item) (get requested item))
+
+main input:r > *i
+missing (json_decode {Order} (read_bytes input))
+
+example mixed main
+{"inputs":{"input":"{\"items\":[{\"stock\":7,\"requested\":10},{\"stock\":10,\"requested\":10}]}"},"expect":[3,0]}
+
+example invalid_quantity main
+{"inputs":{"input":"{\"items\":[{\"stock\":7,\"requested\":\"10\"}]}"},"expect_error":{"code":"E_DATA","path":"/items/0/requested"}}
+```
+
+The signature `missing order:{Order} > *i` takes one order and returns a list of integers. Read the body from the outside in. `map i` builds a list of integers. `get items order` selects the list to visit. For each element, `item` binds the current record and `shortfall` receives its two integer fields. TIDE preserves their input order.
+
+The file access is confined to `main`. Its parameter `input:r` is a read capability. `read_bytes` gets the contents and `json_decode {Order}` checks them against the record declarations before calling `missing`. In a named example, the JSON string supplies the file contents in memory. The failing example checks the path to the first item’s `requested` field.
+
+From the directory containing both modules, run the examples and give the application a real file. The example count includes the two examples imported from `shortfall.tide`.
+
+```sh
+tide test orders.tide
+# {"passed":4}
+printf '%s\n' '{"items":[{"stock":3,"requested":8},{"stock":12,"requested":8}]}' > order.json
+tide run orders.tide --read input=order.json
+# [5,0]
+tide build --aot orders.tide ./orders
+./orders --read input=order.json
+# [5,0]
+```
 
 ## Change a JSON record
 

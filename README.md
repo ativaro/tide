@@ -1,280 +1,142 @@
-# TIDE 0.6.12
+# TIDE
 
-**TIDE (Typed Instructions, Deterministic Execution)** is a standalone, statically typed programming language. A coding agent can query the operation catalog, inspect callers, replace a subexpression and run examples against the [language specification](LANGUAGE.md).
-
-New to TIDE? Install it, run your first example, and follow a call across files. [Getting started](GETTING_STARTED.md)
-
-The order-import study compares TIDE and CPython on 15 open programming tasks. Its first full application processes supplier orders, cancellations and redeliveries in SQLite. The importer and the measurement report share a typed JSON input package. Another 15 tasks are sealed for the final evaluation. [Stage 11 import performance](experimente/80_import_performance/report.md) · [Stage 10 execution parity](experimente/79_execution_parity/report.md) · [Stage 9 incremental feedback](experimente/78_incremental_feedback/report.md) · [Stage 8 atomic project edits](experimente/77_atomic_edits/report.md) · [Stage 7 package migration](experimente/76_package_migration/report.md) · [Stage 6 library and tests](experimente/75_shared_types/report.md) · [Stage 5 alpha decision](experimente/74_alpha_review/report.md) · [Stage 4 results](experimente/73_bestellimport/report.md) · [20-stage roadmap](tasks/plan.md#20-stages-from-feasibility-study-to-leading-language) · [Open tasks](experimente/72_bestellimport_basis/public-tasks.md) · [Baseline results](experimente/72_bestellimport_basis/report.md)
-
-The checkout launcher and installed packages for Linux x86-64 and ARM64 use the same native tools to build, test, install and run TIDE without Python. The TIDE compiler emits standalone ELF programs for examples such as heating degree hours and pump control. The native checker handles modules, records, variants, pairs, lists and options and runs their examples. The CLI also serves help and catalog queries, checks lockfiles, and inspects parenthesized function bodies in batches. [Native compiler and supported features](native/README.md)
-
-```sh
-./tide build --aot apps/light.tide /tmp/tide-light simulate
-/tmp/tide-light --inputs '{"events":[true,false,false]}'
-# [true,true,false]
-```
-
-## Import an order
-
-The order importer and JSON measurement report both pin `jsoninput@2.0.0` by version and SHA-256. Use `./tide pkg install apps/orders packages` or `./tide pkg install apps/report_packages packages` to restore missing dependencies from the local release directory. [Offline builds, package verification and rollback](experimente/83_offline_packages/report.md)
-
-The importer grants access to one JSON file and one SQLite database. Repeating the first command that runs TIDE reports one duplicate and leaves the outstanding value at 375 cents.
-
-```sh
-printf '%s\n' '{"supplier":"ACME","events":[{"id":"E1","kind":"order","order":"O7","line":"1","sku":"A","qty":3,"unit_cents":125}]}' > order.json
-./tide run apps/orders/import.tide --read input=order.json --db db=orders.db
-./tide run apps/orders/import.tide --call position --db db=orders.db --inputs '{"supplier":"ACME","order":"O7","line":"1"}'
-```
-
-A cancellation carries its own event ID. A failed event rolls back the entire document, including earlier successful events. [Order-import contract](experimente/72_bestellimport_basis/order-import.md) · [Restart and rollback cases](experimente/73_bestellimport/restart_cases.tide)
-
-The PostgreSQL webhook accepts the same order document at `POST /orders`. A sender can repeat a request after losing its receipt. Reusing the supplier and event ID applies each booking once. Start the service with `--workers 4 --queue 8` to run up to four handlers and hold eight further requests. When all slots are occupied, the webhook responds with HTTP 503 and a retry delay. [Webhook setup and retry tests](experimente/81_order_webhook/report.md) · [Load and cancellation measurements](experimente/82_webhook_load/report.md)
-
-The order webhook exposes `GET /ready` to check whether PostgreSQL can see its two booking tables. The operator guide covers inspecting a stored failure, rolling back an interrupted deployment and replaying a delivery after a database restart. [Order webhook runbook](experimente/86_webhook_operations/runbook.md)
-
-## Other applications
-
-The [JSON Measurement Report](apps/report_packages/json_report.tide) imports measurement values with optional notes and a dictionary for sensor-dependent thresholds. The importer runs with `tide run` and as a standalone AOT program.
-
-The [API Importer](apps/report_packages/api_report.tide) loads two pages via HTTPS and stores them together in SQLite. A repeated measurement value-ID remains uniquely identifiable per source. The [Measurement Service](apps/report_packages/measurement_service.tide) accepts decimal measurement values with timestamps and reads them back from PostgreSQL.
-
-```sh
-# The database and the role must already exist.
-dsn='dbname=messbericht'
-./tide run apps/report_packages/measurement_service.tide --call prepare --pg "pg=$dsn"
-./tide build --service apps/report_packages/measurement_service.tide /tmp/messdienst persist
-/tmp/messdienst --listen 127.0.0.1:8080 --workers 4 --pg "pg=$dsn"
-```
-
-`make test` checks the import against a local TLS server. `make check-postgres` checks the service as a regular user, HTTPS-POST, and the termination of a running database query. The target starts its own PostgreSQL cluster and requires PostgreSQL server tools, curl, OpenSSL, and socat. For the native build, the development headers of libcurl and libpq are required, and additionally libmicrohttpd for the service. [Language Reference](LANGUAGE.md#external-apis-and-services)
-
-The [SQLite Measurement Report](apps/report_packages/sqlite_report.tide) stores each JSON import in a transaction. It calculates the report over all stored measurements. `by_sensor` reads the values of a sensor in insertion order. Both commands work with the same database.
-
-```sh
-printf '%s\n' '{"readings":[{"sensor":"A","value":7}],"limits":{}}' > messungen.json
-./tide run apps/report_packages/sqlite_report.tide --db db=messungen.db --read input=messungen.json --inputs '{"limit":80}'
-./tide run apps/report_packages/sqlite_report.tide --call by_sensor --db db=messungen.db --inputs '{"sensor":"A"}'
-```
-
-`make check-sqlite` checks commit and rollback across process boundaries with `run` and independent AOT programs. [SQLite Language Rules](LANGUAGE.md#sqlite)
-
-The [Streaming Measurement Report](apps/report_packages/stream_report.tide) processes UTF-8 files with an explicit byte budget. Thus, the ahead-of-time compiled version processes a measurement file up to 100 MiB.
-
-```sh
-./tide build --aot apps/report_packages/stream_report.tide /tmp/tide-stream-report
-/tmp/tide-stream-report --read input=messwerte.txt --inputs '{"bytes":104857600,"limit":80}'
-```
-
-[Language Rules for the Reader](LANGUAGE.md#read-line-by-line) · [Throughput and Peak Memory Compared with CPython](experimente/67_zeilenstrom/report.md)
+TIDE (*Typed Instructions, Deterministic Execution*) is a statically typed language for data tools and backend services. You can run a program from source or compile it ahead of time to a native Linux executable. Functions declare what they accept and return, including the files, databases and HTTPS endpoints they need as inputs. A named example lives beside the function it exercises, so a developer or coding agent can run it, inspect a failure and check an edit against the same expectation.
 
 ## Quick start
 
-With `map` you write the expression for a single element. TIDE builds the result list in input order. This call adds 10 to each number and outputs `[12,9,12]`. [Executable Examples](native/bootstrap/fixtures/functions/maps.tide)
+Here is a function and one of its examples from the balance application.
 
-```sh
-./tide run native/bootstrap/fixtures/functions/maps.tide --call offset --inputs '{"xs":[2,-1,2],"shift":10}'
+```tide
+balance opening:i entries:*i > i
+fold entries opening total row entry + total entry
+
+example movements balance
+{"inputs":{"opening":100,"entries":[-20,15,-8,10]},"expect":97}
 ```
 
-```sh
-demo=$(mktemp -d)
-printf 'variant Signal\nrot gruen\n\nrecord Messung\nwert:i farbe:{Signal}\n' > "$demo/messung.tide"
-./tide check "$demo/messung.tide" --json
-./tide fmt "$demo/messung.tide"
-```
+Read the signature as “`balance` takes an opening integer and a list of integers, and returns an integer.” TIDE writes the operation first, so `+ total entry` adds the current entry to the running total. `fold` starts at `opening` and visits the entries in order. At each step, `total` holds the running balance, `row` the one-based position and `entry` the current amount. An empty list returns the opening balance.
 
-The first output contains the types and the revision of the read file. With `./tide modules apps/space_invaders.tide` you get the project version, the imported files, and the position of each `use` line. This also works while you are editing a function body. [Multi-file Example](native/bootstrap/fixtures/modules/report.tide)
-
-With `./tide test native/bootstrap/fixtures/functions/variants.tide` you can check ten variant examples in the native package. They use named cases for tie-breaking and for rounding. If a new case is added to a project, `check` names the affected `match` locations along with file and line. [Tool Measurement](experimente/44_native_varianten/report.md)
-
-You can run the ranking library directly in the standard package. The first command checks eight examples. The second yields `true`, because in case of a tie the specified value `on_equal` decides.
-
-```sh
-./tide test lib/ordering.tide
-./tide run lib/ordering.tide --call prefer_min --inputs '{"candidate":7,"current":7,"on_equal":true}'
-```
-
-The balance program processes a list of transactions in the standard package. The first call yields `97`. The second checks three examples including an overflow.
+Run the checked-in program from the repository root on Linux x86-64 or ARM64. The launcher builds the native tools on first use.
 
 ```sh
 ./tide run apps/balance.tide --call balance --inputs '{"opening":100,"entries":[-20,15,-8,10]}'
+# 97
 ./tide test apps/balance.tide
+# {"passed":3}
 ```
 
-The maximum search returns the measurement value and the first associated line number as a pair. For an empty list, it yields `{"none":true}`.
+The other two examples cover an empty list and integer overflow. In the getting started guide, you write a stock-shortfall function, import it into a second module and compile a program that reads an order from JSON. [Write your first function](GETTING_STARTED.md#write-a-function-and-its-examples) · [Read an order from JSON](GETTING_STARTED.md#read-an-order-from-json)
 
-```sh
-./tide run apps/peak_lines.tide --call peak_lines --inputs '{"rows":["-8","-2","-2"]}'
-# {"some":[-2,2]}
-```
+## Reading and writing TIDE
 
-The measurement report returns a record with named fields. With a limit of 80, only 81 and 98 count as exceedances. For an empty list, `above` equals `0` and `peak` is the empty option. [Measurement Report](apps/summary.tide)
+A function body is one expression. Calls start with a function name or operator, followed by its operands. Parentheses can group a nested call. For example, `if (> value limit) 1 0` reads as “if the value exceeds the limit, return one, otherwise zero.” A `let` binds a name for the expression that follows. Bindings are immutable. Blank lines separate declarations.
 
-```sh
-./tide run apps/summary.tide --call summarize --inputs '{"rows":["80","81","98"],"limit":80}'
-# {"above":2,"peak":{"some":98}}
-./tide test apps/summary_checks.tide
-```
-
-The rules for light, pump, and heat alarm also run in the standard package. For the light rule, the trace for the second event shows the first absence of movement. `missed` rises from zero to one, the light stays on.
-
-```sh
-./tide run apps/light.tide --call simulate --inputs '{"events":[true,false,false]}'
-./tide trace apps/light.tide --example restart --step 2 --fields on,missed
-```
-
-The first call yields `[true,true,false]`. The trace provides the selected branch, the previous and new value of each selected field, and the output value. [Rule check and measurement](experimente/31_native_regeln_und_spuren/report.md)
-
-The native evaluator also supports `catch`. A caller can handle a known error with `has_reason`, read the erroneous data line with `input_line`, and pass on the original diagnosis with `raise`. `tide check` shows under `may_fail` which errors can emerge from a function after the handler.
-
-```sh
-./tide run apps/reading_check.tide --call first_invalid --inputs '{"rows":["12","x","3"]}'
-# {"some":2}
-```
-
-The line number originates from the imported number parser. For fully valid inputs, the program yields `{"none":true}`. [Line check](apps/reading_check.tide) · [Number parser](apps/readings.tide)
-
-## Nano, Space Invaders, and file inputs
-
-Nano's editor logic can be executed without a terminal. The first command checks ten examples. The second inserts a character and prompts for saving. The return value contains the modified buffer and the action `"store"`. The input `stored` or `io_error` yields the feedback of a save attempt. [Nano checks and tool measurement](experimente/49_zusammengesetzte_paare/report.md)
-
-```sh
-./tide test apps/nano_checks.tide
-./tide run apps/nano_checks.tide --call replay \
-  --inputs '{"body":"","events":[{"key":"character","value":"Ω"},{"key":"control","value":"o"}]}'
-```
-
-Nano's cursor module can also be called individually. The example yields `1` because the cat symbol occupies a Unicode code point and immediately afterwards CRLF begins. [Cursor module check without Python](experimente/36_native_texte/report.md)
-
-```sh
-./tide run apps/cursor.tide --call line_limit --inputs '{"body":"🐈\r\nΩ","pos":0}'
-./tide test apps/cursor.tide
-```
-
-Space Invaders can be executed step-by-step in the native package. `main` yields the start world with 21 enemies and three shields. `tick` processes a key sequence, `draw` yields the characters along with screen positions and colors as JSON. The eleven examples check, among others, movement, hits, pause, and continuation. [Game checks and tool measurement](experimente/45_native_sammlungen/report.md)
-
-```sh
-./tide test apps/invaders_checks.tide
-world=$(./tide run apps/space_invaders.tide)
-./tide run apps/space_invaders.tide --call draw --inputs "{\"world\":$world}"
-```
-
-For interactive play with `tide play`, native keyboard and screen operations are still missing. Opening and saving real documents in Nano still requires native file access. [Editor checks](apps/nano_checks.tide)
-
-The measurement report can directly read a granted UTF-8 file. `--read` binds the declared read right, `--inputs` contains the threshold value.
-
-```sh
-./tide run apps/report.tide --read input=werte.txt --inputs '{"limit":80}'
-```
-
-The measurement report can be compiled ahead-of-time as a standalone program. The build checks the imported modules. The executable file needs only the named input file and the threshold value at startup.
-
-```sh
-./tide build --aot apps/report.tide /tmp/tide-report
-/tmp/tide-report --read input=werte.txt --inputs '{"limit":80}'
-```
-
-The measurement report package version uses `rowtext.parse` from `rowtext@2.0.0` and `measurements.parse` from `measurements@1.3.0`. The import graph lists paths and versions of both dependencies.
-
-```sh
-./tide modules apps/report_packages/report.tide --json
-./tide test apps/report_packages/report.tide
-```
-
-[Versioned packages](LANGUAGE.md#versioned-packages) · [Comparison with CPython](experimente/66_native_pakete/report.md)
-
-## Programs
-
-| Application | Input and Behavior |
+| Type notation | Meaning |
 |---|---|
-| [TIDE nano](apps/nano.tide) | Editor logic with cursor, line buffer, save request, and confirmation on exit. |
-| [Space Invaders](apps/space_invaders.tide) | Interactive terminal game with formation, shields, and counterfire. |
-| [Measurement report](apps/report.tide) | Granted measurement file and threshold value yield the number of exceedances and the optional maximum value. |
-| [First occurrence](apps/first_peak.tide) | Highest number and first line number in case of a tie. |
-| [Maximum](apps/maximum.tide) | Highest number, even with exclusively negative values. |
-| [Light](apps/light.tide) | Motion turns on, two consecutive idle messages turn off. |
-| [Pump](apps/pump.tide) | Start under 20, stop over 80, state preserved on equality. |
-| [Temperature Alarm](apps/heat.tide) | Reports per event whether the last three temperatures were all above 80. |
-| [Booking Balance](apps/balance.tide) | Folds a booking list over an initial balance and detects i64 overflow. |
+| `i`, `b`, `t`, `y` | Signed 64-bit integer, boolean, Unicode text, bytes |
+| `q`, `z` | Fixed-point decimal with six fractional digits, timestamp with UTC offset |
+| `*i`, `?i`, `%i` | List of integers, optional integer, dictionary from text keys to integers |
+| `{Reading}`, `*{Reading}` | A named record and a list of those records |
 
-## Programming with a Model
+**Records and typed JSON.** The measurement importer gives each reading a sensor name, a value and an optional note. Its decoder returns the application's own document type.
 
-For an unknown error location, TIDE retrieves reachable function and rule bodies from the public entry point, including their filenames, type declarations, and the observed error. The model may return multiple changes at once. [Repair across module boundaries](workbench/README.md#find-errors-across-multiple-files)
+```tide
+use jsoninput@2.0.0[Document]
 
-For nested expressions, there is a view showing the compiler-determined bracketing. Changes to multiple functions can be checked as common candidate copies via their names. [Repair grouped function bodies](workbench/README.md#repair-grouped-function-bodies)
+record Reading
+sensor:t value:i note:?t
 
-For small changes, a model answer per function can specify the affected text excerpt and its replacement. The workbench searches the grouped body and verifies that the location is unique. [Replace excerpt](workbench/README.md#replace-an-excerpt-in-the-function-body)
+record Document
+readings:*{Reading} limits:%i
 
-For rankings over multiple integer keys, the TIDE module `ordering` provides the functions `prefer_min` and `prefer_max`. A prepared repair view can additionally display the signatures of integrated, previously unused functions. [Prioritized comparisons](LANGUAGE.md#comparing-keys-with-different-priorities) · [Available functions in the repair context](workbench/README.md#show-further-available-functions)
+parse payload:y > {Document}
+jsoninput.decode payload
+```
 
-For a single function, TIDE can cut out the task from the source file. The model delivers the new function body in a response. TIDE checks it against types, examples, and the stored revision. [Call and example](workbench/README.md)
+The import pins the package version and binds its type parameter to `Document`. Missing notes and JSON `null` both produce an empty option. A boolean where the second reading's note should be text yields `E_DATA` at `/readings/1/note`. You can run that exact error case with `./tide test apps/report_packages/json_report.tide --example wrong_optional`. [Importer examples](apps/report_packages/json_report.tide) · [Types and JSON](LANGUAGE.md#types-and-json)
 
-1. `tide describe` provides type notation, program structure, and available operations. With `tide describe OP`, a single operation can be looked up.
-2. `tide check FILE` checks the entire program, including imported modules, and outputs revision, signatures, calls, side effects, and possible catchable errors.
-3. `tide context FILE --function NAME` shows direct and indirect callers, affected examples, and the nodes of the function. `--node ID` restricts the view to a location and shows its local bindings and bracketing.
-4. `tide hole FILE --function NAME --node ID` provides the required type, available values, and an edit draft for a planned replacement. The model inserts a complete expression.
-5. `tide edit FILE --base REV --edits JSON` checks changes to nodes of the entry file and imported modules jointly. With `--source CANDIDATE`, you can provide the complete entry file. Add `--write` to commit all checked files together. TIDE project commands see one revision and recover an interrupted edit on the next open.
-6. `tide trace FILE --example NAME --step N` makes the branch and field changes visible for the specified event. `tide fmt FILE` outputs formatted source code.
+Use `map` to transform each element of a list, `fold` to accumulate a result and `case` to handle both outcomes of an option. A `variant` declares named alternatives. A `match` must cover each one, so adding a case brings the affected matches to the checker's attention. [Collection examples](native/bootstrap/fixtures/functions/maps.tide) · [Variants and matching](LANGUAGE.md#variants)
 
-With `./tide test FILE --explain`, an agent also receives the input and the definitions reachable from its entry point upon the first failed example. For functions, the finding includes the parenthesized function body and its node identifier. This allows the agent to immediately verify a corrected body against the same revision using `edit --edits`. [Example and blind comparison with Python](experimente/38_fehlerkontext/report.md)
+**Rules for state over time.** A pump turns on below 20 and off above 80. Between those thresholds, including at either boundary, it keeps its previous state.
 
-For many possible call paths, `./tide test FILE --explain=executed` shows which definitions and branches the faulty example actually executed. In the tariff example, a package of exactly 500 grams reaches the expensive tariff. The finding includes three of the ten reachable functions for this. In contrast, for the rounding task, the entire call path runs, and the additional branch information enlarges the finding. [Inputs and measurements](experimente/42_ausgefuehrte_zweige/report.md)
+```tide
+rule pump level:i > b
+state on:b=false
+when < level 20 -> on=set true
+when > level 80 -> on=set false
+else -> on=keep
+out on
+```
 
-`./tide test FILE --diff --explain=nodes` augments the finding with editable operator positions, including types and form-compatible alternatives. The node identifiers and revision are passed directly to `tide edit --edits`. [Edit nodes](workbench/README.md#repair-a-node)
+The first matching branch updates the state. `out` reads the updated value. The application's `simulate` function uses `scan pump levels` to return one output per event. You can inspect a single transition with `trace`. [Pump source and examples](apps/pump.tide)
+
+```sh
+./tide run apps/pump.tide --call simulate --inputs '{"levels":[19,20,80,81]}'
+# [true,true,true,false]
+./tide trace apps/pump.tide --example boundaries --step 3 --fields on
+```
+
+In step 3 of `boundaries`, the level is exactly 20. The trace shows that `on` was `true`, the action was `keep`, and the output is still `true`. For larger examples of event-driven code, see the editor and game logic. [Nano](apps/nano.tide) · [Space Invaders](apps/space_invaders.tide)
+
+## Files, databases and services
+
+The measurement report declares `main input:r limit:i > {Summary}`. The caller grants read access to a particular file and supplies the threshold as an ordinary integer. This command counts values strictly above 80 and returns the highest reading as an option.
+
+```sh
+demo=$(mktemp -d)
+printf '80\n81\n98\n' > "$demo/readings.txt"
+./tide run apps/report.tide --read input="$demo/readings.txt" --inputs '{"limit":80}'
+# {"above":2,"peak":{"some":98}}
+```
+
+| What you can build | How TIDE supports it |
+|---|---|
+| Streaming import | `fold_lines` processes UTF-8 lines under a byte budget. An invalid reading carries its input line number. [Streaming report](apps/report_packages/stream_report.tide) |
+| Transactional import | The order importer binds a SQLite database, applies a batch in a transaction and rolls it back on an invalid event. Repeat deliveries are recognized by event ID. [Order importer](apps/orders/import.tide) |
+| API client | An HTTPS capability grants access to a specific origin. The measurement client fetches pages, decodes their typed payloads and stores the results in SQLite. [API importer](apps/report_packages/api_report.tide) |
+| HTTP service | The order webhook decodes a request body and books its events in PostgreSQL with parameterized SQL. Its worker and queue limits bound how many requests it admits at once. [Webhook](apps/orders/webhook.tide) · [Operating guide](experimente/86_webhook_operations/runbook.md) |
+
+`use readings` imports a neighboring module. A versioned package exposes its public names with `export`, so `rowtext.parse` and `measurements.parse` can coexist. Projects can pin the package contents by SHA-256 and install from a local directory. [Two packages exporting parse](apps/report_packages/report.tide) · [Offline packages](LANGUAGE.md#installing-packages-offline)
+
+## Working with a coding agent
 
 ### Prepare a change
 
-For long results, `--diff` provides the path and the two differing values. In the subsequent attempt, the last booking from 384 contains the balance 26. The example expects the value 27 at `/rows/383/balance`. The second command additionally provides the executed functions along with their node identifiers. Both calls end with status 1 when encountering the intentionally inserted error. [Measurements and comparison with CPython](experimente/46_ergebnisvergleich/report.md)
+For the balance function, `context` identifies `main` as a caller and `E_OVERFLOW` as a possible error. An agent can request the example index first, then fetch the inputs and expectation for just one example. To prepare an edit, `hole` gives the required type and the names available at the selected expression. Here `2:38` identifies the addition on line 2, column 38 of this revision.
 
 ```sh
-./tide test experimente/46_ergebnisvergleich/ledger/panel.tide --diff
-./tide test experimente/46_ergebnisvergleich/ledger/panel.tide --diff --explain=executed
-```
-
-With 384 bookings in the journal, the optimized record reader reduced the time to the executed error finding from 22.54 to 17.75 ms. The prepared CPython comparison required 18.66 ms. For two small multi-file errors regarding equality and rounding, the static view already provided all involved functions. [Tool times, tokens, and acceptance cases](experimente/47_record_eingaben/report.md)
-
-In the balance example, this call checks the type and local bindings at the beginning of the function body. The node numbers come from the currently read revision.
-
-```sh
-./tide context apps/balance.tide --function balance
-./tide hole apps/balance.tide --function balance --node 2:1
-```
-
-For large example inputs, the model can first read the names and fingerprints of the affected contracts. Subsequently, it can display a contract with input and expectation. Both calls specify the project revision. An intervening change is thus detectable. [Output size of context views](experimente/33_beispielkontext/report.md) · [Query time for Unicode contracts](experimente/37_vertragsfingerabdruecke/report.md)
-
-```sh
+./tide describe fold
 ./tide context apps/balance.tide --function balance --example-index
-./tide context apps/balance.tide --function balance --example movements --node 2:1
+./tide hole apps/balance.tide --function balance --node 2:38
 ```
 
 ### Check and accept a change
 
-The following example operates on a copy. It swaps the operands of the addition and retains the three confirmed balance examples. The first `edit` shows the new revision, the number of passed examples, and the proposed source. The second accepts it with the same base revision.
+Try swapping the operands of the addition on a temporary copy. The first edit previews the replacement and runs the examples. The second writes the checked change. Both use the revision read from that copy. These commands use `jq` to extract the revision.
 
 ```sh
-demo=$(mktemp -d)
-cp apps/balance.tide "$demo/saldo.tide"
-base=$(./tide check "$demo/saldo.tide" | jq -er .revision)
+work=$(mktemp -d)
+cp apps/balance.tide "$work/balance.tide"
+base=$(./tide check "$work/balance.tide" | jq -er .revision)
 patch='[{"node":"2:38","replace":"+ entry total"}]'
-./tide edit "$demo/saldo.tide" --base "$base" --edits "$patch"
-./tide edit "$demo/saldo.tide" --base "$base" --edits "$patch" --write
+./tide edit "$work/balance.tide" --base "$base" --edits "$patch"
+./tide edit "$work/balance.tide" --base "$base" --edits "$patch" --write
 ```
 
-An outdated revision yields `E_REVISION`. Changes or deletions of existing examples are shown by TIDE with `E_CONTRACT`. If the changed expectation is technically intended, `--change-examples` allows the subsequent check. New examples are immediately checked. A change order can contain up to 256 positions of the same revision. For an operator, for example, `{"node":"2:38","op":"+"}` suffices as an entry. [Cross-file search and preview](workbench/README.md#check-two-files-together)
+An outdated base yields `E_REVISION`. One edit can update related nodes across multiple files atomically. To investigate an unexpected result, `tide test FILE --diff --explain=executed` reports the differing value and the code the failing example executed. [Editing and repair recipes](workbench/README.md)
 
 ## Installation and verification
 
-`make native` builds the native compiler. `make test` (also `make check-native`) checks the self-build and runs TIDE-tests for the compiler, the editor logic, and the game. Install the public CLI on Linux x86-64 or ARM64 with Make.
+TIDE 0.6.12 builds and runs on Linux x86-64 and ARM64. The native toolchain runs without Python. From a checkout, install the CLI with `make install-native PREFIX="$HOME/.local"`. The getting started guide lists the build dependencies. [Installation guide](GETTING_STARTED.md) · [Native compiler](native/README.md)
 
-With `make check-no-python` you can check independence on the target Linux architecture with Docker and BuildKit. The run builds TIDE in Debian without Python from sources, runs the native test suite, and compares an updated old installation with a new installation. It checks the static binding of all six tools and runs the balance program via the checkout and the installed package. The separate runtime image also checks version binding, catalog, modules, formatting, execution, and state trace. An intentionally incorrect minus in the balance program triggers an error finding. After repair by the native editor, the source file must again match the original and all three examples must pass. Build, tests, and execution run after acquiring system packages without network access. [Build recipe](native/bootstrap/no-python.Dockerfile)
+To compile the measurement report ahead of time, reuse the input file from the earlier example. The resulting Linux executable takes the same grants and inputs.
 
 ```sh
-make install PREFIX="$HOME/.local"
+./tide build --aot apps/report.tide "$demo/report"
+"$demo/report" --read input="$demo/readings.txt" --inputs '{"limit":80}'
+# {"above":2,"peak":{"some":98}}
 ```
 
-The installed command `tide build` uses the bundled compiler. On the target system it requires a POSIX-shell, Unix file tools, and `xxd`. Make and the C++20-compiler are used during package build. To create a package, the installation supports `DESTDIR`.
+Runtime depends on the workload. In a local 100 MiB streaming benchmark, the compiled TIDE report processed 131.0 MiB/s and CPython processed 25.6 MiB/s. In a separate 1,000-event order import, TIDE took 39.09 ms and CPython took 19.93 ms. [Streaming benchmark](experimente/67_zeilenstrom/report.md) · [Order import benchmark](experimente/80_import_performance/report.md)
 
-`make install` and `make install-native` deliver exclusively native tools and their data into a fresh prefix. An unported call reports `E_BACKEND` there. When switching from the compatibility installation, the installation target removes the previous starter, the eleven delivered Python modules, and their bytecode from the package directory. Own additional modules remain preserved.
-
-The [checked new setup without Python](experimente/35_native_knotenaenderungen/report.md) includes self-build, tests, package change, and source changes. The [inspection check](experimente/32_native_inspektion/report.md) additionally documents the outputs of `context` and `hole`. The former interpreter, its integration checks, and the then interactive hosts are archived as [historical comparison base](experimente/referenzsystem/README.md).
-
-The [language reference](LANGUAGE.md) describes syntax, types, rights, budgets, and errors. The [design history](SPEC.md) and the [self-experiments](experimente/findings.md) document the previous design decisions. The original checksum-bound write attempts are [archived](experimente/versuche_vor_umbenennung.tar.gz).
+Run `make test` for the native regression suite and `make check-postgres` for the local database integration checks. The language reference covers evaluation, error handling, capabilities and resource budgets. [Language reference](LANGUAGE.md) · [Design and research roadmap](tasks/plan.md) · [Contributing](CONTRIBUTING.md)
