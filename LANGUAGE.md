@@ -4,7 +4,7 @@ The reference describes the language rules of TIDE 0.6. The executable scope and
 
 ## File and Module
 
-UTF-8, a blank line between declarations. Line breaks in the function body separate operands just like spaces. An executable program has a function `main`. Libraries may contain only declarations and examples. The right-hand side of a function is exactly one expression. Each call may optionally be parenthesized. Names begin with a ASCII letter, followed by letters, digits, or underscores. Bindings are immutable. Name conflicts and recursive call chains result in check errors.
+Write source in UTF-8 and separate declarations with a blank line. A function signature lists its name, typed parameters and result type. Its body is one expression. A call starts with the operation and takes as many operands as its signature requires. Line breaks inside the body work like spaces. Parentheses can make nested calls explicit. Names start with an ASCII letter and can contain letters, digits and underscores. Bindings are immutable.
 
 ```tide
 twice value:i > i
@@ -13,6 +13,8 @@ twice value:i > i
 main > i
 twice 7
 ```
+
+Here `main` calls `twice` with the integer 7 and returns 14. A module may also expose named functions you run with `tide run FILE --call NAME`. The checker rejects cycles between ordinary named calls. For bounded self-recursion, use `recur` inside the function. [Evaluation](#evaluation) · [Two-module tutorial](GETTING_STARTED.md#read-an-order-from-json)
 
 `use readings` loads the regular file `readings.tide` from the same directory. Neighbor files share the namespace of their project or package. Names from transitive neighbor imports are available there. Duplicate import paths load the same module once; cyclic imports fail. Modules are resolved during checking. The revision includes the source code of the entry program as well as paths and contents of all imported modules and packages.
 
@@ -162,11 +164,11 @@ Expressions are evaluated from left to right. `if`, `and`, `or`, `case`, `match`
 
 `< a b`, `> a b`, `<= a b`, `>= a b`, and `eq a b` compare two values of type `i` and return `b`. `<=` and `>=` include equality. A comparison covers the full signed 64-bit range without overflow.
 
-`map B liste element rumpf` evaluates the list once. For each element, TIDE evaluates the body once in input order. The name is valid only within the body. Each result value must have the specified type `B`. An empty input yields an empty list of type `*B`. For example, `map i (list i 2 4 7) x (+ x 1)` yields the value `[5,8]`. On error, the mapping aborts at the first affected element. The diagnosis retains the source location and includes in `map_index` the zero-based index of the innermost affected mapping. The guest budget counts the list head once and each result value upon insertion. Operations in the body consume their usual budget. [Examples for records, pairs, errors, and nested mappings](native/bootstrap/fixtures/functions/maps.tide)
+`map B values element body` evaluates the list once. For each element, TIDE evaluates the body once in input order. The name is valid only within the body. Each result value must have the specified type `B`. An empty input yields an empty list of type `*B`. For example, `map i (list i 2 4 7) x (+ x 1)` yields the value `[5,8]`. On error, the mapping aborts at the first affected element. The diagnosis retains the source location and includes in `map_index` the zero-based index of the innermost affected mapping. The guest budget counts the list head once and each result value upon insertion. Operations in the body consume their usual budget. [Examples for records, pairs, errors, and nested mappings](native/bootstrap/fixtures/functions/maps.tide)
 
-`while start zustand bedingung schritt` checks the condition before each step and returns the last state. `recur` calls the enclosing function with new arguments. The work budget applies, and at most 48 active recursive calls are allowed. The AOT compiler translates nested lists, these two control forms, and state rules, which a function with `scan` calls. [Light rule](apps/light.tide)
+`while start state condition step` binds `state` to the initial value, evaluates the condition before each step and returns the last state. `recur` calls the enclosing function with new arguments. The work budget applies, and at most 48 active recursive calls are allowed. The AOT compiler translates nested lists, these two control forms, and state rules called with `scan`. [Iteration examples](native/bootstrap/fixtures/functions/iteration.tide) · [Light rule](apps/light.tide)
 
-`nil T` and `some wert` produce options. `case option leer name voll` distinguishes both cases. `need option grund zeile` yields the content or a data error with reason and input line. `int` accepts exactly one decimal i64 number with an optional minus sign. `lines` splits at LF and CRLF, preserves embedded blank lines, and adds no line after a trailing separator.
+`nil T` produces an empty option and `some value` wraps a value. In `case option fallback name body`, an empty option evaluates `fallback`; a populated option binds its value to `name` and evaluates `body`. Thus `case (some 7) 0 n (+ n 1)` yields 8. Use `need option reason line` to extract a required value or raise a data error with the given reason and input line. `int` accepts exactly one decimal i64 number with an optional minus sign. `lines` splits at LF and CRLF, preserves embedded blank lines, and adds no line after a trailing separator.
 
 `rule` describes a transition per input event. Start values, the first matching `when` branch, and a concluding `else` branch define the behavior. Each branch assigns exactly one action to each state field. `keep`, `set`, and `reset` read the old state. `out` reads the new state. An error aborts the transition before its output is published. `scan` restarts on every call. State fields support `i` and `b`; events and outputs may also be composed. Rules operate without file access, including all helper functions.
 

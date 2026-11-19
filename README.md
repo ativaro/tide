@@ -25,7 +25,7 @@ Run the checked-in program from the repository root on Linux x86-64 or ARM64. Th
 # {"passed":3}
 ```
 
-The other two examples cover an empty list and integer overflow. The getting started guide walks through installing the CLI and writing a function of your own. [Getting started](GETTING_STARTED.md)
+The other two examples cover an empty list and integer overflow. In the getting started guide, you write a stock-shortfall function, import it into a second module and compile a program that reads an order from JSON. [Write your first function](GETTING_STARTED.md#write-a-function-and-its-examples) · [Read an order from JSON](GETTING_STARTED.md#read-an-order-from-json)
 
 ## Reading and writing TIDE
 

@@ -47,6 +47,49 @@ tide test shortfall.tide
 
 To see a diagnostic, reverse the operands of the subtraction and run `tide test shortfall.tide --diff`. The partial order now produces `-3` where the example expects `3`. Restore the subtraction and run the examples again.
 
+## Read an order from JSON
+
+Save this second file as `orders.tide` beside `shortfall.tide`. It applies your existing calculation to every item in an order.
+
+```tide
+use shortfall
+
+record Line
+stock:i requested:i
+
+record Order
+items:*{Line}
+
+missing order:{Order} > *i
+map i (get items order) item (shortfall (get stock item) (get requested item))
+
+main input:r > *i
+missing (json_decode {Order} (read_bytes input))
+
+example mixed main
+{"inputs":{"input":"{\"items\":[{\"stock\":7,\"requested\":10},{\"stock\":10,\"requested\":10}]}"},"expect":[3,0]}
+
+example invalid_quantity main
+{"inputs":{"input":"{\"items\":[{\"stock\":7,\"requested\":\"10\"}]}"},"expect_error":{"code":"E_DATA","path":"/items/0/requested"}}
+```
+
+The signature `missing order:{Order} > *i` takes one order and returns a list of integers. Read the body from the outside in. `map i` builds a list of integers. `get items order` selects the list to visit. For each element, `item` binds the current record and `shortfall` receives its two integer fields. TIDE preserves their input order.
+
+The file access is confined to `main`. Its parameter `input:r` is a read capability. `read_bytes` gets the contents and `json_decode {Order}` checks them against the record declarations before calling `missing`. In a named example, the JSON string supplies the file contents in memory. The failing example checks the path to the first item’s `requested` field.
+
+From the directory containing both modules, run the examples and give the application a real file. The example count includes the two examples imported from `shortfall.tide`.
+
+```sh
+tide test orders.tide
+# {"passed":4}
+printf '%s\n' '{"items":[{"stock":3,"requested":8},{"stock":12,"requested":8}]}' > order.json
+tide run orders.tide --read input=order.json
+# [5,0]
+tide build --aot orders.tide ./orders
+./orders --read input=order.json
+# [5,0]
+```
+
 ## Change a JSON record
 
 In the measurement app, the project owns the record layout and the pinned library decodes it. To see that boundary, run this from the checkout.
