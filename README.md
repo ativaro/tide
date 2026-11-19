@@ -165,7 +165,25 @@ To compile the measurement report ahead of time, reuse the input file from the e
 # {"above":2,"peak":{"some":98}}
 ```
 
-Runtime depends on the workload. In a local 100 MiB streaming benchmark, the compiled TIDE report processed 131.0 MiB/s and CPython processed 25.6 MiB/s. In a separate 1,000-event order import, TIDE took 39.09 ms and CPython took 19.93 ms. [Streaming benchmark](experimente/67_zeilenstrom/report.md) · [Order import benchmark](experimente/80_import_performance/report.md)
+## Measured so far
+
+All figures are medians from one workstation. Each row links to its report, which holds the raw data and the commands. No second machine has repeated them.
+
+| Measurement | TIDE | CPython | Ahead |
+|---|---:|---:|---|
+| Streaming a 100 MiB file, throughput | 131.0 MiB/s | 25.6 MiB/s | TIDE, 5.12× |
+| Streaming a 100 MiB file, peak memory | 1.84 MiB | 11.11 MiB | TIDE |
+| Process start | 0.45 ms | 11.86 ms | TIDE |
+| Order import, 8 events, compiled | 5.19 ms | 16.79 ms | TIDE |
+| Order import, 1,000 events, compiled | 39.09 ms | 19.93 ms | CPython |
+| Order import, 1,000 events, run from source | 596.40 ms | 24.90 ms | CPython |
+| Tool-driven repair without a model, time to acceptance | 38.1 ms | 88.8 ms | TIDE, 2.34× |
+| Same repairs, success rate | 84/96 | 84/96 | Tie |
+| Repairs by a local 4B model | 0/6 | 2/6 | CPython |
+
+TIDE is ahead on startup, memory, streaming and small inputs. CPython is ahead on the large order import, where typed JSON decoding and SQLite writes dominate. In the replication CPython won all 12 pairs at 1,000 events and TIDE won all 12 at eight. The repair rows compare TIDE's node edits with Python AST edits on the same small multi-file defects. Within TIDE, an incremental test session reached green 5.51× sooner than a full check after a leaf change and 1.43× sooner after an interface change. [Streaming](experimente/67_zeilenstrom/report.md) · [Order import](experimente/80_import_performance/report.md) · [Replication](experimente/74_alpha_review/report.md) · [Repair time](experimente/60_reparaturzeit/report.md) · [Local model repairs](experimente/54_lokaler_agentenvergleich/report.md) · [Incremental checks](experimente/78_incremental_feedback/report.md)
+
+**Not yet measured:** tokens to a correct solution and repair time with a real coding model on the sealed tasks. The blind comparison is prepared and has recorded 0 sessions. [Blind comparison protocol](experimente/88_blind_agent_costs/report.md)
 
 Run `make test` for the native regression suite and `make check-postgres` for the local database integration checks. The language reference covers evaluation, error handling, capabilities and resource budgets. [Language reference](LANGUAGE.md) · [Design and research roadmap](tasks/plan.md) · [Contributing](CONTRIBUTING.md)
 
