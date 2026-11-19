@@ -168,3 +168,7 @@ To compile the measurement report ahead of time, reuse the input file from the e
 Runtime depends on the workload. In a local 100 MiB streaming benchmark, the compiled TIDE report processed 131.0 MiB/s and CPython processed 25.6 MiB/s. In a separate 1,000-event order import, TIDE took 39.09 ms and CPython took 19.93 ms. [Streaming benchmark](experimente/67_zeilenstrom/report.md) · [Order import benchmark](experimente/80_import_performance/report.md)
 
 Run `make test` for the native regression suite and `make check-postgres` for the local database integration checks. The language reference covers evaluation, error handling, capabilities and resource budgets. [Language reference](LANGUAGE.md) · [Design and research roadmap](tasks/plan.md) · [Contributing](CONTRIBUTING.md)
+
+## License
+
+TIDE's original source code and documentation are licensed under the Apache License, Version 2.0 (SPDX `Apache-2.0`). Third-party components retain their own terms. The bundled SQLite source is in the public domain. [License text](LICENSE) · [SQLite provenance](native/vendor/sqlite/README.md)
