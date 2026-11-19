@@ -21,7 +21,7 @@ The checkboxes represent the acceptance of the respective roadmap stage. Existin
 - [ ] 15. Test installation, a field change and a multi-file repair with three previously uninvolved developers. The clean-checkout rehearsal passed. The study has recorded 0 of 3 participant sessions. [Stage 15 report and study materials](../experimente/84_onboarding/report.md)
 - [x] 16. Build and install TIDE without Python and run both reference applications on Linux x86-64 and locally emulated Linux ARM64. Physical ARM hardware remains untested. [Platform results and reproducible differences](../experimente/85_linux_arm64/report.md)
 - [ ] 17. The order webhook passed the interrupted upgrade, rollback, database restart and closing audit of all 152 bookings in the shortened local run. Resource samples cover 2 hours 29 minutes. The original 24-hour window was cut short by request. The independent operator exercise remains open. [Stage 17 report](../experimente/86_webhook_operations/report.md)
-- [ ] 18. Accompany two independent teams across two application versions. The offline upgrade and patch handoff passed the local rehearsal. Independent project records: 0 of 2. [Pilot results and team materials](../experimente/87_independent_pilots/report.md)
+- [ ] 18. **Independent team pilots skipped.** The local rehearsal passed the offline upgrade and patch handoff. No independent team took part. [Pilot results and team materials](../experimente/87_independent_pilots/report.md)
 - [ ] 19. Blindly compare real agent costs
 - [ ] 20. Independently evaluate leadership claim and choose the next area
 

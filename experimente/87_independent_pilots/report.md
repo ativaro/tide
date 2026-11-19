@@ -1,6 +1,6 @@
 # Stage 18 · Independent application pilots
 
-**Independent projects observed: 0 of 2.** The pilot is ready for two teams to choose their own applications, deliver a first version and extend it. Installation experience, missing libraries, maintenance effort, upgrade experience, willingness to use TIDE again and ability to contribute still require team observations. [Team instructions and record](pilot.md) · [Contribution and decision process](../../CONTRIBUTING.md)
+**The independent team pilots were skipped on 19 November 2026.** Neither of the two planned teams took part. The evidence below covers the maintainer’s local upgrade and patch handoff. Team experience and willingness to choose TIDE again remain unmeasured. [Team instructions and record](pilot.md) · [Contribution and decision process](../../CONTRIBUTING.md)
 
 ## Local rehearsal
 
