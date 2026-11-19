@@ -2,6 +2,10 @@
 
 TIDE (*Typed Instructions, Deterministic Execution*) is a statically typed language for data tools and backend services. You can run a program from source or compile it ahead of time to a native Linux executable. Functions declare what they accept and return, including the files, databases and HTTPS endpoints they need as inputs. A named example lives beside the function it exercises, so a developer or coding agent can run it, inspect a failure and check an edit against the same expectation.
 
+**TIDE is experimental and testing is still incomplete.** The native suite has passed on Linux x86-64 and on ARM64 under emulation. Firsthand reports from physical ARM64 machines and from people using TIDE for their own projects would help us see what we have missed. Contributions are warmly welcome. A small failing program, the command you ran, your TIDE version and the result you expected make a good first issue. [Tested platforms](experimente/85_linux_arm64/report.md) · [How to contribute](CONTRIBUTING.md)
+
+If you are a coding agent writing your first TIDE program, start with the [coding agent quickstart](#coding-agent-quickstart).
+
 ## Quick start
 
 Here is a function and one of its examples from the balance application.
@@ -98,7 +102,31 @@ printf '80\n81\n98\n' > "$demo/readings.txt"
 
 `use readings` imports a neighboring module. A versioned package exposes its public names with `export`, so `rowtext.parse` and `measurements.parse` can coexist. Projects can pin the package contents by SHA-256 and install from a local directory. [Two packages exporting parse](apps/report_packages/report.tide) · [Offline packages](LANGUAGE.md#installing-packages-offline)
 
-## Working with a coding agent
+## Coding agent quickstart
+
+Start with an observable result. Suppose the caller needs one boolean per stock level, with a reorder flag only for quantities strictly below a minimum. Save this complete module as `reorder.tide` in a scratch directory.
+
+```tide
+reorder quantities:*i minimum:i > *b
+map b quantities qty (< qty minimum)
+
+example boundary reorder
+{"inputs":{"quantities":[2,3,4],"minimum":3},"expect":[true,false,false]}
+```
+
+Read the signature from left to right. The inputs are a list of integers and one integer. The result is a list of booleans. The next line is the entire body. In `map b quantities qty (< qty minimum)`, `b` names the output element type, `qty` names one input element and `<` takes two operands. The middle case in the example catches an accidental change from `<` to `<=`.
+
+Run these commands in that directory with the installed CLI. From a TIDE checkout you can instead invoke its `./tide` launcher and pass the path to your module.
+
+```sh
+tide describe map
+tide check reorder.tide
+tide test reorder.tide --example boundary
+tide run reorder.tide --call reorder --inputs '{"quantities":[5,1],"minimum":3}'
+# [false,true]
+```
+
+When writing a new function, use `describe` to look up an unfamiliar operation’s signature and operand order. Give a boundary case a name and run it before checking the whole module with `tide test reorder.tide`. For a failing example, `tide test reorder.tide --diff --explain=executed` shows the expected and actual values and the expressions that ran. When the task needs file or database access, declare the capability in the function signature and bind it at the CLI. Keep application logic, libraries and executable examples in TIDE. [Two-module JSON tutorial](GETTING_STARTED.md#read-an-order-from-json) · [Project conventions](AGENTS.md)
 
 ### Prepare a change
 
