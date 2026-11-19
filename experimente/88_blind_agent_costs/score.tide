@@ -1,0 +1,137 @@
+use schedule
+
+record Usage
+input_tokens:i output_tokens:i cached_input_tokens:?i reasoning_output_tokens:?i
+
+record Session
+slot:{Slot} outcome:t elapsed_ms:i usage_complete:b calls:*{Usage} tool_calls:i edit_attempts:i regressions:i
+
+record Journal
+kind:t sessions:*{Session}
+
+record Ratio
+numerator:i denominator:i
+
+record Moments
+count:i sum:i mean:?{Ratio} sample_variance:?{Ratio}
+
+record Charge
+inputs:i outputs:i cached:?i reasoning:?i
+
+record Measured
+slot:{Slot} passed:b elapsed_ms:i cost:{Charge} model_calls:i tool_calls:i edit_attempts:i regressions:i
+
+record Group
+family:t language:t started:i solved:i usage:{Charge} tokens_per_success:?{Ratio} tokens:{Moments} elapsed_ms:{Moments} success_ms:{Moments} model_calls:i tool_calls:i edit_attempts:i regressions:i
+
+record RepairPair
+commitment:t repetition:i tide_ms:i cpython_ms:i
+
+record Result
+kind:t groups:*{Group} jointly_solved_repairs:*{RepairPair}
+
+ratio numerator:i denominator:i > ?{Ratio}
+if (eq denominator 0) (nil {Ratio}) (some (make Ratio numerator numerator denominator denominator))
+
+moments values:*i > {Moments}
+let n length values
+let total fold values 0 acc pos v (+ acc v)
+let squares fold values 0 acc pos v (+ acc (* v v))
+make Moments count n sum total mean (ratio total n)
+sample_variance (ratio (- (* n squares) (* total total)) (* n (- n 1)))
+
+optional_sum a:?i b:?i > ?i
+case a (nil i) left (case b (nil i) right (some (+ left right)))
+
+empty_charge > {Charge}
+make Charge inputs 0 outputs 0 cached (some 0) reasoning (some 0)
+
+combine a:{Charge} b:{Charge} > {Charge}
+make Charge inputs (+ (get inputs a) (get inputs b)) outputs (+ (get outputs a) (get outputs b))
+cached (optional_sum (get cached a) (get cached b)) reasoning (optional_sum (get reasoning a) (get reasoning b))
+
+valid_subset part:?i whole:i > b
+case part true amount (and (>= amount 0) (<= amount whole))
+
+cost_of call:{Usage} > {Charge}
+let ins get input_tokens call
+let outs get output_tokens call
+let cache get cached_input_tokens call
+let reason get reasoning_output_tokens call
+if (or (< ins 0) (< outs 0)) (fail "negative_token_count")
+if (not (and (valid_subset cache ins) (valid_subset reason outs))) (fail "invalid_token_subset")
+make Charge inputs ins outputs outs cached cache reasoning reason
+
+same_slot a:{Slot} b:{Slot} > b
+and (text_eq (get commitment a) (get commitment b))
+(and (eq (get repetition a) (get repetition b))
+(and (text_eq (get family a) (get family b)) (text_eq (get language a) (get language b))))
+
+measure session:{Session} expected:{Slot} > {Measured}
+if (not (same_slot (get slot session) expected)) (fail "unexpected_slot")
+let outcome get outcome session
+let passed text_eq outcome "pass"
+if (not (or passed (or (text_eq outcome "fail") (or (text_eq outcome "timeout") (or (text_eq outcome "budget") (text_eq outcome "abstain")))))) (fail "invalid_outcome")
+if (< (get elapsed_ms session) 0) (fail "negative_elapsed")
+if (not (get usage_complete session)) (fail "incomplete_model_usage")
+if (and passed (eq (length (get calls session)) 0)) (fail "missing_model_usage")
+if (or (< (get tool_calls session) 0) (or (< (get edit_attempts session) 0) (< (get regressions session) 0))) (fail "negative_session_counter")
+let cost fold (get calls session) empty_charge acc pos call (combine acc (cost_of call))
+make Measured slot expected passed passed elapsed_ms (get elapsed_ms session) cost cost
+model_calls (length (get calls session)) tool_calls (get tool_calls session) edit_attempts (get edit_attempts session) regressions (get regressions session)
+
+summarize_arm observations:*{Measured} family:t language:t > {Group}
+let members fold observations (list {Measured} 0) acc pos obs
+  let slot get slot obs
+  if (and (text_eq (get family slot) family) (text_eq (get language slot) language)) (append acc obs) acc
+let times map i members obs (get elapsed_ms obs)
+let successful fold members (list i 0) acc pos obs (if (get passed obs) (append acc (get elapsed_ms obs)) acc)
+let tokens map i members obs (let cost get cost obs (+ (get inputs cost) (get outputs cost)))
+let usage fold members empty_charge acc pos obs (combine acc (get cost obs))
+make Group family family language language started (length members) solved (length successful) usage usage
+tokens_per_success (ratio (+ (get inputs usage) (get outputs usage)) (length successful))
+tokens (moments tokens) elapsed_ms (moments times) success_ms (moments successful)
+model_calls (fold members 0 acc pos obs (+ acc (get model_calls obs)))
+tool_calls (fold members 0 acc pos obs (+ acc (get tool_calls obs)))
+edit_attempts (fold members 0 acc pos obs (+ acc (get edit_attempts obs)))
+regressions (fold members 0 acc pos obs (+ acc (get regressions obs)))
+
+repair_pairs observations:*{Measured} > *{RepairPair}
+fold observations (list {RepairPair} 0) acc pos obs
+  let slot get slot obs
+  if (or (eq (mod pos 2) 0) (not (text_eq (get family slot) "R"))) acc
+  let other need (at observations pos) "missing_partner" pos
+  if (not (and (get passed obs) (get passed other))) acc
+  let tide_first text_eq (get language slot) "TIDE"
+  append acc (make RepairPair commitment (get commitment slot) repetition (get repetition slot)
+    tide_ms (if tide_first (get elapsed_ms obs) (get elapsed_ms other))
+    cpython_ms (if tide_first (get elapsed_ms other) (get elapsed_ms obs)))
+
+evaluate slots:*{Slot} journal:{Journal} > {Result}
+let kind get kind journal
+if (not (or (text_eq kind "synthetic") (text_eq kind "observed"))) (fail "invalid_journal_kind")
+let sessions get sessions journal
+if (not (eq (length sessions) (length slots))) (fail "incomplete_schedule")
+let observations fold sessions (list {Measured} 0) acc pos session
+  append acc (measure session (need (at slots (- pos 1)) "missing_slot" pos))
+let groups fold (list t 3 "W" "E" "R") (list {Group} 0) acc pos family
+  append (append acc (summarize_arm observations family "TIDE")) (summarize_arm observations family "CPython")
+make Result kind kind groups groups jointly_solved_repairs (repair_pairs observations)
+
+main seal:r ledger:r > {Result}
+evaluate (plan seal) (json_decode {Journal} (read_batch ledger 4194304))
+
+example sample_variance moments
+{"inputs":{"values":[10,20,30]},"expect":{"count":3,"sum":60,"mean":{"some":{"numerator":60,"denominator":3}},"sample_variance":{"some":{"numerator":600,"denominator":6}}}}
+
+example undefined_for_no_success ratio
+{"inputs":{"numerator":120,"denominator":0},"expect":{"none":true}}
+
+example overlapping_usage cost_of
+{"inputs":{"call":{"input_tokens":60,"output_tokens":40,"cached_input_tokens":{"some":12},"reasoning_output_tokens":{"some":4}}},"expect":{"inputs":60,"outputs":40,"cached":{"some":12},"reasoning":{"some":4}}}
+
+example impossible_usage cost_of
+{"inputs":{"call":{"input_tokens":10,"output_tokens":1,"cached_input_tokens":{"some":11},"reasoning_output_tokens":{"none":true}}},"expect_error":{"code":"E_DATA","reason":"invalid_token_subset"}}
+
+example failed_attempts_count summarize_arm
+{"inputs":{"observations":[{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"passed":false,"elapsed_ms":100,"cost":{"inputs":8,"outputs":4,"cached":{"some":2},"reasoning":{"none":true}},"model_calls":2,"tool_calls":3,"edit_attempts":1,"regressions":0}],"family":"R","language":"TIDE"},"expect":{"family":"R","language":"TIDE","started":1,"solved":0,"usage":{"inputs":8,"outputs":4,"cached":{"some":2},"reasoning":{"none":true}},"tokens_per_success":{"none":true},"tokens":{"count":1,"sum":12,"mean":{"some":{"numerator":12,"denominator":1}},"sample_variance":{"none":true}},"elapsed_ms":{"count":1,"sum":100,"mean":{"some":{"numerator":100,"denominator":1}},"sample_variance":{"none":true}},"success_ms":{"count":0,"sum":0,"mean":{"none":true},"sample_variance":{"none":true}},"model_calls":2,"tool_calls":3,"edit_attempts":1,"regressions":0}}

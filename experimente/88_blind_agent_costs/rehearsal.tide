@@ -1,0 +1,16 @@
+use score
+
+synthetic_session slot:{Slot} > {Session}
+let tide_arm text_eq (get language slot) "TIDE"
+let family get family slot
+let second_round eq (get repetition slot) 2
+let fails or (and tide_arm (text_eq family "W")) (and (not tide_arm) (and second_round (text_eq family "R")))
+let elapsed + (if second_round 300 100) (if tide_arm 0 20)
+let first_call make Usage input_tokens 10 output_tokens 5 cached_input_tokens (some 2) reasoning_output_tokens (some 1)
+let last_call make Usage input_tokens 4 output_tokens 1 cached_input_tokens (some 0) reasoning_output_tokens (nil i)
+make Session slot slot outcome (if fails "budget" "pass") elapsed_ms elapsed usage_complete true calls (list {Usage} 2 first_call last_call)
+tool_calls 3 edit_attempts 2 regressions 0
+
+synthetic_ledger seal:r > t
+let entries map {Session} (plan seal) slot (synthetic_session slot)
+utf8_text (json_encode (make Journal kind "synthetic" sessions entries))

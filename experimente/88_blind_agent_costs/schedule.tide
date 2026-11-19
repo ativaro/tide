@@ -1,0 +1,35 @@
+record HeldTask
+family:t commitment:t
+
+record Seal
+tasks:*{HeldTask}
+
+record Slot
+family:t commitment:t repetition:i language:t
+
+slot_for item:{HeldTask} repetition:i language:t > {Slot}
+make Slot family (get family item) commitment (get commitment item) repetition repetition language language
+
+paired_slots slots:*{Slot} item:{HeldTask} repetition:i tide_first:b > *{Slot}
+let first_arm if tide_first "TIDE" "CPython"
+let second_arm if tide_first "CPython" "TIDE"
+append (append slots (slot_for item repetition first_arm)) (slot_for item repetition second_arm)
+
+family_count tasks:*{HeldTask} label:t > i
+fold tasks 0 hits pos item (+ hits (if (text_eq (get family item) label) 1 0))
+
+schedule tasks:*{HeldTask} > *{Slot}
+if (not (and (eq (length tasks) 15) (and (eq (family_count tasks "W") 5) (and (eq (family_count tasks "E") 5) (eq (family_count tasks "R") 5))))) (fail "invalid_family_counts")
+let unique_ids fold tasks (dict b) seen pos item
+  let key get commitment item
+  if (or (not (eq (text_len key) 64)) (case (dict_get seen key) false present present)) (fail "invalid_commitment")
+  dict_put seen key true
+let block fold tasks (list {Slot} 0) slots pos item
+  paired_slots slots item 1 (eq (mod pos 2) 1)
+fold tasks block slots pos unused
+  let reverse_pos - (length tasks) pos
+  let item need (at tasks reverse_pos) "missing_commitment" pos
+  paired_slots slots item 2 (eq (mod reverse_pos 2) 1)
+
+plan seal:r > *{Slot}
+schedule (get tasks (json_decode {Seal} (read_bytes seal)))

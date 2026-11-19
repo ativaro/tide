@@ -1,0 +1,24 @@
+# Blind comparison protocol
+
+The question is whether the same coding model reaches an independently accepted solution more often, with fewer total tokens, or sooner in TIDE or CPython. Compare writing, extension and repair separately. The unit of comparison is the same task and repetition in both languages.
+
+## What is frozen
+
+Use the 15 public commitments from the Stage 2 sealing receipt, five per family. The local preparation pins their manifest hash, the TIDE source revision, the CPython version and executable digest, and the generated schedule. The schedule contains only opaque commitments. Each model would receive two independent repetitions per language, 60 sessions in all. In the second repetition the task order reverses and every task switches which language runs first. Each language goes first 15 times across the 30 pairs. Two repetitions provide limited information about run-to-run variation. [Preparation record](preparation.json) · [Original sealing receipt](../72_bestellimport_basis/versiegelung.json)
+
+The model and spending allowance remain unassigned. If a trial is funded, record its model and weights or provider revision, agent and tool versions, prompt templates, sampling settings, paired seeds where supported, context limits, token and wall-time ceilings, and maximum attempts before opening any task. Apply the same settings in both arms. Record the host and interpreter environment so the comparison can be repeated.
+
+## Conduct each pair
+
+1. The task custodian checks the selected task against its commitment and retains the hidden acceptance cases. Give each arm an equivalent task, starting project, public tests, permissions and local documentation access. Use an empty project for writing. For repairs, supply the same observable failure. Keep solutions, the other arm's conversation, rehearsal fixtures, hidden tests and reference implementations outside the agent workspace.
+2. Start a fresh conversation and checkout per slot. Start a monotonic clock at task handoff. Permit normal language tooling, tests, documentation lookup and edits. Count each tool response the model receives in the usage reported for the following call. Log every model request, tool action, submitted edit and regression. The model necessarily sees the programming language.
+3. Freeze the submitted revision once the agent finishes or reaches its limit. An independent evaluator runs the full acceptance against that revision. Keep hidden inputs and per-case feedback out of the agent loop. Stop the clock at acceptance, rejection, abstention or the applicable ceiling. Keep failed and timed-out slots in their original pairs.
+4. Keep a raw usage trace and an evaluator receipt for each slot, keyed by task commitment, repetition and language. The receipt identifies the candidate revision, acceptance outcome and monotonic start and stop. Blind the reviewer to the other arm's result and cost until both outcomes are recorded.
+
+## Usage and scoring
+
+A ledger contains `kind` and an ordered array of `sessions`. Use `observed` for measured sessions. The rehearsal generates `synthetic`. Each session contains the exact generated `slot`, an `outcome` (`pass`, `fail`, `timeout`, `budget` or `abstain`), `elapsed_ms`, `usage_complete`, `calls`, `tool_calls`, `edit_attempts` and `regressions`. Count each change submission as one edit attempt. Count a submission that breaks previously passing public behavior as a regression. Repeated tool and model calls are separate calls.
+
+Normalize each model call from its actual usage receipt. Supply total `input_tokens` and `output_tokens`, including cached input or reasoning output exactly once. Report their subsets separately in `cached_input_tokens` and `reasoning_output_tokens`. Use JSON null for an unreported subset. Preserve raw provider fields alongside the ledger. Missing total usage makes the ledger incomplete. A verified zero-call timeout can have an empty list. The scorer checks accounting and slot identity. The evaluator verifies the underlying usage and acceptance receipts.
+
+For each family and language, success rate is solved divided by started. Tokens per success is total input plus output across **all** slots divided by solved. Zero solves yields an undefined ratio. Report the raw accounts, model and tool call counts, attempts, regressions, total elapsed time, time for successful slots, and sample variance of per-slot tokens and times. Results represent ratios as integer numerators and denominators. Sample variance uses the usual divisor of n minus one and requires two observations. The repair-pair list gives both times when both arms succeeded on the same task and repetition. Interpret paired timings alongside the success counts and all-slot elapsed times. Retain the per-slot ledger for within-task comparisons. [Scorer](score.tide)
