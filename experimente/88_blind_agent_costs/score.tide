@@ -74,7 +74,7 @@ let passed text_eq outcome "pass"
 if (not (or passed (or (text_eq outcome "fail") (or (text_eq outcome "timeout") (or (text_eq outcome "budget") (text_eq outcome "abstain")))))) (fail "invalid_outcome")
 if (< (get elapsed_ms session) 0) (fail "negative_elapsed")
 if (not (get usage_complete session)) (fail "incomplete_model_usage")
-if (and passed (eq (length (get calls session)) 0)) (fail "missing_model_usage")
+if (and (eq (length (get calls session)) 0) (not (text_eq outcome "timeout"))) (fail "missing_model_usage")
 if (or (< (get tool_calls session) 0) (or (< (get edit_attempts session) 0) (< (get regressions session) 0))) (fail "negative_session_counter")
 let cost fold (get calls session) empty_charge acc pos call (combine acc (cost_of call))
 make Measured slot expected passed passed elapsed_ms (get elapsed_ms session) cost cost
@@ -135,3 +135,30 @@ example impossible_usage cost_of
 
 example failed_attempts_count summarize_arm
 {"inputs":{"observations":[{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"passed":false,"elapsed_ms":100,"cost":{"inputs":8,"outputs":4,"cached":{"some":2},"reasoning":{"none":true}},"model_calls":2,"tool_calls":3,"edit_attempts":1,"regressions":0}],"family":"R","language":"TIDE"},"expect":{"family":"R","language":"TIDE","started":1,"solved":0,"usage":{"inputs":8,"outputs":4,"cached":{"some":2},"reasoning":{"none":true}},"tokens_per_success":{"none":true},"tokens":{"count":1,"sum":12,"mean":{"some":{"numerator":12,"denominator":1}},"sample_variance":{"none":true}},"elapsed_ms":{"count":1,"sum":100,"mean":{"some":{"numerator":100,"denominator":1}},"sample_variance":{"none":true}},"success_ms":{"count":0,"sum":0,"mean":{"none":true},"sample_variance":{"none":true}},"model_calls":2,"tool_calls":3,"edit_attempts":1,"regressions":0}}
+
+example wrong_slot measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"CPython"},"outcome":"pass","elapsed_ms":100,"usage_complete":true,"calls":[{"input_tokens":10,"output_tokens":5,"cached_input_tokens":{"none":true},"reasoning_output_tokens":{"none":true}}],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"unexpected_slot"}}
+
+example unknown_outcome measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"solved","elapsed_ms":100,"usage_complete":true,"calls":[{"input_tokens":10,"output_tokens":5,"cached_input_tokens":{"none":true},"reasoning_output_tokens":{"none":true}}],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"invalid_outcome"}}
+
+example negative_time measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"pass","elapsed_ms":-1,"usage_complete":true,"calls":[{"input_tokens":10,"output_tokens":5,"cached_input_tokens":{"none":true},"reasoning_output_tokens":{"none":true}}],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"negative_elapsed"}}
+
+example incomplete_usage measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"pass","elapsed_ms":100,"usage_complete":false,"calls":[{"input_tokens":10,"output_tokens":5,"cached_input_tokens":{"none":true},"reasoning_output_tokens":{"none":true}}],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"incomplete_model_usage"}}
+
+example pass_without_calls measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"pass","elapsed_ms":100,"usage_complete":true,"calls":[],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"missing_model_usage"}}
+
+example failure_without_calls measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"fail","elapsed_ms":100,"usage_complete":true,"calls":[],"tool_calls":1,"edit_attempts":1,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"missing_model_usage"}}
+
+example negative_counter measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"pass","elapsed_ms":100,"usage_complete":true,"calls":[{"input_tokens":10,"output_tokens":5,"cached_input_tokens":{"none":true},"reasoning_output_tokens":{"none":true}}],"tool_calls":1,"edit_attempts":1,"regressions":-1},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect_error":{"code":"E_DATA","reason":"negative_session_counter"}}
+
+example zero_call_timeout measure
+{"inputs":{"session":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"outcome":"timeout","elapsed_ms":100,"usage_complete":true,"calls":[],"tool_calls":0,"edit_attempts":0,"regressions":0},"expected":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}},"expect":{"slot":{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"},"passed":false,"elapsed_ms":100,"cost":{"inputs":0,"outputs":0,"cached":{"some":0},"reasoning":{"some":0}},"model_calls":0,"tool_calls":0,"edit_attempts":0,"regressions":0}}
+
+example missing_session evaluate
+{"inputs":{"slots":[{"family":"R","commitment":"fixture","repetition":1,"language":"TIDE"}],"journal":{"kind":"synthetic","sessions":[]}},"expect_error":{"code":"E_DATA","reason":"incomplete_schedule"}}

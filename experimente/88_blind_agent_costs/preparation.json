@@ -4,6 +4,7 @@
   "local_platform": "Linux x86-64",
   "tide_version": "TIDE 0.6.12",
   "checker_sha256": "05670930f9401e0ad1252c21c81b3343c322a22f80c6c0d5805e7109851343cc",
+  "checker_path": "build/native/checker",
   "cpython_version": "Python 3.14.10",
   "cpython_executable_sha256": "c81d88523721c462f53a98129d65bba68f67791932f0664372e1778e74fd9517",
   "public_commitment_manifest_sha256": "61c543d1629638618c6bd0b9ed22f6385fefc3831f331c7bf74aff6ac584d9fd",
