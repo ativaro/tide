@@ -91,8 +91,8 @@ Here, lower latency wins; with equal latency, higher capacity wins. In case of a
 |---|---|
 | `i`, `b`, `t` | Signed 64-bit integer, boolean, Unicode text. Text literals use JSON quotes and escapes. |
 | `q`, `z` | Exact decimal number with six decimal places or timestamp with UTC offset. |
-| `n`, `w`, `p` | Rights bound by the caller for a HTTPS origin, a file line, or a PostgreSQL connection. |
-| `d` | Database law as a function parameter. The caller binds it with `--db name=pfad` to an SQLite database. |
+| `n`, `w`, `p` | Capabilities bound by the caller for an HTTPS origin, a file to write or a PostgreSQL connection, respectively. |
+| `d` | SQLite database capability. The caller binds the parameter with `--db name=PATH`. |
 | `y` | Byte sequence up to 128 KiB. JSON-hex string with two digits per octet. |
 | `%A` | Dictionary with text keys and a uniform, non-optional value type `A`. JSON-object. |
 | `?A` | Option. Empty as `{"none":true}`, populated as `{"some":wert}`. |

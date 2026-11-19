@@ -1,6 +1,6 @@
-# Your first TIDE change
+# Getting started with TIDE
 
-Start in the root of a TIDE checkout on Linux x86-64 or Linux ARM64. The build uses GNU Make, a C compiler, a C++20 compiler with static runtime libraries, XZ, and GNU coreutils. The sources and bootstrap seed are in the checkout. Use the same shell for the following commands.
+This guide takes you from a first function to a typed JSON importer and a call across two modules. Start in the root of a TIDE checkout on Linux x86-64 or Linux ARM64. Building from source requires GNU Make, C and C++20 compilers with static runtime libraries, XZ, GNU coreutils and the libcurl, libpq and libmicrohttpd development headers. Use the same shell throughout so the installed CLI stays on your path.
 
 ## Install and run one example
 
@@ -18,6 +18,34 @@ tide run apps/balance.tide --call balance --inputs '{"opening":100,"entries":[-2
 ```
 
 The executable should be under your new prefix. For this checkout the version is `TIDE 0.6.12`, all three examples pass, and the balance is `97`. In a later shell, add the same prefix's `bin` directory to your path.
+
+## Write a function and its examples
+
+Suppose a warehouse needs to know how many units of an order it cannot fill. In an empty directory, save the following as `shortfall.tide`.
+
+```tide
+shortfall stock:i requested:i > i
+if (> requested stock) (- requested stock) 0
+
+example partial_order shortfall
+{"inputs":{"stock":7,"requested":10},"expect":3}
+
+example exact_stock shortfall
+{"inputs":{"stock":10,"requested":10},"expect":0}
+```
+
+The first line names two signed integers and declares an integer result after `>`. The next line is the whole function body. In `(> requested stock)`, the same symbol is a comparison in operator position. `if` evaluates the condition and picks one branch. When the order exceeds stock, the subtraction gives the missing quantity. Otherwise the result is zero.
+
+From the directory containing your file, call the function with your own inputs and then check both examples.
+
+```sh
+tide run shortfall.tide --call shortfall --inputs '{"stock":4,"requested":9}'
+# 5
+tide test shortfall.tide
+# {"passed":2}
+```
+
+To see a diagnostic, reverse the operands of the subtraction and run `tide test shortfall.tide --diff`. The partial order now produces `-3` where the example expects `3`. Restore the subtraction and run the examples again.
 
 ## Change a JSON record
 
